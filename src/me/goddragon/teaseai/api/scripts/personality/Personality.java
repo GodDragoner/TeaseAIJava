@@ -2,6 +2,8 @@ package me.goddragon.teaseai.api.scripts.personality;
 
 import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
+import me.goddragon.teaseai.api.config.VariableHandler;
+import me.goddragon.teaseai.api.picture.PictureSelector;
 
 import java.io.File;
 
@@ -17,10 +19,15 @@ public class Personality {
 
     private final String folderName;
     private final ConfigHandler configHandler;
+    private final VariableHandler variableHandler;
+
+    private PictureSelector pictureSelector = new PictureSelector();
 
     public Personality(String folderName) {
         this.folderName = folderName;
         this.configHandler = new ConfigHandler(getFolder().getAbsolutePath() + "\\" + PROPERTIES_NAME);
+        this.variableHandler = new VariableHandler(this);
+
         name = new ConfigValue("name", "Default Personality", configHandler);
         version = new ConfigValue("version", "1.0", configHandler);
         //githubLink = new ConfigValue("githubLink", "null", configHandler);
@@ -53,5 +60,26 @@ public class Personality {
 
     public ConfigValue getVersion() {
         return version;
+    }
+
+    public ConfigHandler getConfigHandler() {
+        return configHandler;
+    }
+
+    public VariableHandler getVariableHandler() {
+        return variableHandler;
+    }
+
+    public PictureSelector getPictureSelector() {
+        return pictureSelector;
+    }
+
+    public void setPictureSelector(PictureSelector pictureSelector) {
+        this.pictureSelector = pictureSelector;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + version + ")";
     }
 }

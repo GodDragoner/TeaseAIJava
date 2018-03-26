@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.api.config;
 
+import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
@@ -16,15 +17,14 @@ import java.util.logging.Level;
  * Created by GodDragon on 25.03.2018.
  */
 public class VariableHandler {
-    private static VariableHandler handler = new VariableHandler();
+    private File personalityVariableFolder;
 
-    //TODO: Change this to the personality system
-    private String currentPersonalityName = "Default";
-    private File personalityVariableFolder = new File("Personalities\\" + currentPersonalityName + "\\System\\Variables");
-
+    private final Personality personality;
     private HashMap<String, Object> variables = new HashMap<>();
 
-    public VariableHandler() {
+    public VariableHandler(Personality personality) {
+        this.personality = personality;
+        personalityVariableFolder = new File(personality.getFolder().getPath() + "\\System\\Variables");
         personalityVariableFolder.mkdirs();
     }
 
@@ -96,13 +96,5 @@ public class VariableHandler {
         }
 
         return variableFile;
-    }
-
-    public static VariableHandler getHandler() {
-        return handler;
-    }
-
-    public static void setHandler(VariableHandler handler) {
-        VariableHandler.handler = handler;
     }
 }

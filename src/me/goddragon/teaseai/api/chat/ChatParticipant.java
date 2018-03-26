@@ -8,10 +8,18 @@ import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.response.Response;
 import me.goddragon.teaseai.api.chat.response.ResponseHandler;
 import me.goddragon.teaseai.api.chat.vocabulary.VocabularyHandler;
+import me.goddragon.teaseai.api.media.MediaHandler;
+import me.goddragon.teaseai.api.picture.PictureSet;
+import me.goddragon.teaseai.api.picture.TaggedPicture;
+import me.goddragon.teaseai.api.session.Session;
+import me.goddragon.teaseai.utils.RandomUtils;
+import me.goddragon.teaseai.utils.TeaseLogger;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
+import java.util.logging.Level;
 
 /**
  * Created by GodDragon on 22.03.2018.
@@ -27,12 +35,16 @@ public class ChatParticipant {
     private TypeSpeed typeSpeed;
     private Color chatColor;
 
-    public ChatParticipant(String name, SenderType type) {
-        this(latestId + 1, name, type);
+    private File imageFolder;
+    private PictureSet pictureSet;
+
+    public ChatParticipant(String name, SenderType type, File imageFolder) {
+        this(latestId + 1, name, type, imageFolder);
     }
 
-    public ChatParticipant(int id, String name, SenderType type) {
+    public ChatParticipant(int id, String name, SenderType type, File imageFolder) {
         this.id = id;
+        this.imageFolder = imageFolder;
 
         //Update the latest id
         latestId = Math.max(id, latestId);
@@ -68,18 +80,23 @@ public class ChatParticipant {
         if (type == SenderType.SUB) {
             active = true;
         }
+
+        choosePictureSet();
     }
 
 
-    public ChatParticipant(int id, String name, SenderType type, Color chatColor) {
+    public ChatParticipant(int id, String name, SenderType type, Color chatColor, File imageFolder) {
         this.id = id;
         this.name = name;
         this.type = type;
+        this.imageFolder = imageFolder;
         this.chatColor = chatColor;
 
         if (type == SenderType.SUB) {
             active = true;
         }
+
+        choosePictureSet();
     }
 
     public void sendMessage(String message) {
@@ -138,6 +155,14 @@ public class ChatParticipant {
         }
 
         ChatHandler.getHandler().addLine(dateText, text, messageText);
+
+        if (type != SenderType.SUB && !MediaHandler.getHandler().isImagesLocked() && pictureSet != null) {
+            Session session = TeaseAI.application.getSession();
+            TaggedPicture taggedPicture = session.getActivePersonality().getPictureSelector().getPicture(session, this);
+            if (taggedPicture != null) {
+                MediaHandler.getHandler().showPicture(session.getActivePersonality().getPictureSelector().getPicture(session, this).getFile());
+            }
+        }
 
         //Wait some time after this message before continuing (only if it is not the sub who send the message)
         if (millisToWait > 0 && type != SenderType.SUB) {
@@ -237,5 +262,39 @@ public class ChatParticipant {
 
     public void setChatColor(Color chatColor) {
         this.chatColor = chatColor;
+    }
+
+    public void choosePictureSet() {
+        if (imageFolder == null || !imageFolder.exists()) {
+            return;
+        }
+
+        List<PictureSet> pictureSets = new ArrayList<>();
+        for (File file : imageFolder.listFiles((current, name) -> new File(current, name).isDirectory())) {
+            pictureSets.add(new PictureSet(file));
+        }
+
+        TeaseLogger.getLogger().log(Level.INFO, "Loaded " + pictureSets.size() + " picture sets for " + name);
+
+        if (!pictureSets.isEmpty()) {
+            int loops = 0;
+            while (this.pictureSet == null && loops < 20) {
+                PictureSet pictureSet = pictureSets.get(RandomUtils.randInt(0, pictureSets.size() - 1));
+
+                if (!pictureSet.getTaggedPictures().isEmpty()) {
+                    this.pictureSet = pictureSet;
+                }
+
+                loops++;
+            }
+        }
+    }
+
+    public PictureSet getPictureSet() {
+        return pictureSet;
+    }
+
+    public void setPictureSet(PictureSet pictureSet) {
+        this.pictureSet = pictureSet;
     }
 }

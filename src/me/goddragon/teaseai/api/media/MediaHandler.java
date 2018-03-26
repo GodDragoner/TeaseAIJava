@@ -25,6 +25,8 @@ public class MediaHandler {
 
     private HashMap<URI, MediaPlayer> playingAudioClips = new HashMap<>();
 
+    private boolean imagesLocked = false;
+
     public MediaPlayer playVideo(File file) {
         return playVideo(file, false);
     }
@@ -38,6 +40,7 @@ public class MediaHandler {
         try {
             MediaPlayer mediaPlayer = new MediaPlayer(new Media(file.toURI().toURL().toExternalForm()));
             mediaPlayer.setAutoPlay(true);
+            this.imagesLocked = true;
 
             TeaseAI.application.runOnUIThread(new Runnable() {
                 @Override
@@ -56,8 +59,17 @@ public class MediaHandler {
                 }
             });
 
+            //Check if we want to wait for the media to finish
             if(wait) {
                 waitForPlayer(mediaPlayer);
+            } else {
+                //Unlock the images again (of course they can be unlocked by the user during the video)
+                mediaPlayer.setOnEndOfMedia(new Runnable() {
+                    @Override
+                    public void run() {
+                        imagesLocked = false;
+                    }
+                });
             }
 
             return mediaPlayer;
@@ -170,6 +182,8 @@ public class MediaHandler {
         mediaPlayer.setOnEndOfMedia(new Runnable() {
             @Override
             public void run() {
+                imagesLocked = false;
+
                 synchronized (TeaseAI.application.getScriptThread()) {
                     TeaseAI.application.getScriptThread().notify();
                 }
@@ -184,6 +198,14 @@ public class MediaHandler {
             //Check whether there are new responses to handle
             TeaseAI.application.checkForNewResponses();
         }
+    }
+
+    public boolean isImagesLocked() {
+        return imagesLocked;
+    }
+
+    public void setImagesLocked(boolean imagesLocked) {
+        this.imagesLocked = imagesLocked;
     }
 
     public static MediaHandler getHandler() {

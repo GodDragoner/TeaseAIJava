@@ -8,6 +8,7 @@ import javafx.scene.text.TextFlow;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,6 +49,8 @@ public class ChatHandler {
 
     private Answer currentCallback = null;
 
+    private ChatParticipant currentDom = null;
+
     public ChatHandler() {
         TextFlow textFlow = TeaseAI.application.getController().getChatWindow();
         ScrollPane textContainer = TeaseAI.application.getController().getChatScrollPane();
@@ -61,6 +64,14 @@ public class ChatHandler {
 
         //Initial space in chat
         addText(new Text(" "));
+    }
+
+    public void load() {
+        registerSender(new ChatParticipant(0, TeaseAI.application.SUB_NAME.getValue(), SenderType.SUB, null));
+        registerSender(new ChatParticipant(1, TeaseAI.application.DOM_NAME.getValue(), SenderType.DOM, new File("D:\\IDE\\Workspace\\Other Projects\\ChatSystem\\Personalities\\Testing\\Set\\Little Caprice")));
+        registerSender(new ChatParticipant(2, TeaseAI.application.DOM_NAME_2.getValue(), SenderType.DOM, null));
+        registerSender(new ChatParticipant(3, TeaseAI.application.DOM_NAME_3.getValue(), SenderType.DOM, null));
+        registerSender(new ChatParticipant(4, TeaseAI.application.DOM_NAME_4.getValue(), SenderType.DOM, null));
     }
 
     public void registerSender(ChatParticipant chatSender) {
@@ -94,7 +105,7 @@ public class ChatHandler {
     }
 
     public ChatParticipant getSelectedSender() {
-        return getMainDomParticipant();
+        return currentDom != null? currentDom : getMainDomParticipant();
     }
 
     public void addText(String message) {
@@ -298,6 +309,14 @@ public class ChatHandler {
         addText("\n ");
     }
 
+    public ChatParticipant getCurrentDom() {
+        return currentDom;
+    }
+
+    public void setCurrentDom(ChatParticipant currentDom) {
+        this.currentDom = currentDom;
+    }
+
     public static ChatHandler getHandler() {
         return handler;
     }
@@ -305,4 +324,5 @@ public class ChatHandler {
     public static void setHandler(ChatHandler handler) {
         ChatHandler.handler = handler;
     }
+
 }

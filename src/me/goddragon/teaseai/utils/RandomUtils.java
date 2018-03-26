@@ -1,5 +1,7 @@
 package me.goddragon.teaseai.utils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -8,6 +10,21 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by GodDragon on 23.03.2018.
  */
 public class RandomUtils {
+    public static int randInt(int min, int max) {
+        if (min == max || min > max) {
+            return min;
+        }
+
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = min; i <= max; i++) {
+            list.add(new Integer(i));
+        }
+
+        Collections.shuffle(list);
+
+        return list.get(0);
+    }
+
     public static Object getWinner(HashMap<?, ? extends Number> idChances) {
         if(idChances.isEmpty()) {
             return null;

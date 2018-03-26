@@ -1,10 +1,10 @@
-package me.goddragon.teaseai.gui;
+package me.goddragon.teaseai.gui.main;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -18,7 +18,10 @@ import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.ChatHandler;
+import me.goddragon.teaseai.api.scripts.personality.Personality;
+import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -43,10 +46,18 @@ public class Controller {
     @FXML
     private ScrollPane chatScrollPane;
 
+    @FXML
+    private ChoiceBox personalityChoiceBox;
+
+    @FXML
+    private Button startChatButton;
+
     public Controller() {
     }
 
     public void initiate() {
+        personalityChoiceBox.setTooltip(new Tooltip("Select the personality"));
+
         mediaView.setPreserveRatio(true);
         mediaView.fitWidthProperty().bind(mediaViewBox.widthProperty());
         mediaView.fitHeightProperty().bind(mediaViewBox.heightProperty());
@@ -78,6 +89,24 @@ public class Controller {
                 }
             }
         });
+
+        startChatButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if(PersonalityManager.getManager().getActivePersonality() != null) {
+                    return;
+                }
+
+                PersonalityManager.getManager().setActivePersonality((Personality) getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
+
+                synchronized (TeaseAI.application.getScriptThread()) {
+                    TeaseAI.application.getScriptThread().notify();
+                }
+
+                personalityChoiceBox.setDisable(true);
+                startChatButton.setDisable(true);
+            }
+        });
     }
 
     public TextField getChatTextField() {
@@ -102,6 +131,10 @@ public class Controller {
 
     public ScrollPane getChatScrollPane() {
         return chatScrollPane;
+    }
+
+    public ChoiceBox getPersonalityChoiceBox() {
+        return personalityChoiceBox;
     }
 
     public void showPicture() {

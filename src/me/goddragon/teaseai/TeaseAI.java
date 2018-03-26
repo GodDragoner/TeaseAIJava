@@ -7,15 +7,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import me.goddragon.teaseai.api.chat.ChatHandler;
-import me.goddragon.teaseai.api.chat.ChatParticipant;
-import me.goddragon.teaseai.api.chat.SenderType;
 import me.goddragon.teaseai.api.chat.response.Response;
 import me.goddragon.teaseai.api.chat.response.ResponseHandler;
 import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
-import me.goddragon.teaseai.gui.Controller;
+import me.goddragon.teaseai.api.session.Session;
+import me.goddragon.teaseai.gui.main.Controller;
 
 /**
  * Created by GodDragon on 21.03.2018.
@@ -28,13 +27,21 @@ public class TeaseAI extends Application {
     private Thread mainThread;
     private Thread scriptThread;
 
-    public final ConfigValue DOM_NAME = new ConfigValue("domName", "Dom", configHandler);
+    public final ConfigValue SUB_NAME = new ConfigValue("subName", "Sub", configHandler);
+    public final ConfigValue DOM_NAME = new ConfigValue("domName", "Domme", configHandler);
+    public final ConfigValue DOM_NAME_2 = new ConfigValue("domFriend1", "Friend 1", configHandler);
+    public final ConfigValue DOM_NAME_3 = new ConfigValue("domFriend2", "Friend 2", configHandler);
+    public final ConfigValue DOM_NAME_4 = new ConfigValue("domFriend3", "Friend 3", configHandler);
+
+    public final ConfigValue PREFERED_SESSION_DURATION = new ConfigValue("preferredSessionDuration", "60", configHandler);
+
+    private Session session;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         application = this;
         mainThread = Thread.currentThread();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/sample.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/main/main.fxml"));
         controller = new Controller();
         loader.setController(controller);
         Parent root = loader.load();
@@ -43,13 +50,17 @@ public class TeaseAI extends Application {
         primaryStage.show();
         controller.initiate();
 
-        ChatHandler.getHandler().registerSender(new ChatParticipant(0, "Subname", SenderType.SUB));
-        ChatHandler.getHandler().registerSender(new ChatParticipant(1, "Emma", SenderType.DOM));
-
+        //Load config values first
         configHandler.loadConfig();
+
+
+        ChatHandler.getHandler().load();
 
         ScriptHandler.getHandler().load();
         PersonalityManager.getManager().loadPersonalities();
+
+        this.session = new Session();
+
         scriptThread = new Thread() {
             @Override
             public void run() {
@@ -87,14 +98,19 @@ public class TeaseAI extends Application {
                         dom.sendMessage("What?");
                         answer.loop();
                     }
+                }*/
+
+                synchronized (this) {
+                    while(session.getActivePersonality() == null) {
+                        try {
+                            wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
 
-                dom.sendMessage("Let's %tree% get started %tree%");
-                dom.sendMessage("Okay");
-                dom.sendMessage("Wait a second");
-                dom.sendMessage("It's a revolution");
-                dom.sendMessage("Hands up");*/
-                ScriptHandler.getHandler().startPersonality( PersonalityManager.getManager().getPersonality("Default Personality"));
+                session.start();
             }
         };
 
@@ -175,5 +191,9 @@ public class TeaseAI extends Application {
 
     public ConfigHandler getConfigHandler() {
         return configHandler;
+    }
+
+    public Session getSession() {
+        return session;
     }
 }

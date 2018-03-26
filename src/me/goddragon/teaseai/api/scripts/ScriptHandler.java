@@ -35,12 +35,18 @@ public class ScriptHandler {
         registerFunction(new RegisterResponseFunction());
         registerFunction(new AddResponseRegexFunction());
         registerFunction(new AddResponseIndicatorFunction());
+        registerFunction(new DeleteVarFunction());
+        registerFunction(new SetTempVarFunction());
+        registerFunction(new SetVarFunction());
+        registerFunction(new GetVarFunction());
 
         engine.put("run", (Consumer<String>) this::evalScript);
     }
 
     public void registerFunction(CustomFunction function) {
-        engine.put(function.getFunctionName(), function);
+        for(String functionName : function.getFunctionNames()) {
+            engine.put(functionName, function);
+        }
     }
 
     public void startPersonality(Personality personality) {

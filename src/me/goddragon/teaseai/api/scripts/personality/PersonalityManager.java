@@ -1,5 +1,7 @@
 package me.goddragon.teaseai.api.scripts.personality;
 
+import javafx.scene.control.ChoiceBox;
+import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
@@ -20,6 +22,9 @@ public class PersonalityManager {
     public void loadPersonalities() {
         personalities.clear();
 
+        ChoiceBox choiceBox = TeaseAI.application.getController().getPersonalityChoiceBox();
+        choiceBox.getItems().clear();
+
         File personalityFolder = new File(PERSONALITY_FOLDER_NAME);
         personalityFolder.mkdirs();
 
@@ -31,12 +36,15 @@ public class PersonalityManager {
                 if(propertiesFile.exists()) {
                     Personality personality = new Personality(file.getName());
                     addPersonality(personality);
+                    choiceBox.getItems().add(personality);
                     TeaseLogger.getLogger().log(Level.INFO, "Personality '" + personality.getName() + "' version " + personality.getVersion() + " loaded.");
                 } else {
                     TeaseLogger.getLogger().log(Level.WARNING, "Personality '" + file.getName() + "' is missing a properties file. Skipping loading.");
                 }
             }
         }
+
+        choiceBox.getSelectionModel().selectFirst();
     }
 
     public void addPersonality(Personality personality) {
@@ -53,6 +61,16 @@ public class PersonalityManager {
 
     public Collection<Personality> getPersonalities() {
         return personalities.values();
+    }
+
+    @Deprecated
+    public Personality getActivePersonality() {
+        return TeaseAI.application.getSession().getActivePersonality();
+    }
+
+    @Deprecated
+    public void setActivePersonality(Personality activePersonality) {
+        TeaseAI.application.getSession().setActivePersonality(activePersonality);
     }
 
     public static PersonalityManager getManager() {
