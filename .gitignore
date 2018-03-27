@@ -7,3 +7,6 @@ target
 .classpath
 .git
 Personalities/Testing/Set
+Personalities/*
+*.properties
+Images/*

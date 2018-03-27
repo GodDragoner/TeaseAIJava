@@ -8,23 +8,19 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
-
-import java.io.File;
-import java.net.MalformedURLException;
+import me.goddragon.teaseai.gui.settings.SettingsController;
 
 public class Controller {
 
@@ -51,6 +47,9 @@ public class Controller {
 
     @FXML
     private Button startChatButton;
+
+    @FXML
+    private Menu menuSettingsButton;
 
     public Controller() {
     }
@@ -107,6 +106,15 @@ public class Controller {
                 startChatButton.setDisable(true);
             }
         });
+
+        Label settingsLabel = new Label("Settings");
+        menuSettingsButton.setGraphic(settingsLabel);
+        settingsLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent  e) {
+                SettingsController.openGUI();
+            }
+        });
     }
 
     public TextField getChatTextField() {
@@ -135,23 +143,5 @@ public class Controller {
 
     public ChoiceBox getPersonalityChoiceBox() {
         return personalityChoiceBox;
-    }
-
-    public void showPicture() {
-        MediaPlayer mediaPlayer;
-        try {
-            mediaPlayer = new MediaPlayer(new Media(new File("D:\\Downloads\\I'm gonna get you off in 3 seconds.mp4").toURI().toURL().toExternalForm()));
-            mediaPlayer.setAutoPlay(true);
-            mediaView.setPreserveRatio(true);
-            mediaView.fitWidthProperty().bind(mediaViewBox.widthProperty());
-            mediaView.fitHeightProperty().bind(mediaViewBox.heightProperty());
-            mediaView.setMediaPlayer(mediaPlayer);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        for(int x = 0; x < 30; x++) {
-            chatWindow.getChildren().add(new Text("test \n"));
-        }
     }
 }

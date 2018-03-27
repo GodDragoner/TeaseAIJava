@@ -19,7 +19,7 @@ public class ConfigValue {
 
     public void setValue(String value) {
         this.value = value;
-        configHandler.getProperties().setProperty(name, defaultValue.toString());
+        configHandler.getProperties().setProperty(name, value.toString());
     }
 
     public String getValue() {
@@ -60,5 +60,9 @@ public class ConfigValue {
     @Override
     public String toString() {
         return getValue();
+    }
+
+    public Object getDefaultValue() {
+        return defaultValue;
     }
 }

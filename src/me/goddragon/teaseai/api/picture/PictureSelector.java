@@ -17,7 +17,7 @@ public class PictureSelector {
         }
 
         long minutesPassed = TimeUnit.MILLISECONDS.toMinutes(session.getRuntime());
-        int preferredSessionDuration = TeaseAI.application.PREFERED_SESSION_DURATION.getInt();
+        int preferredSessionDuration = TeaseAI.application.PREFERRED_SESSION_DURATION.getInt();
         double percentage = minutesPassed/preferredSessionDuration*100D;
 
         if(percentage > 80) {

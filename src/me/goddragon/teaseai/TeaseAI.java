@@ -2,15 +2,19 @@ package me.goddragon.teaseai;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.chat.response.Response;
 import me.goddragon.teaseai.api.chat.response.ResponseHandler;
 import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
+import me.goddragon.teaseai.api.media.MediaCollection;
+import me.goddragon.teaseai.api.media.MediaFetishType;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.api.session.Session;
@@ -23,6 +27,7 @@ public class TeaseAI extends Application {
 
     public static TeaseAI application;
     private ConfigHandler configHandler = new ConfigHandler("TeaseAI.properties");
+    private MediaCollection mediaCollection;
     private Controller controller;
     private Thread mainThread;
     private Thread scriptThread;
@@ -33,7 +38,7 @@ public class TeaseAI extends Application {
     public final ConfigValue DOM_NAME_3 = new ConfigValue("domFriend2", "Friend 2", configHandler);
     public final ConfigValue DOM_NAME_4 = new ConfigValue("domFriend3", "Friend 3", configHandler);
 
-    public final ConfigValue PREFERED_SESSION_DURATION = new ConfigValue("preferredSessionDuration", "60", configHandler);
+    public final ConfigValue PREFERRED_SESSION_DURATION = new ConfigValue("preferredSessionDuration", "60", configHandler);
 
     private Session session;
 
@@ -45,16 +50,31 @@ public class TeaseAI extends Application {
         controller = new Controller();
         loader.setController(controller);
         Parent root = loader.load();
-        primaryStage.setTitle("Tease AI");
+        primaryStage.setTitle("Tease-AI");
         primaryStage.setScene(new Scene(root, 1480, 720));
         primaryStage.show();
         controller.initiate();
 
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    System.exit(0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        //Load values to add the config values
+        MediaFetishType.values();
+
         //Load config values first
         configHandler.loadConfig();
 
-
         ChatHandler.getHandler().load();
+
+        this.mediaCollection = new MediaCollection();
 
         ScriptHandler.getHandler().load();
         PersonalityManager.getManager().loadPersonalities();
@@ -73,7 +93,6 @@ public class TeaseAI extends Application {
                     public boolean trigger() {
                         dom.sendMessage("Oh really?");
                         dom.sendMessage("Nice try!");
-                        MediaHandler.getHandler().playVideo("D:\\Downloads\\I'm gonna get you off in 3 seconds.mp4", true);
                         dom.sendMessage("Done!");
                         return true;
                     }
@@ -100,7 +119,7 @@ public class TeaseAI extends Application {
                     }
                 }*/
 
-                synchronized (this) {
+                /*synchronized (this) {
                     while(session.getActivePersonality() == null) {
                         try {
                             wait();
@@ -110,7 +129,7 @@ public class TeaseAI extends Application {
                     }
                 }
 
-                session.start();
+                session.start();*/
             }
         };
 
@@ -191,6 +210,10 @@ public class TeaseAI extends Application {
 
     public ConfigHandler getConfigHandler() {
         return configHandler;
+    }
+
+    public MediaCollection getMediaCollection() {
+        return mediaCollection;
     }
 
     public Session getSession() {
