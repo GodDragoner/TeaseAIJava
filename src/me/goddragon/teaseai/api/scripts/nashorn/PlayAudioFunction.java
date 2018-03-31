@@ -24,13 +24,10 @@ public class PlayAudioFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         switch(args.length) {
             case 1:
-                if(args[0] instanceof String) {
-                    return MediaHandler.getHandler().playAudio((String) args[0]);
-                }
-                break;
+                return MediaHandler.getHandler().playAudio(args[0].toString());
             case 2:
                 if(args[1] instanceof Boolean) {
-                    return MediaHandler.getHandler().playAudio((String) args[0], (Boolean) args[1]);
+                    return MediaHandler.getHandler().playAudio(args[0].toString(), (Boolean) args[1]);
                 }
                 break;
             case 0:

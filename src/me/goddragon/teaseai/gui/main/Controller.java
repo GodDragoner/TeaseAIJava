@@ -1,10 +1,13 @@
 package me.goddragon.teaseai.gui.main;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -16,13 +19,20 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.ChatHandler;
+import me.goddragon.teaseai.api.chat.ChatParticipant;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.gui.settings.SettingsController;
 
+import java.io.File;
+
 public class Controller {
+
+    private final Stage stage;
 
     @FXML
     private MediaView mediaView;
@@ -51,7 +61,20 @@ public class Controller {
     @FXML
     private Menu menuSettingsButton;
 
-    public Controller() {
+    @FXML
+    private TextField subNameTextField;
+
+    @FXML
+    private TextField domNameTextField;
+
+    @FXML
+    private ImageView domImageView;
+
+    @FXML
+    private StackPane domImageViewStackPane;
+
+    public Controller(Stage stage) {
+        this.stage = stage;
     }
 
     public void initiate() {
@@ -98,9 +121,11 @@ public class Controller {
 
                 PersonalityManager.getManager().setActivePersonality((Personality) getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
 
-                synchronized (TeaseAI.application.getScriptThread()) {
+                /*synchronized (TeaseAI.application.getScriptThread()) {
                     TeaseAI.application.getScriptThread().notify();
-                }
+                }*/
+
+                TeaseAI.application.getSession().start();
 
                 personalityChoiceBox.setDisable(true);
                 startChatButton.setDisable(true);
@@ -113,6 +138,98 @@ public class Controller {
             @Override
             public void handle(MouseEvent  e) {
                 SettingsController.openGUI();
+            }
+        });
+    }
+
+    public void loadDomInfo() {
+        domImageView.setPreserveRatio(true);
+        domImageView.fitWidthProperty().bind(domImageViewStackPane.widthProperty());
+        domImageView.fitHeightProperty().bind(domImageViewStackPane.heightProperty());
+
+        ChatParticipant domParticipant = ChatHandler.getHandler().getMainDomParticipant();
+        ChatParticipant subParticipant = ChatHandler.getHandler().getSubParticipant();
+
+        File domImage = domParticipant.getContact().getImage();
+        if(domImage != null && domImage.exists()) {
+            domImageView.setImage(new Image(domImage.toURI().toString()));
+        } else {
+            domImageView.setImage(null);
+        }
+
+        domImageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                FileChooser chooser = new FileChooser();
+                chooser.setTitle("Select Media Folder");
+
+                String dir;
+                if (new File(domParticipant.getContact().IMAGE_PATH.getValue()).exists()) {
+                    dir = domParticipant.getContact().IMAGE_PATH.getValue();
+                    //Get parent folder
+                    dir = dir.substring(0, dir.lastIndexOf("\\"));
+                } else {
+                    dir = System.getProperty("user.dir");
+                }
+
+                File defaultDirectory = new File(dir);
+                chooser.setInitialDirectory(defaultDirectory);
+
+                chooser.getExtensionFilters().addAll(
+                        new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                        new FileChooser.ExtensionFilter("PNG", "*.png")
+                );
+
+                File image = chooser.showOpenDialog(stage);
+
+                if (image != null && image.exists()) {
+                    if ((image.getName().endsWith(".jpg") || image.getName().endsWith(".png"))) {
+                        domParticipant.getContact().IMAGE_PATH.setValue(image.getPath());
+                        domParticipant.getContact().IMAGE_PATH.save();
+
+                        if(image != null && image.exists()) {
+                            domImageView.setImage(new Image(image.toURI().toString()));
+                        } else {
+                            domImageView.setImage(null);
+                        }
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Invalid File");
+                        alert.setHeaderText(null);
+                        alert.setContentText("The given file is not a supported image file.");
+
+                        alert.showAndWait();
+                    }
+                }
+            }
+        });
+
+        domNameTextField.setText(domParticipant.getContact().NAME.getValue());
+        subNameTextField.setText(subParticipant.getContact().NAME.getValue());
+
+        domNameTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+                if (newPropertyValue) {
+                    //On focus
+                } else {
+                    //Lost focus
+                    domParticipant.getContact().NAME.setValue(domNameTextField.getText());
+                    domParticipant.getContact().save();
+                }
+            }
+        });
+
+        subNameTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+                if (newPropertyValue) {
+                    //On focus
+                } else {
+                    //Lost focus
+                    subParticipant.getContact().NAME.setValue(subNameTextField.getText());
+                    subParticipant.getContact().save();
+                }
             }
         });
     }

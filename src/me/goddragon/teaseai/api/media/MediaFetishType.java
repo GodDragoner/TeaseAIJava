@@ -5,10 +5,7 @@ import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.ConfigValue;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by GodDragon on 26.03.2018.
@@ -46,20 +43,36 @@ public enum MediaFetishType {
         return Arrays.asList(split);
     }
 
-    public MediaFolder getMediaFolder(MediaType mediaType) {
-        File file = getFolder(mediaType);
+    public List<MediaHolder> getMediaFolders(MediaType mediaType) {
+        List<File> files = getFolders(mediaType);
 
-        if(!file.exists()) {
-            return null;
+        List<MediaHolder> folders = new ArrayList<>();
+        for(File file : files) {
+            if (!file.exists()) {
+                continue;
+            }
+
+            folders.add(new MediaFolder(mediaType, file));
         }
 
-        return new MediaFolder(mediaType, getFolder(mediaType));
+        return folders;
     }
 
-    public File getFolder(MediaType mediaType) {
-        ConfigValue configValue = configValues.get(mediaType).get(MediaHolderType.FOLDER);
+    public List<File> getFolders(MediaType mediaType) {
+        String value = configValues.get(mediaType).get(MediaHolderType.FOLDER).getValue();
 
-        return new File(configValue.getValue());
+        if(value.isEmpty() || !value.contains(";")) {
+            return Arrays.asList(new File(value));
+        }
+
+        String[] split = value.split(";");
+        List<File> files = new ArrayList<>();
+
+        for(String folderPath : split) {
+            files.add(new File(folderPath));
+        }
+
+        return files;
     }
 
     public Map<MediaType, Map<MediaHolderType, ConfigValue>> getConfigValues() {

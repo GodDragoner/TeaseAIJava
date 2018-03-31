@@ -19,29 +19,8 @@ public class MediaCollection {
 
     public MediaCollection() {
         for(MediaFetishType mediaFetishType : MediaFetishType.values()) {
-            MediaFolder mediaFolder = mediaFetishType.getMediaFolder(MediaType.IMAGE);
-
-            if(mediaFolder != null) {
-                addMediaHolder(mediaFetishType, mediaFolder);
-            }
-
-            mediaFolder = mediaFetishType.getMediaFolder(MediaType.VIDEO);
-
-            if(mediaFolder != null) {
-                addMediaHolder(mediaFetishType, mediaFolder);
-            }
-
-            mediaFolder = mediaFetishType.getMediaFolder(MediaType.IMAGE);
-
-            if(mediaFolder != null) {
-                addMediaHolder(mediaFetishType, mediaFolder);
-            }
-
-            mediaFolder = mediaFetishType.getMediaFolder(MediaType.VIDEO);
-
-            if(mediaFolder != null) {
-                addMediaHolder(mediaFetishType, mediaFolder);
-            }
+            addMediaHolders(mediaFetishType, mediaFetishType.getMediaFolders(MediaType.IMAGE));
+            addMediaHolders(mediaFetishType, mediaFetishType.getMediaFolders(MediaType.VIDEO));
 
             //Handle url files for images here
             List<String> tumblrURLFileNames = mediaFetishType.getURLFileNames(MediaType.IMAGE);
@@ -65,6 +44,14 @@ public class MediaCollection {
                         addMediaHolder(null, mediaURL);
                     }
                 }
+            }
+        }
+    }
+
+    public void addMediaHolders(MediaFetishType mediaFetishType, List<MediaHolder> mediaHolders) {
+        for(MediaHolder mediaHolder : mediaHolders) {
+            if(mediaHolder != null) {
+                addMediaHolder(mediaFetishType, mediaHolder);
             }
         }
     }
@@ -115,6 +102,20 @@ public class MediaCollection {
         }
     }
 
+    public File getRandomTeaseFile(MediaType mediaType) {
+        List<MediaHolder> mediaFolders = mediaHolders.get(mediaType);
+        List<MediaURL> urls = new ArrayList<>();
+
+        for(MediaHolder mediaHolder : mediaFolders) {
+            if(mediaHolder instanceof MediaURL && ((MediaURL) mediaHolder).isUseForTease()) {
+                urls.add((MediaURL) mediaHolder);
+            }
+        }
+
+        MediaURL mediaURL = urls.get(RandomUtils.randInt(0, urls.size() - 1));
+        return mediaURL.getRandomMedia();
+    }
+
     public File getRandomFile(MediaFetishType fetishType, MediaType mediaType) {
         if(!folders.containsKey(fetishType) || !folders.get(fetishType).containsKey(mediaType)) {
             return null;
@@ -131,11 +132,24 @@ public class MediaCollection {
             }
             //No file found, the folder seems to be empty and we can remove it
             else {
-                mediaFolders.remove(mediaHolder);
+                //Maybe the users adds stuff later. Don't remove it
+                //mediaFolders.remove(mediaHolder);
             }
         }
 
         return null;
+    }
+
+    public boolean isPathAssigned(String path, MediaFetishType fetishType, MediaType mediaType) {
+        for(MediaHolder mediaHolder : getMediaHolders(fetishType, mediaType)) {
+            if(mediaHolder instanceof MediaFolder) {
+                if(((MediaFolder) mediaHolder).getFile().getPath().equalsIgnoreCase(path)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public List<MediaHolder> getMediaHolders(MediaFetishType fetishType, MediaType mediaType) {
@@ -160,12 +174,16 @@ public class MediaCollection {
         switch (holderType) {
             case FOLDER:
                 for(MediaHolder mediaHolder : folders) {
-                   // newValue += ((MediaFolder)mediaHolder).getFile().getName() + ";";
+                    if(mediaHolder instanceof MediaFolder) {
+                        newValue += ((MediaFolder) mediaHolder).getFile().getPath() + ";";
+                    }
                 }
                 break;
             case URL:
                 for(MediaHolder mediaHolder : folders) {
-                    newValue += ((MediaURL)mediaHolder).getFile().getName() + ";";
+                    if(mediaHolder instanceof MediaURL) {
+                        newValue += ((MediaURL) mediaHolder).getFile().getName() + ";";
+                    }
                 }
                 break;
         }

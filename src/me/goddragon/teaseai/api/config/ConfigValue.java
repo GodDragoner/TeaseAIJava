@@ -33,6 +33,8 @@ public class ConfigValue {
         }
 
         createDefault();
+        save();
+
         this.value = defaultValue.toString();
         return defaultValue.toString();
     }
@@ -51,6 +53,10 @@ public class ConfigValue {
 
     public void createDefault() {
         configHandler.getProperties().setProperty(name, defaultValue.toString());
+    }
+
+    public void save() {
+        configHandler.saveConfig();
     }
 
     public String getName() {

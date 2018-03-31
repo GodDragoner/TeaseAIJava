@@ -37,4 +37,13 @@ public class MediaFolder extends MediaHolder {
 
         return mediaFiles.get(RandomUtils.randInt(0, mediaFiles.size() - 1));
     }
+
+    public File getFile() {
+        return folder;
+    }
+
+    @Override
+    public String toString() {
+        return getFile().getPath();
+    }
 }

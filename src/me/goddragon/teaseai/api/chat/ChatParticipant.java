@@ -18,7 +18,9 @@ import me.goddragon.teaseai.utils.TeaseLogger;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -30,27 +32,35 @@ public class ChatParticipant {
 
     private int id;
     private String name;
+    private Contact contact;
     private SenderType type;
     private boolean active = false;
     private TypeSpeed typeSpeed;
     private Color chatColor;
 
-    private File imageFolder;
     private PictureSet pictureSet;
 
-    public ChatParticipant(String name, SenderType type, File imageFolder) {
-        this(latestId + 1, name, type, imageFolder);
+    public ChatParticipant(SenderType type, Contact contact) {
+        this(latestId + 1, type, contact);
     }
 
-    public ChatParticipant(int id, String name, SenderType type, File imageFolder) {
+    public ChatParticipant(String name, SenderType type) {
+        this(latestId + 1, name, type, null);
+    }
+
+    public ChatParticipant(int id, SenderType type, Contact contact) {
+        this(id, contact.NAME.getValue(), type, contact);
+    }
+
+    public ChatParticipant(int id, String name, SenderType type, Contact contact) {
         this.id = id;
-        this.imageFolder = imageFolder;
 
         //Update the latest id
         latestId = Math.max(id, latestId);
 
         this.name = name;
         this.type = type;
+        this.contact = contact;
         this.typeSpeed = ChatHandler.getHandler().getTypeSpeed();
 
         switch (id) {
@@ -84,12 +94,10 @@ public class ChatParticipant {
         choosePictureSet();
     }
 
-
-    public ChatParticipant(int id, String name, SenderType type, Color chatColor, File imageFolder) {
+    public ChatParticipant(int id, String name, SenderType type, Color chatColor, Contact contact) {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.imageFolder = imageFolder;
         this.chatColor = chatColor;
 
         if (type == SenderType.SUB) {
@@ -264,7 +272,12 @@ public class ChatParticipant {
         this.chatColor = chatColor;
     }
 
+    public Contact getContact() {
+        return contact;
+    }
+
     public void choosePictureSet() {
+        File imageFolder = contact == null? null : contact.getImageFolder();
         if (imageFolder == null || !imageFolder.exists()) {
             return;
         }
@@ -296,5 +309,10 @@ public class ChatParticipant {
 
     public void setPictureSet(PictureSet pictureSet) {
         this.pictureSet = pictureSet;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

@@ -31,7 +31,7 @@ public class ShowCategoryImageFunction extends CustomFunction {
 
             MediaFetishType mediaFetishType;
             try {
-                mediaFetishType = MediaFetishType.valueOf(category);
+                mediaFetishType = MediaFetishType.valueOf(category.toUpperCase());
             } catch (IllegalArgumentException ex) {
                 TeaseLogger.getLogger().log(Level.SEVERE, "'" + category + "' is not a valid image category.");
                 return null;

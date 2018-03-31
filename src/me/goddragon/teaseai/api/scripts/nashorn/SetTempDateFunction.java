@@ -1,19 +1,20 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
-import me.goddragon.teaseai.api.chat.Answer;
-import me.goddragon.teaseai.api.chat.ChatHandler;
+import me.goddragon.teaseai.api.config.TeaseDate;
+import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.logging.Level;
 
 /**
- * Created by GodDragon on 25.03.2018.
+ * Created by GodDragon on 30.03.2018.
  */
-public class SendInputFunction extends CustomFunction {
+public class SetTempDateFunction extends CustomFunction {
 
-    public SendInputFunction() {
-        super("sendInput");
+    public SetTempDateFunction() {
+        super("setTempDate");
     }
 
     @Override
@@ -25,12 +26,8 @@ public class SendInputFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         switch (args.length) {
             case 1:
-                return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
-            case 2:
-                if (args[1] instanceof Integer) {
-                    return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Integer) args[1]);
-                } else if (args[1] instanceof Answer) {
-                    return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Answer) args[1]);
+                if (args[0] instanceof String) {
+                    return PersonalityManager.getManager().getActivePersonality().getVariableHandler().setVariable((String) args[0], new TeaseDate(Calendar.getInstance().getTime()), true);
                 }
 
                 break;

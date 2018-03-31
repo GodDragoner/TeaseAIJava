@@ -46,6 +46,11 @@ public class VocabularyHandler {
                         if (line == 0) {
                             vocabulary = new Vocabulary(strLine);
                         } else {
+                            //Clear the default synonym because we have some alternatives
+                            if(line == 1) {
+                                vocabulary.getSynonyms().clear();
+                            }
+
                             double chance = 1;
                             String synonym = strLine;
                             //Custom chance are separated by ;
@@ -67,6 +72,12 @@ public class VocabularyHandler {
 
                     //Close the input stream
                     br.close();
+
+                    if(vocabulary != null) {
+                        //Remove .txt extension
+                        registerVocabulary(file.getName().substring(0, file.getName().length() - 4), vocabulary);
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

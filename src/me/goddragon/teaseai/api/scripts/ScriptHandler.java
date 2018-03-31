@@ -41,6 +41,11 @@ public class ScriptHandler {
         registerFunction(new GetVarFunction());
         registerFunction(new ShowCategoryImageFunction());
         registerFunction(new PlayCategoryVideoFunction());
+        registerFunction(new ShowTeaseImageFunction());
+        registerFunction(new UnlockImagesFunction());
+        registerFunction(new LockImagesFunction());
+        registerFunction(new SetDateFunction());
+        registerFunction(new SetTempDateFunction());
 
         engine.put("run", (Consumer<String>) this::evalScript);
     }

@@ -1,24 +1,19 @@
 package me.goddragon.teaseai.gui.settings;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import me.goddragon.teaseai.TeaseAI;
-import me.goddragon.teaseai.api.media.*;
 
-import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -26,275 +21,96 @@ import java.util.List;
  */
 public class SettingsController {
 
-    public static final DataFormat LIST_DATA_FORMAT = new DataFormat("listOfURLFiles");
 
     private static SettingsController controller;
 
-    @FXML
-    private ListView urlFilesList;
+    protected MediaSettings mediaSettings = new MediaSettings(this);
+    protected ContactSettings contactSettings = new ContactSettings(this);
+    protected Stage stage;
 
     @FXML
-    private TextField addURLTextField;
+    protected ListView urlFilesList;
 
     @FXML
-    private Button addURLButton;
+    protected TextField addURLTextField;
 
     @FXML
-    private Button deleteURLButton;
+    protected Button addURLButton;
 
     @FXML
-    private ImageView urlFileImagePreview;
+    protected Button deleteURLButton;
 
     @FXML
-    private CheckBox useURLForTease;
+    protected StackPane urlImageViewStackPane;
 
     @FXML
-    private ListView urlFileDragDropList;
+    protected ImageView urlFileImagePreview;
 
     @FXML
-    private ListView assignedURLFileList;
+    protected CheckBox useURLForTease;
 
     @FXML
-    private ListView mediaFetishTypeList;
+    protected ListView urlFileDragDropList;
 
+    @FXML
+    protected ListView assignedURLFileList;
+
+    @FXML
+    protected ListView urlFetishTypeList;
+
+    //Media Files and Folders
+    @FXML
+    protected ListView mediaFetishTypeList;
+
+    @FXML
+    protected Button addImagePathButton;
+
+    @FXML
+    protected TextField addImagePathTextBox;
+
+    @FXML
+    protected Button addImagePathFileChooserButton;
+
+    @FXML
+    protected ListView imagePathListView;
+
+    @FXML
+    protected Button addVideoPathButton;
+
+    @FXML
+    protected TextField addVideoPathTextBox;
+
+    @FXML
+    protected Button addVideoPathFileChooserButton;
+
+    @FXML
+    protected ListView videoPathListView;
+
+    //Contacts
+    @FXML
+    protected ListView domContactListView;
+
+    @FXML
+    protected ImageView domContactImageView;
+
+    @FXML
+    protected TextField domContactNameField;
+
+    @FXML
+    protected Button saveContactButton;
+
+    @FXML
+    protected StackPane domContactImageStackPane;
+
+    @FXML
+    protected TextField domContactImageSetPathText;
+
+    @FXML
+    protected Button domContactImageSetPathButton;
 
     public void initiate() {
-        updateURLList();
-
-        urlFileDragDropList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        urlFilesList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        addURLButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                String url = addURLTextField.getText();
-
-                if (url != null && url.contains("tumblr.com")) {
-                    addURLButton.setDisable(true);
-                    addURLTextField.setDisable(true);
-
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            MediaURL mediaURL = new MediaURL(MediaType.IMAGE, url);
-                            mediaURL.saveToFile();
-                            TeaseAI.application.getMediaCollection().addMediaHolder(null, mediaURL);
-
-                            TeaseAI.application.runOnUIThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    updateURLList();
-                                    addURLButton.setDisable(false);
-                                    addURLTextField.setDisable(false);
-                                }
-                            });
-                        }
-                    }.start();
-                } else {
-                    JOptionPane.showMessageDialog(null, "URL given is not valid. Please only use tumblr urls.", "Invalid Operation", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-
-        //Set it as disabled by default because nothing is selected
-        deleteURLButton.setDisable(true);
-
-        //Delete the url on click
-        deleteURLButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                for (Object object : urlFilesList.getSelectionModel().getSelectedItems()) {
-                    MediaURL mediaURL = (MediaURL) object;
-                    mediaURL.deleteFile();
-                    TeaseAI.application.getMediaCollection().removeMediaHolder(mediaURL);
-                }
-
-                urlFilesList.getSelectionModel().clearSelection();
-
-                updateURLList();
-            }
-        });
-
-        urlFilesList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MediaURL>() {
-            @Override
-            public void changed(ObservableValue<? extends MediaURL> observable, MediaURL oldValue, MediaURL newValue) {
-                if (newValue != null) {
-                    useURLForTease.setDisable(false);
-                    deleteURLButton.setDisable(false);
-                } else {
-                    useURLForTease.setDisable(true);
-                    deleteURLButton.setDisable(true);
-                }
-
-                if (urlFilesList.getSelectionModel().getSelectedItems().size() == 1) {
-                    //Fetch the image on a secondary thread
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            urlFileImagePreview.setImage(new Image(((MediaURL) urlFilesList.getSelectionModel().getSelectedItem()).getRandomMedia().toURI().toString()));
-                        }
-                    }.start();
-
-                    useURLForTease.setSelected(newValue.isUseForTease());
-                } else {
-                    urlFileImagePreview.setImage(null);
-                }
-            }
-        });
-
-        useURLForTease.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                for (Object object : urlFilesList.getSelectionModel().getSelectedItems()) {
-                    MediaURL mediaURL = (MediaURL) object;
-                    mediaURL.setUseForTease(newValue);
-                    mediaURL.saveToFile();
-                }
-            }
-        });
-
-        //Handle drag and drop
-
-        urlFileDragDropList.setOnDragDetected(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                Dragboard dragBoard = urlFileDragDropList.startDragAndDrop(TransferMode.MOVE);
-
-                ClipboardContent content = new ClipboardContent();
-
-                List<String> contentList = new ArrayList<>();
-                for (Object mediaURL : urlFileDragDropList.getSelectionModel().getSelectedItems()) {
-                    contentList.add(((MediaURL) mediaURL).getUrl());
-                }
-
-                content.put(LIST_DATA_FORMAT, contentList);
-
-                dragBoard.setContent(content);
-            }
-        });
-
-        assignedURLFileList.setOnDragDropped(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent dragEvent) {
-                List<String> urls = (List<String>) dragEvent.getDragboard().getContent(LIST_DATA_FORMAT);
-
-                MediaFetishType mediaFetishType = getSelectedMediaFetish();
-
-                for (String url : urls) {
-                    MediaURL mediaURL = TeaseAI.application.getMediaCollection().getByURL(url);
-                    if (mediaURL != null && !assignedURLFileList.getItems().contains(mediaURL)) {
-                        assignedURLFileList.getItems().add(mediaURL);
-
-                        if (mediaFetishType != null) {
-                            TeaseAI.application.getMediaCollection().addMediaHolder(mediaFetishType, mediaURL);
-                        }
-
-                        saveImageMediaURLs();
-                    }
-                }
-
-                dragEvent.setDropCompleted(true);
-            }
-        });
-
-        /*assignedURLFileList.setOnDragEntered(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent dragEvent) {
-                assignedURLFileList.setBlendMode(BlendMode.DIFFERENCE);
-            }
-        });
-
-        assignedURLFileList.setOnDragExited(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent dragEvent) {
-                assignedURLFileList.setBlendMode(null);
-            }
-        });*/
-
-        assignedURLFileList.setOnDragOver(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent dragEvent) {
-                dragEvent.acceptTransferModes(TransferMode.MOVE);
-            }
-        });
-
-        //Allow removing assigned files again by pressing del
-        assignedURLFileList.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode().toString().equals("DELETE")) {
-                    MediaFetishType mediaFetishType = getSelectedMediaFetish();
-
-                    for (Object object : assignedURLFileList.getSelectionModel().getSelectedItems()) {
-                        assignedURLFileList.getItems().remove(object);
-
-                        if (mediaFetishType != null) {
-                            TeaseAI.application.getMediaCollection().removeMediaHolder((MediaHolder) object, mediaFetishType);
-                        }
-
-                        saveImageMediaURLs();
-                    }
-                }
-            }
-        });
-
-        for (MediaFetishType mediaFetishType : MediaFetishType.values()) {
-            mediaFetishTypeList.getItems().add(mediaFetishType);
-        }
-
-        mediaFetishTypeList.getSelectionModel().selectFirst();
-        mediaFetishTypeList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MediaFetishType>() {
-            @Override
-            public void changed(ObservableValue<? extends MediaFetishType> observable, MediaFetishType oldValue, MediaFetishType newValue) {
-                if(newValue != null) {
-                    updateAssignedURLList();
-                }
-            }
-        });
-
-        updateAssignedURLList();
-    }
-
-    private void saveImageMediaURLs() {
-        MediaFetishType mediaFetishType = getSelectedMediaFetish();
-        if (mediaFetishType != null) {
-            TeaseAI.application.getMediaCollection().saveMediaFetishType(mediaFetishType, MediaType.IMAGE, MediaHolderType.URL);
-        }
-    }
-
-    private MediaFetishType getSelectedMediaFetish() {
-        if (mediaFetishTypeList.getSelectionModel().getSelectedItems().size() == 1) {
-            MediaFetishType mediaFetishType = (MediaFetishType) mediaFetishTypeList.getSelectionModel().getSelectedItem();
-            return mediaFetishType;
-        }
-
-        return null;
-    }
-
-    private void updateAssignedURLList() {
-        assignedURLFileList.getItems().clear();
-
-        MediaFetishType mediaFetishType = getSelectedMediaFetish();
-
-        if (mediaFetishType != null) {
-            for (MediaHolder mediaHolder : TeaseAI.application.getMediaCollection().getMediaHolders(mediaFetishType, MediaType.IMAGE)) {
-                if (mediaHolder instanceof MediaURL) {
-                    assignedURLFileList.getItems().add(mediaHolder);
-                }
-            }
-        }
-    }
-
-    private void updateURLList() {
-        urlFilesList.getItems().clear();
-        urlFileDragDropList.getItems().clear();
-
-        for (MediaHolder mediaHolder : TeaseAI.application.getMediaCollection().getMediaHolders().get(MediaType.IMAGE)) {
-            if (mediaHolder instanceof MediaURL) {
-                urlFilesList.getItems().add(mediaHolder);
-                urlFileDragDropList.getItems().add(mediaHolder);
-            }
-        }
+        mediaSettings.initiate();
+        contactSettings.initiate();
     }
 
     public static void openGUI() {
@@ -304,10 +120,10 @@ public class SettingsController {
 
         try {
             Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Tease-AI Settings");
-            stage.setScene(new Scene(root));
-            stage.show();
+            controller.stage = new Stage();
+            controller.stage.setTitle("Tease-AI Settings");
+            controller.stage.setScene(new Scene(root, 1280, 650));
+            controller.stage.show();
 
             controller.initiate();
         } catch (IOException e) {

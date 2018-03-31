@@ -30,13 +30,7 @@ public class TeaseAI extends Application {
     private MediaCollection mediaCollection;
     private Controller controller;
     private Thread mainThread;
-    private Thread scriptThread;
-
-    public final ConfigValue SUB_NAME = new ConfigValue("subName", "Sub", configHandler);
-    public final ConfigValue DOM_NAME = new ConfigValue("domName", "Domme", configHandler);
-    public final ConfigValue DOM_NAME_2 = new ConfigValue("domFriend1", "Friend 1", configHandler);
-    public final ConfigValue DOM_NAME_3 = new ConfigValue("domFriend2", "Friend 2", configHandler);
-    public final ConfigValue DOM_NAME_4 = new ConfigValue("domFriend3", "Friend 3", configHandler);
+    public Thread scriptThread;
 
     public final ConfigValue PREFERRED_SESSION_DURATION = new ConfigValue("preferredSessionDuration", "60", configHandler);
 
@@ -47,7 +41,7 @@ public class TeaseAI extends Application {
         application = this;
         mainThread = Thread.currentThread();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/main/main.fxml"));
-        controller = new Controller();
+        controller = new Controller(primaryStage);
         loader.setController(controller);
         Parent root = loader.load();
         primaryStage.setTitle("Tease-AI");
@@ -80,60 +74,7 @@ public class TeaseAI extends Application {
         PersonalityManager.getManager().loadPersonalities();
 
         this.session = new Session();
-
-        scriptThread = new Thread() {
-            @Override
-            public void run() {
-                /*ChatParticipant dom = ChatHandler.getHandler().getMainDomParticipant();
-                VocabularyHandler.getHandler().registerVocabulary("tree", "%tree2%");
-                VocabularyHandler.getHandler().registerVocabulary("tree2", "tree", "wood", "cool", "test");
-
-                ResponseHandler.getHandler().registeResponse(new Response("fuck me", "lick me", "ShiT me") {
-                    @Override
-                    public boolean trigger() {
-                        dom.sendMessage("Oh really?");
-                        dom.sendMessage("Nice try!");
-                        dom.sendMessage("Done!");
-                        return true;
-                    }
-                });
-
-                Answer answer = dom.sendInput("Hey %tree%");
-                while (true) {
-                    System.out.println(answer.getAnswer());
-                    if (answer.matchesRegexLowerCase("hey([ ]|$)", "hello([ ]|$)", "hi([ ]|$)")) {
-                        break;
-                    } else {
-                        dom.sendMessage("What?");
-                        answer.loop();
-                    }
-                }
-
-                answer = dom.sendInput("How do you feel today?", 10);
-                while (true) {
-                    if (answer.isLike("Good", "You", "Great") || answer.isTimeout()) {
-                        break;
-                    } else {
-                        dom.sendMessage("What?");
-                        answer.loop();
-                    }
-                }*/
-
-                /*synchronized (this) {
-                    while(session.getActivePersonality() == null) {
-                        try {
-                            wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-                session.start();*/
-            }
-        };
-
-        scriptThread.start();
+        controller.loadDomInfo();
     }
 
     public static void main(String[] args) {

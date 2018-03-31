@@ -8,7 +8,6 @@ import javafx.scene.text.TextFlow;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -67,11 +66,13 @@ public class ChatHandler {
     }
 
     public void load() {
-        registerSender(new ChatParticipant(0, TeaseAI.application.SUB_NAME.getValue(), SenderType.SUB, null));
-        registerSender(new ChatParticipant(1, TeaseAI.application.DOM_NAME.getValue(), SenderType.DOM, new File("D:\\IDE\\Workspace\\Other Projects\\ChatSystem\\Personalities\\Testing\\Set\\Little Caprice")));
-        registerSender(new ChatParticipant(2, TeaseAI.application.DOM_NAME_2.getValue(), SenderType.DOM, null));
-        registerSender(new ChatParticipant(3, TeaseAI.application.DOM_NAME_3.getValue(), SenderType.DOM, null));
-        registerSender(new ChatParticipant(4, TeaseAI.application.DOM_NAME_4.getValue(), SenderType.DOM, null));
+        registerSender(new ChatParticipant(0, SenderType.SUB, new Contact("sub", "Sub Name")));
+        Contact dommeContact =  new Contact("dom", "Dom Name");
+        dommeContact.IMAGE_SET_PATH.setValue("D:\\IDE\\Workspace\\Other Projects\\ChatSystem\\Personalities\\Testing\\Set\\Little Caprice");
+        registerSender(new ChatParticipant(1, SenderType.DOM, dommeContact));
+        registerSender(new ChatParticipant(2, SenderType.DOM, new Contact("dommeFriend1", "Emma")));
+        registerSender(new ChatParticipant(3, SenderType.DOM, new Contact("dommeFriend2", "Staicy")));
+        registerSender(new ChatParticipant(4, SenderType.DOM, new Contact("dommeFriend3", "Amara")));
     }
 
     public void registerSender(ChatParticipant chatSender) {
@@ -259,6 +260,10 @@ public class ChatHandler {
         } else {
             return perMessageCharacterPauseMillis * message.trim().length();
         }
+    }
+
+    public Collection<ChatParticipant> getParticipants() {
+        return senders.values();
     }
 
     public Answer getCurrentCallback() {

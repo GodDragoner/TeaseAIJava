@@ -21,6 +21,7 @@ public class Vocabulary {
         this.synonyms.put("!" + vocabName + "!", 1D);
     }
 
+
     public Vocabulary(HashMap<Object, Double> synonyms) {
         this.synonyms = synonyms;
     }

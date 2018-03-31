@@ -31,7 +31,7 @@ public class PlayCategoryVideoFunction extends CustomFunction {
 
             MediaFetishType mediaFetishType;
             try {
-                mediaFetishType = MediaFetishType.valueOf(category);
+                mediaFetishType = MediaFetishType.valueOf(category.toUpperCase());
             } catch (IllegalArgumentException ex) {
                 TeaseLogger.getLogger().log(Level.SEVERE, "'" + category + "' is not a valid video category.");
                 return null;

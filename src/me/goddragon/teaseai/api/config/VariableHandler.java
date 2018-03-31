@@ -3,14 +3,13 @@ package me.goddragon.teaseai.api.config;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -26,24 +25,48 @@ public class VariableHandler {
         this.personality = personality;
         personalityVariableFolder = new File(personality.getFolder().getPath() + "\\System\\Variables");
         personalityVariableFolder.mkdirs();
+
+        for (File file : personalityVariableFolder.listFiles()) {
+            if (file.isFile() && file.getName().endsWith(".var")) {
+
+                try {
+                    // Open the file
+                    FileInputStream fstream = new FileInputStream(file);
+                    BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+                    //We only need the first line
+                    String strLine = br.readLine();
+
+                    if (strLine != null) {
+                        variables.put(file.getName().substring(0, file.getName().length() - 4), getObjectFromString(strLine));
+                    }
+
+                    //Close the input stream
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
     }
 
-    public void setVariable(String name, Object value) {
-        setVariable(name, value, false);
+    public Object setVariable(String name, Object value) {
+        return setVariable(name, value, false);
     }
 
-    public void setVariable(String name, Object value, boolean temporary) {
+    public Object setVariable(String name, Object value, boolean temporary) {
         name = name.toLowerCase();
         variables.put(name, value);
 
         //If this is not meant to be permanent we can just skip the file stuff
-        if(temporary) {
-            return;
+        if (temporary) {
+            return value;
         }
 
         File variableFile = getVariableFile(name);
 
-        if(variableFile != null) {
+        if (variableFile != null) {
             List<String> lines = Arrays.asList(value.toString());
 
             try {
@@ -52,6 +75,8 @@ public class VariableHandler {
                 TeaseLogger.getLogger().log(Level.SEVERE, "Failed to write variable '" + name + "'.", e);
             }
         }
+
+        return value;
     }
 
     public void deleteVariable(String name) {
@@ -60,18 +85,18 @@ public class VariableHandler {
         //If the variable is not existing we don't need to create it anyway
         File variableFile = getVariableFile(name, false);
 
-        if(variableFile != null) {
+        if (variableFile != null) {
             variableFile.delete();
         }
     }
 
     public Object getVariable(String name) {
-        if(!variables.containsKey(name)) {
+        if (!variables.containsKey(name.toLowerCase())) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Variable '" + name + "' does not exist.");
             return null;
         }
 
-        return variables.get(name);
+        return variables.get(name.toLowerCase());
     }
 
     public boolean isVariable(String name) {
@@ -86,7 +111,7 @@ public class VariableHandler {
     public File getVariableFile(String name, boolean createDefault) {
         File variableFile = new File(personalityVariableFolder.getAbsolutePath() + "\\" + name + ".var");
 
-        if(!variableFile.exists() && createDefault) {
+        if (!variableFile.exists() && createDefault) {
             try {
                 variableFile.createNewFile();
             } catch (IOException e) {
@@ -96,5 +121,39 @@ public class VariableHandler {
         }
 
         return variableFile;
+    }
+
+    public Object getObjectFromString(String string) {
+        //Check for boolean first, because anything that is not true will be treated as false otherwise
+        if(string.equals("true") || string.equals("false")) {
+            return Boolean.valueOf(string);
+        }
+
+        Collection< Class<?>> classes = new ArrayList<>();
+        classes.add(TeaseDate.class);
+        classes.add(Integer.class);
+        classes.add(Long.class);
+        classes.add(Double.class);
+        classes.add(Float.class);
+
+        for(Class clazz : classes)
+            try {
+                Method method = clazz.getDeclaredMethod("valueOf", String.class);
+                if (method != null) {
+                    try {
+                        Object obj = method.invoke(null, string);
+                        return obj;
+                    } catch (InvocationTargetException ex) {
+                        //Try something different
+
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+
+        return string;
     }
 }
