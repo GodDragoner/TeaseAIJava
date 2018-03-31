@@ -1,3 +1,4 @@
+*.properties
 .idea
 *.iml
 out
@@ -6,7 +7,5 @@ target
 .project
 .classpath
 .git
-Personalities/Testing/Set
 Personalities/*
-*.properties
 Images/*
