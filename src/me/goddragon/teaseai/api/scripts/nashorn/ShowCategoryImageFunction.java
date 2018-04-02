@@ -55,7 +55,7 @@ public class ShowCategoryImageFunction extends CustomFunction {
                     }
 
                     break;
-                default:
+                case 0:
                     TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
                     return null;
             }

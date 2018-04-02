@@ -46,6 +46,10 @@ public class ScriptHandler {
         registerFunction(new LockImagesFunction());
         registerFunction(new SetDateFunction());
         registerFunction(new SetTempDateFunction());
+        registerFunction(new StartStrokingFunction());
+        registerFunction(new StopStrokingFunction());
+        registerFunction(new IsStrokingFunction());
+        registerFunction(new AddStrokingBPMFunction());
 
         engine.put("run", (Consumer<String>) this::evalScript);
     }
