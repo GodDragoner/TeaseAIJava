@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.api.chat.vocabulary;
 
+import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -19,7 +20,11 @@ public class VocabularyHandler {
     private HashMap<String, Vocabulary> vocabularies = new HashMap<>();
 
     public void loadDefaultVocabulary() {
-
+        vocabularies.put("subname", new Vocabulary((Object) ChatHandler.getHandler().getSubParticipant().getName()));
+        vocabularies.put("domname", new Vocabulary((Object) ChatHandler.getHandler().getMainDomParticipant().getName()));
+        vocabularies.put("domfriend1name", new Vocabulary((Object) ChatHandler.getHandler().getParticipantById(2).getName()));
+        vocabularies.put("domfriend2name", new Vocabulary((Object) ChatHandler.getHandler().getParticipantById(3).getName()));
+        vocabularies.put("domfriend3name", new Vocabulary((Object) ChatHandler.getHandler().getParticipantById(4).getName()));
     }
 
     public void loadVocabulariesFromPersonality(Personality personality) {

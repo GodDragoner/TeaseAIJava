@@ -16,6 +16,7 @@ import me.goddragon.teaseai.api.config.ConfigValue;
 import me.goddragon.teaseai.api.media.MediaCollection;
 import me.goddragon.teaseai.api.media.MediaFetishType;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
+import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.api.session.Session;
 import me.goddragon.teaseai.gui.main.Controller;
@@ -33,6 +34,7 @@ public class TeaseAI extends Application {
     public Thread scriptThread;
 
     public final ConfigValue PREFERRED_SESSION_DURATION = new ConfigValue("preferredSessionDuration", "60", configHandler);
+    public final ConfigValue LAST_SELECTED_PERSONALITY = new ConfigValue("lastSelectedPersonality", "null", configHandler);
 
     private Session session;
 
@@ -74,6 +76,9 @@ public class TeaseAI extends Application {
         PersonalityManager.getManager().loadPersonalities();
 
         this.session = new Session();
+
+        session.setActivePersonality((Personality) controller.getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
+
         controller.loadDomInfo();
     }
 

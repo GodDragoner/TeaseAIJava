@@ -44,7 +44,15 @@ public class PersonalityManager {
             }
         }
 
-        choiceBox.getSelectionModel().selectFirst();
+        String latestSelectedPersonality = TeaseAI.application.LAST_SELECTED_PERSONALITY.getValue();
+
+        Personality personality = getPersonality(latestSelectedPersonality);
+
+        if(personality != null) {
+            choiceBox.getSelectionModel().select(personality);
+        } else {
+            choiceBox.getSelectionModel().selectFirst();
+        }
     }
 
     public void addPersonality(Personality personality) {

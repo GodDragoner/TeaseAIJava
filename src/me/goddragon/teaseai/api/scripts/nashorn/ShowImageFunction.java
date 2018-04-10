@@ -1,9 +1,9 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
 import me.goddragon.teaseai.api.media.MediaHandler;
+import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Level;
 
@@ -26,13 +26,13 @@ public class ShowImageFunction extends CustomFunction {
         switch(args.length) {
             case 1:
                 if(args[0] instanceof String) {
-                    MediaHandler.getHandler().showPicture(new File((String) args[0]));
+                    MediaHandler.getHandler().showPicture(FileUtils.getRandomMatchingFile(args[0].toString()));
                     return null;
                 }
                 break;
             case 2:
                 if(args[1] instanceof Integer) {
-                    MediaHandler.getHandler().showPicture(new File((String) args[0]), (Integer) args[1]);
+                    MediaHandler.getHandler().showPicture(FileUtils.getRandomMatchingFile(args[0].toString()), (Integer) args[1]);
                     return null;
                 }
 

@@ -9,3 +9,4 @@ target
 .git
 Personalities/*
 Images/*
+Logs/*

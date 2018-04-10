@@ -1,6 +1,8 @@
 package me.goddragon.teaseai.api.session;
 
 import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.chat.ChatHandler;
+import me.goddragon.teaseai.api.config.TeaseDate;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
@@ -14,6 +16,10 @@ public class Session {
 
     public void start() {
         startedAt = System.currentTimeMillis();
+
+        activePersonality.getVariableHandler().setVariable("startDate", new TeaseDate(startedAt), true);
+        activePersonality.getVariableHandler().setVariable("domName", ChatHandler.getHandler().getMainDomParticipant().getName(), true);
+        activePersonality.getVariableHandler().setVariable("prefSessionLength", TeaseAI.application.PREFERRED_SESSION_DURATION.getInt(), true);
 
         TeaseAI.application.scriptThread = new Thread() {
             @Override

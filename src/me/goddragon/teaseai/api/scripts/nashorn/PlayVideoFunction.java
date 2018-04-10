@@ -1,9 +1,9 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
 import me.goddragon.teaseai.api.media.MediaHandler;
+import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Level;
 
@@ -26,12 +26,12 @@ public class PlayVideoFunction extends CustomFunction {
         switch(args.length) {
             case 1:
                 if(args[0] instanceof String) {
-                    return MediaHandler.getHandler().playVideo(new File((String) args[0]));
+                    return MediaHandler.getHandler().playVideo(FileUtils.getRandomMatchingFile(args[0].toString()));
                 }
                 break;
             case 2:
                 if(args[1] instanceof Boolean) {
-                    return MediaHandler.getHandler().playVideo(new File((String) args[0]), (Boolean) args[1]);
+                    return MediaHandler.getHandler().playVideo(FileUtils.getRandomMatchingFile(args[0].toString()), (Boolean) args[1]);
                 }
 
                 break;

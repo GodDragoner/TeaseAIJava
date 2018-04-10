@@ -12,7 +12,7 @@ import java.util.logging.Level;
 public class StartStrokingFunction extends CustomFunction {
 
     public StartStrokingFunction() {
-        super("startStroking");
+        super("startStroking", "startMetronome");
     }
 
     @Override

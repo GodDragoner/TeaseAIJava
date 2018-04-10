@@ -107,6 +107,26 @@ public class ChatParticipant {
         choosePictureSet();
     }
 
+    public void sendJoin() {
+        sendInteract("joined");
+    }
+
+    public void sendLeave() {
+        sendInteract("left");
+    }
+
+    public void sendInteract(String type) {
+        Text nameText = new Text(name + " ");
+        nameText.setFont(Font.font(null, FontWeight.BOLD, 14));
+        nameText.setFill(chatColor);
+
+        Text messageText = new Text(type + " the chat room.");
+        messageText.setFill(Color.AQUA);
+        messageText.setFont(Font.font(null, FontWeight.BOLD, 14));
+
+        ChatHandler.getHandler().addLine(nameText, messageText);
+    }
+
     public void sendMessage(String message) {
         sendMessage(message, ChatHandler.getHandler().getMillisToPause(message));
     }

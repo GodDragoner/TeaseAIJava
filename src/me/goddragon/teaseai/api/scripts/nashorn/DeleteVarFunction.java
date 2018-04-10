@@ -12,7 +12,7 @@ import java.util.logging.Level;
 public class DeleteVarFunction extends CustomFunction {
 
     public DeleteVarFunction() {
-        super("deleteVar", "delVar");
+        super("deleteVar", "delVar", "deleteVariable");
     }
 
     @Override

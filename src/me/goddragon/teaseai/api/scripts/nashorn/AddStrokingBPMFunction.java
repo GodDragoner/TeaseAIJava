@@ -12,7 +12,7 @@ import java.util.logging.Level;
 public class AddStrokingBPMFunction extends CustomFunction {
 
     public AddStrokingBPMFunction() {
-        super("addStrokingBPM");
+        super("addStrokingBPM", "addMetronomeBPM");
     }
 
     @Override

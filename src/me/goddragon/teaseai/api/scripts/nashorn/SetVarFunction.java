@@ -12,7 +12,7 @@ import java.util.logging.Level;
 public class SetVarFunction extends CustomFunction {
 
     public SetVarFunction() {
-        super("setVar");
+        super("setVar", "setVariable");
     }
 
     @Override

@@ -91,7 +91,8 @@ public class ChatHandler {
 
     public ChatParticipant getParticipantById(int id) {
         if (!senders.containsKey(id)) {
-            throw new IllegalArgumentException("Chat participant with id " + id + " does not exist.");
+            TeaseLogger.getLogger().log(Level.SEVERE, "Chat participant with id " + id + " does not exist.");
+            return null;
         }
 
         return senders.get(id);
@@ -138,6 +139,10 @@ public class ChatHandler {
                 }
             }
         });
+
+        if(!temporary) {
+            TeaseLogger.getLogger().log(Level.FINE, text.getText());
+        }
     }
 
     public void addText(Text... text) {
@@ -153,6 +158,13 @@ public class ChatHandler {
                 addAllTemporaryMessages();
             }
         });
+
+        String resultingText = "";
+        for(Text textPiece : text) {
+            resultingText += textPiece.getText();
+        }
+
+        TeaseLogger.getLogger().log(Level.FINE, resultingText);
     }
 
     public void addLine(String message) {
@@ -175,6 +187,8 @@ public class ChatHandler {
                 }
             }
         });
+
+        TeaseLogger.getLogger().log(Level.FINE, text.getText());
     }
 
     public void addLine(Text... text) {
@@ -190,6 +204,13 @@ public class ChatHandler {
                 addAllTemporaryMessages();
             }
         });
+
+        String resultingText = "";
+        for(Text textPiece : text) {
+            resultingText += textPiece.getText();
+        }
+
+        TeaseLogger.getLogger().log(Level.FINE, resultingText);
     }
 
     public void addTemporaryMessage(Text text) {

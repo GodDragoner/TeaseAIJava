@@ -1,6 +1,7 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
 import me.goddragon.teaseai.api.chat.vocabulary.Vocabulary;
+import me.goddragon.teaseai.api.chat.vocabulary.VocabularyHandler;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.Arrays;
@@ -25,10 +26,14 @@ public class RegisterVocabFunction extends CustomFunction {
         if(args.length > 1) {
             Vocabulary vocabulary = new Vocabulary((String) args[0]);
 
+            vocabulary.getSynonyms().clear();
+
             //Add all vocabularies
             for(int x = 1; x < args.length; x++) {
-                vocabulary.getSynonyms().put(args[1], 1D);
+                vocabulary.getSynonyms().put(args[x], 1D);
             }
+
+            VocabularyHandler.getHandler().registerVocabulary((String) args[0], vocabulary);
         }
 
         TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());

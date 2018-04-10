@@ -1,6 +1,5 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.utils.TeaseLogger;
@@ -11,10 +10,10 @@ import java.util.logging.Level;
 /**
  * Created by GodDragon on 10.04.2018.
  */
-public class SendSystemMessageFunction extends CustomFunction {
+public class SendCustomMessageFunction extends CustomFunction {
 
-    public SendSystemMessageFunction() {
-        super("sendSystemMessage");
+    public SendCustomMessageFunction() {
+        super("sendCustomMessage");
     }
 
     @Override
@@ -24,18 +23,24 @@ public class SendSystemMessageFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
-        switch(args.length) {
-            case 1:
-                Text messageText = new Text(args[0].toString());
-                messageText.setFill(Color.BLUE);
-                ChatHandler.getHandler().addLine(messageText);
+        Text[] texts = new Text[args.length];
+        for(int x = 0; x < args.length; x++) {
+            Object arg = args[x];
+            if(arg instanceof Text) {
+                texts[x] = (Text) arg;
+            } else {
+                TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());
                 return null;
-            case 0:
-                TeaseLogger.getLogger().log(Level.SEVERE, "Called sendMessage method without parameters.");
-                return null;
+            }
         }
 
-        TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());
-        return null;
+        switch(args.length) {
+            case 0:
+                TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
+                return null;
+            default:
+                ChatHandler.getHandler().addLine(texts);
+                return null;
+        }
     }
 }

@@ -19,7 +19,8 @@ public class VariableHandler {
     private File personalityVariableFolder;
 
     private final Personality personality;
-    private HashMap<String, Object> variables = new HashMap<>();
+    private HashMap<String, PersonalityVariable> variables = new HashMap<>();
+
 
     public VariableHandler(Personality personality) {
         this.personality = personality;
@@ -38,7 +39,8 @@ public class VariableHandler {
                     String strLine = br.readLine();
 
                     if (strLine != null) {
-                        variables.put(file.getName().substring(0, file.getName().length() - 4), getObjectFromString(strLine));
+                        PersonalityVariable personalityVariable = new PersonalityVariable(file.getName().substring(0, file.getName().length() - 4), getObjectFromString(strLine));
+                        variables.put(personalityVariable.getConfigName(), personalityVariable);
                     }
 
                     //Close the input stream
@@ -57,7 +59,9 @@ public class VariableHandler {
 
     public Object setVariable(String name, Object value, boolean temporary) {
         name = name.toLowerCase();
-        variables.put(name, value);
+
+        PersonalityVariable personalityVariable = new PersonalityVariable(name, value);
+        variables.put(personalityVariable.getConfigName(), personalityVariable);
 
         //If this is not meant to be permanent we can just skip the file stuff
         if (temporary) {
@@ -80,7 +84,7 @@ public class VariableHandler {
     }
 
     public void deleteVariable(String name) {
-        variables.remove(name);
+        variables.remove(name.toLowerCase());
 
         //If the variable is not existing we don't need to create it anyway
         File variableFile = getVariableFile(name, false);
@@ -90,7 +94,16 @@ public class VariableHandler {
         }
     }
 
-    public Object getVariable(String name) {
+    public Object getVariableValue(String name) {
+        if (!variables.containsKey(name.toLowerCase())) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Variable '" + name + "' does not exist.");
+            return null;
+        }
+
+        return variables.get(name.toLowerCase()).getValue();
+    }
+
+    public PersonalityVariable getVariable(String name) {
         if (!variables.containsKey(name.toLowerCase())) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Variable '" + name + "' does not exist.");
             return null;
@@ -155,5 +168,9 @@ public class VariableHandler {
             }
 
         return string;
+    }
+
+    public HashMap<String, PersonalityVariable> getVariables() {
+        return variables;
     }
 }

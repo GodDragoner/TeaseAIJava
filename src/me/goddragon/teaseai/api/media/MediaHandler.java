@@ -25,6 +25,7 @@ public class MediaHandler {
 
     private HashMap<URI, MediaPlayer> playingAudioClips = new HashMap<>();
 
+    private MediaPlayer currentVideoPlayer = null;
     private boolean imagesLocked = false;
 
     public MediaPlayer playVideo(File file) {
@@ -38,8 +39,8 @@ public class MediaHandler {
         }
 
         try {
-            MediaPlayer mediaPlayer = new MediaPlayer(new Media(file.toURI().toURL().toExternalForm()));
-            mediaPlayer.setAutoPlay(true);
+            currentVideoPlayer = new MediaPlayer(new Media(file.toURI().toURL().toExternalForm()));
+            currentVideoPlayer.setAutoPlay(true);
             this.imagesLocked = true;
 
             TeaseAI.application.runOnUIThread(new Runnable() {
@@ -55,29 +56,36 @@ public class MediaHandler {
                     mediaView.setPreserveRatio(true);
                     mediaView.fitWidthProperty().bind(mediaViewBox.widthProperty());
                     mediaView.fitHeightProperty().bind(mediaViewBox.heightProperty());
-                    mediaView.setMediaPlayer(mediaPlayer);
+                    mediaView.setMediaPlayer(currentVideoPlayer);
                 }
             });
 
             //Check if we want to wait for the media to finish
             if(wait) {
-                waitForPlayer(mediaPlayer);
+                waitForPlayer(currentVideoPlayer);
+                currentVideoPlayer = null;
             } else {
                 //Unlock the images again (of course they can be unlocked by the user during the video)
-                mediaPlayer.setOnEndOfMedia(new Runnable() {
+                currentVideoPlayer.setOnEndOfMedia(new Runnable() {
                     @Override
                     public void run() {
                         imagesLocked = false;
+                        currentVideoPlayer = null;
                     }
                 });
             }
 
-            return mediaPlayer;
+            return currentVideoPlayer;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    public void stopVideo() {
+        currentVideoPlayer.stop();
+        currentVideoPlayer = null;
     }
 
     public void showPicture(File file) {
@@ -198,6 +206,14 @@ public class MediaHandler {
             //Check whether there are new responses to handle
             TeaseAI.application.checkForNewResponses();
         }
+    }
+
+    public boolean isPlayingVideo() {
+        return currentVideoPlayer != null;
+    }
+
+    public MediaPlayer getCurrentVideoPlayer() {
+        return currentVideoPlayer;
     }
 
     public boolean isImagesLocked() {

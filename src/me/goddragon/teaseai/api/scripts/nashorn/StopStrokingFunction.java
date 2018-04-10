@@ -12,7 +12,7 @@ import java.util.logging.Level;
 public class StopStrokingFunction extends CustomFunction {
 
     public StopStrokingFunction() {
-        super("stopStroking");
+        super("stopStroking", "stopMetronome");
     }
 
     @Override
@@ -24,6 +24,7 @@ public class StopStrokingFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         switch (args.length) {
             case 0:
+                StrokeHandler.getHandler().setEdging(false);
                 StrokeHandler.getHandler().stopMetronome();
                 return null;
         }

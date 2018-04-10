@@ -25,6 +25,8 @@ public class ScriptHandler {
 
     private Personality currentPersonality;
 
+    private File currentFile;
+
     public void load() {
         registerFunction(new SendMessageFunction());
         registerFunction(new SendInputFunction());
@@ -50,6 +52,15 @@ public class ScriptHandler {
         registerFunction(new StopStrokingFunction());
         registerFunction(new IsStrokingFunction());
         registerFunction(new AddStrokingBPMFunction());
+        registerFunction(new StopAudioFunction());
+        registerFunction(new IsOnEdgeFunction());
+        registerFunction(new StartEdgeFunction());
+        registerFunction(new IsEdgingFunction());
+        registerFunction(new EndEdgeFunction());
+        registerFunction(new IsPlayingVideoFunction());
+        registerFunction(new StopVideoFunction());
+        registerFunction(new SetActiveSenderFunction());
+        registerFunction(new SendCustomMessageFunction());
 
         engine.put("run", (Consumer<String>) this::evalScript);
     }
@@ -63,7 +74,7 @@ public class ScriptHandler {
     public void startPersonality(Personality personality) {
         this.currentPersonality = personality;
         VocabularyHandler.getHandler().loadVocabulariesFromPersonality(personality);
-        ResponseHandler.getHandler().loadVocabulariesFromPersonality(personality);
+        ResponseHandler.getHandler().loadResponsesFromPersonality(personality);
 
         File mainScript = new File(personality.getFolder().getAbsolutePath() + "\\main.js");
         try {
@@ -88,12 +99,17 @@ public class ScriptHandler {
 
     public void runScript(File script) throws FileNotFoundException {
         try {
+            this.currentFile = script;
             engine.eval(new FileReader(script));
         } catch (ScriptException e) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "Error while handling file '" + e.getFileName() + "' in line " + e.getLineNumber() + "\n" +
+            TeaseLogger.getLogger().log(Level.SEVERE, "Latest loaded file was '" + currentFile.getPath() + "' and error was found in line " + e.getLineNumber() + "\n" +
                     "Error: " + e.getMessage(), false);
             e.printStackTrace();
         }
+    }
+
+    public File getCurrentFile() {
+        return currentFile;
     }
 
     public ScriptEngine getEngine() {

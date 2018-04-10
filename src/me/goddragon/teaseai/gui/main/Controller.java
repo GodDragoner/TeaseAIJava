@@ -115,7 +115,7 @@ public class Controller {
         startChatButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                if(PersonalityManager.getManager().getActivePersonality() != null) {
+                if(PersonalityManager.getManager().getActivePersonality() == null) {
                     return;
                 }
 
@@ -129,6 +129,16 @@ public class Controller {
 
                 personalityChoiceBox.setDisable(true);
                 startChatButton.setDisable(true);
+            }
+        });
+
+        personalityChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Personality>() {
+            @Override
+            public void changed(ObservableValue<? extends Personality> observableValue, Personality oldValue, Personality newValue) {
+                if(TeaseAI.application.getSession() != null) {
+                    TeaseAI.application.getSession().setActivePersonality(newValue);
+                    TeaseAI.application.LAST_SELECTED_PERSONALITY.setValue(newValue.getName().getValue()).save();
+                }
             }
         });
 

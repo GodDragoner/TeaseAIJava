@@ -12,7 +12,7 @@ import java.util.logging.Level;
 public class GetVarFunction extends CustomFunction {
 
     public GetVarFunction() {
-        super("getVar", "checkVar", "getDate");
+        super("getVar", "checkVar", "getDate", "getVariable");
     }
 
     @Override

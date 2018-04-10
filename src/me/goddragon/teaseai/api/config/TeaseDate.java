@@ -17,6 +17,11 @@ public class TeaseDate {
         this.calendar.setTime(date);
     }
 
+    public TeaseDate(long millis) {
+        this.calendar = Calendar.getInstance();
+        this.calendar.setTimeInMillis(millis);
+    }
+
     public TeaseDate setSecond(int seconds) {
         calendar.set(Calendar.SECOND, seconds);
         return this;

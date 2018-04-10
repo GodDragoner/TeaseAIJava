@@ -1,6 +1,7 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
 import me.goddragon.teaseai.api.media.MediaHandler;
+import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.Arrays;
@@ -24,10 +25,10 @@ public class PlayAudioFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         switch(args.length) {
             case 1:
-                return MediaHandler.getHandler().playAudio(args[0].toString());
+                return MediaHandler.getHandler().playAudio(FileUtils.getRandomMatchingFile(args[0].toString()));
             case 2:
                 if(args[1] instanceof Boolean) {
-                    return MediaHandler.getHandler().playAudio(args[0].toString(), (Boolean) args[1]);
+                    return MediaHandler.getHandler().playAudio(FileUtils.getRandomMatchingFile(args[0].toString()), (Boolean) args[1]);
                 }
                 break;
             case 0:

@@ -30,7 +30,7 @@ public class ResponseHandler {
 
     private Response currentLoadingResponse;
 
-    public void loadVocabulariesFromPersonality(Personality personality) {
+    public void loadResponsesFromPersonality(Personality personality) {
         responses.clear();
 
         File folder = personality.getFolder();
@@ -85,7 +85,9 @@ public class ResponseHandler {
 
     public void registerResponse(Response response) {
         synchronized (responses) {
-            responses.add(response);
+            if(!responses.contains(response)) {
+                responses.add(response);
+            }
         }
     }
 

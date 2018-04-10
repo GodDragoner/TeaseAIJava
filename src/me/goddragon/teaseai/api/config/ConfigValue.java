@@ -17,9 +17,10 @@ public class ConfigValue {
         configHandler.getConfigValues().add(this);
     }
 
-    public void setValue(String value) {
+    public ConfigValue setValue(String value) {
         this.value = value;
         configHandler.getProperties().setProperty(name, value.toString());
+        return this;
     }
 
     public String getValue() {

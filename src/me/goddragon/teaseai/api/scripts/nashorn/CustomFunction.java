@@ -1,6 +1,7 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
 import jdk.nashorn.api.scripting.AbstractJSObject;
+import me.goddragon.teaseai.TeaseAI;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,5 +26,12 @@ public abstract class CustomFunction extends AbstractJSObject {
 
     public String getFunctionName() {
         return functionName;
+    }
+
+    @Override
+    public Object call(Object object, Object... args) {
+        //Check whether there are new responses to handle
+        TeaseAI.application.checkForNewResponses();
+        return null;
     }
 }

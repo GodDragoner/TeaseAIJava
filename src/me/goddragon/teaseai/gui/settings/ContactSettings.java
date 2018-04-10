@@ -159,6 +159,8 @@ public class ContactSettings {
 
             if(participant.getContact().getImageFolder() != null && participant.getContact().getImageFolder().exists()) {
                 settingsController.domContactImageSetPathText.setText(participant.getContact().getImageFolder().getPath());
+            } else {
+                settingsController.domContactImageSetPathText.setText("");
             }
         }
     }
@@ -169,7 +171,7 @@ public class ContactSettings {
         listView.getItems().clear();
 
         for (ChatParticipant chatParticipant : ChatHandler.getHandler().getParticipants()) {
-            if (chatParticipant.getId() > 1 && chatParticipant.getContact() != null) {
+            if (chatParticipant.getId() >= 1 && chatParticipant.getContact() != null) {
                 listView.getItems().add(chatParticipant);
             }
         }

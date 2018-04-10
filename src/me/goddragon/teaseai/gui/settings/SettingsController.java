@@ -26,7 +26,17 @@ public class SettingsController {
 
     protected MediaSettings mediaSettings = new MediaSettings(this);
     protected ContactSettings contactSettings = new ContactSettings(this);
+    protected GeneralSettings generalSettings = new GeneralSettings(this);
+    protected DebugSettings debugSettings = new DebugSettings(this);
+
     protected Stage stage;
+
+    //General
+    @FXML
+    protected TextField preferredTeaseLengthField;
+
+    @FXML
+    protected Button saveGeneralSettingsButton;
 
     @FXML
     protected ListView urlFilesList;
@@ -108,9 +118,21 @@ public class SettingsController {
     @FXML
     protected Button domContactImageSetPathButton;
 
+    //Debug
+    @FXML
+    protected ListView variableListView;
+
+    @FXML
+    protected TextField variableValueTextField;
+
+    @FXML
+    protected Button variableSaveButton;
+
     public void initiate() {
         mediaSettings.initiate();
         contactSettings.initiate();
+        generalSettings.initiate();
+        debugSettings.initiate();
     }
 
     public static void openGUI() {

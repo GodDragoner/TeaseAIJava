@@ -12,7 +12,7 @@ import java.util.logging.Level;
 public class SetTempVarFunction extends CustomFunction {
 
     public SetTempVarFunction() {
-        super("setTempVar");
+        super("setTempVar", "setTempVariable");
     }
 
     @Override

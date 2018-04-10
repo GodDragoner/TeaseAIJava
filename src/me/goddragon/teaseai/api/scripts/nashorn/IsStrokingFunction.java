@@ -12,7 +12,7 @@ import java.util.logging.Level;
 public class IsStrokingFunction extends CustomFunction {
 
     public IsStrokingFunction() {
-        super("isStroking");
+        super("isStroking", "isMetronomeActive");
     }
 
     @Override
