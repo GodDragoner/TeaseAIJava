@@ -4,10 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -49,6 +46,12 @@ public class SettingsController {
 
     @FXML
     protected Button deleteURLButton;
+
+    @FXML
+    protected Button refreshURLButton;
+
+    @FXML
+    protected Label urlProgressLabel;
 
     @FXML
     protected StackPane urlImageViewStackPane;
@@ -117,6 +120,9 @@ public class SettingsController {
 
     @FXML
     protected Button domContactImageSetPathButton;
+
+    @FXML
+    protected Label clickContactAvatarText;
 
     //Debug
     @FXML

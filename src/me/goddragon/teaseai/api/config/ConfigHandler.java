@@ -33,7 +33,6 @@ public class ConfigHandler {
             //Do we want to fetch it from a file or url?
             if(configName != null && configName.length() > 0) {
                 File config = new File(configName);
-                input = new FileInputStream(config);
 
                 if (!config.exists()) {
                     try {
@@ -42,6 +41,8 @@ public class ConfigHandler {
                         TeaseLogger.getLogger().log(Level.SEVERE, "Failed to load config.", e);
                     }
                 }
+
+                input = new FileInputStream(config);
             }
             //No config name means we want to fetch an url
             else {

@@ -1,6 +1,5 @@
 package me.goddragon.teaseai.api.picture;
 
-import me.goddragon.teaseai.api.chat.vocabulary.Vocabulary;
 import me.goddragon.teaseai.utils.RandomUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -33,7 +32,6 @@ public class PictureSet {
 
             String strLine;
 
-            Vocabulary vocabulary = null;
             //Read File Line By Line
             while ((strLine = br.readLine()) != null) {
                 if (!strLine.contains(" ")) {
@@ -41,7 +39,7 @@ public class PictureSet {
                     return;
                 }
 
-                int endIndex =  strLine.indexOf(".jpg") + 4;
+                int endIndex =  strLine.toLowerCase().indexOf(".jpg") + 4;
                 String fileName = strLine.substring(0, endIndex);
                 String[] split = strLine.substring(endIndex).trim().split(" ");
                 if(split.length < 1) {

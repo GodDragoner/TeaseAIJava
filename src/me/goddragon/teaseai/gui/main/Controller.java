@@ -119,16 +119,21 @@ public class Controller {
                     return;
                 }
 
-                PersonalityManager.getManager().setActivePersonality((Personality) getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
+                if(TeaseAI.application.getSession().isStarted()) {
+                    TeaseAI.application.getSession().setHaltSession(true);
+                    startChatButton.setDisable(true);
+                } else {
+                    PersonalityManager.getManager().setActivePersonality((Personality) getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
 
-                /*synchronized (TeaseAI.application.getScriptThread()) {
-                    TeaseAI.application.getScriptThread().notify();
-                }*/
+                    /*synchronized (TeaseAI.application.getScriptThread()) {
+                        TeaseAI.application.getScriptThread().notify();
+                    }*/
 
-                TeaseAI.application.getSession().start();
+                    TeaseAI.application.getSession().start();
 
-                personalityChoiceBox.setDisable(true);
-                startChatButton.setDisable(true);
+                    personalityChoiceBox.setDisable(true);
+                    startChatButton.setText("Stop");
+                }
             }
         });
 
@@ -270,5 +275,9 @@ public class Controller {
 
     public ChoiceBox getPersonalityChoiceBox() {
         return personalityChoiceBox;
+    }
+
+    public Button getStartChatButton() {
+        return startChatButton;
     }
 }

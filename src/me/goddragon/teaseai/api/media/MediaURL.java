@@ -2,6 +2,8 @@ package me.goddragon.teaseai.api.media;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.scene.control.Label;
+import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.utils.RandomUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 import org.w3c.dom.Document;
@@ -40,11 +42,18 @@ public class MediaURL extends MediaHolder implements Observable {
     }
 
     public MediaURL(MediaType mediaType, String url, String fileName) {
+        this(mediaType, url, fileName, null);
+    }
+
+    public MediaURL(MediaType mediaType, String url, String fileName, Label progressLabel) {
         super(mediaType);
 
         String urlFileName;
 
         this.url = url;
+        if(this.url != null && !this.url.startsWith("http")) {
+            this.url = "https://" + this.url;
+        }
 
         if(fileName != null) {
             urlFileName = fileName;
@@ -66,7 +75,7 @@ public class MediaURL extends MediaHolder implements Observable {
             }
 
             if(url.toLowerCase().contains("tumblr.com")) {
-                loadImagesFromTumblrURL();
+                loadImagesFromTumblrURL(progressLabel);
                 saveToFile();
             }
         } else {
@@ -118,7 +127,9 @@ public class MediaURL extends MediaHolder implements Observable {
     }
 
 
-    public void loadImagesFromTumblrURL() {
+    public void loadImagesFromTumblrURL(Label progressLabel) {
+        mediaURLs.clear();
+
         int currentIndex = 0;
         int num = 50;
         int imagesFound = num;
@@ -148,6 +159,16 @@ public class MediaURL extends MediaHolder implements Observable {
             }
 
             currentIndex += num;
+
+            if(progressLabel != null) {
+                int finalCurrentIndex = currentIndex;
+                TeaseAI.application.runOnUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressLabel.setText(finalCurrentIndex + " files found.");
+                    }
+                });
+            }
         }
     }
 
@@ -254,6 +275,10 @@ public class MediaURL extends MediaHolder implements Observable {
 
     public File getFile() {
         return file;
+    }
+
+    public List<String> getMediaURLs() {
+        return mediaURLs;
     }
 
     @Override

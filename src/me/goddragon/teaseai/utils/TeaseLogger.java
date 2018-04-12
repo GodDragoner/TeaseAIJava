@@ -1,7 +1,5 @@
 package me.goddragon.teaseai.utils;
 
-import sun.util.logging.LoggingSupport;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,7 +33,6 @@ public class TeaseLogger {
             fh = new FileHandler("Logs\\log-" + dateFormat.format(date) + ".txt");
             javaLogger.addHandler(fh);
             Formatter formatter = new SimpleFormatter() {
-                private final String format = LoggingSupport.getSimpleFormat();
                 private final Date dat = new Date();
 
                 @Override

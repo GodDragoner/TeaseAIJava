@@ -1,6 +1,7 @@
 package me.goddragon.teaseai.api.chat.vocabulary;
 
 import me.goddragon.teaseai.api.chat.ChatHandler;
+import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -44,35 +45,25 @@ public class VocabularyHandler {
 
                     String strLine;
 
-                    int line = 0;
-                    Vocabulary vocabulary = null;
+                    Vocabulary vocabulary = new Vocabulary(file.getName().substring(0, file.getName().length() - 4));
+                    vocabulary.getSynonyms().clear();
+
                     //Read File Line By Line
                     while ((strLine = br.readLine()) != null) {
-                        if (line == 0) {
-                            vocabulary = new Vocabulary(strLine);
-                        } else {
-                            //Clear the default synonym because we have some alternatives
-                            if(line == 1) {
-                                vocabulary.getSynonyms().clear();
+                        double chance = 1;
+                        String synonym = strLine;
+                        //Custom chance are separated by ;
+                        if (strLine.contains(";")) {
+                            String[] split = strLine.split(";");
+                            synonym = split[0];
+                            try {
+                                chance = Double.parseDouble(split[1]);
+                            } catch(NumberFormatException ex) {
+                                TeaseLogger.getLogger().log(Level.SEVERE, "Malformed vocabulary '" + file.getName() + "'. Found ; but didn't find valid chance in string " + strLine);
                             }
-
-                            double chance = 1;
-                            String synonym = strLine;
-                            //Custom chance are separated by ;
-                            if (strLine.contains(";")) {
-                                String[] split = strLine.split(";");
-                                synonym = split[0];
-                                try {
-                                    chance = Double.parseDouble(split[1]);
-                                } catch(NumberFormatException ex) {
-                                    TeaseLogger.getLogger().log(Level.SEVERE, "Malformed vocabulary '" + file.getName() + "'. Found ; but didn't find valid chance in string " + strLine);
-                                }
-                            }
-
-                            vocabulary.getSynonyms().put(synonym, chance);
                         }
 
-                        line++;
+                        vocabulary.getSynonyms().put(synonym, chance);
                     }
 
                     //Close the input stream
@@ -84,6 +75,16 @@ public class VocabularyHandler {
                     }
 
                 } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if(file.getName().endsWith(".js")) {
+                String name =  file.getName().substring(0, file.getName().length() - 3);
+                RunableVocabulary runableVocabulary = new RunableVocabulary(name, file);
+                registerVocabulary(name, runableVocabulary);
+
+                try {
+                    ScriptHandler.getHandler().runScript(file);
+                } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
             }

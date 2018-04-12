@@ -92,6 +92,7 @@
                                                                                     <columnConstraints>
                                                                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
                                                                                     </columnConstraints>
                                                                                     <rowConstraints>
                                                                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -102,6 +103,8 @@
                                                                                         <TextField fx:id="addURLTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="140.0" GridPane.rowIndex="1" />
                                                                                         <Button fx:id="addURLButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="Add URL" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                                                         <Button fx:id="deleteURLButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="56.0" prefWidth="140.0" text="Delete URL(s)" GridPane.columnIndex="1" />
+                                                                  <Button fx:id="refreshURLButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="37.0" prefWidth="104.0" text="Refresh URL(s)" GridPane.columnIndex="2" />
+                                                                  <Label fx:id="urlProgressLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="98.0" text="0 files found" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                                                     </children>
                                                                                 </GridPane>
                                                             <StackPane fx:id="urlImageViewStackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1">
@@ -323,7 +326,7 @@
                                     </GridPane>
                                     <StackPane fx:id="domContactImageStackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0">
                                        <children>
-                                          <Label alignment="CENTER" contentDisplay="TEXT_ONLY" prefHeight="181.0" prefWidth="273.0" text="Click here to set the contact avatar" textAlignment="JUSTIFY" wrapText="true">
+                                          <Label fx:id="clickContactAvatarText" alignment="CENTER" contentDisplay="TEXT_ONLY" prefHeight="181.0" prefWidth="273.0" text="Click here to set the contact avatar" textAlignment="JUSTIFY" wrapText="true">
                                              <font>
                                                 <Font size="17.0" />
                                              </font></Label>

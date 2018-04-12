@@ -75,9 +75,7 @@ public class TeaseAI extends Application {
         ScriptHandler.getHandler().load();
         PersonalityManager.getManager().loadPersonalities();
 
-        this.session = new Session();
-
-        session.setActivePersonality((Personality) controller.getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
+        initializeNewSession();
 
         controller.loadDomInfo();
     }
@@ -87,7 +85,7 @@ public class TeaseAI extends Application {
     }
 
     public boolean checkForNewResponses() {
-        if(Thread.currentThread() != scriptThread) {
+        if (Thread.currentThread() != scriptThread) {
             throw new IllegalStateException("Can only check for new responses on the script thread");
         }
 
@@ -144,6 +142,12 @@ public class TeaseAI extends Application {
 
     public Controller getController() {
         return controller;
+    }
+
+    public void initializeNewSession() {
+        this.session = new Session();
+
+        session.setActivePersonality((Personality) controller.getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
     }
 
     public Thread getScriptThread() {

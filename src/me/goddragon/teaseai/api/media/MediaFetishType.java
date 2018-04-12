@@ -1,8 +1,8 @@
 package me.goddragon.teaseai.api.media;
 
-import com.sun.xml.internal.ws.util.StringUtils;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.ConfigValue;
+import me.goddragon.teaseai.utils.StringUtils;
 
 import java.io.File;
 import java.util.*;
@@ -12,7 +12,7 @@ import java.util.*;
  */
 public enum MediaFetishType {
 
-    HARDCORE, SOFTCORE, LESBIAN, BLOWJOB, FEMDOM, HENTAI, GAY, MALEDOM, CAPTIONS, GENERAL, BOOBS, BUTTS;
+    HARDCORE, SOFTCORE, LESBIAN, BLOWJOB, FEMDOM, LEZDOM, HENTAI, GAY, MALEDOM, CAPTIONS, GENERAL, BOOBS, BUTTS;
 
     private Map<MediaType, Map<MediaHolderType, ConfigValue>> configValues = new HashMap<>();
 

@@ -93,6 +93,12 @@ public class MediaHandler {
     }
 
     public void showPicture(File file, int durationSeconds) {
+        if(file == null) {
+            ImageView imageView = TeaseAI.application.getController().getImageView();
+            imageView.setImage(null);
+            return;
+        }
+
         if(!file.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Picture " + file.getPath() + " does not exist.");
             return;
@@ -149,7 +155,7 @@ public class MediaHandler {
     }
 
     public MediaPlayer playAudio(File file, boolean wait) {
-        if(!file.exists()) {
+        if(file == null || !file.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Audio " + file.getPath() + " does not exist.");
             return null;
         }

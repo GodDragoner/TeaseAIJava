@@ -24,6 +24,10 @@ public class FileUtils {
 
         Path dir = FileSystems.getDefault().getPath(dirPath);
         try {
+            if(!dir.toFile().exists()) {
+                return new ArrayList<>();
+            }
+
             DirectoryStream<Path> stream = Files.newDirectoryStream(dir, fileWildcard);
 
             for (Path path : stream) {

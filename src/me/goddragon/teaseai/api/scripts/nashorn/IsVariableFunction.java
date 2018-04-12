@@ -7,12 +7,12 @@ import java.util.Arrays;
 import java.util.logging.Level;
 
 /**
- * Created by GodDragon on 25.03.2018.
+ * Created by GodDragon on 11.04.2018.
  */
-public class SetVarFunction extends CustomFunction {
+public class IsVariableFunction extends CustomFunction {
 
-    public SetVarFunction() {
-        super("setVar", "setVariable", "setFlag");
+    public IsVariableFunction() {
+        super("isVar", "isVariable");
     }
 
     @Override
@@ -22,13 +22,9 @@ public class SetVarFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
-        switch(args.length) {
-            case 2:
-                if(args[0] instanceof String) {
-                    return PersonalityManager.getManager().getActivePersonality().getVariableHandler().setVariable((String) args[0], args[1]);
-                }
-
-                break;
+        switch (args.length) {
+            case 1:
+                return PersonalityManager.getManager().getActivePersonality().getVariableHandler().variableExist(args[0].toString());
             case 0:
                 TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
                 return null;

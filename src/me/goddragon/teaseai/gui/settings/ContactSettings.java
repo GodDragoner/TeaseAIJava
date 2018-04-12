@@ -73,9 +73,10 @@ public class ContactSettings {
                 File image = chooser.showOpenDialog(settingsController.stage);
 
                 if (image != null && image.exists()) {
-                    if ((image.getName().endsWith(".jpg") || image.getName().endsWith(".png"))) {
+                    if ((image.getName().toLowerCase().endsWith(".jpg") || image.getName().toLowerCase().endsWith(".png") || image.getName().toLowerCase().endsWith(".jpeg"))) {
                         getSelectedContact().getContact().IMAGE_PATH.setValue(image.getPath());
                         getSelectedContact().getContact().IMAGE_PATH.save();
+                        updateContactData();
                     } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Invalid File");
@@ -138,6 +139,8 @@ public class ContactSettings {
                 if(selectedDirectory != null) {
                     settingsController.domContactImageSetPathText.setText(selectedDirectory.getPath());
                     getSelectedContact().getContact().IMAGE_SET_PATH.setValue(selectedDirectory.getPath());
+                    getSelectedContact().getContact().IMAGE_SET_PATH.save();
+                    updateContactData();
                 }
             }
         });
@@ -149,10 +152,12 @@ public class ContactSettings {
         if (participant != null) {
             File image = participant.getContact().getImage();
 
-            if (image != null && image.exists() && image.isFile() && (image.getName().endsWith(".jpg") || image.getName().endsWith(".png"))) {
+            if (image != null && image.exists() && image.isFile() && (image.getName().toLowerCase().endsWith(".jpg") || image.getName().toLowerCase().endsWith(".png") || image.getName().toLowerCase().endsWith(".jpeg"))) {
                 settingsController.domContactImageView.setImage(new Image(image.toURI().toString()));
+                settingsController.clickContactAvatarText.setText("");
             } else {
                 settingsController.domContactImageView.setImage(null);
+                settingsController.clickContactAvatarText.setText("Click here to set the contact avatar");
             }
 
             settingsController.domContactNameField.setText(participant.getContact().NAME.getValue());

@@ -1,8 +1,8 @@
 package me.goddragon.teaseai.api.chat.response;
 
-import com.sun.xml.internal.ws.util.StringUtils;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
+import me.goddragon.teaseai.utils.StringUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import javax.script.Invocable;

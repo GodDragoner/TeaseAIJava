@@ -1,9 +1,11 @@
 package me.goddragon.teaseai.api.scripts;
 
+import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.response.ResponseHandler;
 import me.goddragon.teaseai.api.chat.vocabulary.VocabularyHandler;
 import me.goddragon.teaseai.api.scripts.nashorn.*;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
+import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import javax.script.ScriptEngine;
@@ -61,6 +63,10 @@ public class ScriptHandler {
         registerFunction(new StopVideoFunction());
         registerFunction(new SetActiveSenderFunction());
         registerFunction(new SendCustomMessageFunction());
+        registerFunction(new IsVariableFunction());
+        registerFunction(new CreateInputFunction());
+        registerFunction(new EndSessionFunction());
+        registerFunction(new ReplaceVocabulariesFunction());
 
         engine.put("run", (Consumer<String>) this::evalScript);
     }
@@ -73,6 +79,9 @@ public class ScriptHandler {
 
     public void startPersonality(Personality personality) {
         this.currentPersonality = personality;
+
+        currentPersonality.getVariableHandler().setVariable("personalityVersion", currentPersonality.getVersion().getValue(), true);
+
         VocabularyHandler.getHandler().loadVocabulariesFromPersonality(personality);
         ResponseHandler.getHandler().loadResponsesFromPersonality(personality);
 
@@ -82,6 +91,8 @@ public class ScriptHandler {
         } catch (FileNotFoundException e) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Personality '" + currentPersonality.getName() + "' is missing the main.js script");
         }
+
+        TeaseAI.application.getSession().end();
     }
 
     public void evalScript(String scriptName) {
@@ -89,7 +100,13 @@ public class ScriptHandler {
             scriptName += ".js";
         }
 
-        File script = new File(currentPersonality.getFolder().getAbsolutePath() + "\\" + scriptName);
+        File script = FileUtils.getRandomMatchingFile(currentPersonality.getFolder().getAbsolutePath() + "\\" + scriptName);
+
+        if(script == null || !script.exists()) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Script " + scriptName + " does not exist.");
+            return;
+        }
+
         try {
             runScript(script);
         } catch (FileNotFoundException e) {

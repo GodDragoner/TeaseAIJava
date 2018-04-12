@@ -18,6 +18,8 @@ public class AddResponseIndicatorFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
+        super.call(object, args);
+
         for(Object arg : args) {
             ResponseHandler.getHandler().getCurrentLoadingResponse().addIndicator(arg.toString());
         }

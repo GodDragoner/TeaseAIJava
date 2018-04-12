@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class DebugSettings {
 
-    private final VariableHandler variableHandler = TeaseAI.application.getSession().getActivePersonality().getVariableHandler();
+    private final VariableHandler variableHandler = TeaseAI.application.getSession().getActivePersonality() == null? null : TeaseAI.application.getSession().getActivePersonality().getVariableHandler();
     private final SettingsController settingsController;
 
     public DebugSettings(SettingsController settingsController) {
@@ -24,8 +24,10 @@ public class DebugSettings {
     }
 
     public void initiate() {
-        for (Map.Entry<String, PersonalityVariable> entry : variableHandler.getVariables().entrySet()) {
-            settingsController.variableListView.getItems().add(entry.getValue());
+        if(variableHandler != null) {
+            for (Map.Entry<String, PersonalityVariable> entry : variableHandler.getVariables().entrySet()) {
+                settingsController.variableListView.getItems().add(entry.getValue());
+            }
         }
 
         settingsController.variableListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<PersonalityVariable>() {
@@ -48,7 +50,7 @@ public class DebugSettings {
             public void handle(ActionEvent event) {
                 String variable = getSelectedVariable();
 
-                if (variable != null) {
+                if (variable != null && variableHandler != null) {
                     variableHandler.setVariable(variable, variableHandler.getObjectFromString(settingsController.variableValueTextField.getText()));
                 }
             }
@@ -58,8 +60,8 @@ public class DebugSettings {
     public void updateVariableData() {
         String variable = getSelectedVariable();
 
-        if (variable != null) {
-            Object object = variableHandler.getVariable(variable);
+        if (variable != null && variableHandler != null) {
+            Object object = variableHandler.getVariableValue(variable);
 
             if(object != null) {
                 settingsController.variableValueTextField.setText(object.toString());

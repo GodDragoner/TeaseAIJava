@@ -13,7 +13,7 @@ import java.util.logging.Level;
 public class ShowImageFunction extends CustomFunction {
 
     public ShowImageFunction() {
-        super("showImage");
+        super("showImage", "showPicture", "displayImage", "displayPicture");
     }
 
     @Override

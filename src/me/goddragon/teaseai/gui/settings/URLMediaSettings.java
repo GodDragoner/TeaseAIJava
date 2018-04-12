@@ -33,14 +33,15 @@ public class URLMediaSettings {
             public void handle(MouseEvent event) {
                 String url = settingsController.addURLTextField.getText();
 
-                if (url != null && url.contains("tumblr.com")) {
+                if (url != null && url.endsWith("tumblr.com")) {
                     settingsController.addURLButton.setDisable(true);
                     settingsController.addURLTextField.setDisable(true);
+                    settingsController.refreshURLButton.setDisable(true);
 
                     new Thread() {
                         @Override
                         public void run() {
-                            MediaURL mediaURL = new MediaURL(MediaType.IMAGE, url);
+                            MediaURL mediaURL = new MediaURL(MediaType.IMAGE, url, null, settingsController.urlProgressLabel);
                             mediaURL.saveToFile();
                             TeaseAI.application.getMediaCollection().addMediaHolder(null, mediaURL);
 
@@ -50,6 +51,7 @@ public class URLMediaSettings {
                                     updateURLList();
                                     settingsController.addURLButton.setDisable(false);
                                     settingsController.addURLTextField.setDisable(false);
+                                    settingsController.refreshURLButton.setDisable(false);
                                 }
                             });
                         }
@@ -62,6 +64,38 @@ public class URLMediaSettings {
 
                     alert.showAndWait();
                 }
+            }
+        });
+
+        settingsController.refreshURLButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        settingsController.addURLButton.setDisable(true);
+                        settingsController.addURLTextField.setDisable(true);
+                        settingsController.refreshURLButton.setDisable(true);
+                        settingsController.deleteURLButton.setDisable(true);
+
+                        for (Object object : settingsController.urlFilesList.getSelectionModel().getSelectedItems()) {
+                            MediaURL mediaURL = (MediaURL) object;
+                            mediaURL.loadImagesFromTumblrURL(settingsController.urlProgressLabel);
+                            mediaURL.saveToFile();
+
+                            TeaseAI.application.runOnUIThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateURLList();
+                                    settingsController.addURLButton.setDisable(false);
+                                    settingsController.addURLTextField.setDisable(false);
+                                    settingsController.refreshURLButton.setDisable(false);
+                                    settingsController.deleteURLButton.setDisable(false);
+                                }
+                            });
+                        }
+                    }
+                }.start();
             }
         });
 
@@ -90,9 +124,11 @@ public class URLMediaSettings {
                 if (newValue != null) {
                     settingsController.useURLForTease.setDisable(false);
                     settingsController.deleteURLButton.setDisable(false);
+                    settingsController.refreshURLButton.setDisable(false);
                 } else {
-                    settingsController. useURLForTease.setDisable(true);
+                    settingsController.useURLForTease.setDisable(true);
                     settingsController.deleteURLButton.setDisable(true);
+                    settingsController.refreshURLButton.setDisable(true);
                 }
 
                 if (settingsController.urlFilesList.getSelectionModel().getSelectedItems().size() == 1) {
@@ -105,6 +141,7 @@ public class URLMediaSettings {
                     }.start();
 
                     settingsController.useURLForTease.setSelected(newValue.isUseForTease());
+                    settingsController.urlProgressLabel.setText("Contains " + newValue.getMediaURLs().size() + " files.");
                 } else {
                     settingsController.urlFileImagePreview.setImage(null);
                 }
@@ -132,6 +169,11 @@ public class URLMediaSettings {
     private void updateURLList() {
         settingsController.urlFilesList.getItems().clear();
         settingsController.urlFileDragDropList.getItems().clear();
+
+        //No images to check
+        if (!TeaseAI.application.getMediaCollection().getMediaHolders().containsKey(MediaType.IMAGE)) {
+            return;
+        }
 
         for (MediaHolder mediaHolder : TeaseAI.application.getMediaCollection().getMediaHolders().get(MediaType.IMAGE)) {
             if (mediaHolder instanceof MediaURL) {

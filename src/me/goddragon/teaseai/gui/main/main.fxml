@@ -58,11 +58,7 @@
       <TextField fx:id="chatTextField" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="863.0" promptText="Type to chat..." GridPane.columnIndex="1" GridPane.hgrow="always" GridPane.rowIndex="2" GridPane.vgrow="always" />
       <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="245.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Settings" />
-            </items>
-          </Menu>
+          <Menu mnemonicParsing="false" text="File" />
           <Menu fx:id="menuSettingsButton" mnemonicParsing="false" />
           <Menu mnemonicParsing="false" text="Help">
             <items>

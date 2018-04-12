@@ -24,11 +24,14 @@ public class GetVarFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         switch (args.length) {
             case 1:
-                if (args[0] instanceof String) {
-                    return PersonalityManager.getManager().getActivePersonality().getVariableHandler().getVariable((String) args[0]);
+                return PersonalityManager.getManager().getActivePersonality().getVariableHandler().getVariableValue(args[0].toString());
+            case 2:
+                if(PersonalityManager.getManager().getActivePersonality().getVariableHandler().variableExist(args[0].toString())) {
+                    return PersonalityManager.getManager().getActivePersonality().getVariableHandler().getVariableValue(args[0].toString());
+                } else {
+                    //Return default
+                    return args[1];
                 }
-
-                break;
             case 0:
                 TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
                 return null;

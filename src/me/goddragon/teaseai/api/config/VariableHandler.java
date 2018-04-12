@@ -60,6 +60,11 @@ public class VariableHandler {
     public Object setVariable(String name, Object value, boolean temporary) {
         name = name.toLowerCase();
 
+        //Skip setting the variable because we have the same value already stored
+        if(variableExist(name) && (getVariable(name).getValue().equals(value) || getVariable(name).getValue() == value)) {
+            return value;
+        }
+
         PersonalityVariable personalityVariable = new PersonalityVariable(name, value);
         variables.put(personalityVariable.getConfigName(), personalityVariable);
 
@@ -113,9 +118,14 @@ public class VariableHandler {
     }
 
     public boolean isVariable(String name) {
-        Object variable = getVariable(name);
+        Object variable = getVariableValue(name);
         return variable instanceof Boolean && variable.equals(Boolean.TRUE);
     }
+
+    public boolean variableExist(String name) {
+        return variables.containsKey(name.toLowerCase());
+    }
+
 
     public File getVariableFile(String name) {
         return getVariableFile(name, true);

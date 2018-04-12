@@ -267,11 +267,12 @@ public class ChatHandler {
     public void onSubMessage(String message) {
         if (currentCallback != null && currentCallback.getAnswer() == null) {
             currentCallback.setAnswer(message);
-        }
 
-        //Wake the script thread, the user might want some response
-        synchronized (TeaseAI.application.getScriptThread()) {
-            TeaseAI.application.getScriptThread().notify();
+
+            //Wake the script thread, the user might want some response
+            synchronized (TeaseAI.application.getScriptThread()) {
+                TeaseAI.application.getScriptThread().notify();
+            }
         }
     }
 

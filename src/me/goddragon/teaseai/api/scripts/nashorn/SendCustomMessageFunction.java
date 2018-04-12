@@ -23,6 +23,8 @@ public class SendCustomMessageFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
+        super.call(object, args);
+
         Text[] texts = new Text[args.length];
         for(int x = 0; x < args.length; x++) {
             Object arg = args[x];

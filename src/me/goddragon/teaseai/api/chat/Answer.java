@@ -100,6 +100,44 @@ public class Answer {
         return false;
     }
 
+    public boolean isInteger() {
+        try {
+            Integer.parseInt(answer);
+            return true;
+        } catch (NumberFormatException ex) {}
+
+        return false;
+    }
+
+    public boolean isDouble() {
+        try {
+            Double.parseDouble(answer);
+            return true;
+        } catch (NumberFormatException ex) {}
+
+        return false;
+    }
+
+    public int getInteger() {
+        return getInt();
+    }
+
+    public int getInt() {
+        try {
+            return Integer.parseInt(answer);
+        } catch (NumberFormatException ex) {}
+
+        return 0;
+    }
+
+    public double getDouble() {
+        try {
+            return Double.parseDouble(answer);
+        } catch (NumberFormatException ex) {}
+
+        return 0;
+    }
+
     public long getMillisTimeout() {
         return millisTimeout;
     }

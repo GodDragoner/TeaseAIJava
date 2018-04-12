@@ -13,7 +13,7 @@ import java.util.logging.Level;
 public class PlayAudioFunction extends CustomFunction {
 
     public PlayAudioFunction() {
-        super("playAudio");
+        super("playAudio", "playSound");
     }
 
     @Override
@@ -23,6 +23,8 @@ public class PlayAudioFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
+        super.call(object, args);
+
         switch(args.length) {
             case 1:
                 return MediaHandler.getHandler().playAudio(FileUtils.getRandomMatchingFile(args[0].toString()));
