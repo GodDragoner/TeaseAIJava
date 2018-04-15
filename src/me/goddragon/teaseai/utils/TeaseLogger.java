@@ -30,7 +30,7 @@ public class TeaseLogger {
             // This block configure the logger with handler and formatter
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy H-mm-ss");
             Date date = new Date();
-            fh = new FileHandler("Logs" + File.pathSeparator + "log-" + dateFormat.format(date) + ".txt");
+            fh = new FileHandler("Logs" + File.separator + "log-" + dateFormat.format(date) + ".txt");
             javaLogger.addHandler(fh);
             Formatter formatter = new SimpleFormatter() {
                 private final Date dat = new Date();

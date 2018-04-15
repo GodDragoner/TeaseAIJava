@@ -87,7 +87,7 @@ public class ScriptHandler {
         VocabularyHandler.getHandler().loadVocabulariesFromPersonality(personality);
         ResponseHandler.getHandler().loadResponsesFromPersonality(personality);
 
-        File mainScript = new File(personality.getFolder().getAbsolutePath() + File.pathSeparator + "main.js");
+        File mainScript = new File(personality.getFolder().getAbsolutePath() + File.separator + "main.js");
         try {
             runScript(mainScript);
         } catch (FileNotFoundException e) {
@@ -102,7 +102,7 @@ public class ScriptHandler {
             scriptName += ".js";
         }
 
-        File script = FileUtils.getRandomMatchingFile(currentPersonality.getFolder().getAbsolutePath() + File.pathSeparator + scriptName);
+        File script = FileUtils.getRandomMatchingFile(currentPersonality.getFolder().getAbsolutePath() + File.separator + scriptName);
 
         if(script == null || !script.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Script " + scriptName + " does not exist.");

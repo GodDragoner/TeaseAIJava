@@ -28,8 +28,8 @@ import java.util.logging.Level;
  */
 public class MediaURL extends MediaHolder implements Observable {
 
-    public static final String URL_FILE_PATH = "Images" + File.pathSeparator + "System" + File.pathSeparator + "URL Files";
-    public static final String IMAGE_DOWNLOAD_PATH = "Images" + File.pathSeparator + "System" + File.pathSeparator + "Tumblr";
+    public static final String URL_FILE_PATH = "Images" + File.separator + "System" + File.separator + "URL Files";
+    public static final String IMAGE_DOWNLOAD_PATH = "Images" + File.separator + "System" + File.separator + "Tumblr";
 
     private String url;
     private boolean useForTease = false;
@@ -66,7 +66,7 @@ public class MediaURL extends MediaHolder implements Observable {
         new File(URL_FILE_PATH).mkdirs();
         new File(IMAGE_DOWNLOAD_PATH).mkdirs();
 
-        this.file = new File(URL_FILE_PATH + File.pathSeparator + urlFileName);
+        this.file = new File(URL_FILE_PATH + File.separator + urlFileName);
         if(!file.exists()) {
             try {
                 file.createNewFile();
@@ -218,7 +218,7 @@ public class MediaURL extends MediaHolder implements Observable {
                 String[] split = url.split("/");
                 String path = split[split.length - 1];
 
-                path = IMAGE_DOWNLOAD_PATH + File.pathSeparator + path;
+                path = IMAGE_DOWNLOAD_PATH + File.separator + path;
                 File file = new File(path);
 
                 if(file.exists()) {

@@ -57,7 +57,7 @@ public class ContactSettings {
                 if (new File(getSelectedContact().getContact().IMAGE_PATH.getValue()).exists()) {
                     dir = getSelectedContact().getContact().IMAGE_PATH.getValue();
                     //Get parent folder
-                    dir = dir.substring(0, dir.lastIndexOf(File.pathSeparator));
+                    dir = dir.substring(0, dir.lastIndexOf(File.separator));
                 } else {
                     dir = System.getProperty("user.dir");
                 }
