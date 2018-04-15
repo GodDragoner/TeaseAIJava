@@ -139,7 +139,7 @@ public class MediaHandler {
     }
 
     public MediaPlayer playSoundFromFolder(String path, boolean wait) {
-        return playAudio(new File("Sounds\\" + path), wait);
+        return playAudio(new File("Sounds", path), wait);
     }*/
 
     public MediaPlayer playAudio(String path) {

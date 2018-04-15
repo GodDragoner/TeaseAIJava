@@ -179,10 +179,9 @@ public class Controller {
                 chooser.setTitle("Select Media Folder");
 
                 String dir;
-                if (new File(domParticipant.getContact().IMAGE_PATH.getValue()).exists()) {
-                    dir = domParticipant.getContact().IMAGE_PATH.getValue();
-                    //Get parent folder
-                    dir = dir.substring(0, dir.lastIndexOf("\\"));
+                File imagePath = new File(domParticipant.getContact().IMAGE_PATH.getValue());
+                if (imagePath.exists()) {
+                    dir = imagePath.getParent();
                 } else {
                     dir = System.getProperty("user.dir");
                 }

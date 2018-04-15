@@ -24,7 +24,7 @@ public class VariableHandler {
 
     public VariableHandler(Personality personality) {
         this.personality = personality;
-        personalityVariableFolder = new File(personality.getFolder().getPath() + "\\System\\Variables");
+        personalityVariableFolder = new File(new File(personality.getFolder(), "System"), "Variables");
         personalityVariableFolder.mkdirs();
 
         for (File file : personalityVariableFolder.listFiles()) {
@@ -132,7 +132,7 @@ public class VariableHandler {
     }
 
     public File getVariableFile(String name, boolean createDefault) {
-        File variableFile = new File(personalityVariableFolder.getAbsolutePath() + "\\" + name + ".var");
+        File variableFile = new File(personalityVariableFolder, name + ".var");
 
         if (!variableFile.exists() && createDefault) {
             try {

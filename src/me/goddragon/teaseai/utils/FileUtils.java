@@ -15,12 +15,13 @@ import java.util.List;
 public class FileUtils {
 
     public static List<File> getMatchingFiles(String pathString) {
-        pathString = pathString.replace("/", "\\");
+        pathString = pathString.replace("/", FileSystems.getDefault().getSeparator());
 
         List<File> files = new ArrayList<>();
 
-        String dirPath = pathString.substring(0, pathString.lastIndexOf("\\"));
-        String fileWildcard = pathString.substring(pathString.lastIndexOf("\\") + 1);
+        File file = new File(pathString);
+        String dirPath = file.getParent();
+        String fileWildcard = file.getName();
 
         Path dir = FileSystems.getDefault().getPath(dirPath);
         try {

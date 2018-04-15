@@ -31,7 +31,7 @@ public class PersonalityManager {
         for(File file : personalityFolder.listFiles()) {
             //Ignore all non directories
             if (file.isDirectory()) {
-                File propertiesFile = new File(file.getAbsolutePath() + "\\" + Personality.PROPERTIES_NAME);
+                File propertiesFile = new File(file, Personality.PROPERTIES_NAME);
 
                 if(propertiesFile.exists()) {
                     Personality personality = new Personality(file.getName());
@@ -44,9 +44,12 @@ public class PersonalityManager {
             }
         }
 
-        String latestSelectedPersonality = TeaseAI.application.LAST_SELECTED_PERSONALITY.getValue();
+        Personality personality = null;
 
-        Personality personality = getPersonality(latestSelectedPersonality);
+        String latestSelectedPersonality = TeaseAI.application.LAST_SELECTED_PERSONALITY.getValue();
+        if (!latestSelectedPersonality.equals("null")) {
+            personality = getPersonality(latestSelectedPersonality);
+        }
 
         if(personality != null) {
             choiceBox.getSelectionModel().select(personality);

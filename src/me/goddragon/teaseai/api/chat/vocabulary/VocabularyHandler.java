@@ -33,7 +33,7 @@ public class VocabularyHandler {
         loadDefaultVocabulary();
 
         File folder = personality.getFolder();
-        File vocabFolder = new File(folder.getAbsolutePath() + "\\Vocabularies");
+        File vocabFolder = new File(folder,  "Vocabularies");
         vocabFolder.mkdir();
 
         for (File file : vocabFolder.listFiles()) {

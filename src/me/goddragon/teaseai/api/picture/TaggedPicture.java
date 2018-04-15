@@ -17,7 +17,7 @@ public class TaggedPicture {
     private final Collection<PictureTag> tags = new HashSet<>();
 
     public TaggedPicture(String fileName, String[] tags, File folder) {
-        this.file = new File(folder.getPath() + "\\" + fileName);
+        this.file = new File(folder, fileName);
 
         if(!file.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Tagged picture '" + fileName + "' in folder " + folder.getAbsolutePath() + " does not exist!");

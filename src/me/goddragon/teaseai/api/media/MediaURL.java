@@ -19,6 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.ConnectException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,8 +29,8 @@ import java.util.logging.Level;
  */
 public class MediaURL extends MediaHolder implements Observable {
 
-    public static final String URL_FILE_PATH = "Images\\System\\URL Files";
-    public static final String IMAGE_DOWNLOAD_PATH = "Images\\System\\Tumblr";
+    public static final String URL_FILE_PATH = Paths.get("Images", "System", "URL Files").toString();
+    public static final String IMAGE_DOWNLOAD_PATH = Paths.get("Images", "System", "Tumblr").toString();
 
     private String url;
     private boolean useForTease = false;
@@ -66,7 +67,7 @@ public class MediaURL extends MediaHolder implements Observable {
         new File(URL_FILE_PATH).mkdirs();
         new File(IMAGE_DOWNLOAD_PATH).mkdirs();
 
-        this.file = new File(URL_FILE_PATH + "\\" + urlFileName);
+        this.file = new File(URL_FILE_PATH, urlFileName);
         if(!file.exists()) {
             try {
                 file.createNewFile();
@@ -218,8 +219,7 @@ public class MediaURL extends MediaHolder implements Observable {
                 String[] split = url.split("/");
                 String path = split[split.length - 1];
 
-                path = IMAGE_DOWNLOAD_PATH + "\\" + path;
-                File file = new File(path);
+                File file = new File(IMAGE_DOWNLOAD_PATH, path);
 
                 if(file.exists()) {
                     return file;
@@ -239,7 +239,7 @@ public class MediaURL extends MediaHolder implements Observable {
 
                     byte[] response = out.toByteArray();
 
-                    FileOutputStream fos = new FileOutputStream( path);
+                    FileOutputStream fos = new FileOutputStream(file);
                     fos.write(response);
                     fos.close();
                 } catch (IOException e) {
