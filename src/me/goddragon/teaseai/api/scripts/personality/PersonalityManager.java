@@ -31,7 +31,7 @@ public class PersonalityManager {
         for(File file : personalityFolder.listFiles()) {
             //Ignore all non directories
             if (file.isDirectory()) {
-                File propertiesFile = new File(file.getAbsolutePath() + "\\" + Personality.PROPERTIES_NAME);
+                File propertiesFile = new File(file.getAbsolutePath() + File.pathSeparator + Personality.PROPERTIES_NAME);
 
                 if(propertiesFile.exists()) {
                     Personality personality = new Personality(file.getName());

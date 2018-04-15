@@ -68,7 +68,6 @@ public class ChatHandler {
     public void load() {
         registerSender(new ChatParticipant(0, SenderType.SUB, new Contact("sub", "Sub Name")));
         Contact dommeContact =  new Contact("dom", "Dom Name");
-        dommeContact.IMAGE_SET_PATH.setValue("D:\\IDE\\Workspace\\Other Projects\\ChatSystem\\Personalities\\Testing\\Set\\Little Caprice");
         registerSender(new ChatParticipant(1, SenderType.DOM, dommeContact));
         registerSender(new ChatParticipant(2, SenderType.DOM, new Contact("dommeFriend1", "Emma")));
         registerSender(new ChatParticipant(3, SenderType.DOM, new Contact("dommeFriend2", "Staicy")));

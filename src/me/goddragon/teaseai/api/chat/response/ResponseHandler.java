@@ -34,7 +34,7 @@ public class ResponseHandler {
         responses.clear();
 
         File folder = personality.getFolder();
-        File vocabFolder = new File(folder.getAbsolutePath() + "\\Responses");
+        File vocabFolder = new File(folder.getAbsolutePath() + File.pathSeparator + "Responses");
         vocabFolder.mkdir();
 
         for (File file : vocabFolder.listFiles()) {

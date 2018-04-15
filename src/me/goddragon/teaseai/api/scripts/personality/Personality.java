@@ -25,7 +25,7 @@ public class Personality {
 
     public Personality(String folderName) {
         this.folderName = folderName;
-        this.configHandler = new ConfigHandler(getFolder().getAbsolutePath() + "\\" + PROPERTIES_NAME);
+        this.configHandler = new ConfigHandler(getFolder().getAbsolutePath() + File.pathSeparator + PROPERTIES_NAME);
         this.variableHandler = new VariableHandler(this);
 
         name = new ConfigValue("name", "Default Personality", configHandler);
@@ -47,7 +47,7 @@ public class Personality {
     }*/
 
     public File getFolder() {
-        return new File(PersonalityManager.PERSONALITY_FOLDER_NAME + "\\" + folderName);
+        return new File(PersonalityManager.PERSONALITY_FOLDER_NAME + File.pathSeparator + folderName);
     }
 
     public String getFolderName() {

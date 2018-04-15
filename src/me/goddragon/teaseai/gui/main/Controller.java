@@ -182,7 +182,7 @@ public class Controller {
                 if (new File(domParticipant.getContact().IMAGE_PATH.getValue()).exists()) {
                     dir = domParticipant.getContact().IMAGE_PATH.getValue();
                     //Get parent folder
-                    dir = dir.substring(0, dir.lastIndexOf("\\"));
+                    dir = dir.substring(0, dir.lastIndexOf(File.pathSeparator));
                 } else {
                     dir = System.getProperty("user.dir");
                 }
