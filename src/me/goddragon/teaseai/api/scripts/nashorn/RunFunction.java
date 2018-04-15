@@ -22,6 +22,8 @@ public class RunFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
+        super.call(object, args);
+
         if(args.length > 1) {
             ScriptHandler.getHandler().evalScript(args[0].toString());
             return null;

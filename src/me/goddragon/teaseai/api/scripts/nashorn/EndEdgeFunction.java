@@ -22,6 +22,8 @@ public class EndEdgeFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
+        super.call(object, args);
+
         switch (args.length) {
             case 0:
                 if(!StrokeHandler.getHandler().isEdging() && !StrokeHandler.getHandler().isOnEdge()) {

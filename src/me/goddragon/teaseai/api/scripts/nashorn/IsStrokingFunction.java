@@ -22,6 +22,8 @@ public class IsStrokingFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
+        super.call(object, args);
+
         switch (args.length) {
             case 0:
                 return  StrokeHandler.getHandler().isStroking();

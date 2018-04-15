@@ -25,6 +25,8 @@ public class ShowTeaseImageFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
+        super.call(object, args);
+
         File file = TeaseAI.application.getMediaCollection().getRandomTeaseFile(MediaType.IMAGE);
 
         if(file == null || !file.exists()) {

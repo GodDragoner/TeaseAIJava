@@ -23,6 +23,8 @@ public class SendInputFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
+        super.call(object, args);
+
         switch (args.length) {
             case 1:
                 return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());

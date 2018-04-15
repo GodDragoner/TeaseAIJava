@@ -24,6 +24,8 @@ public class CreateInputFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
+        super.call(object, args);
+
         Answer answer = null;
         switch (args.length) {
             case 1:

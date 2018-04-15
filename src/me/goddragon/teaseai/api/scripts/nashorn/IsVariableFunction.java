@@ -22,6 +22,8 @@ public class IsVariableFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
+        super.call(object, args);
+
         switch (args.length) {
             case 1:
                 return PersonalityManager.getManager().getActivePersonality().getVariableHandler().variableExist(args[0].toString());

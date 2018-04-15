@@ -22,6 +22,8 @@ public class SetTempVarFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
+        super.call(object, args);
+
         switch(args.length) {
             case 2:
                 if(args[0] instanceof String) {

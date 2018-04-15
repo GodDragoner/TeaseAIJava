@@ -22,6 +22,8 @@ public class SendMessageFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
+        super.call(object, args);
+
         switch(args.length) {
             case 1:
                 ChatHandler.getHandler().getSelectedSender().sendMessage(args[0].toString());

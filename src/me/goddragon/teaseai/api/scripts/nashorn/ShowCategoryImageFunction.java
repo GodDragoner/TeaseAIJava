@@ -26,6 +26,8 @@ public class ShowCategoryImageFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
+        super.call(object, args);
+        
         if(args.length >= 1 && args[0] instanceof String) {
             String category = (String) args[0];
 
