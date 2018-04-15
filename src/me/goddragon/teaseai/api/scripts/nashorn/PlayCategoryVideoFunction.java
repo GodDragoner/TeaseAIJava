@@ -16,7 +16,7 @@ import java.util.logging.Level;
 public class PlayCategoryVideoFunction extends CustomFunction {
 
     public PlayCategoryVideoFunction() {
-        super("playCategoryVideo");
+        super("playCategoryVideo", "playCategoryVideo", "displayCategoryVideo");
     }
 
     @Override

@@ -109,6 +109,15 @@ public class Answer {
         return false;
     }
 
+    public boolean isInt() {
+        try {
+            Integer.parseInt(answer);
+            return true;
+        } catch (NumberFormatException ex) {}
+
+        return false;
+    }
+
     public boolean isDouble() {
         try {
             Double.parseDouble(answer);

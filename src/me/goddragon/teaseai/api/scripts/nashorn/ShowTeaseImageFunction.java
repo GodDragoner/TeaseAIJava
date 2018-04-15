@@ -15,7 +15,7 @@ import java.util.logging.Level;
 public class ShowTeaseImageFunction extends CustomFunction {
 
     public ShowTeaseImageFunction() {
-        super("showTeaseImage");
+        super("showTeaseImage", "showTeasePicture", "displayTeaseImage", "displayTeasePicture");
     }
 
     @Override

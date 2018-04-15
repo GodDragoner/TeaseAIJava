@@ -67,6 +67,8 @@ public class ScriptHandler {
         registerFunction(new CreateInputFunction());
         registerFunction(new EndSessionFunction());
         registerFunction(new ReplaceVocabulariesFunction());
+        registerFunction(new SleepFunction());
+        registerFunction(new WaitFunction());
 
         engine.put("run", (Consumer<String>) this::evalScript);
     }

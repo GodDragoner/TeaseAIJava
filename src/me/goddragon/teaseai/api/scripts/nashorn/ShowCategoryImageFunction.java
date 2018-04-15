@@ -16,7 +16,7 @@ import java.util.logging.Level;
 public class ShowCategoryImageFunction extends CustomFunction {
 
     public ShowCategoryImageFunction() {
-        super("showCategoryImage");
+        super("showCategoryImage", "showCategoryPicture", "displayCategoryImage", "displayCategoryPicture");
     }
 
     @Override

@@ -31,9 +31,14 @@ public class SetDateFunction extends CustomFunction {
                 }
 
                 break;
+            case 2:
+                if(args[0] instanceof String && args[1] instanceof TeaseDate) {
+                    return PersonalityManager.getManager().getActivePersonality().getVariableHandler().setVariable((String) args[0], args[1]);
+                }
+
+                break;
             case 0:
-                TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
-                return null;
+                return new TeaseDate(Calendar.getInstance().getTime());
         }
 
         TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());

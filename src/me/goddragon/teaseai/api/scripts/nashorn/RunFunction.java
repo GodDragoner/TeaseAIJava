@@ -24,6 +24,7 @@ public class RunFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         if(args.length > 1) {
             ScriptHandler.getHandler().evalScript(args[0].toString());
+            return null;
         }
 
         TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());

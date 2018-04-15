@@ -32,6 +32,11 @@ public class TeaseDate {
         return this;
     }
 
+    public TeaseDate setHour(int hour) {
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        return this;
+    }
+
     public TeaseDate setDay(int days) {
         calendar.set(Calendar.DAY_OF_MONTH, days);
         return this;
@@ -54,6 +59,11 @@ public class TeaseDate {
 
     public TeaseDate addMinute(int minutes) {
         calendar.add(Calendar.MINUTE, minutes);
+        return this;
+    }
+
+    public TeaseDate addHour(int hour) {
+        calendar.add(Calendar.HOUR_OF_DAY, hour);
         return this;
     }
 
@@ -80,6 +90,10 @@ public class TeaseDate {
         return calendar.get(Calendar.MINUTE);
     }
 
+    public int getHour() {
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
     public int getDay() {
         return calendar.get(Calendar.DAY_OF_MONTH);
     }
@@ -102,6 +116,10 @@ public class TeaseDate {
 
     public boolean after(TeaseDate teaseDate) {
         return calendar.after(teaseDate.getCalendar());
+    }
+
+    public boolean sameDay(TeaseDate teaseDate) {
+        return calendar.get(Calendar.DAY_OF_YEAR) == teaseDate.getCalendar().get(Calendar.DAY_OF_YEAR) && calendar.get(Calendar.YEAR) == teaseDate.getCalendar().get(Calendar.YEAR);
     }
 
     public boolean hasPassed() {
