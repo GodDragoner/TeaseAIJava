@@ -40,6 +40,9 @@ public class TeaseAI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        //Will allow us to use ecma6 language
+        System.setProperty("nashorn.args", "--language=es6");
+
         application = this;
         mainThread = Thread.currentThread();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/main/main.fxml"));
