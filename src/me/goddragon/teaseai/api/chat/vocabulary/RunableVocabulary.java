@@ -51,6 +51,8 @@ public class RunableVocabulary extends Vocabulary {
                     "Error: " + e.getMessage(), false);
         } catch (NoSuchMethodException e) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Vocabulary '" + responseName + " is missing the function to trigger it. Create the function '" + StringUtils.decapitalize(name) + "Vocabulary() for this to work." , false);
+        } catch(NullPointerException ex) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Vocabulary '" + responseName + "' returned null!" , false);
         }
 
         return '!' + name + '!';

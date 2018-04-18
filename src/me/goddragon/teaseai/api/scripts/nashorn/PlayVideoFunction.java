@@ -4,6 +4,7 @@ import me.goddragon.teaseai.api.media.MediaHandler;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Level;
 
@@ -28,12 +29,24 @@ public class PlayVideoFunction extends CustomFunction {
         switch(args.length) {
             case 1:
                 if(args[0] instanceof String) {
-                    return MediaHandler.getHandler().playVideo(FileUtils.getRandomMatchingFile(args[0].toString()));
+                    File file = FileUtils.getRandomMatchingFile(args[0].toString());
+                    if(file == null) {
+                        TeaseLogger.getLogger().log(Level.SEVERE, "Matching video file for path " + args[0] + " does not exist.");
+                        return null;
+                    }
+
+                    return MediaHandler.getHandler().playVideo(file);
                 }
                 break;
             case 2:
                 if(args[1] instanceof Boolean) {
-                    return MediaHandler.getHandler().playVideo(FileUtils.getRandomMatchingFile(args[0].toString()), (Boolean) args[1]);
+                    File file = FileUtils.getRandomMatchingFile(args[0].toString());
+                    if(file == null) {
+                        TeaseLogger.getLogger().log(Level.SEVERE, "Matching video file for path " + args[0] + " does not exist.");
+                        return null;
+                    }
+
+                    return MediaHandler.getHandler().playVideo(file, (Boolean) args[1]);
                 }
 
                 break;

@@ -23,7 +23,7 @@ import java.util.logging.Level;
 public class ScriptHandler {
 
     private static ScriptHandler handler = new ScriptHandler();
-    private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
+    private ScriptEngine engine;
 
     private Personality currentPersonality;
 
@@ -80,6 +80,10 @@ public class ScriptHandler {
     }
 
     public void startPersonality(Personality personality) {
+        //Reassign because we want to clear the catch
+        this.engine = new ScriptEngineManager().getEngineByName("nashorn");
+        ScriptHandler.getHandler().load();
+
         this.currentPersonality = personality;
 
         currentPersonality.getVariableHandler().setVariable("personalityVersion", currentPersonality.getVersion().getValue(), true);

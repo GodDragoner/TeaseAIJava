@@ -4,6 +4,7 @@ import me.goddragon.teaseai.api.media.MediaHandler;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Level;
 
@@ -27,10 +28,22 @@ public class PlayAudioFunction extends CustomFunction {
 
         switch(args.length) {
             case 1:
-                return MediaHandler.getHandler().playAudio(FileUtils.getRandomMatchingFile(args[0].toString()));
+                File file = FileUtils.getRandomMatchingFile(args[0].toString());
+                if(file == null) {
+                    TeaseLogger.getLogger().log(Level.SEVERE, "Matching audio file for path " + args[0] + " does not exist.");
+                    return null;
+                }
+
+                return MediaHandler.getHandler().playAudio(file);
             case 2:
                 if(args[1] instanceof Boolean) {
-                    return MediaHandler.getHandler().playAudio(FileUtils.getRandomMatchingFile(args[0].toString()), (Boolean) args[1]);
+                    file = FileUtils.getRandomMatchingFile(args[0].toString());
+                    if(file == null) {
+                        TeaseLogger.getLogger().log(Level.SEVERE, "Matching audio file for path " + args[0] + " does not exist.");
+                        return null;
+                    }
+
+                    return MediaHandler.getHandler().playAudio(file, (Boolean) args[1]);
                 }
                 break;
             case 0:

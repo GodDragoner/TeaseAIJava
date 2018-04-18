@@ -3,6 +3,7 @@ package me.goddragon.teaseai.api.chat.vocabulary;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
+import me.goddragon.teaseai.utils.StringUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.*;
@@ -132,7 +133,8 @@ public class VocabularyHandler {
             System.out.println("Max loop exceeded");
         }
 
-        return newResult;
+
+        return StringUtils.capitalize(newResult);
     }
 
     public static VocabularyHandler getHandler() {

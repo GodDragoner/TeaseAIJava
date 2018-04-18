@@ -156,7 +156,7 @@ public class MediaHandler {
 
     public MediaPlayer playAudio(File file, boolean wait) {
         if(file == null || !file.exists()) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "Audio " + file.getPath() + " does not exist.");
+            TeaseLogger.getLogger().log(Level.SEVERE, "Audio " + (file == null? "null" : file.getPath()) + " does not exist.");
             return null;
         }
 

@@ -15,7 +15,6 @@ import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
 import me.goddragon.teaseai.api.media.MediaCollection;
 import me.goddragon.teaseai.api.media.MediaFetishType;
-import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.api.session.Session;
@@ -75,7 +74,6 @@ public class TeaseAI extends Application {
 
         this.mediaCollection = new MediaCollection();
 
-        ScriptHandler.getHandler().load();
         PersonalityManager.getManager().loadPersonalities();
 
         initializeNewSession();

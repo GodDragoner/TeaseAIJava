@@ -136,6 +136,9 @@ public class ChatParticipant {
     }
 
     private void sendMessage(String message, long millisToWait) {
+        //We need to wait BEFORE we replace the vocabularies. Otherwise any code triggered by the vocab will execute before the message is send
+        startTyping(message);
+
         //Replace all vocabularies
         message = VocabularyHandler.getHandler().replaceAllVocabularies(message);
 
@@ -150,8 +153,6 @@ public class ChatParticipant {
 
         text.setFont(Font.font(null, FontWeight.BOLD, 13));
         Text messageText = new Text(message);
-
-        startTyping(message);
 
         //Check whether we can find a response fitting right now
         if (type == SenderType.SUB) {
