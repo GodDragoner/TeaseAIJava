@@ -129,8 +129,7 @@ public class VocabularyHandler {
         }
 
         if (loops == 10) {
-            //TODO: Log max amount of calling here
-            System.out.println("Max loop exceeded");
+            TeaseLogger.getLogger().log(Level.WARNING, "Couldn't replace all vocabularies in string '" + message + "' because maximum amount of recursion reached");
         }
 
 
