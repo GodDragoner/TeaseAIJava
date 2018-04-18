@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.gui.settings;
 
+import java.util.TreeMap;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -8,8 +9,6 @@ import javafx.scene.control.SelectionMode;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.PersonalityVariable;
 import me.goddragon.teaseai.api.config.VariableHandler;
-
-import java.util.Map;
 
 /**
  * Created by GodDragon on 05.04.2018.
@@ -25,8 +24,8 @@ public class DebugSettings {
 
     public void initiate() {
         if(variableHandler != null) {
-            for (Map.Entry<String, PersonalityVariable> entry : variableHandler.getVariables().entrySet()) {
-                settingsController.variableListView.getItems().add(entry.getValue());
+            for (PersonalityVariable entry : new TreeMap<>(variableHandler.getVariables()).values()) {
+                settingsController.variableListView.getItems().add(entry);
             }
         }
 
