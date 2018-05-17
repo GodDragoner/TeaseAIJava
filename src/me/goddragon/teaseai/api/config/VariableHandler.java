@@ -21,6 +21,7 @@ public class VariableHandler {
     private final Personality personality;
     private HashMap<String, PersonalityVariable> variables = new HashMap<>();
 
+    private HashMap<String, PersonalityVariable> nonSetSupportedVariables = new HashMap<>();
 
     public VariableHandler(Personality personality) {
         this.personality = personality;
@@ -29,7 +30,6 @@ public class VariableHandler {
 
         for (File file : personalityVariableFolder.listFiles()) {
             if (file.isFile() && file.getName().endsWith(".var")) {
-
                 try {
                     // Open the file
                     FileInputStream fstream = new FileInputStream(file);
@@ -48,7 +48,6 @@ public class VariableHandler {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
         }
     }
@@ -60,13 +59,30 @@ public class VariableHandler {
     public Object setVariable(String name, Object value, boolean temporary) {
         name = name.toLowerCase();
 
-        //Skip setting the variable because we have the same value already stored
-        if(variableExist(name) && (getVariable(name).getValue().equals(value) || getVariable(name).getValue() == value)) {
-            return value;
+        PersonalityVariable personalityVariable;
+        if(variableExist(name)) {
+            //Just update the existing value
+            personalityVariable = getVariable(name);
+            personalityVariable.setValue(value);
+
+            //Skip setting the variable because we have the same value already stored
+            if ((getVariable(name).getValue().equals(value) || getVariable(name).getValue() == value)) {
+                return value;
+            }
+        } else {
+            personalityVariable = new PersonalityVariable(name, value);
+
+            if(nonSetSupportedVariables.containsKey(name)) {
+                PersonalityVariable supportedVariable = nonSetSupportedVariables.get(name);
+                personalityVariable.setSupportedByPersonality(true);
+                personalityVariable.setCustomName(supportedVariable.getCustomName());
+                personalityVariable.setDescription(supportedVariable.getDescription());
+                nonSetSupportedVariables.remove(name);
+            }
+
+            variables.put(personalityVariable.getConfigName(), personalityVariable);
         }
 
-        PersonalityVariable personalityVariable = new PersonalityVariable(name, value);
-        variables.put(personalityVariable.getConfigName(), personalityVariable);
 
         //If this is not meant to be permanent we can just skip the file stuff
         if (temporary) {
@@ -89,7 +105,18 @@ public class VariableHandler {
     }
 
     public void deleteVariable(String name) {
-        variables.remove(name.toLowerCase());
+        name = name.toLowerCase();
+
+        if(variableExist(name)) {
+            PersonalityVariable personalityVariable = getVariable(name);
+
+            //Move the supported variable to the list of not yet set variables
+            if(personalityVariable.isSupportedByPersonality()) {
+                nonSetSupportedVariables.put(name, personalityVariable);
+            }
+        }
+
+        variables.remove(name);
 
         //If the variable is not existing we don't need to create it anyway
         File variableFile = getVariableFile(name, false);
@@ -100,24 +127,30 @@ public class VariableHandler {
     }
 
     public Object getVariableValue(String name) {
-        if (!variables.containsKey(name.toLowerCase())) {
+        name = name.toLowerCase();
+
+        if (!variables.containsKey(name)) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Variable '" + name + "' does not exist.");
             return null;
         }
 
-        return variables.get(name.toLowerCase()).getValue();
+        return variables.get(name).getValue();
     }
 
     public PersonalityVariable getVariable(String name) {
-        if (!variables.containsKey(name.toLowerCase())) {
+        name = name.toLowerCase();
+
+        if (!variables.containsKey(name)) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Variable '" + name + "' does not exist.");
             return null;
         }
 
-        return variables.get(name.toLowerCase());
+        return variables.get(name);
     }
 
     public boolean isVariable(String name) {
+        name = name.toLowerCase();
+
         Object variable = getVariableValue(name);
         return variable instanceof Boolean && variable.equals(Boolean.TRUE);
     }
@@ -144,6 +177,24 @@ public class VariableHandler {
         }
 
         return variableFile;
+    }
+
+    public void setVariableSupport(String variableName, String customName, String description) {
+        variableName = variableName.toLowerCase();
+
+        if(variableExist(variableName)) {
+            PersonalityVariable personalityVariable = getVariable(variableName);
+            personalityVariable.setDescription(description);
+            personalityVariable.setCustomName(customName);
+            personalityVariable.setSupportedByPersonality(true);
+        } else {
+            PersonalityVariable personalityVariable = new PersonalityVariable(variableName, null);
+            personalityVariable.setDescription(description);
+            personalityVariable.setCustomName(customName);
+            personalityVariable.setSupportedByPersonality(true);
+
+            nonSetSupportedVariables.put(variableName, personalityVariable);
+        }
     }
 
     public Object getObjectFromString(String string) {

@@ -118,6 +118,57 @@ public class URLGenreSettings {
         });
 
 
+        settingsController.removeMediaURLButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(settingsController.assignedURLFileList.getSelectionModel().getSelectedItems().isEmpty()) {
+                    return;
+                }
+
+                MediaFetishType mediaFetishType = settingsController.mediaSettings.getSelectedURLMediaFetish();
+
+                boolean changed = false;
+                for (Object object : settingsController.assignedURLFileList.getSelectionModel().getSelectedItems()) {
+                    if(!settingsController.assignedURLFileList.getItems().contains(object)) {
+                        continue;
+                    }
+
+                    settingsController.assignedURLFileList.getItems().remove(object);
+
+                    if (mediaFetishType != null) {
+                        TeaseAI.application.getMediaCollection().removeMediaHolder((MediaHolder) object, mediaFetishType);
+                    }
+
+                    changed = true;
+                }
+
+                if(changed) {
+                    saveImageMediaURLs();
+                }
+            }
+        });
+
+        settingsController.assignMediaURLButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                MediaFetishType mediaFetishType = settingsController.mediaSettings.getSelectedURLMediaFetish();
+
+                for (Object mediaURL : settingsController.urlFileDragDropList.getSelectionModel().getSelectedItems()) {
+                    if (mediaURL != null && !settingsController.assignedURLFileList.getItems().contains(mediaURL)) {
+                        settingsController.assignedURLFileList.getItems().add(mediaURL);
+
+                        if (mediaFetishType != null) {
+                            TeaseAI.application.getMediaCollection().addMediaHolder(mediaFetishType, (MediaHolder) mediaURL);
+                        }
+                    }
+                }
+
+                if(!settingsController.urlFileDragDropList.getSelectionModel().getSelectedItems().isEmpty()) {
+                    saveImageMediaURLs();
+                }
+            }
+        });
+
         updateAssignedURLList();
     }
 

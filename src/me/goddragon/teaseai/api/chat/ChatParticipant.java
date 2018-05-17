@@ -218,6 +218,7 @@ public class ChatParticipant {
 
         //Reset the latest answer message
         answer.setAnswer(null);
+        answer.setStartedAt(System.currentTimeMillis());
 
         //Wait for answer
         TeaseAI.application.waitThread(Thread.currentThread(), answer.getMillisTimeout());

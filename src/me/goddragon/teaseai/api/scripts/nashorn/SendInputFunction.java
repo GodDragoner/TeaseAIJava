@@ -4,7 +4,6 @@ import me.goddragon.teaseai.api.chat.Answer;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
-import java.util.Arrays;
 import java.util.logging.Level;
 
 /**
@@ -26,22 +25,29 @@ public class SendInputFunction extends CustomFunction {
         super.call(object, args);
 
         switch (args.length) {
-            case 1:
-                return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
-            case 2:
-                if (args[1] instanceof Integer) {
-                    return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Integer) args[1]);
-                } else if (args[1] instanceof Answer) {
-                    return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Answer) args[1]);
-                }
-
-                break;
             case 0:
                 TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
                 return null;
-        }
+            case 1:
+                return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
+            default:
+                Answer answer;
+                int offset = 1;
+                if (args[1] instanceof Integer) {
+                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Integer) args[1]);
+                    offset += 1;
+                } else if (args[1] instanceof Answer) {
+                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Answer) args[1]);
+                    offset += 1;
+                } else {
+                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
+                }
 
-        TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());
-        return null;
+                for (int x = offset; x < args.length; x++) {
+                    answer.addOption(args[x].toString(), args[x].toString());
+                }
+
+                return answer;
+        }
     }
 }

@@ -21,6 +21,29 @@ public class Answer {
         this.millisTimeout = timeoutSeconds*1000;
     }
 
+    public void addOption(String optionMessage) {
+        addOption(optionMessage, optionMessage);
+    }
+
+    public void addOption(String optionName, String optionMessage) {
+        TeaseAI.application.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                TeaseAI.application.getController().getLazySubController().addButton(TeaseAI.application.getController().getLazySubController().createSendMessageButton(optionName, optionMessage));
+            }
+        });
+    }
+
+    public void clearOptions() {
+        TeaseAI.application.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                TeaseAI.application.getController().getLazySubController().clear();
+                TeaseAI.application.getController().getLazySubController().createDefaults();
+            }
+        });
+    }
+
     public void loop() {
         this.answer = null;
         this.timeout = false;

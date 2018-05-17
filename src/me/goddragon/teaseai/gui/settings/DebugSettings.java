@@ -1,6 +1,5 @@
 package me.goddragon.teaseai.gui.settings;
 
-import java.util.TreeMap;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -9,6 +8,8 @@ import javafx.scene.control.SelectionMode;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.PersonalityVariable;
 import me.goddragon.teaseai.api.config.VariableHandler;
+
+import java.util.TreeMap;
 
 /**
  * Created by GodDragon on 05.04.2018.
@@ -23,11 +24,9 @@ public class DebugSettings {
     }
 
     public void initiate() {
-        if(variableHandler != null) {
-            for (PersonalityVariable entry : new TreeMap<>(variableHandler.getVariables()).values()) {
-                settingsController.variableListView.getItems().add(entry);
-            }
-        }
+        settingsController.onlySupportedVariablesCheckbox.setSelected(true);
+
+        updateVariableList();
 
         settingsController.variableListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<PersonalityVariable>() {
             @Override
@@ -47,30 +46,54 @@ public class DebugSettings {
         settingsController.variableSaveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String variable = getSelectedVariable();
+                String variable = getSelectedVariable().getConfigName();
 
                 if (variable != null && variableHandler != null) {
                     variableHandler.setVariable(variable, variableHandler.getObjectFromString(settingsController.variableValueTextField.getText()));
                 }
             }
         });
+
+        settingsController.onlySupportedVariablesCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                updateVariableList();
+            }
+        });
     }
 
-    public void updateVariableData() {
-        String variable = getSelectedVariable();
+    public void updateVariableList() {
+        if(variableHandler != null) {
+            settingsController.variableListView.getSelectionModel().clearSelection();
+            settingsController.variableListView.getItems().clear();
 
-        if (variable != null && variableHandler != null) {
-            Object object = variableHandler.getVariableValue(variable);
-
-            if(object != null) {
-                settingsController.variableValueTextField.setText(object.toString());
+            for (PersonalityVariable entry : new TreeMap<>(variableHandler.getVariables()).values()) {
+                if(!settingsController.onlySupportedVariablesCheckbox.isSelected() || entry.isSupportedByPersonality()) {
+                    settingsController.variableListView.getItems().add(entry);
+                }
             }
         }
     }
 
-    private String getSelectedVariable() {
+    public void updateVariableData() {
+        PersonalityVariable variable = getSelectedVariable();
+
+        if (variable != null && variableHandler != null) {
+            Object object = variable.getValue();
+
+            if(object != null) {
+                settingsController.variableValueTextField.setText(object.toString());
+            }
+
+            if(variable.isSupportedByPersonality()) {
+                settingsController.descriptionLabel.setText(variable.getDescription());
+            }
+        }
+    }
+
+    private PersonalityVariable getSelectedVariable() {
         if (settingsController.variableListView.getSelectionModel().getSelectedItems().size() == 1) {
-            return settingsController.variableListView.getSelectionModel().getSelectedItem().toString();
+            return (PersonalityVariable) settingsController.variableListView.getSelectionModel().getSelectedItem();
         }
 
         return null;

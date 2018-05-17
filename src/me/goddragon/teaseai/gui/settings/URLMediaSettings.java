@@ -31,17 +31,29 @@ public class URLMediaSettings {
         settingsController.addURLButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                String url = settingsController.addURLTextField.getText();
+                String url = settingsController.addURLTextField.getText().toLowerCase();
 
-                if (url != null && url.endsWith("tumblr.com")) {
+                String ending = "tumblr.com";
+                if (url != null && url.contains(ending)) {
+                    if(!url.endsWith(ending)) {
+                        url = url.substring(0, url.indexOf(ending) + ending.length());
+                    }
+
+                    if(!url.startsWith("http://") && !url.startsWith("https://")) {
+                        url = "https://" + url;
+                    }
+
                     settingsController.addURLButton.setDisable(true);
                     settingsController.addURLTextField.setDisable(true);
                     settingsController.refreshURLButton.setDisable(true);
 
+                    settingsController.addURLTextField.setText(url);
+
+                    String finalUrl = url;
                     new Thread() {
                         @Override
                         public void run() {
-                            MediaURL mediaURL = new MediaURL(MediaType.IMAGE, url, null, settingsController.urlProgressLabel);
+                            MediaURL mediaURL = new MediaURL(MediaType.IMAGE, finalUrl, null, settingsController.urlProgressLabel);
                             mediaURL.saveToFile();
                             TeaseAI.application.getMediaCollection().addMediaHolder(null, mediaURL);
 

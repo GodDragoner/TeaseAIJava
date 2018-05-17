@@ -12,10 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextFlow;
@@ -33,6 +30,7 @@ import java.io.File;
 public class Controller {
 
     private final Stage stage;
+    private LazySubController lazySubController;
 
     @FXML
     private MediaView mediaView;
@@ -72,6 +70,10 @@ public class Controller {
 
     @FXML
     private StackPane domImageViewStackPane;
+
+    //Sidebar
+    @FXML
+    private FlowPane lazySubPane;
 
     public Controller(Stage stage) {
         this.stage = stage;
@@ -155,6 +157,9 @@ public class Controller {
                 SettingsController.openGUI();
             }
         });
+
+        lazySubController = new LazySubController(lazySubPane);
+        lazySubController.createDefaults();
     }
 
     public void loadDomInfo() {
@@ -279,5 +284,9 @@ public class Controller {
 
     public Button getStartChatButton() {
         return startChatButton;
+    }
+
+    public LazySubController getLazySubController() {
+        return lazySubController;
     }
 }

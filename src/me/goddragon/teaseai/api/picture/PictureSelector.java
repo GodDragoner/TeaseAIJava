@@ -31,7 +31,7 @@ public class PictureSelector {
         } else if(percentage > 10) {
             return participant.getPictureSet().getRandomPictureForStates(DressState.FULLY_DRESSED, DressState.HALF_DRESSED);
         } else {
-            return participant.getPictureSet().getRandomPictureForStates(DressState.FULLY_DRESSED);
+            return participant.getPictureSet().getRandomPicture(DressState.FULLY_DRESSED, PictureTag.FACE);
         }
     }
 }

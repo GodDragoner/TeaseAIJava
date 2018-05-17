@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import me.goddragon.teaseai.TeaseAI;
@@ -71,6 +72,15 @@ public class SettingsController {
     @FXML
     protected ListView urlFetishTypeList;
 
+    @FXML
+    protected GridPane moveMediaURLGridPane;
+
+    @FXML
+    protected Button assignMediaURLButton;
+
+    @FXML
+    protected Button removeMediaURLButton;
+
     //Media Files and Folders
     @FXML
     protected ListView mediaFetishTypeList;
@@ -133,6 +143,12 @@ public class SettingsController {
 
     @FXML
     protected Button variableSaveButton;
+
+    @FXML
+    protected CheckBox onlySupportedVariablesCheckbox;
+
+    @FXML
+    protected Label descriptionLabel;
 
     public void initiate() {
         mediaSettings.initiate();

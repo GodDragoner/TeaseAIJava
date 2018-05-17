@@ -250,6 +250,7 @@ public class GenreMediaSettings {
             }
         });
 
+
         updateAssignedPathsList();
     }
 
