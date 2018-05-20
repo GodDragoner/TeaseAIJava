@@ -70,6 +70,9 @@ public class ScriptHandler {
         registerFunction(new SleepFunction());
         registerFunction(new WaitFunction());
         registerFunction(new RegisterSupportedVariableFunction());
+        registerFunction(new SetTypeSpeedFunction());
+        registerFunction(new GetTypeSpeedFunction());
+        registerFunction(new CreateMediaURLFromFileFunction());
 
         engine.put("run", (Consumer<String>) this::evalScript);
     }

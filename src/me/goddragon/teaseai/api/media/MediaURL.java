@@ -9,8 +9,6 @@ import me.goddragon.teaseai.utils.TeaseLogger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -51,14 +49,13 @@ public class MediaURL extends MediaHolder implements Observable {
         String urlFileName;
 
         this.url = url;
-        if(this.url != null && !this.url.startsWith("http")) {
+        if (this.url != null && !this.url.startsWith("http")) {
             this.url = "https://" + this.url;
         }
 
-        if(fileName != null) {
+        if (fileName != null) {
             urlFileName = fileName;
         } else {
-
             urlFileName = getFileName();
         }
 
@@ -67,53 +64,68 @@ public class MediaURL extends MediaHolder implements Observable {
         new File(IMAGE_DOWNLOAD_PATH).mkdirs();
 
         this.file = new File(URL_FILE_PATH + File.separator + urlFileName);
-        if(!file.exists()) {
+        if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            if(url.toLowerCase().contains("tumblr.com")) {
+            if (url.toLowerCase().contains("tumblr.com")) {
                 loadImagesFromTumblrURL(progressLabel);
                 saveToFile();
             }
         } else {
-            try {
-                //Open the file
-                FileInputStream fstream = new FileInputStream(file);
-                BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            fromFile();
+        }
+    }
 
-                int line = 0;
+    public MediaURL(MediaType mediaType, File file) {
+        super(mediaType);
 
-                String strLine;
+        //Create dirs
+        new File(URL_FILE_PATH).mkdirs();
+        new File(IMAGE_DOWNLOAD_PATH).mkdirs();
 
-                //Read line by line
-                while ((strLine = br.readLine()) != null)   {
-                    if(line == 0) {
-                        this.url = strLine;
-                    } else if(line == 1) {
-                        useForTease = Boolean.valueOf(strLine);
-                    } else {
-                        //Add the url to the list
-                        mediaURLs.add(strLine);
-                    }
+        this.file = file;
+        fromFile();
+    }
 
-                    line++;
+    private void fromFile() {
+        try {
+            //Open the file
+            FileInputStream fstream = new FileInputStream(file);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+            int line = 0;
+
+            String strLine;
+
+            //Read line by line
+            while ((strLine = br.readLine()) != null) {
+                if (line == 0) {
+                    this.url = strLine;
+                } else if (line == 1) {
+                    useForTease = Boolean.valueOf(strLine);
+                } else {
+                    //Add the url to the list
+                    mediaURLs.add(strLine);
                 }
 
-                //Close the input stream
-                br.close();
-            } catch (IOException e) {
-                TeaseLogger.getLogger().log(Level.SEVERE, "Failed to download image from url '" + url + "'.", e);
-                e.printStackTrace();
+                line++;
             }
+
+            //Close the input stream
+            br.close();
+        } catch (IOException e) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Failed to download image from url '" + url + "'.", e);
+            e.printStackTrace();
         }
     }
 
     public String getFileName() {
         //If the url ends with a / remove it
-        if(url.endsWith("/")) {
+        if (url.endsWith("/")) {
             url = url.substring(0, url.length() - 1);
         }
 
@@ -134,7 +146,7 @@ public class MediaURL extends MediaHolder implements Observable {
         int num = 50;
         int imagesFound = num;
 
-        while(imagesFound >= num) {
+        while (imagesFound >= num) {
             imagesFound = 0;
             String apiUrl = url + "/api/read?type=photo&num=" + num + "&start=" + currentIndex;
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -160,7 +172,7 @@ public class MediaURL extends MediaHolder implements Observable {
 
             currentIndex += num;
 
-            if(progressLabel != null) {
+            if (progressLabel != null) {
                 int finalCurrentIndex = currentIndex;
                 TeaseAI.application.runOnUIThread(new Runnable() {
                     @Override
@@ -182,7 +194,7 @@ public class MediaURL extends MediaHolder implements Observable {
             writer.println(url);
             writer.println(useForTease);
 
-            for(String mediaURL : mediaURLs) {
+            for (String mediaURL : mediaURLs) {
                 writer.println(mediaURL);
             }
 
@@ -195,13 +207,12 @@ public class MediaURL extends MediaHolder implements Observable {
     }
 
     private String innerXml(Node node) {
-        DOMImplementationLS lsImpl = (DOMImplementationLS)node.getOwnerDocument().getImplementation().getFeature("LS", "3.0");
-        LSSerializer lsSerializer = lsImpl.createLSSerializer();
         NodeList childNodes = node.getChildNodes();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < childNodes.getLength(); i++) {
-            sb.append(lsSerializer.writeToString(childNodes.item(i)));
+            sb.append(childNodes.item(i).getTextContent());
         }
+
         return sb.toString();
     }
 
@@ -211,8 +222,8 @@ public class MediaURL extends MediaHolder implements Observable {
     }
 
     public File getRandomMedia(int loops) {
-        if(!mediaURLs.isEmpty()) {
-            for(int tries = 0; tries < 10; tries++) {
+        if (!mediaURLs.isEmpty()) {
+            for (int tries = 0; tries < 10; tries++) {
                 String url = mediaURLs.get(RandomUtils.randInt(0, mediaURLs.size() - 1));
 
                 String[] split = url.split("/");
@@ -221,7 +232,7 @@ public class MediaURL extends MediaHolder implements Observable {
                 path = IMAGE_DOWNLOAD_PATH + File.separator + path;
                 File file = new File(path);
 
-                if(file.exists()) {
+                if (file.exists()) {
                     return file;
                 }
 
@@ -231,7 +242,7 @@ public class MediaURL extends MediaHolder implements Observable {
                     byte[] buf = new byte[1024];
 
                     int n;
-                    while (-1!=(n=in.read(buf))) {
+                    while (-1 != (n = in.read(buf))) {
                         out.write(buf, 0, n);
                     }
                     out.close();
@@ -239,19 +250,19 @@ public class MediaURL extends MediaHolder implements Observable {
 
                     byte[] response = out.toByteArray();
 
-                    FileOutputStream fos = new FileOutputStream( path);
+                    FileOutputStream fos = new FileOutputStream(path);
                     fos.write(response);
                     fos.close();
                 } catch (IOException e) {
                     //Try different media if picture is down
-                    if(e instanceof ConnectException && loops < 10) {
+                    if (e instanceof ConnectException && loops < 10) {
                         return getRandomMedia(loops);
                     }
 
                     e.printStackTrace();
                 }
 
-                if(file.exists()) {
+                if (file.exists()) {
                     return file;
                 }
             }

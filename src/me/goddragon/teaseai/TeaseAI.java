@@ -15,15 +15,19 @@ import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
 import me.goddragon.teaseai.api.media.MediaCollection;
 import me.goddragon.teaseai.api.media.MediaFetishType;
+import me.goddragon.teaseai.api.media.MediaHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.api.session.Session;
+import me.goddragon.teaseai.api.session.StrokeHandler;
 import me.goddragon.teaseai.gui.main.Controller;
 
 /**
  * Created by GodDragon on 21.03.2018.
  */
 public class TeaseAI extends Application {
+
+    public static final String VERSION = "1.0.2";
 
     public static TeaseAI application;
     private ConfigHandler configHandler = new ConfigHandler("TeaseAI.properties");
@@ -48,7 +52,7 @@ public class TeaseAI extends Application {
         controller = new Controller(primaryStage);
         loader.setController(controller);
         Parent root = loader.load();
-        primaryStage.setTitle("Tease-AI");
+        primaryStage.setTitle("Tease-AI " + VERSION);
         primaryStage.setScene(new Scene(root, 1480, 720));
         primaryStage.show();
         controller.initiate();
@@ -147,6 +151,13 @@ public class TeaseAI extends Application {
 
     public void initializeNewSession() {
         this.session = new Session();
+
+        //End everything such as metronome and stroking
+        StrokeHandler.getHandler().setEdging(false);
+        StrokeHandler.getHandler().setOnEdge(false);
+        StrokeHandler.getHandler().stopMetronome();
+
+        MediaHandler.getHandler().showPicture(null);
 
         session.setActivePersonality((Personality) controller.getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
     }
