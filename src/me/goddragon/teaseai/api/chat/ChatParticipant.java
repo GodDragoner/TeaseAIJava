@@ -162,7 +162,7 @@ public class ChatParticipant {
                 response.setMessage(message);
 
                 //Queue the response so we can call it later
-                ResponseHandler.getHandler().addQueuedReponse(response);
+                ResponseHandler.getHandler().addQueuedResponse(response);
             }
         } else {
             //If the dom sends a message we will check for queued responses that need to be handle before continuing
@@ -172,9 +172,9 @@ public class ChatParticipant {
                 throw new IllegalStateException("Dom can only send messages on the script thread");
             }
 
-            Response queuedResponse = ResponseHandler.getHandler().getLatestQueuedReponse();
+            Response queuedResponse = ResponseHandler.getHandler().getLatestQueuedResponse();
             if (queuedResponse != null) {
-                ResponseHandler.getHandler().removeQueuedReponse(queuedResponse);
+                ResponseHandler.getHandler().removeQueuedResponse(queuedResponse);
 
                 //If this returns true the trigger was successful and we won't send the current message that was supposed to be sent
                 if (queuedResponse.trigger()) {

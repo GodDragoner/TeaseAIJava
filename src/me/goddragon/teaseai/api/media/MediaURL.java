@@ -65,6 +65,11 @@ public class MediaURL extends MediaHolder implements Observable {
 
         this.file = new File(URL_FILE_PATH + File.separator + urlFileName);
         if (!file.exists()) {
+            if(url == null) {
+                TeaseLogger.getLogger().log(Level.SEVERE, "URL file '" + file.getPath() + "' does not exist.");
+                return;
+            }
+
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -84,7 +89,6 @@ public class MediaURL extends MediaHolder implements Observable {
         super(mediaType);
 
         //Create dirs
-        new File(URL_FILE_PATH).mkdirs();
         new File(IMAGE_DOWNLOAD_PATH).mkdirs();
 
         this.file = file;
@@ -226,33 +230,8 @@ public class MediaURL extends MediaHolder implements Observable {
             for (int tries = 0; tries < 10; tries++) {
                 String url = mediaURLs.get(RandomUtils.randInt(0, mediaURLs.size() - 1));
 
-                String[] split = url.split("/");
-                String path = split[split.length - 1];
-
-                path = IMAGE_DOWNLOAD_PATH + File.separator + path;
-                File file = new File(path);
-
-                if (file.exists()) {
-                    return file;
-                }
-
                 try {
-                    InputStream in = new BufferedInputStream(new URL(url).openStream());
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    byte[] buf = new byte[1024];
-
-                    int n;
-                    while (-1 != (n = in.read(buf))) {
-                        out.write(buf, 0, n);
-                    }
-                    out.close();
-                    in.close();
-
-                    byte[] response = out.toByteArray();
-
-                    FileOutputStream fos = new FileOutputStream(path);
-                    fos.write(response);
-                    fos.close();
+                   return MediaHandler.getHandler().getImageFromURL(url);
                 } catch (IOException e) {
                     //Try different media if picture is down
                     if (e instanceof ConnectException && loops < 10) {
@@ -260,10 +239,6 @@ public class MediaURL extends MediaHolder implements Observable {
                     }
 
                     e.printStackTrace();
-                }
-
-                if (file.exists()) {
-                    return file;
                 }
             }
         }

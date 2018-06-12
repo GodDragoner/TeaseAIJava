@@ -6,6 +6,7 @@ import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 
@@ -30,7 +31,17 @@ public class ShowImageFunction extends CustomFunction {
         File file = null;
         if (args.length > 0) {
             if (args[0] instanceof String) {
-                file = FileUtils.getRandomMatchingFile(args[0].toString());
+                String arg = args[0].toString();
+                String lowerCaseArg = arg.toLowerCase();
+                if(lowerCaseArg.startsWith("http://") || lowerCaseArg.startsWith("https://")) {
+                    try {
+                        file = MediaHandler.getHandler().getImageFromURL(arg);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    file = FileUtils.getRandomMatchingFile(arg.toString());
+                }
                 if (file == null) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "Matching image file for path " + args[0] + " does not exist.");
                 } else {

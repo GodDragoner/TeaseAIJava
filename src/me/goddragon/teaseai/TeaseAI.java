@@ -27,7 +27,7 @@ import me.goddragon.teaseai.gui.main.Controller;
  */
 public class TeaseAI extends Application {
 
-    public static final String VERSION = "1.0.2";
+    public static final String VERSION = "1.0.5";
 
     public static TeaseAI application;
     private ConfigHandler configHandler = new ConfigHandler("TeaseAI.properties");
@@ -94,9 +94,9 @@ public class TeaseAI extends Application {
             throw new IllegalStateException("Can only check for new responses on the script thread");
         }
 
-        Response queuedResponse = ResponseHandler.getHandler().getLatestQueuedReponse();
+        Response queuedResponse = ResponseHandler.getHandler().getLatestQueuedResponse();
         if (queuedResponse != null) {
-            ResponseHandler.getHandler().removeQueuedReponse(queuedResponse);
+            ResponseHandler.getHandler().removeQueuedResponse(queuedResponse);
             return queuedResponse.trigger();
         }
 

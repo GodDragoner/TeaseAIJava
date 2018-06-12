@@ -28,6 +28,12 @@ public class MediaCollection {
             for(String fileName : tumblrURLFileNames) {
                 if (!fileName.equals("null") && fileName.contains(".txt")) {
                     MediaURL mediaURL = new MediaURL(MediaType.IMAGE, null, fileName);
+
+                    //Skip it because there was an error during initialization
+                    if(mediaURL.getUrl() == null) {
+                        continue;
+                    }
+
                     addMediaHolder(mediaFetishType, mediaURL);
                 }
             }

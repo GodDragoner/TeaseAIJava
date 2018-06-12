@@ -9,9 +9,10 @@ import javafx.scene.media.MediaView;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
-import java.io.File;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -27,6 +28,8 @@ public class MediaHandler {
 
     private MediaPlayer currentVideoPlayer = null;
     private boolean imagesLocked = false;
+
+    private String currentImageURL;
 
     public MediaPlayer playVideo(File file) {
         return playVideo(file, false);
@@ -191,6 +194,43 @@ public class MediaHandler {
         }
     }
 
+    public File getImageFromURL(String url) throws IOException {
+        currentImageURL = url;
+
+        String[] split = url.split("/");
+        String path = split[split.length - 1];
+
+        path = MediaURL.IMAGE_DOWNLOAD_PATH + File.separator + path;
+        File file = new File(path);
+
+        if (file.exists()) {
+            return file;
+        }
+
+        InputStream in = new BufferedInputStream(new URL(url).openStream());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+
+        int n;
+        while (-1 != (n = in.read(buf))) {
+            out.write(buf, 0, n);
+        }
+        out.close();
+        in.close();
+
+        byte[] response = out.toByteArray();
+
+        FileOutputStream fos = new FileOutputStream(path);
+        fos.write(response);
+        fos.close();
+
+        if (file.exists()) {
+            return file;
+        }
+
+        return null;
+    }
+
     public void waitForPlayer(MediaPlayer mediaPlayer) {
         final boolean[] hasFinishedPlaying = {false};
         mediaPlayer.setOnEndOfMedia(new Runnable() {
@@ -228,6 +268,10 @@ public class MediaHandler {
 
     public void setImagesLocked(boolean imagesLocked) {
         this.imagesLocked = imagesLocked;
+    }
+
+    public String getCurrentImageURL() {
+        return currentImageURL;
     }
 
     public static MediaHandler getHandler() {

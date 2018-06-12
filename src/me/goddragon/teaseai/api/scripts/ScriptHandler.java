@@ -73,6 +73,7 @@ public class ScriptHandler {
         registerFunction(new SetTypeSpeedFunction());
         registerFunction(new GetTypeSpeedFunction());
         registerFunction(new CreateMediaURLFromFileFunction());
+        registerFunction(new GetCurrentImageURLFunction());
 
         engine.put("run", (Consumer<String>) this::evalScript);
     }

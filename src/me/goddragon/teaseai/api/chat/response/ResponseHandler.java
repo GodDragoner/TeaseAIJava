@@ -97,19 +97,19 @@ public class ResponseHandler {
         }
     }
 
-    public void addQueuedReponse(Response response) {
+    public void addQueuedResponse(Response response) {
         synchronized (queuedResponse) {
             queuedResponse.add(response);
         }
     }
 
-    public void removeQueuedReponse(Response response) {
+    public void removeQueuedResponse(Response response) {
         synchronized (queuedResponse) {
             queuedResponse.remove(response);
         }
     }
 
-    public Response getLatestQueuedReponse() {
+    public Response getLatestQueuedResponse() {
         synchronized (queuedResponse) {
             if (!queuedResponse.isEmpty()) {
                 return queuedResponse.get(queuedResponse.size() - 1);

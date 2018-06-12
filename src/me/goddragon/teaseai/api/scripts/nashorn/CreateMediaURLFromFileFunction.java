@@ -25,7 +25,7 @@ public class CreateMediaURLFromFileFunction extends CustomFunction {
 
         if(args.length == 1) {
             File file = FileUtils.getRandomMatchingFile(TeaseAI.application.getSession().getActivePersonality().getFolder().getAbsolutePath() + File.separator + args[0].toString());
-            if (file == null) {
+            if (file == null || !file.exists()) {
                 TeaseLogger.getLogger().log(Level.SEVERE, "Matching url file for path " + args[0] + " does not exist.");
             } else {
                 return new MediaURL(MediaType.IMAGE, file);

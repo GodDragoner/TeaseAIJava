@@ -63,12 +63,13 @@ public class VariableHandler {
         if(variableExist(name)) {
             //Just update the existing value
             personalityVariable = getVariable(name);
-            personalityVariable.setValue(value);
 
             //Skip setting the variable because we have the same value already stored
             if ((getVariable(name).getValue().equals(value) || getVariable(name).getValue() == value)) {
                 return value;
             }
+
+            personalityVariable.setValue(value);
         } else {
             personalityVariable = new PersonalityVariable(name, value);
 

@@ -35,7 +35,7 @@ public class SetTypeSpeedFunction extends CustomFunction {
                     TeaseLogger.getLogger().log(Level.SEVERE, "Invalid type speed '" + typeSpeedString + "'.");
                 }
 
-                break;
+                return null;
             case 0:
                 TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
                 return null;

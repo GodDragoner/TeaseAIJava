@@ -35,10 +35,10 @@ public class ShowTeaseImageFunction extends CustomFunction {
 
         if(args.length >= 1 && args[0] instanceof Integer) {
             MediaHandler.getHandler().showPicture(file, (Integer) args[0]);
-            return null;
+            return file;
         } else if(args.length == 0) {
             MediaHandler.getHandler().showPicture(file);
-            return null;
+            return file;
         }
 
         TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());

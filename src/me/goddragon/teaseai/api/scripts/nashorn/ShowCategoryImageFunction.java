@@ -49,11 +49,11 @@ public class ShowCategoryImageFunction extends CustomFunction {
             switch (args.length) {
                 case 1:
                     MediaHandler.getHandler().showPicture(picture);
-                    return null;
+                    return picture;
                 case 2:
                     if (args[1] instanceof Integer) {
                         MediaHandler.getHandler().showPicture(picture, (Integer) args[1]);
-                        return null;
+                        return picture;
                     }
 
                     break;

@@ -22,19 +22,19 @@ public class WaitFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
-        switch(args.length) {
-            case 1:
-                if(args[0] instanceof Integer) {
-                    TeaseAI.application.waitScriptThread((Integer) args[0]*1000L);
-                    return null;
-                }
-                break;
-            case 0:
-                TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
-                return null;
+        super.call(object, args);
+
+        if(args.length <= 0) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
+            return null;
         }
 
-        TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());
-        return null;
+        if(args[0] instanceof Integer || args[0] instanceof Double || args[0] instanceof Long) {
+            TeaseAI.application.waitScriptThread(Math.round(1000L * Double.valueOf(args[0] + "")));
+            return null;
+        }else {
+            TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());
+            return null;
+        }
     }
 }
