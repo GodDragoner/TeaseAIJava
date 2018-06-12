@@ -5,6 +5,7 @@ import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.chat.ChatParticipant;
 import me.goddragon.teaseai.api.chat.SenderType;
 import me.goddragon.teaseai.api.config.TeaseDate;
+import me.goddragon.teaseai.api.runnable.TeaseRunnableHandler;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
@@ -95,8 +96,14 @@ public class Session {
     public void checkForInteraction() {
         checkForForcedEnd();
 
+        //Check for runnables
+        TeaseRunnableHandler.getHandler().checkRunnables();
+
         //Check whether there are new responses to handle
         TeaseAI.application.checkForNewResponses();
+
+        //Check for runnables -- twice because responses might take some time
+        TeaseRunnableHandler.getHandler().checkRunnables();
     }
 
     public void checkForForcedEnd() {

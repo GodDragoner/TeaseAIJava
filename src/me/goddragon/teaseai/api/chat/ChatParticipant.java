@@ -240,7 +240,7 @@ public class ChatParticipant {
             text.setFont(Font.font(null, FontWeight.BOLD, 14));
             ChatHandler.getHandler().addTemporaryMessage(text);
 
-            TeaseAI.application.sleepThread(millisToWait);
+            TeaseAI.application.sleepPossibleScripThread(millisToWait, true);
 
             ChatHandler.getHandler().removeTemporaryMessage(text);
         }

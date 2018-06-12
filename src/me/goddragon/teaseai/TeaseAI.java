@@ -16,6 +16,7 @@ import me.goddragon.teaseai.api.config.ConfigValue;
 import me.goddragon.teaseai.api.media.MediaCollection;
 import me.goddragon.teaseai.api.media.MediaFetishType;
 import me.goddragon.teaseai.api.media.MediaHandler;
+import me.goddragon.teaseai.api.runnable.TeaseRunnableHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.api.session.Session;
@@ -30,7 +31,7 @@ import java.util.logging.Level;
  */
 public class TeaseAI extends Application {
 
-    public static final String VERSION = "1.0.5";
+    public static final String VERSION = "1.0.6";
 
     public static TeaseAI application;
     private ConfigHandler configHandler = new ConfigHandler("TeaseAI.properties");
@@ -126,16 +127,24 @@ public class TeaseAI extends Application {
     }
 
     public void sleepPossibleScripThread(long sleepMillis) {
+        sleepPossibleScripThread(sleepMillis, false);
+    }
+
+    public void sleepPossibleScripThread(long sleepMillis, boolean runnablesOnly) {
         if(Thread.currentThread() != scriptThread) {
             sleepThread(sleepMillis);
         } else {
-            long millisPerInterval = 50;
-            while(sleepMillis > 0) {
+            long startedAt = System.currentTimeMillis();
+            long millisPerInterval = 100;
+            while(startedAt + sleepMillis > System.currentTimeMillis()) {
                 sleepThread(millisPerInterval);
-                sleepMillis -= millisPerInterval;
 
                 //Check for new stuff
-                session.checkForInteraction();
+                if(!runnablesOnly) {
+                    session.checkForInteraction();
+                } else {
+                    TeaseRunnableHandler.getHandler().checkRunnables();
+                }
             }
         }
     }

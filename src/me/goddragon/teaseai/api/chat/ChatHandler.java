@@ -214,7 +214,9 @@ public class ChatHandler {
 
     public void addTemporaryMessage(Text text) {
         addText(text, true);
-        temporaryMessages.add(text);
+        synchronized (temporaryMessages) {
+            temporaryMessages.add(text);
+        }
     }
 
     public void removeTemporaryMessage(Text text) {
@@ -225,21 +227,28 @@ public class ChatHandler {
             }
         });
 
-        temporaryMessages.remove(text);
+        synchronized (temporaryMessages) {
+            temporaryMessages.remove(text);
+        }
     }
 
     public void removeAllTemporaryMessages() {
-        for (Text text : temporaryMessages) {
-            TeaseAI.application.getController().getChatWindow().getChildren().remove(text);
+        synchronized (temporaryMessages) {
+            for (Text text : temporaryMessages) {
+                TeaseAI.application.getController().getChatWindow().getChildren().remove(text);
+            }
         }
     }
 
     public void addAllTemporaryMessages() {
         TextFlow textFlow = TeaseAI.application.getController().getChatWindow();
-        for (Text text : temporaryMessages) {
-            //Only add it if it is not yet existent
-            if(!textFlow.getChildren().contains(text)) {
-                TeaseAI.application.getController().getChatWindow().getChildren().add(text);
+
+        synchronized (temporaryMessages) {
+            for (Text text : temporaryMessages) {
+                //Only add it if it is not yet existent
+                if (!textFlow.getChildren().contains(text)) {
+                    TeaseAI.application.getController().getChatWindow().getChildren().add(text);
+                }
             }
         }
     }
