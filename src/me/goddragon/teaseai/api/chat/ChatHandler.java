@@ -347,8 +347,11 @@ public class ChatHandler {
         return handler;
     }
 
+    public HashMap<Integer, ChatParticipant> getSenders() {
+        return senders;
+    }
+
     public static void setHandler(ChatHandler handler) {
         ChatHandler.handler = handler;
     }
-
 }

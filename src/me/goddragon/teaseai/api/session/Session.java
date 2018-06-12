@@ -2,6 +2,8 @@ package me.goddragon.teaseai.api.session;
 
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.ChatHandler;
+import me.goddragon.teaseai.api.chat.ChatParticipant;
+import me.goddragon.teaseai.api.chat.SenderType;
 import me.goddragon.teaseai.api.config.TeaseDate;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
@@ -134,6 +136,13 @@ public class Session {
                 TeaseAI.application.initializeNewSession();
             }
         });
+
+        //Restore default type speed
+        for(ChatParticipant participant : ChatHandler.getHandler().getSenders().values()) {
+            if(participant.getType() != SenderType.SUB) {
+                participant.setTypeSpeed(ChatHandler.getHandler().getTypeSpeed());
+            }
+        }
     }
 
     public long getStartedAt() {
