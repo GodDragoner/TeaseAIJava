@@ -3,7 +3,6 @@ package me.goddragon.teaseai.api.session;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.config.TeaseDate;
-import me.goddragon.teaseai.api.media.MediaHandler;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
@@ -89,9 +88,7 @@ public class Session {
     }
 
     public void end() {
-        //Show nothing
-        MediaHandler.getHandler().showPicture(null);
-
+        //Restore the previous state of the start button and set the new session
         TeaseAI.application.runOnUIThread(new Runnable() {
             @Override
             public void run() {
@@ -99,6 +96,7 @@ public class Session {
                 TeaseAI.application.getController().getStartChatButton().setDisable(false);
                 TeaseAI.application.getController().getPersonalityChoiceBox().setDisable(false);
 
+                //Clear chat
                 TeaseAI.application.initializeNewSession();
             }
         });

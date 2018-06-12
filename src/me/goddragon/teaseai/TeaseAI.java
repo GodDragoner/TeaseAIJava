@@ -170,10 +170,13 @@ public class TeaseAI extends Application {
         StrokeHandler.getHandler().setOnEdge(false);
         StrokeHandler.getHandler().stopMetronome();
 
+        //Show no picture
         MediaHandler.getHandler().showPicture(null);
 
         session.setActivePersonality((Personality) controller.getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
-        session.getActivePersonality().getVariableHandler().loadVariables();
+
+        //Reset the variables and config values
+        session.getActivePersonality().reload();
     }
 
     public Thread getScriptThread() {

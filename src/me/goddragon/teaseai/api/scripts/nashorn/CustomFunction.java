@@ -34,19 +34,7 @@ public abstract class CustomFunction extends AbstractJSObject {
     public Object call(Object object, Object... args) {
         if(TeaseAI.application.getSession().isHaltSession()) {
             synchronized(TeaseAI.application.scriptThread) {
-                //Restore the previous state of the start button and set the new session
-                TeaseAI.application.runOnUIThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        TeaseAI.application.getController().getStartChatButton().setText("Start");
-                        TeaseAI.application.getController().getStartChatButton().setDisable(false);
-                        TeaseAI.application.getController().getPersonalityChoiceBox().setDisable(false);
-                        TeaseAI.application.initializeNewSession();
-
-                        //Clear chat
-                        TeaseAI.application.getController().getChatWindow().getChildren().clear();
-                    }
-                });
+                TeaseAI.application.getSession().end();
 
                 while(true) {
                     try {

@@ -25,7 +25,6 @@ public class VariableHandler {
 
     public VariableHandler(Personality personality) {
         this.personality = personality;
-        loadVariables();
     }
 
     public void loadVariables() {

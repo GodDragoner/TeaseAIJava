@@ -32,6 +32,12 @@ public class Personality {
         version = new ConfigValue("version", "1.0", configHandler);
         //githubLink = new ConfigValue("githubLink", "null", configHandler);
 
+        //Load in all config and variable values
+        reload();
+    }
+
+    public void reload() {
+        variableHandler.loadVariables();
         configHandler.loadConfig();
     }
 
