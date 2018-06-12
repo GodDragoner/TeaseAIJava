@@ -21,6 +21,9 @@ import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.api.session.Session;
 import me.goddragon.teaseai.api.session.StrokeHandler;
 import me.goddragon.teaseai.gui.main.Controller;
+import me.goddragon.teaseai.utils.TeaseLogger;
+
+import java.util.logging.Level;
 
 /**
  * Created by GodDragon on 21.03.2018.
@@ -114,31 +117,41 @@ public class TeaseAI extends Application {
     }
 
     public void sleepScripThread(long sleepMillis) {
-        sleepThread(scriptThread, sleepMillis);
+        if(Thread.currentThread() != scriptThread) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Tried to sleep script thread from other thread.");
+            return;
+        }
+
+        sleepThread(sleepMillis);
     }
 
     public void waitScriptThread(long timeoutMillis) {
-        waitThread(scriptThread, timeoutMillis);
+        if(Thread.currentThread() != scriptThread) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Tried to wait script thread from other thread.");
+            return;
+        }
+
+        waitThread(timeoutMillis);
     }
 
-    public void waitThread(Thread thread) {
-        waitThread(thread, 0);
+    public void waitThread() {
+        waitThread(0);
     }
 
-    public void waitThread(Thread thread, long timeoutMillis) {
-        synchronized (thread) {
+    public void waitThread(long timeoutMillis) {
+        synchronized (Thread.currentThread()) {
             try {
-                thread.wait(timeoutMillis);
+                Thread.currentThread().wait(timeoutMillis);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void sleepThread(Thread thread, long sleepMillis) {
-        synchronized (thread) {
+    public void sleepThread(long sleepMillis) {
+        synchronized (Thread.currentThread()) {
             try {
-                thread.sleep(sleepMillis);
+                Thread.sleep(sleepMillis);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -160,6 +173,7 @@ public class TeaseAI extends Application {
         MediaHandler.getHandler().showPicture(null);
 
         session.setActivePersonality((Personality) controller.getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
+        session.getActivePersonality().getVariableHandler().loadVariables();
     }
 
     public Thread getScriptThread() {

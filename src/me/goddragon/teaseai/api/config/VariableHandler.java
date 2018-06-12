@@ -25,6 +25,13 @@ public class VariableHandler {
 
     public VariableHandler(Personality personality) {
         this.personality = personality;
+        loadVariables();
+    }
+
+    public void loadVariables() {
+        variables.clear();
+        nonSetSupportedVariables.clear();
+
         personalityVariableFolder = new File(personality.getFolder().getPath() + File.separator + "System" + File.separator + "Variables");
         personalityVariableFolder.mkdirs();
 

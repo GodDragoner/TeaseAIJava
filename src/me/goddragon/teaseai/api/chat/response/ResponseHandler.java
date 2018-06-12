@@ -46,11 +46,11 @@ public class ResponseHandler {
                     public boolean trigger() {
                         ScriptEngine engine = ScriptHandler.getHandler().getEngine();
                         String responseName = file.getName().substring(0, file.getName().length() - 3);
-
+                        String functionName = StringUtils.decapitalize(responseName) + "Response";
                         try {
                             Invocable invocable = (Invocable) engine;
 
-                            Object result = invocable.invokeFunction(StringUtils.decapitalize(responseName) + "Response", getMessage());
+                            Object result = invocable.invokeFunction(functionName, getMessage());
 
                             if(result instanceof Boolean) {
                                 return (Boolean) result;
@@ -60,7 +60,7 @@ public class ResponseHandler {
                             TeaseLogger.getLogger().log(Level.SEVERE, "Error while handling file '" + e.getFileName() + "' in line " + e.getLineNumber() + "\n" +
                                     "Error: " + e.getMessage(), false);
                         } catch (NoSuchMethodException e) {
-                            TeaseLogger.getLogger().log(Level.SEVERE, "Response '" + responseName + " is missing the function to trigger it. Create the function '" + StringUtils.decapitalize(responseName)  + "Response(message)' for this to work." , false);
+                            TeaseLogger.getLogger().log(Level.SEVERE, "Response '" + responseName + " is missing the function to trigger it. Create the function '" + functionName + "(message)' for this to work." , false);
                         }
                         return false;
                     }

@@ -195,7 +195,7 @@ public class ChatParticipant {
 
         //Wait some time after this message before continuing (only if it is not the sub who send the message)
         if (millisToWait > 0 && type != SenderType.SUB) {
-            TeaseAI.application.sleepThread(Thread.currentThread(), millisToWait);
+            TeaseAI.application.sleepThread(millisToWait);
         }
     }
 
@@ -240,7 +240,7 @@ public class ChatParticipant {
             text.setFont(Font.font(null, FontWeight.BOLD, 14));
             ChatHandler.getHandler().addTemporaryMessage(text);
 
-            TeaseAI.application.sleepThread(Thread.currentThread(), millisToWait);
+            TeaseAI.application.sleepThread(millisToWait);
 
             ChatHandler.getHandler().removeTemporaryMessage(text);
         }

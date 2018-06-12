@@ -2,10 +2,12 @@ package me.goddragon.teaseai.api.scripts.nashorn;
 
 import jdk.nashorn.api.scripting.AbstractJSObject;
 import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.logging.Level;
 
 /**
  * Created by GodDragon on 25.03.2018.
@@ -48,7 +50,11 @@ public abstract class CustomFunction extends AbstractJSObject {
 
                 while(true) {
                     try {
-                        TeaseAI.application.scriptThread.sleep(10000000);
+                        if(TeaseAI.application.scriptThread == Thread.currentThread()) {
+                            Thread.sleep(10000000);
+                        } else {
+                            TeaseLogger.getLogger().log(Level.SEVERE, "Checked for forced session end in other thread than script thread.");
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

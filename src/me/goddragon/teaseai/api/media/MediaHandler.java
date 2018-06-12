@@ -127,7 +127,7 @@ public class MediaHandler {
         });
 
         if(durationSeconds > 0) {
-            TeaseAI.application.sleepThread(Thread.currentThread(), durationSeconds*1000);
+            TeaseAI.application.sleepThread(durationSeconds*1000);
         }
     }
 
