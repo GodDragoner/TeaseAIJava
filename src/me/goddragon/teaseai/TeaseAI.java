@@ -116,6 +116,30 @@ public class TeaseAI extends Application {
         }
     }
 
+    public void waitPossibleScripThread(long timeoutMillis) {
+        waitThread(timeoutMillis);
+
+        //Let's check whether we are supposed to force the session to end
+        if(Thread.currentThread() == scriptThread) {
+            session.checkForForcedEnd();
+        }
+    }
+
+    public void sleepPossibleScripThread(long sleepMillis) {
+        if(Thread.currentThread() != scriptThread) {
+            sleepThread(sleepMillis);
+        } else {
+            long millisPerInterval = 50;
+            while(sleepMillis > 0) {
+                sleepThread(millisPerInterval);
+                sleepMillis -= millisPerInterval;
+
+                //Check for new stuff
+                session.checkForInteraction();
+            }
+        }
+    }
+
     public void sleepScripThread(long sleepMillis) {
         if(Thread.currentThread() != scriptThread) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Tried to sleep script thread from other thread.");

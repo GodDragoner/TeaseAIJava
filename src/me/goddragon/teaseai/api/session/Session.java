@@ -6,6 +6,9 @@ import me.goddragon.teaseai.api.config.TeaseDate;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
+import me.goddragon.teaseai.utils.TeaseLogger;
+
+import java.util.logging.Level;
 
 /**
  * Created by GodDragon on 26.03.2018.
@@ -87,6 +90,33 @@ public class Session {
         TeaseAI.application.scriptThread.start();
     }
 
+    public void checkForInteraction() {
+        checkForForcedEnd();
+
+        //Check whether there are new responses to handle
+        TeaseAI.application.checkForNewResponses();
+    }
+
+    public void checkForForcedEnd() {
+        if(TeaseAI.application.getSession().isHaltSession()) {
+            synchronized(TeaseAI.application.scriptThread) {
+                TeaseAI.application.getSession().end();
+
+                while(true) {
+                    try {
+                        if(TeaseAI.application.scriptThread == Thread.currentThread()) {
+                            Thread.sleep(10000000);
+                        } else {
+                            TeaseLogger.getLogger().log(Level.SEVERE, "Checked for forced session end in other thread than script thread.");
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
     public void end() {
         //Restore the previous state of the start button and set the new session
         TeaseAI.application.runOnUIThread(new Runnable() {
@@ -96,7 +126,11 @@ public class Session {
                 TeaseAI.application.getController().getStartChatButton().setDisable(false);
                 TeaseAI.application.getController().getPersonalityChoiceBox().setDisable(false);
 
-                //Clear chat
+                //Reset lazy sub interface
+                TeaseAI.application.getController().getLazySubController().clear();
+                TeaseAI.application.getController().getLazySubController().createDefaults();
+
+                //Initialize a new session instance
                 TeaseAI.application.initializeNewSession();
             }
         });

@@ -124,6 +124,11 @@ public class Controller {
                 if(TeaseAI.application.getSession().isStarted()) {
                     TeaseAI.application.getSession().setHaltSession(true);
                     startChatButton.setDisable(true);
+
+                    //Notify the thread because we want it continue and then end anyway
+                    synchronized (TeaseAI.application.getScriptThread()) {
+                        TeaseAI.application.getScriptThread().notify();
+                    }
                 } else {
                     PersonalityManager.getManager().setActivePersonality((Personality) getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
 

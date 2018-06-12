@@ -30,7 +30,7 @@ public class SleepFunction extends CustomFunction {
         }
 
         if(args[0] instanceof Integer || args[0] instanceof Double || args[0] instanceof Long) {
-            TeaseAI.application.sleepScripThread(Math.round(1000L * Double.valueOf(args[0] + "")));
+            TeaseAI.application.sleepPossibleScripThread(Math.round(1000L * Double.valueOf(args[0] + "")));
             return null;
         } else {
             TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());

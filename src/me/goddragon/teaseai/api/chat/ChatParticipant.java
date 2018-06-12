@@ -195,7 +195,7 @@ public class ChatParticipant {
 
         //Wait some time after this message before continuing (only if it is not the sub who send the message)
         if (millisToWait > 0 && type != SenderType.SUB) {
-            TeaseAI.application.sleepThread(millisToWait);
+            TeaseAI.application.sleepPossibleScripThread(millisToWait);
         }
     }
 
@@ -221,7 +221,7 @@ public class ChatParticipant {
         answer.setStartedAt(System.currentTimeMillis());
 
         //Wait for answer
-        TeaseAI.application.waitThread(Thread.currentThread(), answer.getMillisTimeout());
+        TeaseAI.application.waitPossibleScripThread(answer.getMillisTimeout());
         answer.checkTimeout();
 
         return answer;

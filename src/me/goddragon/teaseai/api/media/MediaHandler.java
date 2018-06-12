@@ -127,7 +127,7 @@ public class MediaHandler {
         });
 
         if(durationSeconds > 0) {
-            TeaseAI.application.sleepThread(durationSeconds*1000);
+            TeaseAI.application.sleepPossibleScripThread(durationSeconds*1000);
         }
     }
 
@@ -247,7 +247,7 @@ public class MediaHandler {
         });
 
         while (!hasFinishedPlaying[0]) {
-            TeaseAI.application.waitScriptThread(0);
+            TeaseAI.application.waitPossibleScripThread(0);
 
             //Check whether there are new responses to handle
             TeaseAI.application.checkForNewResponses();

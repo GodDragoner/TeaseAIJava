@@ -59,8 +59,9 @@ public class CreateInputFunction extends CustomFunction {
             answer.setStartedAt(System.currentTimeMillis());
 
             //Wait for answer
-            TeaseAI.application.waitThread(Thread.currentThread(), answer.getMillisTimeout());
+            TeaseAI.application.waitPossibleScripThread(answer.getMillisTimeout());
             answer.checkTimeout();
+
             return answer;
         }
 

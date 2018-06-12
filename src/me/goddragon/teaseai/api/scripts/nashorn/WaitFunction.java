@@ -30,7 +30,7 @@ public class WaitFunction extends CustomFunction {
         }
 
         if(args[0] instanceof Integer || args[0] instanceof Double || args[0] instanceof Long) {
-            TeaseAI.application.waitScriptThread(Math.round(1000L * Double.valueOf(args[0] + "")));
+            TeaseAI.application.waitPossibleScripThread(Math.round(1000L * Double.valueOf(args[0] + "")));
             return null;
         }else {
             TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());
