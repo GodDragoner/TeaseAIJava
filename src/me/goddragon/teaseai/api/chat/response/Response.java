@@ -35,7 +35,6 @@ public abstract class Response {
     public abstract boolean trigger();
 
     public boolean checkPattern(Pattern pattern, String message) {
-        pattern.compile(message);
         return pattern.matcher(message).find();
     }
 
