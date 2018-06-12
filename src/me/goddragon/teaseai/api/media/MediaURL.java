@@ -235,6 +235,7 @@ public class MediaURL extends MediaHolder implements Observable {
                 } catch (IOException e) {
                     //Try different media if picture is down
                     if (e instanceof ConnectException && loops < 10) {
+                        loops++;
                         return getRandomMedia(loops);
                     }
 
