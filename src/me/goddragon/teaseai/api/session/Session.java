@@ -139,6 +139,9 @@ public class Session {
                 TeaseAI.application.getController().getLazySubController().clear();
                 TeaseAI.application.getController().getLazySubController().createDefaults();
 
+                //Clear chat
+                TeaseAI.application.getController().getChatWindow().getChildren().clear();
+
                 //Initialize a new session instance
                 TeaseAI.application.initializeNewSession();
             }

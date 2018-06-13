@@ -107,6 +107,10 @@ public class VocabularyHandler {
     }
 
     public String replaceAllVocabularies(String message) {
+        return replaceAllVocabularies(message, 0);
+    }
+
+    public String replaceAllVocabularies(String message, int loops) {
         String result = message;
         Pattern p = Pattern.compile("[%][a-zA-Z0-9_]*[%]");
         Matcher m = p.matcher(message);
@@ -117,21 +121,18 @@ public class VocabularyHandler {
             result = result.replace(m.group(), getVocabulary(vocab).toString());
         }
 
-        int loops = 0;
         String newResult = result;
 
         //Recursively replace all vocabularies that were entered using vocabularies
         //Do it at least once because only after that we can be sure that there are no vocabs to replace left
         while (!result.equals(newResult) && loops < 10 || loops == 0 && foundMatch) {
             result = newResult;
-            newResult = replaceAllVocabularies(result);
-            loops++;
+            newResult = replaceAllVocabularies(result, ++loops);
         }
 
         if (loops == 10) {
             TeaseLogger.getLogger().log(Level.WARNING, "Couldn't replace all vocabularies in string '" + message + "' because maximum amount of recursion reached");
         }
-
 
         return StringUtils.capitalize(newResult);
     }
