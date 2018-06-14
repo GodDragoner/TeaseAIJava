@@ -26,6 +26,11 @@ public class PictureSet {
             }
         }
 
+        if(tagFile == null) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Folder '" + folder.getAbsolutePath() + "' is missing a tags file.");
+            return;
+        }
+
         try {
             // Open the file
             FileInputStream fstream = new FileInputStream(tagFile);

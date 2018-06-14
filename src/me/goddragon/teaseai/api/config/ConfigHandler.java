@@ -33,7 +33,6 @@ public class ConfigHandler {
             //Do we want to fetch it from a file or url?
             if(configName != null && configName.length() > 0) {
                 File config = new File(configName);
-
                 if (!config.exists()) {
                     try {
                         config.createNewFile();

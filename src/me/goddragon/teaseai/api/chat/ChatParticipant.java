@@ -306,7 +306,14 @@ public class ChatParticipant {
 
         List<PictureSet> pictureSets = new ArrayList<>();
         for (File file : imageFolder.listFiles((current, name) -> new File(current, name).isDirectory())) {
-            pictureSets.add(new PictureSet(file));
+            PictureSet pictureSet = new PictureSet(file);
+
+            //No pictures => ignore the set
+            if(pictureSet.getTaggedPictures().isEmpty()) {
+                continue;
+            }
+
+            pictureSets.add(pictureSet);
         }
 
         TeaseLogger.getLogger().log(Level.INFO, "Loaded " + pictureSets.size() + " picture sets for " + name);

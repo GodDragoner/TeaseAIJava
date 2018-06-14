@@ -108,20 +108,21 @@ public class Session {
 
     public void checkForForcedEnd() {
         if(TeaseAI.application.getSession().isHaltSession()) {
-            synchronized(TeaseAI.application.scriptThread) {
-                TeaseAI.application.getSession().end();
+            if(TeaseAI.application.scriptThread == Thread.currentThread()) {
+                synchronized (TeaseAI.application.scriptThread) {
+                    TeaseAI.application.getSession().end();
 
-                while(true) {
-                    try {
-                        if(TeaseAI.application.scriptThread == Thread.currentThread()) {
+                    while (true) {
+                        try {
                             Thread.sleep(10000000);
-                        } else {
-                            TeaseLogger.getLogger().log(Level.SEVERE, "Checked for forced session end in other thread than script thread.");
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            break;
                         }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
+            } else {
+                TeaseLogger.getLogger().log(Level.SEVERE, "Checked for forced session end in other thread than script thread.");
             }
         }
     }
