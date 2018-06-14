@@ -1,9 +1,6 @@
 package me.goddragon.teaseai.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,23 +12,33 @@ import java.util.logging.*;
 public class TeaseLogger {
 
     private static TeaseLogger logger = new TeaseLogger();
-    private Logger javaLogger;
+    private PrintStream outStream;
+    //private Logger javaLogger;
 
     public TeaseLogger() {
-        javaLogger = Logger.getLogger("MyLog");
+        /*javaLogger = Logger.getLogger("MyLog");
         javaLogger.setLevel(Level.ALL);
-        FileHandler fh;
+        FileHandler fileHandler;*/
 
         try {
-            if(!new File("Logs").exists()) {
+            if (!new File("Logs").exists()) {
                 new File("Logs").mkdir();
             }
 
             // This block configure the logger with handler and formatter
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy H-mm-ss");
             Date date = new Date();
-            fh = new FileHandler("Logs" + File.separator + "log-" + dateFormat.format(date) + ".txt");
-            javaLogger.addHandler(fh);
+
+            //Set the system error output to the log file
+            outStream = new PrintStream(new FileOutputStream("Logs" + File.separator + "log-" + dateFormat.format(date) + ".txt"));
+            System.setOut(outStream);
+            System.setErr(outStream);
+
+            /*fileHandler = new FileHandler("Logs" + File.separator + "log-" + dateFormat.format(date) + ".txt");
+
+
+            javaLogger.setUseParentHandlers(false);
+            javaLogger.addHandler(fileHandler);
             Formatter formatter = new SimpleFormatter() {
                 private final Date dat = new Date();
 
@@ -65,12 +72,29 @@ public class TeaseLogger {
                     return dateFormat.format(dat) + " " + level + ": " + message + "\n";
                 }
             };
-            fh.setFormatter(formatter);
+            fileHandler.setFormatter(formatter);*/
         } catch (SecurityException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private String formatMessage(String message, Level level) {
+        Date dat = new Date();
+        dat.setTime(System.currentTimeMillis());
+        if (message.trim().isEmpty()) {
+            return "";
+        }
+
+        String levelString = level.toString();
+        if (level == Level.FINE) {
+            levelString = "CHAT";
+        }
+
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss a");
+
+        return dateFormat.format(dat) + " " + levelString + ": " + message.replaceAll("[\\x00]", "");
     }
 
     public void log(Level level, String message) {
@@ -78,11 +102,19 @@ public class TeaseLogger {
     }
 
     public void log(Level level, String message, Exception e) {
-        javaLogger.log(level, message);
+        //javaLogger.log(level, message);
+        String logMessage = formatMessage(message, level);
+        if(!logMessage.isEmpty()) {
+            System.out.println(logMessage);
+        }
     }
 
     public void log(Level level, String message, boolean stacktrace) {
-        javaLogger.log(level, message);
+        //javaLogger.log(level, message);
+        String logMessage = formatMessage(message, level);
+        if(!logMessage.isEmpty()) {
+            System.out.println(logMessage);
+        }
     }
 
     public static TeaseLogger getLogger() {
