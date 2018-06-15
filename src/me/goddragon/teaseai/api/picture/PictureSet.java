@@ -61,6 +61,11 @@ public class PictureSet {
     }
 
     public TaggedPicture getRandomPictureForStates(DressState... dressStates) {
+        //No dress states given means show random picture
+        if(dressStates.length == 0) {
+            return taggedPictures.get(RandomUtils.randInt(0, taggedPictures.size() - 1));
+        }
+
         List<TaggedPicture> validPictures = new ArrayList<>();
 
         pictureLoop:
@@ -75,15 +80,15 @@ public class PictureSet {
             }
         }
 
-        //Find the dress state which shows least
-        DressState lowestDressState = null;
-        for (DressState dressState : dressStates) {
-            if (lowestDressState == null || lowestDressState.getRank() > dressState.getRank()) {
-                lowestDressState = dressState;
-            }
-        }
-
         if (validPictures.isEmpty()) {
+            //Find the dress state in the list which shows least
+            DressState lowestDressState = null;
+            for (DressState dressState : dressStates) {
+                if (lowestDressState == null || lowestDressState.getRank() > dressState.getRank()) {
+                    lowestDressState = dressState;
+                }
+            }
+
             DressState lowerDressState = lowestDressState.getNextLowerRank();
 
             //Try finding an alternative image that shows less
@@ -184,20 +189,20 @@ public class PictureSet {
             }
         }
 
-        //Find the dress state which shows least
-        DressState lowestDressState = null;
-        for (DressState dressState : dressStates) {
-            if (lowestDressState == null || lowestDressState.getRank() > dressState.getRank()) {
-                lowestDressState = dressState;
-            }
-        }
-
         if (validPictures.isEmpty()) {
+            //Find the dress state in the list which shows least
+            DressState lowestDressState = null;
+            for (DressState dressState : dressStates) {
+                if (lowestDressState == null || lowestDressState.getRank() > dressState.getRank()) {
+                    lowestDressState = dressState;
+                }
+            }
+
             DressState lowerDressState = lowestDressState.getNextLowerRank();
 
             //Try finding an alternative image that shows less
             if (lowerDressState != null) {
-                return getRandomPictureForStates(lowestDressState);
+                return getRandomPictureForTagStates(Arrays.asList(new DressState[] {lowestDressState}), pictureTags);
             }
 
             //We don't have any pictures to show anyway

@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import me.goddragon.teaseai.api.chat.ChatHandler;
@@ -31,7 +32,9 @@ import java.util.logging.Level;
  */
 public class TeaseAI extends Application {
 
-    public static final String VERSION = "1.0.8";
+    public static final String VERSION = "1.0.9";
+
+    public static double JAVA_VERSION = getJavaVersion();
 
     public static TeaseAI application;
     private ConfigHandler configHandler = new ConfigHandler("TeaseAI.properties");
@@ -47,6 +50,15 @@ public class TeaseAI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        if(JAVA_VERSION < 10) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Old Java Version Detected");
+            alert.setHeaderText(null);
+            alert.setContentText("You are using java version "  + JAVA_VERSION + " which is not supported. Please use Java 10 or higher. This program will close now.");
+            alert.showAndWait();
+            return;
+        }
+
         //Will allow us to use ecma6 language
         System.setProperty("nashorn.args", "--language=es6");
 
@@ -230,5 +242,10 @@ public class TeaseAI extends Application {
 
     public Session getSession() {
         return session;
+    }
+
+
+    static double getJavaVersion() {
+        return Double.parseDouble(System.getProperty("java.specification.version"));
     }
 }
