@@ -33,9 +33,12 @@ public class DebugSettings {
             public void changed(ObservableValue<? extends PersonalityVariable> observable, PersonalityVariable PersonalityVariable, PersonalityVariable newValue) {
                 if (newValue != null) {
                     settingsController.variableValueTextField.setDisable(false);
+                    settingsController.variableSaveButton.setDisable(false);
                     updateVariableData();
                 } else {
+                    settingsController.variableValueTextField.setText("");
                     settingsController.variableValueTextField.setDisable(true);
+                    settingsController.variableSaveButton.setDisable(true);
                 }
             }
         });
@@ -46,7 +49,13 @@ public class DebugSettings {
         settingsController.variableSaveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String variable = getSelectedVariable().getConfigName();
+                PersonalityVariable personalityVariable = getSelectedVariable();
+
+                if(personalityVariable == null) {
+                    return;
+                }
+
+                String variable = personalityVariable.getConfigName();
 
                 if (variable != null && variableHandler != null) {
                     variableHandler.setVariable(variable, variableHandler.getObjectFromString(settingsController.variableValueTextField.getText()));
@@ -72,6 +81,11 @@ public class DebugSettings {
                     settingsController.variableListView.getItems().add(entry);
                 }
             }
+        }
+
+        if(settingsController.variableListView.getItems().isEmpty()) {
+            settingsController.variableValueTextField.setDisable(true);
+            settingsController.variableSaveButton.setDisable(true);
         }
     }
 
