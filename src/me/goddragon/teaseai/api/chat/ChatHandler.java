@@ -8,9 +8,7 @@ import javafx.scene.text.TextFlow;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -191,6 +189,10 @@ public class ChatHandler {
     }
 
     public void addLine(Text... text) {
+        addLine(Arrays.asList(text));
+    }
+
+    public void addLine(List<Text> text) {
         TextFlow textFlow = TeaseAI.application.getController().getChatWindow();
         TeaseAI.application.runOnUIThread(new Runnable() {
             @Override

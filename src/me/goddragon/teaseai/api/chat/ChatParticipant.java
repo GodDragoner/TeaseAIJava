@@ -18,9 +18,7 @@ import me.goddragon.teaseai.utils.TeaseLogger;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -135,7 +133,7 @@ public class ChatParticipant {
         sendMessage(message, secondsToWait * 1000L);
     }
 
-    private void sendMessage(String message, long millisToWait) {
+    public void sendMessage(String message, long millisToWait) {
         //We need to wait BEFORE we replace the vocabularies. Otherwise any code triggered by the vocab will execute before the message is send
         startTyping(message);
 
@@ -148,7 +146,15 @@ public class ChatParticipant {
         sendMessage(message, messageText, millisToWait);
     }
 
-    private void sendMessage(String rawMessage, Text message, long millisToWait) {
+    public void sendMessage(String rawMessage, Text message, long millisToWait) {
+        sendMessage(rawMessage, millisToWait, message);
+    }
+
+    public void sendMessage(String rawMessage, long millisToWait, Text... messages) {
+        sendMessage(rawMessage, millisToWait, Arrays.asList(messages));
+    }
+
+    public void sendMessage(String rawMessage, long millisToWait, List<Text> messages) {
         DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
 
         Text dateText = new Text(dateFormat.format(new Date()) + " ");
@@ -188,7 +194,11 @@ public class ChatParticipant {
             }
         }
 
-        ChatHandler.getHandler().addLine(dateText, text, message);
+        List<Text> lineMessages = new ArrayList<>();
+        lineMessages.add(dateText);
+        lineMessages.add(text);
+        lineMessages.addAll(messages);
+        ChatHandler.getHandler().addLine(lineMessages);
 
         if (type != SenderType.SUB && !MediaHandler.getHandler().isImagesLocked() && pictureSet != null) {
             Session session = TeaseAI.application.getSession();
