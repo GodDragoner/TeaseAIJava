@@ -30,7 +30,11 @@ public abstract class CustomFunction extends AbstractJSObject {
 
     @Override
     public Object call(Object object, Object... args) {
-        TeaseAI.application.getSession().checkForInteraction();
+        //Only check if the session already started
+        if(TeaseAI.application.getSession().isStarted()) {
+            TeaseAI.application.getSession().checkForInteraction();
+        }
+
         return null;
     }
 }

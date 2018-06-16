@@ -37,6 +37,7 @@ public class DebugSettings {
                     updateVariableData();
                 } else {
                     settingsController.variableValueTextField.setText("");
+                    settingsController.descriptionLabel.setText("");
                     settingsController.variableValueTextField.setDisable(true);
                     settingsController.variableSaveButton.setDisable(true);
                 }
@@ -101,6 +102,8 @@ public class DebugSettings {
 
             if(variable.isSupportedByPersonality()) {
                 settingsController.descriptionLabel.setText(variable.getDescription());
+            } else {
+                settingsController.descriptionLabel.setText("");
             }
         }
     }

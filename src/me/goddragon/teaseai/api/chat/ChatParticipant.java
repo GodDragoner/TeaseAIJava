@@ -117,12 +117,12 @@ public class ChatParticipant {
 
     public void sendInteract(String type) {
         Text nameText = new Text(name + " ");
-        nameText.setFont(Font.font(null, FontWeight.BOLD, 14));
+        nameText.setFont(Font.font(null, FontWeight.BOLD, TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 2));
         nameText.setFill(chatColor);
 
         Text messageText = new Text(type + " the chat room.");
         messageText.setFill(Color.AQUA);
-        messageText.setFont(Font.font(null, FontWeight.BOLD, 14));
+        messageText.setFont(Font.font(null, FontWeight.BOLD, TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 2));
 
         ChatHandler.getHandler().addLine(nameText, messageText);
     }
@@ -142,24 +142,29 @@ public class ChatParticipant {
         //Replace all vocabularies
         message = VocabularyHandler.getHandler().replaceAllVocabularies(message);
 
+        Text messageText = new Text(message);
+        messageText.setFont(Font.font(null, FontWeight.NORMAL, TeaseAI.application.CHAT_TEXT_SIZE.getDouble()));
+
+        sendMessage(message, messageText, millisToWait);
+    }
+
+    private void sendMessage(String rawMessage, Text message, long millisToWait) {
         DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
 
         Text dateText = new Text(dateFormat.format(new Date()) + " ");
         dateText.setFill(Color.DARKGRAY);
-        dateText.setFont(Font.font(null, FontWeight.MEDIUM, 12));
+        dateText.setFont(Font.font(null, FontWeight.MEDIUM,  TeaseAI.application.CHAT_TEXT_SIZE.getDouble()));
         Text text = new Text(name + ": ");
 
         text.setFill(chatColor);
 
-        text.setFont(Font.font(null, FontWeight.BOLD, 13));
-        Text messageText = new Text(message);
-
+        text.setFont(Font.font(null, FontWeight.BOLD,  TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 1));
         //Check whether we can find a response fitting right now
         if (type == SenderType.SUB) {
-            Response response = ResponseHandler.getHandler().checkMessageForResponse(message);
+            Response response = ResponseHandler.getHandler().checkMessageForResponse(rawMessage);
             if (response != null) {
                 //Set the message of the response so we know what triggered it later on
-                response.setMessage(message);
+                response.setMessage(rawMessage);
 
                 //Queue the response so we can call it later
                 ResponseHandler.getHandler().addQueuedResponse(response);
@@ -183,7 +188,7 @@ public class ChatParticipant {
             }
         }
 
-        ChatHandler.getHandler().addLine(dateText, text, messageText);
+        ChatHandler.getHandler().addLine(dateText, text, message);
 
         if (type != SenderType.SUB && !MediaHandler.getHandler().isImagesLocked() && pictureSet != null) {
             Session session = TeaseAI.application.getSession();
@@ -237,7 +242,7 @@ public class ChatParticipant {
         if (millisToWait > 0) {
             Text text = new Text(name + " is typing...");
             text.setFill(Color.AQUA);
-            text.setFont(Font.font(null, FontWeight.BOLD, 14));
+            text.setFont(Font.font(null, FontWeight.BOLD,  TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 2));
             ChatHandler.getHandler().addTemporaryMessage(text);
 
             TeaseAI.application.sleepPossibleScripThread(millisToWait, true);
@@ -316,6 +321,7 @@ public class ChatParticipant {
             pictureSets.add(pictureSet);
         }
 
+        this.pictureSet = null;
         TeaseLogger.getLogger().log(Level.INFO, "Loaded " + pictureSets.size() + " picture sets for " + name);
 
         if (!pictureSets.isEmpty()) {

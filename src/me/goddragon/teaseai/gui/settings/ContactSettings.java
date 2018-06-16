@@ -140,6 +140,10 @@ public class ContactSettings {
                     settingsController.domContactImageSetPathText.setText(selectedDirectory.getPath());
                     getSelectedContact().getContact().IMAGE_SET_PATH.setValue(selectedDirectory.getPath());
                     getSelectedContact().getContact().IMAGE_SET_PATH.save();
+
+                    //Update the picture set
+                    getSelectedContact().choosePictureSet();
+
                     updateContactData();
                 }
             }

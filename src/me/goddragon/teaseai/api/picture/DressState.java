@@ -23,7 +23,7 @@ public enum DressState {
 
     public DressState getNextLowerRank() {
         for (DressState dressState : values()) {
-            if (dressState.rank == this.rank - 1) {
+            if (this.rank - 1 == dressState.rank) {
                 return dressState;
             }
         }

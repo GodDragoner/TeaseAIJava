@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import me.goddragon.teaseai.api.chat.ChatHandler;
@@ -44,6 +45,7 @@ public class TeaseAI extends Application {
     public Thread scriptThread;
 
     public final ConfigValue PREFERRED_SESSION_DURATION = new ConfigValue("preferredSessionDuration", "60", configHandler);
+    public final ConfigValue CHAT_TEXT_SIZE = new ConfigValue("chatTextSize", Font.getDefault().getSize(), configHandler);
     public final ConfigValue LAST_SELECTED_PERSONALITY = new ConfigValue("lastSelectedPersonality", "null", configHandler);
 
     private Session session;
@@ -153,7 +155,10 @@ public class TeaseAI extends Application {
 
                 //Check for new stuff
                 if(!runnablesOnly) {
-                    session.checkForInteraction();
+                    //Only check if the session already started
+                    if(session.isStarted()) {
+                        session.checkForInteraction();
+                    }
                 } else {
                     TeaseRunnableHandler.getHandler().checkRunnables();
                 }
@@ -220,8 +225,8 @@ public class TeaseAI extends Application {
 
         session.setActivePersonality((Personality) controller.getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
 
-        //Reset the variables and config values
-        session.getActivePersonality().reload();
+        //Reset the temporary variables
+        session.getActivePersonality().getVariableHandler().clearTemporaryVariables();
     }
 
     public Thread getScriptThread() {

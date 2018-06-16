@@ -61,90 +61,11 @@ public class PictureSet {
     }
 
     public TaggedPicture getRandomPictureForStates(DressState... dressStates) {
-        //No dress states given means show random picture
-        if(dressStates.length == 0) {
-            return taggedPictures.get(RandomUtils.randInt(0, taggedPictures.size() - 1));
-        }
-
-        List<TaggedPicture> validPictures = new ArrayList<>();
-
-        pictureLoop:
-        for (TaggedPicture taggedPicture : taggedPictures) {
-            for (DressState dressState : dressStates) {
-                if (dressState != null && !taggedPicture.hasDressState(dressState)) {
-                    continue pictureLoop;
-                }
-
-                //If we reach this point the image is good to display
-                validPictures.add(taggedPicture);
-            }
-        }
-
-        if (validPictures.isEmpty()) {
-            //Find the dress state in the list which shows least
-            DressState lowestDressState = null;
-            for (DressState dressState : dressStates) {
-                if (lowestDressState == null || lowestDressState.getRank() > dressState.getRank()) {
-                    lowestDressState = dressState;
-                }
-            }
-
-            DressState lowerDressState = lowestDressState.getNextLowerRank();
-
-            //Try finding an alternative image that shows less
-            if (lowerDressState != null) {
-                return getRandomPictureForStates(lowestDressState);
-            }
-
-            //We don't have any pictures to show anyway
-            if (taggedPictures.isEmpty()) {
-                return null;
-            }
-            //Okay we have been beaten. Show a random image
-            else {
-                return taggedPictures.get(RandomUtils.randInt(0, taggedPictures.size() - 1));
-            }
-        }
-
-        return validPictures.get(RandomUtils.randInt(0, validPictures.size() - 1));
+        return getRandomPictureForTagStates(taggedPictures, Arrays.asList(dressStates), new ArrayList<>());
     }
 
     public TaggedPicture getRandomPicture(DressState dressState, PictureTag... pictureTags) {
-        List<TaggedPicture> validPictures = new ArrayList<>();
-
-        pictureLoop:
-        for (TaggedPicture taggedPicture : taggedPictures) {
-            if (dressState == null || taggedPicture.hasDressState(dressState)) {
-                for (PictureTag pictureTag : pictureTags) {
-                    if (pictureTag != null && !taggedPicture.hasTag(pictureTag)) {
-                        continue pictureLoop;
-                    }
-                }
-
-                //If we reach this point the image is good to display
-                validPictures.add(taggedPicture);
-            }
-        }
-
-        if (validPictures.isEmpty()) {
-            DressState lowerDressState = dressState.getNextLowerRank();
-
-            //Try finding an alternative image that shows less
-            if (lowerDressState != null) {
-                return getRandomPicture(dressState, pictureTags);
-            }
-
-            //We don't have any pictures to show anyway
-            if (taggedPictures.isEmpty()) {
-                return null;
-            }
-            //Okay we have been beaten. Show a random image
-            else {
-                return taggedPictures.get(RandomUtils.randInt(0, taggedPictures.size() - 1));
-            }
-        }
-
-        return validPictures.get(RandomUtils.randInt(0, validPictures.size() - 1));
+        return getRandomPictureForTagStates(Arrays.asList(new DressState[] {dressState}), Arrays.asList(pictureTags));
     }
 
     public TaggedPicture getRandomPicture(List<TaggedPicture> taggedPictures, PictureTag... pictureTags) {
@@ -152,41 +73,33 @@ public class PictureSet {
     }
 
     public TaggedPicture getRandomPicture(List<TaggedPicture> taggedPictures, List<PictureTag> pictureTags) {
+        return getRandomPictureForTagStates(taggedPictures, new ArrayList<>(), pictureTags);
+    }
+
+    public TaggedPicture getRandomPictureForTagStates(List<DressState> dressStates, List<PictureTag> pictureTags) {
+       return getRandomPictureForTagStates(taggedPictures, dressStates, pictureTags);
+    }
+
+
+    public TaggedPicture getRandomPictureForTagStates(List<TaggedPicture> taggedPictures, List<DressState> dressStates, List<PictureTag> pictureTags) {
         List<TaggedPicture> validPictures = new ArrayList<>();
 
         pictureLoop:
         for (TaggedPicture taggedPicture : taggedPictures) {
+            //Remove all pictures that don't have a specific tag
             for (PictureTag pictureTag : pictureTags) {
                 if (pictureTag != null && !taggedPicture.hasTag(pictureTag)) {
                     continue pictureLoop;
                 }
             }
 
+            //If we are supposed to search for a specific dress state we check whether our picture fits those guidelines
+            if(!dressStates.isEmpty() && !dressStates.contains(taggedPicture.getDressState())) {
+                continue pictureLoop;
+            }
+
             //If we reach this point the image is good to display
             validPictures.add(taggedPicture);
-        }
-
-        if (validPictures.isEmpty()) {
-            //Okay we have been beaten. Show a random image
-            return taggedPictures.get(RandomUtils.randInt(0, taggedPictures.size() - 1));
-        }
-
-        return validPictures.get(RandomUtils.randInt(0, validPictures.size() - 1));
-    }
-
-    public TaggedPicture getRandomPictureForTagStates(List<DressState> dressStates, List<PictureTag> pictureTags) {
-        List<TaggedPicture> validPictures = new ArrayList<>();
-
-        pictureLoop:
-        for (TaggedPicture taggedPicture : taggedPictures) {
-            for (DressState dressState : dressStates) {
-                if (dressState != null && !taggedPicture.hasDressState(dressState)) {
-                    continue pictureLoop;
-                }
-
-                //If we reach this point the image is good to display
-                validPictures.add(taggedPicture);
-            }
         }
 
         if (validPictures.isEmpty()) {
@@ -202,7 +115,7 @@ public class PictureSet {
 
             //Try finding an alternative image that shows less
             if (lowerDressState != null) {
-                return getRandomPictureForTagStates(Arrays.asList(new DressState[] {lowestDressState}), pictureTags);
+                return getRandomPictureForTagStates(Arrays.asList(new DressState[] {lowerDressState}), pictureTags);
             }
 
             //We don't have any pictures to show anyway
@@ -215,8 +128,9 @@ public class PictureSet {
             }
         }
 
-        return getRandomPicture(validPictures, pictureTags);
+        return validPictures.get(RandomUtils.randInt(0, validPictures.size() - 1));
     }
+
 
     public Collection<TaggedPicture> getTaggedPictures() {
         return taggedPictures;

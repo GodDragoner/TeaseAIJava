@@ -37,6 +37,9 @@ public class SettingsController {
     protected Button saveGeneralSettingsButton;
 
     @FXML
+    protected ComboBox fontSizeComboBox;
+
+    @FXML
     protected ListView urlFilesList;
 
     @FXML

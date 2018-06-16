@@ -4,8 +4,10 @@ import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
 import me.goddragon.teaseai.api.config.VariableHandler;
 import me.goddragon.teaseai.api.picture.PictureSelector;
+import me.goddragon.teaseai.api.scripts.ScriptHandler;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * Created by GodDragon on 25.03.2018.
@@ -33,12 +35,37 @@ public class Personality {
         //githubLink = new ConfigValue("githubLink", "null", configHandler);
 
         //Load in all config and variable values
-        reload();
+        variableHandler.loadVariables();
+        configHandler.loadConfig();
+    }
+
+    public void load() {
+        File loadFile = new File(getFolder().getAbsolutePath() + File.separator + "load.js");
+
+        if(loadFile.exists()) {
+            try {
+                ScriptHandler.getHandler().runScript(loadFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void unload() {
+        File loadFile = new File(getFolder().getAbsolutePath() + File.separator + "unload.js");
+
+        if(loadFile.exists()) {
+            try {
+                ScriptHandler.getHandler().runScript(loadFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void reload() {
-        variableHandler.loadVariables();
-        configHandler.loadConfig();
+        unload();
+        load();
     }
 
     /*public String getGithubPath() {

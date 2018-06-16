@@ -38,10 +38,26 @@ public class GeneralSettings {
                 saveSettings();
             }
         });
+
+        UnaryOperator<TextFormatter.Change> doubleFilter = change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("/^[0-9]+(\\\\.[0-9]+)?$")) {
+                return change;
+            }
+            return null;
+        };
+
+
+        for(double x = 10; x <= 60; x+= .5) {
+            settingsController.fontSizeComboBox.getItems().add(x);
+        }
+
+        settingsController.fontSizeComboBox.getSelectionModel().select(TeaseAI.application.CHAT_TEXT_SIZE.getDouble());
+
     }
 
     public void saveSettings() {
         TeaseAI.application.PREFERRED_SESSION_DURATION.setValue(settingsController.preferredTeaseLengthField.getText()).save();
-
+        TeaseAI.application.CHAT_TEXT_SIZE.setValue(settingsController.fontSizeComboBox.getSelectionModel().getSelectedItem().toString()).save();
     }
 }

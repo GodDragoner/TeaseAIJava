@@ -11,7 +11,7 @@ public class PersonalityVariable {
     private String customName;
     private String description;
     private boolean supportedByPersonality = false;
-
+    private boolean temporary = false;
 
     public PersonalityVariable(String configName, Object value) {
         this.configName = configName.toLowerCase();
@@ -60,6 +60,14 @@ public class PersonalityVariable {
 
     public void setSupportedByPersonality(boolean supportedByPersonality) {
         this.supportedByPersonality = supportedByPersonality;
+    }
+
+    public void setTemporary(boolean temporary) {
+        this.temporary = temporary;
+    }
+
+    public boolean isTemporary() {
+        return temporary;
     }
 
     @Override

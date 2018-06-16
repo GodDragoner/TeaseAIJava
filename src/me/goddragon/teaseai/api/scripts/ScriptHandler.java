@@ -129,7 +129,21 @@ public class ScriptHandler {
     public void runScript(File script) throws FileNotFoundException {
         try {
             this.currentFile = script;
+
+            boolean resetEngine = false;
+            if(engine == null) {
+                //Create a instance for the current purpose
+                this.engine = new ScriptEngineManager().getEngineByName("nashorn");
+                ScriptHandler.getHandler().load();
+                resetEngine = true;
+            }
+
             engine.eval(new FileReader(script));
+
+            //Reset the engine again because we only created it temporarily
+            if(resetEngine) {
+                this.engine = null;
+            }
         } catch (ScriptException e) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Latest loaded file was '" + currentFile.getPath() + "' and error was found in line " + e.getLineNumber() + "\n" +
                     "Error: " + e.getMessage(), false);

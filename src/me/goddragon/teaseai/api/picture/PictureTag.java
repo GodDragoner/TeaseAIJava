@@ -20,7 +20,7 @@ public enum PictureTag {
     SUCKING("TagSucking"),
     SMILING("TagSmiling"),
     GLARING("TagGlaring"),
-    SIDE_VIEW("TagSeeThrough"),
+    SIDE_VIEW("TagSideView"),
     CLOSE_UP("TagAllFours"),
     ALL_FOURS("TagAllFours"),
     PIERCING("TagPiercing");

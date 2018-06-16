@@ -17,6 +17,7 @@ import java.util.logging.Level;
  */
 public class VariableHandler {
     private File personalityVariableFolder;
+    //private File supportedVariablesFile;
 
     private final Personality personality;
     private HashMap<String, PersonalityVariable> variables = new HashMap<>();
@@ -34,6 +35,15 @@ public class VariableHandler {
         personalityVariableFolder = new File(personality.getFolder().getPath() + File.separator + "System" + File.separator + "Variables");
         personalityVariableFolder.mkdirs();
 
+        /*supportedVariablesFile = new File(personality.getFolder().getPath() + File.separator + "variableInformation.txt");
+        if(!supportedVariablesFile.exists()) {
+            try {
+                supportedVariablesFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }*/
+
         for (File file : personalityVariableFolder.listFiles()) {
             if (file.isFile() && file.getName().endsWith(".var")) {
                 try {
@@ -46,6 +56,17 @@ public class VariableHandler {
 
                     if (strLine != null) {
                         PersonalityVariable personalityVariable = new PersonalityVariable(file.getName().substring(0, file.getName().length() - 4), getObjectFromString(strLine));
+
+                        //If we already know about this variable try to restore custom information
+                        if(variableExist(personalityVariable.getConfigName())) {
+                            PersonalityVariable existingVariable = getVariable(personalityVariable.getConfigName());
+                            //Check whether this variable has any relevant information
+                            if(existingVariable.isSupportedByPersonality()) {
+                                personalityVariable.setDescription(existingVariable.getDescription());
+                                personalityVariable.setCustomName(existingVariable.getCustomName());
+                            }
+                        }
+
                         variables.put(personalityVariable.getConfigName(), personalityVariable);
                     }
 
@@ -56,6 +77,24 @@ public class VariableHandler {
                 }
             }
         }
+
+        /*try {
+            // Open the file
+            FileInputStream fstream = new FileInputStream(supportedVariablesFile);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+            String strLine;
+
+            //Read file line by line
+            while((strLine = br.readLine()) != null) {
+
+            }
+
+            //Close the input stream
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
     public Object setVariable(String name, Object value) {
@@ -93,6 +132,7 @@ public class VariableHandler {
 
         //If this is not meant to be permanent we can just skip the file stuff
         if (temporary) {
+            personalityVariable.setTemporary(true);
             return value;
         }
 
@@ -166,6 +206,23 @@ public class VariableHandler {
         return variables.containsKey(name.toLowerCase());
     }
 
+    public Collection<PersonalityVariable> getTemporaryVariables() {
+        Collection<PersonalityVariable> tempVariables = new HashSet<>();
+        for(PersonalityVariable variable : variables.values()) {
+            if(variable.isTemporary()) {
+                tempVariables.add(variable);
+            }
+        }
+
+        return tempVariables;
+    }
+
+    public void clearTemporaryVariables() {
+        //Remove all temporary variables
+        for(PersonalityVariable tempVariable : getTemporaryVariables()) {
+            variables.remove(tempVariable.getConfigName());
+        }
+    }
 
     public File getVariableFile(String name) {
         return getVariableFile(name, true);
