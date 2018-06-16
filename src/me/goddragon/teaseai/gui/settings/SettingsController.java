@@ -40,6 +40,9 @@ public class SettingsController {
     protected ComboBox fontSizeComboBox;
 
     @FXML
+    protected ComboBox defaultTypeSpeedComboBox;
+
+    @FXML
     protected ListView urlFilesList;
 
     @FXML

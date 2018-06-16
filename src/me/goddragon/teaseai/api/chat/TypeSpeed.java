@@ -5,7 +5,7 @@ package me.goddragon.teaseai.api.chat;
  */
 public enum TypeSpeed {
 
-    SLOW(500), MEDIUM(200), FAST(100), INSTANT(0);
+    SLOWEST(230), SLOWER(180), SLOW(140), MEDIUM(120), FAST(100), FASTER(80), FASTEST(50), INSTANT(0);
 
     private final long millisPerLetter;
 

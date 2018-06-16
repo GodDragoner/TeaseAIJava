@@ -22,7 +22,7 @@ public class ChatHandler {
     public static final int MAIN_DOM_SENDER_ID = 1;
 
     private static ChatHandler handler = new ChatHandler();
-    private TypeSpeed typeSpeed = TypeSpeed.MEDIUM;
+    private TypeSpeed typeSpeed = TypeSpeed.valueOf(TeaseAI.application.DEFAULT_TYPE_SPEED.getValue());
 
     /**
      * Millis waited after each message by default

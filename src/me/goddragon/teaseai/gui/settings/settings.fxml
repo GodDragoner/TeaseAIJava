@@ -42,15 +42,18 @@
                           <rowConstraints>
                             <RowConstraints maxHeight="-Infinity" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
                             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="255.0" vgrow="SOMETIMES" />
                             <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="214.0" text="Preferred Tease Duration (minutes):" GridPane.columnIndex="1" />
                               <TextField fx:id="preferredTeaseLengthField" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="60" GridPane.columnIndex="3" />
-                              <Button fx:id="saveGeneralSettingsButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Save Settings" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                              <Button fx:id="saveGeneralSettingsButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Save Settings" GridPane.columnIndex="5" GridPane.rowIndex="4" />
                               <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Font Size:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <ComboBox fx:id="fontSizeComboBox" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Default Type Speed:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <ComboBox fx:id="defaultTypeSpeedComboBox" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
                      </children></AnchorPane>
