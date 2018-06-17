@@ -2,14 +2,12 @@ package me.goddragon.teaseai;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.chat.TypeSpeed;
 import me.goddragon.teaseai.api.chat.response.Response;
@@ -77,14 +75,11 @@ public class TeaseAI extends Application {
         primaryStage.show();
         controller.initiate();
 
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                try {
-                    System.exit(0);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        primaryStage.setOnCloseRequest(event -> {
+            try {
+                System.exit(0);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 

@@ -32,7 +32,7 @@ public class VariableHandler {
         variables.clear();
         nonSetSupportedVariables.clear();
 
-        personalityVariableFolder = new File(personality.getFolder().getPath() + File.separator + "System" + File.separator + "Variables");
+        personalityVariableFolder = new File(personality.getSystemFolder().getPath() + File.separator + "Variables");
         personalityVariableFolder.mkdirs();
 
         /*supportedVariablesFile = new File(personality.getFolder().getPath() + File.separator + "variableInformation.txt");

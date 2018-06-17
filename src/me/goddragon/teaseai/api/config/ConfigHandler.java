@@ -48,7 +48,8 @@ public class ConfigHandler {
                 input = url.openStream();
             }
 
-            //Load a properties file
+            //Load a properties file and clear it before
+            properties.clear();
             properties.load(input);
 
             for(ConfigValue configValue : configValues) {
@@ -67,8 +68,13 @@ public class ConfigHandler {
             }
         }
 
-        saveConfig();
+        //Only save when we are not dealing an url
+        if(configName != null && configName.length() > 0) {
+            reloadAllValues();
+            saveConfig();
+        }
     }
+
 
     public void saveConfig() {
         if(configName == null || configName.length() == 0) {
@@ -77,9 +83,17 @@ public class ConfigHandler {
         }
 
         try {
-            properties.store(new FileOutputStream(configName), null);
+            FileOutputStream fileOutputStream = new FileOutputStream(configName);
+            properties.store(fileOutputStream, null);
+            fileOutputStream.close();
         } catch (IOException e) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Failed to save config.", e);
+        }
+    }
+
+    public void reloadAllValues() {
+        for(ConfigValue configValue : configValues) {
+            configValue.reloadValue();
         }
     }
 

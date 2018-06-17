@@ -17,6 +17,7 @@ public class ConfigValue {
         configHandler.getConfigValues().add(this);
     }
 
+
     public ConfigValue setValue(String value) {
         this.value = value;
         configHandler.getProperties().setProperty(name, value.toString());
@@ -38,6 +39,11 @@ public class ConfigValue {
 
         this.value = defaultValue.toString();
         return defaultValue.toString();
+    }
+
+    public void reloadValue() {
+        value = null;
+        getValue();
     }
 
     public boolean getBoolean() {
