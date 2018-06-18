@@ -35,7 +35,10 @@ public class ConfigValue {
         }
 
         createDefault();
-        save();
+
+        if(configHandler.isConfig()) {
+            save();
+        }
 
         this.value = defaultValue.toString();
         return defaultValue.toString();

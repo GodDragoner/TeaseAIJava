@@ -13,7 +13,7 @@ public class TeaseLogger {
 
     private static TeaseLogger logger = new TeaseLogger();
     private PrintStream outStream;
-    private boolean fileLog = true;
+    private boolean fileLog = false;
     //private Logger javaLogger;
 
     public TeaseLogger() {

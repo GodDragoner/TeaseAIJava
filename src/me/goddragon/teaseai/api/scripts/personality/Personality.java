@@ -11,6 +11,7 @@ import me.goddragon.teaseai.api.config.VariableHandler;
 import me.goddragon.teaseai.api.picture.PictureSelector;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.gui.ProgressForm;
+import me.goddragon.teaseai.utils.ComparableVersion;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.ZipUtils;
@@ -72,7 +73,7 @@ public class Personality {
                 return false;
             }
 
-            if (version.getDouble() > this.version.getDouble()) {
+            if (new ComparableVersion(version.getValue()).compareTo(new ComparableVersion(this.version.getValue())) > 0) {
                 boolean[] update = {false};
                 TeaseLogger.getLogger().log(Level.INFO, "Detected new version '" + version.getValue() + "' for personality '" + name + "'.");
                 TeaseAI.application.runOnUIThread(new Runnable() {
@@ -107,7 +108,7 @@ public class Personality {
 
                 if(update[0]) {
                     TeaseLogger.getLogger().log(Level.INFO, "Update process accepted. Fetching update from remote...");
-                    fetchFromGithub(version.getDouble(), downloadLink.getValue());
+                    fetchFromGithub(version.getValue(), downloadLink.getValue());
                 } else {
                     TeaseLogger.getLogger().log(Level.INFO, "Update process declined by user.");
                 }
@@ -121,7 +122,7 @@ public class Personality {
         return false;
     }
 
-    public void fetchFromGithub(double newVersion, String downloadLink) {
+    public void fetchFromGithub(String newVersion, String downloadLink) {
         Task<Void> task = new Task<Void>() {
             @Override
             public Void call() throws InterruptedException {
@@ -184,7 +185,7 @@ public class Personality {
                     TeaseLogger.getLogger().log(Level.INFO, "Finished copying system folder for personality '" + name + "'. Switching old personality with new one....");
 
                     //Zip old personality folder
-                    ZipUtils.zipFolder(getFolder(), oldPersonalityZip = new File(PersonalityManager.PERSONALITY_FOLDER_NAME + File.separator + getFolder().getName() + " (" + version.getDouble() + ").zip"));
+                    ZipUtils.zipFolder(getFolder(), oldPersonalityZip = new File(PersonalityManager.PERSONALITY_FOLDER_NAME + File.separator + getFolder().getName() + " (" + version.getValue() + ").zip"));
 
                     updateProgress(5, 10);
 
@@ -210,7 +211,7 @@ public class Personality {
                     Personality.this.configHandler.loadConfig();
 
                     updateProgress(9, 10);
-                    TeaseLogger.getLogger().log(Level.INFO, "Finished updating personality '" + name.getValue() + "' to version " + version.getDouble());
+                    TeaseLogger.getLogger().log(Level.INFO, "Finished updating personality '" + name.getValue() + "' to version " + version.getValue());
                 } catch (MalformedURLException e) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "Invalid github download url '" + downloadLink + "' for personality '" + name + "'. Update failed.");
                 } catch (FileNotFoundException e) {

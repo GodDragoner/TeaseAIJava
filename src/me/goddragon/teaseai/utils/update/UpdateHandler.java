@@ -8,6 +8,7 @@ import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
 import me.goddragon.teaseai.gui.ProgressForm;
+import me.goddragon.teaseai.utils.ComparableVersion;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.URLUtils;
@@ -49,7 +50,7 @@ public class UpdateHandler {
                 return false;
             }
 
-            if (!version.getValue().equals(TeaseAI.application.VERSION)) {
+            if (new ComparableVersion(version.getValue()).compareTo(new ComparableVersion(TeaseAI.application.VERSION)) > 0) {
                 boolean[] update = {false};
                 TeaseLogger.getLogger().log(Level.INFO, "New TAJ version " + version.getValue() + " available");
                 TeaseAI.application.runOnUIThread(new Runnable() {
