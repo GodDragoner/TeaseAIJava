@@ -135,7 +135,6 @@ public class ChatParticipant {
 
     public void sendMessage(String message, long millisToWait) {
         //We need to wait BEFORE we replace the vocabularies. Otherwise any code triggered by the vocab will execute before the message is send
-        startTyping(message);
 
         //Replace all vocabularies
         message = VocabularyHandler.getHandler().replaceAllVocabularies(message);
@@ -155,6 +154,7 @@ public class ChatParticipant {
     }
 
     public void sendMessage(String rawMessage, long millisToWait, List<Text> messages) {
+        startTyping(rawMessage);
         DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
 
         Text dateText = new Text(dateFormat.format(new Date()) + " ");
