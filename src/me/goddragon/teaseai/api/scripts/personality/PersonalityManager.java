@@ -5,8 +5,10 @@ import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 
 /**
@@ -17,31 +19,30 @@ public class PersonalityManager {
 
     private static PersonalityManager manager = new PersonalityManager();
 
-    private final HashMap<String, Personality> personalities = new HashMap<>();
+    private BiConsumer<Integer, Integer> progressUpdate ;
+
+    private final Collection<Personality> personalities = new ArrayList<>();
 
     public void loadPersonalities() {
         personalities.clear();
 
+        List<File> folders = getPersonalityFolders();
+        for(int x = 0; x < folders.size(); x++) {
+            progressUpdate.accept(x + 1, folders.size());
+
+            Personality personality = new Personality(folders.get(x).getName());
+            personality.checkForUpdate();
+            addPersonality(personality);
+            TeaseLogger.getLogger().log(Level.INFO, "Personality '" + personality.getName() + "' version " + personality.getVersion() + " loaded.");
+        }
+    }
+
+    public void addPersonalitiesToGUI() {
         ChoiceBox choiceBox = TeaseAI.application.getController().getPersonalityChoiceBox();
         choiceBox.getItems().clear();
 
-        File personalityFolder = new File(PERSONALITY_FOLDER_NAME);
-        personalityFolder.mkdirs();
-
-        for(File file : personalityFolder.listFiles()) {
-            //Ignore all non directories
-            if (file.isDirectory()) {
-                File propertiesFile = new File(file.getAbsolutePath() + File.separator + Personality.PROPERTIES_NAME);
-
-                if(propertiesFile.exists()) {
-                    Personality personality = new Personality(file.getName());
-                    addPersonality(personality);
-                    choiceBox.getItems().add(personality);
-                    TeaseLogger.getLogger().log(Level.INFO, "Personality '" + personality.getName() + "' version " + personality.getVersion() + " loaded.");
-                } else {
-                    TeaseLogger.getLogger().log(Level.WARNING, "Personality '" + file.getName() + "' is missing a properties file. Skipping loading.");
-                }
-            }
+        for(Personality personality : personalities) {
+            choiceBox.getItems().add(personality);
         }
 
         String latestSelectedPersonality = TeaseAI.application.LAST_SELECTED_PERSONALITY.getValue();
@@ -56,19 +57,48 @@ public class PersonalityManager {
     }
 
     public void addPersonality(Personality personality) {
-        personalities.put(personality.getName().getValue(), personality);
+        personalities.add(personality);
     }
 
     public Personality getPersonality(String name) {
-        if(!personalities.containsKey(name)) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "Personality with name '" + name + "' does not exist.");
+        for(Personality personality : personalities) {
+            if(personality.getName().getValue().equals(name)) {
+                return personality;
+            }
         }
 
-        return personalities.get(name);
+        TeaseLogger.getLogger().log(Level.SEVERE, "Personality with name '" + name + "' does not exist.");
+        return null;
     }
 
     public Collection<Personality> getPersonalities() {
-        return personalities.values();
+        return personalities;
+    }
+
+    public List<File> getPersonalityFolders() {
+        List<File> folders = new ArrayList<>();
+
+        File personalityFolder = new File(PERSONALITY_FOLDER_NAME);
+        personalityFolder.mkdirs();
+
+        for(File file : personalityFolder.listFiles()) {
+            //Ignore all non directories
+            if (file.isDirectory()) {
+                File propertiesFile = new File(file.getAbsolutePath() + File.separator + Personality.PROPERTIES_NAME);
+
+                if(propertiesFile.exists()) {
+                    folders.add(file);
+                } else {
+                    TeaseLogger.getLogger().log(Level.WARNING, "Personality '" + file.getName() + "' is missing a properties file. Skipping loading.");
+                }
+            }
+        }
+
+        return folders;
+    }
+
+    public void setProgressUpdate(BiConsumer<Integer, Integer> progressUpdate) {
+        this.progressUpdate = progressUpdate ;
     }
 
     @Deprecated

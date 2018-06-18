@@ -1,16 +1,11 @@
 package me.goddragon.teaseai.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import me.goddragon.teaseai.TeaseAI;
+
+import java.io.*;
 import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.nio.file.FileVisitResult.CONTINUE;
-import static java.nio.file.FileVisitResult.TERMINATE;
 
 /**
  * Created by GodDragon on 05.04.2018.
@@ -60,7 +55,7 @@ public class FileUtils {
         byte[] buffer = new byte[1024];
         int len;
 
-        while((len = in.read(buffer)) >= 0) {
+        while ((len = in.read(buffer)) >= 0) {
             out.write(buffer, 0, len);
         }
 
@@ -70,7 +65,7 @@ public class FileUtils {
 
     /**
      * This function recursively copy all the sub folder and files from sourceFolder to destinationFolder
-     * */
+     */
     public static void copyFolder(File sourceFolder, File destinationFolder, boolean ignoreHidden) throws IOException {
         //Check if sourceFolder is a directory or file
         //If sourceFolder is file; then copy the file directly to new location
@@ -86,7 +81,7 @@ public class FileUtils {
             //Iterate over all files and copy them to destinationFolder one by one
             for (String file : files) {
                 //Skip hidden files
-                if(file.startsWith(".") && ignoreHidden) {
+                if (file.startsWith(".") && ignoreHidden) {
                     continue;
                 }
 
@@ -105,8 +100,43 @@ public class FileUtils {
         }
     }
 
+    public static boolean containsFile(File folder, String fileName) {
+        String files[] = folder.list();
+
+        //Iterate over all files
+        for (String file : files) {
+            if(!new File(folder, file).isDirectory() && file.endsWith(fileName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static File findFile(File parentFolder, String fileName) {
+        String files[] = parentFolder.list();
+
+        //Iterate over all files
+        for (String file : files) {
+            if(!new File(parentFolder, file).isDirectory()) {
+                if(file.endsWith(fileName)) {
+                    return new File(parentFolder, file);
+                }
+            } else {
+                //Try to find the file one directory deeper
+                File foundFile = findFile(new File(parentFolder, file), fileName);
+
+                if(foundFile != null) {
+                    return foundFile;
+                }
+            }
+        }
+
+        return null;
+    }
+
     public static void deleteFileOrFolder(final Path path) throws IOException {
-        Files.walkFileTree(path, new SimpleFileVisitor<Path>(){
+        /*Files.walkFileTree(path, new SimpleFileVisitor<Path>(){
             @Override public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
                 Files.delete(file);
 
@@ -132,6 +162,73 @@ public class FileUtils {
                 Files.delete(dir);
                 return CONTINUE;
             }
-        });
+        });*/
+
+        delete(path.toFile());
+    }
+
+    public static void delete(File file) throws IOException {
+        if(file.isDirectory()) {
+            //Directory is empty, then delete it
+            if(file.list().length == 0) {
+                file.delete();
+
+            } else {
+                //List all the directory contents
+                String files[] = file.list();
+
+                for(String temp : files) {
+                    //Construct the file structure
+                    File fileDelete = new File(file, temp);
+
+                    //Recursive delete
+                    delete(fileDelete);
+                }
+
+                //Check the directory again, if empty then delete it
+                if(file.list().length == 0) {
+                    file.delete();
+                }
+            }
+
+        } else {
+            //If file, then delete it
+            file.delete();
+        }
+    }
+
+    /**
+     * Export a resource embedded into a Jar file to the local file path.
+     *
+     * @param resourceName ie.: "/SmartLibrary.dll"
+     * @return The path to the exported resource
+     * @throws Exception
+     */
+    public static String exportResource(String resourceName) throws Exception {
+        InputStream stream = null;
+        OutputStream resStreamOut = null;
+        String jarFolder;
+        try {
+            //note that each / is a directory down in the "jar tree" been the jar the root of the tree
+            stream = TeaseAI.class.getResourceAsStream(resourceName);
+            if(stream == null) {
+                throw new Exception("Cannot get resource \"" + resourceName + "\" from jar file.");
+            }
+
+            int readBytes;
+            byte[] buffer = new byte[4096];
+            jarFolder = new File(TeaseAI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile().getPath().replace('\\', '/');
+            resStreamOut = new FileOutputStream(jarFolder + resourceName);
+            while ((readBytes = stream.read(buffer)) > 0) {
+                resStreamOut.write(buffer, 0, readBytes);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            stream.close();
+            resStreamOut.close();
+        }
+
+        return jarFolder + resourceName;
     }
 }

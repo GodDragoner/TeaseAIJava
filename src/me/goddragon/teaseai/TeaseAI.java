@@ -2,6 +2,7 @@ package me.goddragon.teaseai;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,9 +23,13 @@ import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.api.session.Session;
 import me.goddragon.teaseai.api.session.StrokeHandler;
+import me.goddragon.teaseai.gui.ProgressForm;
+import me.goddragon.teaseai.gui.StartupProgressPane;
 import me.goddragon.teaseai.gui.main.Controller;
 import me.goddragon.teaseai.utils.TeaseLogger;
+import me.goddragon.teaseai.utils.update.UpdateHandler;
 
+import java.io.IOException;
 import java.util.logging.Level;
 
 /**
@@ -32,7 +37,8 @@ import java.util.logging.Level;
  */
 public class TeaseAI extends Application {
 
-    public static final String VERSION = "1.0.10";
+    public static final String VERSION = "1.0.11";
+    public static final String UPDATE_FOLDER = "Updates";
 
     public static double JAVA_VERSION = getJavaVersion();
 
@@ -41,12 +47,16 @@ public class TeaseAI extends Application {
     private MediaCollection mediaCollection;
     private Controller controller;
     private Thread mainThread;
+    private Stage primaryStage;
     public Thread scriptThread;
+
+    public StartupProgressPane startupProgressPane;
 
     public final ConfigValue PREFERRED_SESSION_DURATION = new ConfigValue("preferredSessionDuration", "60", configHandler);
     public final ConfigValue CHAT_TEXT_SIZE = new ConfigValue("chatTextSize", Font.getDefault().getSize(), configHandler);
     public final ConfigValue DEFAULT_TYPE_SPEED = new ConfigValue("defaultTypeSpeed", TypeSpeed.MEDIUM, configHandler);
     public final ConfigValue LAST_SELECTED_PERSONALITY = new ConfigValue("lastSelectedPersonality", "null", configHandler);
+    public final ConfigValue TEASE_AI_PROPERTIES_LINK = new ConfigValue("teaseAIPropertiesLink", "https://gist.githubusercontent.com/GodDragoner/6c7193903cb0695ff891e8468ad279cd/raw/TeaseAI.properties", configHandler);
 
     private Session session;
 
@@ -64,8 +74,62 @@ public class TeaseAI extends Application {
         //Will allow us to use ecma6 language
         System.setProperty("nashorn.args", "--language=es6");
 
-        application = this;
-        mainThread = Thread.currentThread();
+        this.application = this;
+        this.mainThread = Thread.currentThread();
+        this.primaryStage = primaryStage;
+        this.startupProgressPane = new StartupProgressPane();
+
+        //Load config values first
+        configHandler.loadConfig();
+
+        ProgressForm progressForm = new ProgressForm("Checking for TAJ update...");
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() throws InterruptedException {
+                UpdateHandler.getHandler().checkForUpdate();
+
+                progressForm.setNameSync("Checking personalities...");
+                PersonalityManager.getManager().setProgressUpdate((workDone, totalWork) ->
+                        updateProgress(workDone, totalWork));
+
+                PersonalityManager.getManager().loadPersonalities();
+
+                TeaseAI.application.runOnUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            TeaseAI.application.finishedCheckup();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                return null;
+            }
+
+            @Override
+            protected void updateProgress(long workDone, long max) {
+                super.updateProgress(workDone, max);
+            }
+        };
+
+        progressForm.bindProgressBar(task);
+        startupProgressPane.addProgressBar(progressForm);
+        startupProgressPane.show();
+
+        task.setOnSucceeded(event -> startupProgressPane.getDialogStage().close());
+
+        Thread thread = new Thread(task);
+        thread.start();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    public void finishedCheckup() throws IOException {
+        startupProgressPane.close();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/main/main.fxml"));
         controller = new Controller(primaryStage);
         loader.setController(controller);
@@ -86,22 +150,15 @@ public class TeaseAI extends Application {
         //Load values to add the config values
         MediaFetishType.values();
 
-        //Load config values first
-        configHandler.loadConfig();
-
         ChatHandler.getHandler().load();
 
         this.mediaCollection = new MediaCollection();
 
-        PersonalityManager.getManager().loadPersonalities();
+        PersonalityManager.getManager().addPersonalitiesToGUI();
 
         initializeNewSession();
 
         controller.loadDomInfo();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
     public boolean checkForNewResponses() {

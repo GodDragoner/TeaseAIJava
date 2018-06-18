@@ -34,7 +34,7 @@ public class ZipUtils {
                 if (zipEntry.isDirectory()) {
                     //System.out.println("Extracting directory: " + outputDir + zipEntry.getName());
 
-                    new File(outputDir + zipEntry.getName()).mkdir();
+                    new File(outputDir + zipEntry.getName()).mkdirs();
                     continue;
                 }
 

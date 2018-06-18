@@ -1,10 +1,16 @@
 package me.goddragon.teaseai.api.scripts.personality;
 
+import javafx.concurrent.Task;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
 import me.goddragon.teaseai.api.config.VariableHandler;
 import me.goddragon.teaseai.api.picture.PictureSelector;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
+import me.goddragon.teaseai.gui.ProgressForm;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.ZipUtils;
@@ -23,8 +29,7 @@ public class Personality {
 
     public final ConfigValue name;
     public final ConfigValue version;
-    public final ConfigValue githubDownloadLink;
-    public final ConfigValue githubDownloadPersonalityPath;
+    public final ConfigValue downloadLink;
     public final ConfigValue personalityPropertiesLink;
 
     private final String folderName;
@@ -40,118 +45,223 @@ public class Personality {
 
         this.name = new ConfigValue("name", "Default Personality", configHandler);
         this.version = new ConfigValue("version", "1.0", configHandler);
-        this.githubDownloadLink = new ConfigValue("githubDownloadLink", "null", configHandler);
-        this.githubDownloadPersonalityPath = new ConfigValue("githubDownloadPersonalityPath", "null", configHandler);
+        this.downloadLink = new ConfigValue("updateDownloadZipLink", "null", configHandler);
         this.personalityPropertiesLink = new ConfigValue("personalityPropertiesLink", "null", configHandler);
 
         //Load in all config and variable values (we need to do this before the update because the update check needs the version config value)
         variableHandler.loadVariables();
         configHandler.loadConfig();
-
-        checkForUpdate();
     }
 
-    public void checkForUpdate() {
+    public boolean checkForUpdate() {
         //No link given
-        if(personalityPropertiesLink == null || personalityPropertiesLink.getValue() == null || personalityPropertiesLink.getValue().equals("null")) {
-            return;
+        if (personalityPropertiesLink == null || personalityPropertiesLink.getValue() == null || personalityPropertiesLink.getValue().equals("null")) {
+            return false;
         }
 
         try {
             URL url = new URL(personalityPropertiesLink.getValue());
             ConfigHandler urlConfig = new ConfigHandler(url);
             ConfigValue version = new ConfigValue("version", "null", urlConfig);
+            ConfigValue downloadLink = new ConfigValue("updateDownloadZipLink", "null", urlConfig);
+
             urlConfig.loadConfig();
 
-            if(version.getValue() == null || version.getValue().equals("null")) {
+            if (version.getValue() == null || version.getValue().equals("null")) {
                 TeaseLogger.getLogger().log(Level.SEVERE, "Fetched invalid properties file from url '" + personalityPropertiesLink.getValue() + "' for personality '" + name + "'. Version number is missing.");
-                return;
+                return false;
             }
 
-            if(version.getDouble() > this.version.getDouble()) {
-                TeaseLogger.getLogger().log(Level.INFO, "Detected new version '" + version.getValue() + "' for personality '" + name + "'. Fetching update from remote...");
-                fetchFromGithub(version.getDouble());
+            if (version.getDouble() > this.version.getDouble()) {
+                boolean[] update = {false};
+                TeaseLogger.getLogger().log(Level.INFO, "Detected new version '" + version.getValue() + "' for personality '" + name + "'.");
+                TeaseAI.application.runOnUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("New version found");
+                        alert.setContentText("New version " +  version.getValue() + "' for personality '" + name + "' was found. Would you like to update?");
+                        ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+                        ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+                        //ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+                        alert.getButtonTypes().setAll(okButton, noButton);
+                        alert.showAndWait().ifPresent(type -> {
+                            if (type.getButtonData() == ButtonBar.ButtonData.YES) {
+                                update[0] = true;
+                            }
+
+                            synchronized (Personality.this) {
+                                Personality.this.notify();
+                            }
+                        });
+                    }
+                });
+
+                try {
+                    synchronized (Personality.this) {
+                        Personality.this.wait();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                if(update[0]) {
+                    TeaseLogger.getLogger().log(Level.INFO, "Update process accepted. Fetching update from remote...");
+                    fetchFromGithub(version.getDouble(), downloadLink.getValue());
+                } else {
+                    TeaseLogger.getLogger().log(Level.INFO, "Update process declined by user.");
+                }
+
+                return true;
             }
         } catch (MalformedURLException e) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Invalid properties file url '" + personalityPropertiesLink.getValue() + "' for personality '" + name + "'.");
         }
+
+        return false;
     }
 
-    public void fetchFromGithub(double newVersion) {
-        try {
-            String fileName = PersonalityManager.PERSONALITY_FOLDER_NAME + File.separator + name + " (" + newVersion + ")";
-            URL url = new URL(githubDownloadLink.getValue());
-            URLConnection conn = url.openConnection();
-            InputStream in = conn.getInputStream();
-            File newUpdateZipFile = new File(fileName + ".zip");
+    public void fetchFromGithub(double newVersion, String downloadLink) {
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() throws InterruptedException {
+                File oldPersonalityZip = null;
+                File downloadedPersonalityFolder = null;
 
-            FileOutputStream out = new FileOutputStream(newUpdateZipFile);
+                try {
+                    updateProgress(0, 10);
 
-            byte[] b = new byte[1024];
-            int count;
-            while ((count = in.read(b)) >= 0) {
-                out.write(b, 0, count);
+                    String fileName = PersonalityManager.PERSONALITY_FOLDER_NAME + File.separator + name + " (" + newVersion + ")";
+                    URL url = new URL(downloadLink);
+                    URLConnection conn = url.openConnection();
+                    InputStream in = conn.getInputStream();
+                    File newUpdateZipFile = new File(fileName + ".zip");
+
+                    FileOutputStream out = new FileOutputStream(newUpdateZipFile);
+
+                    byte[] b = new byte[1024];
+                    int count;
+                    while ((count = in.read(b)) >= 0) {
+                        out.write(b, 0, count);
+                    }
+
+                    out.flush();
+                    out.close();
+                    in.close();
+
+                    updateProgress(1, 10);
+                    TeaseLogger.getLogger().log(Level.INFO, "Finished downloading update for personality '" + name + "'. Unzipping...");
+                    File target = downloadedPersonalityFolder = new File(fileName);
+
+                    //Unzip the downloaded file
+                    ZipUtils.unzipFile(newUpdateZipFile, target);
+
+                    updateProgress(2, 10);
+
+                    //Delete the downloaded zip file
+                    newUpdateZipFile.delete();
+
+                    updateProgress(3, 10);
+
+                    //Copy variables and other stuff
+                    File newPersonalityFolder = FileUtils.findFile(target, "personality.properties").getParentFile();
+
+                    //File newPersonalityFolder = new File(target.getAbsolutePath() + File.separator + downloadPersonalityPath.getValue().replace("/", File.separator).replace("\\", File.separator));
+
+                    if (newPersonalityFolder == null || !newPersonalityFolder.exists()) {
+                        TeaseLogger.getLogger().log(Level.INFO, "Unable to find personality.properties file in new version of '" + name + "'.");
+                        target.delete();
+                        return null;
+                    }
+
+                    TeaseLogger.getLogger().log(Level.INFO, "Finished unzipping update for personality '" + name + "'. Copying old system folder...");
+
+                    //Copy system folder with variables etc.
+                    FileUtils.copyFolder(getSystemFolder(), new File(newPersonalityFolder.getAbsolutePath() + File.separator + "System"), true);
+
+                    updateProgress(4, 10);
+
+                    TeaseLogger.getLogger().log(Level.INFO, "Finished copying system folder for personality '" + name + "'. Switching old personality with new one....");
+
+                    //Zip old personality folder
+                    ZipUtils.zipFolder(getFolder(), oldPersonalityZip = new File(PersonalityManager.PERSONALITY_FOLDER_NAME + File.separator + getFolder().getName() + " (" + version.getDouble() + ").zip"));
+
+                    updateProgress(5, 10);
+
+                    //Delete old personality
+                    FileUtils.deleteFileOrFolder(getFolder().toPath());
+
+                    updateProgress(6, 10);
+
+                    Thread.sleep(500);
+
+                    //Replace old folder with new one (we need to replace the separators in the path for alternative system support)
+                    FileUtils.copyFolder(newPersonalityFolder, new File(getFolder().getAbsolutePath()), true);
+
+                    updateProgress(7, 10);
+
+                    //Delete downloaded fetched update
+                    FileUtils.deleteFileOrFolder(target.toPath());
+
+                    updateProgress(8, 10);
+
+                    //Load in all config and variable values yet again
+                    Personality.this.variableHandler.loadVariables();
+                    Personality.this.configHandler.loadConfig();
+
+                    updateProgress(9, 10);
+                    TeaseLogger.getLogger().log(Level.INFO, "Finished updating personality '" + name.getValue() + "' to version " + version.getDouble());
+                } catch (MalformedURLException e) {
+                    TeaseLogger.getLogger().log(Level.SEVERE, "Invalid github download url '" + downloadLink + "' for personality '" + name + "'. Update failed.");
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                    TeaseLogger.getLogger().log(Level.SEVERE, "Something went wrong while updating personality '" + name + "'.");
+
+                    if (downloadedPersonalityFolder != null) {
+                        try {
+                            FileUtils.deleteFileOrFolder(downloadedPersonalityFolder.toPath());
+                            Thread.sleep(500);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+
+                    if (oldPersonalityZip != null) {
+                        ZipUtils.unzipFile(oldPersonalityZip, getFolder());
+                        TeaseLogger.getLogger().log(Level.SEVERE, "Restored previous state of personality '" + name + "'.");
+                    }
+                }
+                return null;
             }
+        };
 
-            out.flush();
-            out.close();
-            in.close();
+        ProgressForm progressForm = new ProgressForm("Updating " + name + "...", task);
 
-            TeaseLogger.getLogger().log(Level.INFO, "Finished downloading update for personality '" + name + "'. Unzipping...");
-            File target = new File(fileName);
-
-            //Unzip the downloaded file
-            ZipUtils.unzipFile(newUpdateZipFile, target);
-
-            //Delete the downloaded zip file
-            newUpdateZipFile.delete();
-
-            //Copy variables and other stuff
-            File newPersonalityFolder = new File(target.getAbsolutePath() + File.separator + githubDownloadPersonalityPath.getValue().replace("/", File.separator).replace("\\", File.separator));
-
-            if(!newPersonalityFolder.exists()) {
-                TeaseLogger.getLogger().log(Level.INFO, "Invalid github download personality path '" + githubDownloadPersonalityPath.getValue() + "' for personality '" + name + "'.");
-                target.delete();
-                return;
+        TeaseAI.application.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                TeaseAI.application.startupProgressPane.addProgressBar(progressForm);
             }
+        });
 
-            TeaseLogger.getLogger().log(Level.INFO, "Finished unzipping update for personality '" + name + "'. Copying old system folder...");
+        Thread thread = new Thread(task);
+        thread.run();
 
-            //Copy system folder with variables etc.
-            FileUtils.copyFolder(getSystemFolder(), new File(newPersonalityFolder.getAbsolutePath() + File.separator + "System"), true);
-
-            TeaseLogger.getLogger().log(Level.INFO, "Finished copying system folder for personality '" + name + "'. Switching old personality with new one....");
-
-            //Zip old personality folder
-            ZipUtils.zipFolder(getFolder(), new File(PersonalityManager.PERSONALITY_FOLDER_NAME + File.separator + name + " (" + version.getDouble() + ").zip"));
-
-            //Delete old personality
-            FileUtils.deleteFileOrFolder(getFolder().toPath());
-
-            //Replace old folder with new one (we need to replace the separators in the path for alternative system support)
-            FileUtils.copyFolder(newPersonalityFolder, new File(getFolder().getAbsolutePath()), true);
-
-            //Delete downloaded fetched update
-            FileUtils.deleteFileOrFolder(target.toPath());
-
-            //Load in all config and variable values yet again
-            this.variableHandler.loadVariables();
-            this.configHandler.loadConfig();
-
-            TeaseLogger.getLogger().log(Level.INFO, "Finished updating personality '" + name.getValue() + "' to version " + version.getDouble());
-        } catch (MalformedURLException e) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "Invalid github download url '" + githubDownloadLink.getValue() + "' for personality '" + name + "'. Update failed.");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        TeaseAI.application.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                TeaseAI.application.startupProgressPane.removeProgressBar(progressForm);
+            }
+        });
     }
 
     public void load() {
         File loadFile = new File(getFolder().getAbsolutePath() + File.separator + "load.js");
 
-        if(loadFile.exists()) {
+        if (loadFile.exists()) {
             try {
                 ScriptHandler.getHandler().runScript(loadFile);
             } catch (FileNotFoundException e) {
@@ -163,7 +273,7 @@ public class Personality {
     public void unload() {
         File loadFile = new File(getFolder().getAbsolutePath() + File.separator + "unload.js");
 
-        if(loadFile.exists()) {
+        if (loadFile.exists()) {
             try {
                 ScriptHandler.getHandler().runScript(loadFile);
             } catch (FileNotFoundException e) {
@@ -208,8 +318,8 @@ public class Personality {
         return version;
     }
 
-    public ConfigValue getGithubDownloadLink() {
-        return githubDownloadLink;
+    public ConfigValue getDownloadLink() {
+        return downloadLink;
     }
 
     public ConfigValue getPersonalityPropertiesLink() {

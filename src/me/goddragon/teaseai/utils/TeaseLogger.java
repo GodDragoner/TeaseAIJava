@@ -13,9 +13,14 @@ public class TeaseLogger {
 
     private static TeaseLogger logger = new TeaseLogger();
     private PrintStream outStream;
+    private boolean fileLog = true;
     //private Logger javaLogger;
 
     public TeaseLogger() {
+        if(!fileLog) {
+            return;
+        }
+
         /*javaLogger = Logger.getLogger("MyLog");
         javaLogger.setLevel(Level.ALL);
         FileHandler fileHandler;*/
