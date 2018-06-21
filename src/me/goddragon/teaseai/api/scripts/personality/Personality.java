@@ -79,28 +79,35 @@ public class Personality {
                 TeaseAI.application.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("New version found");
-                        alert.setContentText("New version " +  version.getValue() + "' for personality '" + name + "' was found. Would you like to update?");
-                        ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-                        ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
-                        //ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-                        alert.getButtonTypes().setAll(okButton, noButton);
-                        alert.showAndWait().ifPresent(type -> {
-                            if (type.getButtonData() == ButtonBar.ButtonData.YES) {
-                                update[0] = true;
-                            }
+                        try {
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("New version found");
+                            alert.setContentText("New version " + version.getValue() + "' for personality '" + name + "' was found. Would you like to update?");
+                            ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+                            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+                            //ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+                            alert.getButtonTypes().setAll(okButton, noButton);
 
+                            alert.showAndWait().ifPresent(type -> {
+                                if (type.getButtonData() == ButtonBar.ButtonData.YES) {
+                                    update[0] = true;
+                                }
+
+                                synchronized (Personality.this) {
+                                    Personality.this.notify();
+                                }
+                            });
+                        } catch(Exception ex) {
                             synchronized (Personality.this) {
                                 Personality.this.notify();
                             }
-                        });
+                        }
                     }
                 });
 
                 try {
-                    synchronized (Personality.this) {
-                        Personality.this.wait();
+                    synchronized (this) {
+                        this.wait(1000 * 15);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();

@@ -106,11 +106,6 @@ public class TeaseAI extends Application {
                 });
                 return null;
             }
-
-            @Override
-            protected void updateProgress(long workDone, long max) {
-                super.updateProgress(workDone, max);
-            }
         };
 
         progressForm.bindProgressBar(task);

@@ -37,6 +37,10 @@ public class RunableVocabulary extends Vocabulary {
         this.script = script;
     }
 
+    public String getFunctionName() {
+        return StringUtils.decapitalize(name) + "Vocabulary";
+    }
+
     @Override
     public String toString() {
         ScriptEngine engine = ScriptHandler.getHandler().getEngine();
@@ -45,12 +49,12 @@ public class RunableVocabulary extends Vocabulary {
         try {
             Invocable invocable = (Invocable) engine;
 
-            return invocable.invokeFunction(StringUtils.decapitalize(name) + "Vocabulary").toString();
+            return invocable.invokeFunction(getFunctionName()).toString();
         } catch (ScriptException e) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Error while handling file '" + e.getFileName() + "' in line " + e.getLineNumber() + "\n" +
                     "Error: " + e.getMessage(), false);
         } catch (NoSuchMethodException e) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "Vocabulary '" + responseName + " is missing the function to trigger it. Create the function '" + StringUtils.decapitalize(name) + "Vocabulary() for this to work." , false);
+            TeaseLogger.getLogger().log(Level.SEVERE, "Vocabulary '" + responseName + " is missing the function to trigger it. Create the function '" + getFunctionName() + "()' for this to work." , false);
         } catch(NullPointerException ex) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Vocabulary '" + responseName + "' returned null!" , false);
         }
