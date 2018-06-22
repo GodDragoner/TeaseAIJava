@@ -75,6 +75,7 @@ public class ScriptHandler {
         registerFunction(new CreateMediaURLFromFileFunction());
         registerFunction(new GetCurrentImageURLFunction());
         registerFunction(new OpenLinkInBrowserFunction());
+        registerFunction(new LoadCSSFunction());
 
         engine.put("run", (Consumer<String>) this::evalScript);
     }
@@ -149,6 +150,16 @@ public class ScriptHandler {
                     "Error: " + e.getMessage(), false);
             e.printStackTrace();
         }
+    }
+    
+    public File getPersonnalityFile(String fileName) {
+    	File file = FileUtils.getRandomMatchingFile(currentPersonality.getFolder().getAbsolutePath() + File.separator + fileName);
+    	if (file == null || !file.exists()) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "File " + fileName + " does not exist.");
+            return null;
+    	}
+    	
+    	return file;
     }
 
     public File getCurrentFile() {

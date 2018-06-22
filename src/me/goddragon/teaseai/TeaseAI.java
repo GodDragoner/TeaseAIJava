@@ -51,6 +51,7 @@ public class TeaseAI extends Application {
     public Thread scriptThread;
 
     public StartupProgressPane startupProgressPane;
+    private Scene mainScene;
 
     public final ConfigValue PREFERRED_SESSION_DURATION = new ConfigValue("preferredSessionDuration", "60", configHandler);
     public final ConfigValue CHAT_TEXT_SIZE = new ConfigValue("chatTextSize", Font.getDefault().getSize(), configHandler);
@@ -130,7 +131,8 @@ public class TeaseAI extends Application {
         loader.setController(controller);
         Parent root = loader.load();
         primaryStage.setTitle("Tease-AI " + VERSION);
-        primaryStage.setScene(new Scene(root, 1480, 720));
+        mainScene = new Scene(root, 1480, 720);
+        primaryStage.setScene(mainScene);
         primaryStage.show();
         controller.initiate();
 
@@ -296,6 +298,10 @@ public class TeaseAI extends Application {
 
     public Session getSession() {
         return session;
+    }
+    
+    public Scene getScene() {
+        return mainScene;
     }
 
 

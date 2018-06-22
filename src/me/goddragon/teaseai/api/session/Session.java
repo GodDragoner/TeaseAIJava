@@ -95,6 +95,9 @@ public class Session {
 
                 //Clear chat
                 TeaseAI.application.getController().getChatWindow().getChildren().clear();
+                
+                //Clear css
+                TeaseAI.application.getScene().getStylesheets().clear();
 
                 //Initialize a new session instance
                 TeaseAI.application.initializeNewSession();
