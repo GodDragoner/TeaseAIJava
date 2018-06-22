@@ -152,9 +152,16 @@ public class SettingsController {
 
     @FXML
     protected CheckBox onlySupportedVariablesCheckbox;
-
+    
+    @FXML
+    protected TextField taggingFolderText;
+    
+    @FXML
+    protected Button taggingFolderButton;
+    
     @FXML
     protected Label descriptionLabel;
+
 
     public void initiate() {
         mediaSettings.initiate();

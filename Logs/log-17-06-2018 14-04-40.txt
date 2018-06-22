@@ -1,0 +1,32 @@
+02:04:40 PM SEVERE: Personality with name 'null' does not exist.
+Exception in Application start method
+java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+	at javafx.graphics/com.sun.javafx.application.LauncherImpl.launchApplicationWithArgs(Unknown Source)
+	at javafx.graphics/com.sun.javafx.application.LauncherImpl.launchApplication(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+	at java.base/sun.launcher.LauncherHelper$FXHelper.main(Unknown Source)
+Caused by: java.lang.RuntimeException: Exception in Application start method
+	at javafx.graphics/com.sun.javafx.application.LauncherImpl.launchApplication1(Unknown Source)
+	at javafx.graphics/com.sun.javafx.application.LauncherImpl.lambda$launchApplication$2(Unknown Source)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.NullPointerException
+	at me.goddragon.teaseai.api.session.Session.setActivePersonality(Session.java:126)
+	at me.goddragon.teaseai.TeaseAI.initializeNewSession(TeaseAI.java:229)
+	at me.goddragon.teaseai.TeaseAI.start(TeaseAI.java:104)
+	at javafx.graphics/com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(Unknown Source)
+	at javafx.graphics/com.sun.javafx.application.PlatformImpl.lambda$runAndWait$11(Unknown Source)
+	at javafx.graphics/com.sun.javafx.application.PlatformImpl.lambda$runLater$9(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(Native Method)
+	at javafx.graphics/com.sun.javafx.application.PlatformImpl.lambda$runLater$10(Unknown Source)
+	at javafx.graphics/com.sun.glass.ui.InvokeLaterDispatcher$Future.run(Unknown Source)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(Unknown Source)
+	... 1 more
+Exception running application me.goddragon.teaseai.TeaseAI

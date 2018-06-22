@@ -23,7 +23,8 @@ public class URLMediaSettings {
         this.settingsController = settingsController;
     }
 
-    public void initiate() {
+    @SuppressWarnings("unchecked")
+	public void initiate() {
         updateURLList();
 
         settingsController.urlFilesList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);

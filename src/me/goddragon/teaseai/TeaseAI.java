@@ -47,6 +47,7 @@ public class TeaseAI extends Application {
 
     public final ConfigValue PREFERRED_SESSION_DURATION = new ConfigValue("preferredSessionDuration", "60", configHandler);
     public final ConfigValue CHAT_TEXT_SIZE = new ConfigValue("chatTextSize", Font.getDefault().getSize(), configHandler);
+    public final ConfigValue TEST_VALUE = new ConfigValue("chatTextSize", Font.getDefault().getSize(), configHandler);
     public final ConfigValue DEFAULT_TYPE_SPEED = new ConfigValue("defaultTypeSpeed", TypeSpeed.MEDIUM, configHandler);
     public final ConfigValue LAST_SELECTED_PERSONALITY = new ConfigValue("lastSelectedPersonality", "null", configHandler);
 

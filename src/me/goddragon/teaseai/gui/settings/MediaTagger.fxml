@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+
+<GridPane gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #9b9d9f;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="427.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="382.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <GridPane fx:id="testGridPane" gridLinesVisible="true">
+        <columnConstraints>
+          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="83.0" minWidth="83.0" prefWidth="83.0" />
+            <ColumnConstraints fx:id="imageGridWidth" halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="705.0" />
+          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="83.0" minWidth="83.0" prefWidth="83.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" valignment="TOP" vgrow="NEVER" />
+          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="411.9999633789063" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="330.0" minHeight="0.0" prefHeight="154.4000366210937" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="fileLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="45.0" prefWidth="710.0" text="File {myfilenumber} of {maxfiles} in {folderpath}" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <GridPane GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="137.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="245.0" minHeight="10.0" prefHeight="233.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="previousButton" mnemonicParsing="false" prefHeight="52.0" prefWidth="101.0" text="Previous" />
+               </children>
+            </GridPane>
+            <GridPane GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="137.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="245.0" minHeight="10.0" prefHeight="233.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Button fx:id="nextButton" mnemonicParsing="false" prefHeight="52.0" prefWidth="101.0" text="Next" />
+               </children>
+            </GridPane>
+            <GridPane prefHeight="344.0" prefWidth="882.0" GridPane.columnSpan="3" GridPane.rowIndex="2">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="92.8000244140625" minWidth="0.40002286434173584" prefWidth="92.8000244140625" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.199951171875" minWidth="10.0" prefWidth="152.7999755859375" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.199951171875" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.199951171875" minWidth="10.0" prefWidth="159.199951171875" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.199951171875" minWidth="10.0" prefWidth="159.199951171875" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="34.400000000000006" minHeight="10.0" prefHeight="67.4" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="69.8000244140625" minHeight="10.0" prefHeight="34.400000000000006" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="34.400000000000006" minHeight="10.0" prefHeight="34.400000000000006" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="34.400000000000006" minHeight="10.0" prefHeight="34.400000000000006" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="58.19999999999999" minHeight="6.400000000000006" prefHeight="10.199999999999989" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Body Part" GridPane.columnIndex="1" />
+                  <Label layoutX="10.0" layoutY="9.0" text="Accessories" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <Label layoutX="10.0" layoutY="9.0" text="Action" GridPane.columnIndex="3" />
+                  <Label layoutX="10.0" layoutY="9.0" text="Category" GridPane.columnIndex="2" />
+                  <Label layoutX="224.0" layoutY="8.0" text="People Inolved" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Label layoutX="521.0" layoutY="8.0" text="View" GridPane.columnIndex="4" />
+                  <Label layoutX="125.0" layoutY="25.0" text="Body Type" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <MenuButton fx:id="bodyPartButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Body Parts Visible" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <MenuButton fx:id="viewButton" layoutX="104.0" layoutY="51.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Image View" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <MenuButton fx:id="accessoriesButton" layoutX="10.0" layoutY="15.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Accessories Visible" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <MenuButton fx:id="actionButton" layoutX="10.0" layoutY="15.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Action Visible" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <MenuButton fx:id="peopleInvolvedButton" layoutX="10.0" layoutY="15.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="People Involved" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <MenuButton fx:id="categoryButton" layoutX="10.0" layoutY="15.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Categories Associated" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <MenuButton fx:id="bodyTypeButton" layoutX="10.0" layoutY="15.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Body Types Visible" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               </children>
+            </GridPane>
+            <BorderPane fx:id="imagePane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <center>
+                  <ImageView fx:id="taggedImage" fitHeight="412.0" fitWidth="733.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+         </children>
+      </GridPane>
+   </children>
+</GridPane>
