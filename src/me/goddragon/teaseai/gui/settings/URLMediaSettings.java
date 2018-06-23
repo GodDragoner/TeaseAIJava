@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.media.MediaHolder;
 import me.goddragon.teaseai.api.media.MediaType;
@@ -23,7 +24,8 @@ public class URLMediaSettings {
         this.settingsController = settingsController;
     }
 
-    public void initiate() {
+    @SuppressWarnings("unchecked")
+	public void initiate() {
         updateURLList();
 
         settingsController.urlFilesList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -174,8 +176,10 @@ public class URLMediaSettings {
 
 
         settingsController.urlFileImagePreview.setPreserveRatio(true);
-        settingsController.urlFileImagePreview.fitWidthProperty().bind(settingsController.urlImageViewStackPane.widthProperty());
-        settingsController.urlFileImagePreview.fitHeightProperty().bind(settingsController.urlImageViewStackPane.heightProperty());
+        Pane pane = new Pane();
+        settingsController.urlGridPane.add(pane, 0, 1);
+        settingsController.urlFileImagePreview.fitWidthProperty().bind(pane.widthProperty());
+        settingsController.urlFileImagePreview.fitHeightProperty().bind(pane.heightProperty());
     }
 
     private void updateURLList() {

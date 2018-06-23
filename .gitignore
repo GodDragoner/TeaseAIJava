@@ -1,12 +1,2 @@
-*.properties
-.idea
-*.iml
-out
-target
-.settings
-.project
-.classpath
-.git
-Personalities/*
-Images/*
-Logs/*
+
+/bin/

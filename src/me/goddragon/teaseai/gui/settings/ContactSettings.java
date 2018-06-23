@@ -9,6 +9,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import me.goddragon.teaseai.api.chat.ChatHandler;
@@ -116,8 +117,11 @@ public class ContactSettings {
         });
 
         settingsController.domContactImageView.setPreserveRatio(true);
-        settingsController.domContactImageView.fitWidthProperty().bind(settingsController.domContactImageStackPane.widthProperty());
-        settingsController.domContactImageView.fitHeightProperty().bind(settingsController.domContactImageStackPane.heightProperty());
+        Pane pane = new Pane();
+        pane.setVisible(false);
+        settingsController.contactGridPane.add(pane, 0, 0);
+        settingsController.domContactImageView.fitWidthProperty().bind(pane.widthProperty());
+        settingsController.domContactImageView.fitHeightProperty().bind(pane.heightProperty());
 
         settingsController.domContactImageSetPathButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
