@@ -74,6 +74,9 @@ public class Controller {
     //Sidebar
     @FXML
     private FlowPane lazySubPane;
+    
+    @FXML
+    private GridPane contactImageGrid;
 
     public Controller(Stage stage) {
         this.stage = stage;
@@ -169,8 +172,10 @@ public class Controller {
 
     public void loadDomInfo() {
         domImageView.setPreserveRatio(true);
-        domImageView.fitWidthProperty().bind(domImageViewStackPane.widthProperty());
-        domImageView.fitHeightProperty().bind(domImageViewStackPane.heightProperty());
+        Pane pane = new Pane();
+        contactImageGrid.add(pane, 0, 2);
+        domImageView.fitWidthProperty().bind(pane.widthProperty());
+        domImageView.fitHeightProperty().bind(pane.heightProperty());
 
         ChatParticipant domParticipant = ChatHandler.getHandler().getMainDomParticipant();
         ChatParticipant subParticipant = ChatHandler.getHandler().getSubParticipant();

@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
 <GridPane gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #9b9d9f;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="427.0" />
@@ -19,7 +18,7 @@
       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="382.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <GridPane fx:id="testGridPane" gridLinesVisible="true">
+      <GridPane fx:id="testGridPane">
         <columnConstraints>
           <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="83.0" minWidth="83.0" prefWidth="83.0" />
             <ColumnConstraints fx:id="imageGridWidth" halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="705.0" />
@@ -62,11 +61,11 @@
             </GridPane>
             <GridPane prefHeight="344.0" prefWidth="882.0" GridPane.columnSpan="3" GridPane.rowIndex="2">
               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="92.8000244140625" minWidth="0.40002286434173584" prefWidth="92.8000244140625" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.199951171875" minWidth="10.0" prefWidth="152.7999755859375" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.199951171875" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.199951171875" minWidth="10.0" prefWidth="159.199951171875" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.199951171875" minWidth="10.0" prefWidth="159.199951171875" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="0.40002286434173584" prefWidth="92.8000244140625" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="152.7999755859375" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="152.7999755859375" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="152.7999755859375" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="152.7999755859375" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
@@ -91,6 +90,8 @@
                   <MenuButton fx:id="peopleInvolvedButton" layoutX="10.0" layoutY="15.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="People Involved" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                   <MenuButton fx:id="categoryButton" layoutX="10.0" layoutY="15.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Categories Associated" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <MenuButton fx:id="bodyTypeButton" layoutX="10.0" layoutY="15.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Body Types Visible" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <MenuButton fx:id="dressStateButton" layoutX="626.0" layoutY="51.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Dress State Shown" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                  <Label layoutX="626.0" layoutY="19.0" text="Dress State" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <BorderPane fx:id="imagePane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">

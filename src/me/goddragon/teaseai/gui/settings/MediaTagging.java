@@ -29,6 +29,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.picture.DressState;
 import me.goddragon.teaseai.api.picture.PictureHandler;
 import me.goddragon.teaseai.api.picture.PictureTag;
 import me.goddragon.teaseai.api.picture.PictureTag.TagType;
@@ -96,9 +97,14 @@ public class MediaTagging {
     @FXML
     private MenuButton testMenuButton;
     
+    @FXML
+    private MenuButton dressStateButton;
+    
     private HashSet<PictureTag> currentImageTags;
     
     private TaggedPicture currentTaggedPicture;
+    
+    private DressState currentDressState;
 
     public MediaTagging(SettingsController settingsController) {
         this.settingsController = settingsController;
@@ -161,6 +167,7 @@ public class MediaTagging {
     {
 		currentTaggedPicture = files[currentFile];
 		currentImageTags = (HashSet<PictureTag>) currentTaggedPicture.getTags().clone();
+		currentDressState = currentTaggedPicture.getDressState();
 		    	
 		if (currentImageTags == null)
 		{
@@ -376,6 +383,49 @@ public class MediaTagging {
     		thisItem.setHideOnClick(false);
     		viewButton.getItems().add(thisItem);
     	}
+    	
+        dressStateButton.getItems().clear();
+        DressState[] dressStateTags = DressState.values();
+        ArrayList<CheckBox> checkboxes = new ArrayList<CheckBox>();
+        for (int i = 0; i < dressStateTags.length; i++)
+        {
+            CheckBox thisCheckBox = new CheckBox(dressStateTags[i].tagName().replace("Tag", ""));
+            checkboxes.add(thisCheckBox);
+            if (currentDressState != null && currentDressState.equals(dressStateTags[i]))
+            {
+                thisCheckBox.setSelected(true);
+            }
+            DressState thisTag = dressStateTags[i];
+            thisCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    // TODO Auto-generated method stub
+                    if(newValue)
+                    {
+                        currentDressState = thisTag;
+                        for (CheckBox thisBox: checkboxes)
+                        {
+                            if (!thisBox.equals(thisCheckBox))
+                            {
+                                thisBox.setSelected(false);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (currentDressState.equals(thisTag))
+                        {
+                            currentDressState = null;
+                        }
+                    }
+                }
+            });
+            TeaseLogger.getLogger().log(Level.INFO, "currentdressstate " + currentDressState);
+            CustomMenuItem thisItem = new CustomMenuItem(thisCheckBox);
+            thisItem.setHideOnClick(false);
+            dressStateButton.getItems().add(thisItem);
+        }
     }
     
     public void initiateNewStage()
@@ -415,6 +465,7 @@ public class MediaTagging {
     	nextButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                currentTaggedPicture.setDressState(currentDressState);
             	currentTaggedPicture.setTags(currentImageTags);            
                 if ((currentFile + 1) < files.length)
                 {
@@ -433,6 +484,7 @@ public class MediaTagging {
     	previousButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                currentTaggedPicture.setDressState(currentDressState);
         		currentTaggedPicture.setTags(currentImageTags);
                 if ((currentFile - 1) >= 0)
                 {

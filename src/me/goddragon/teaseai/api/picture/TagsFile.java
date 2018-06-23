@@ -61,7 +61,82 @@ public class TagsFile {
 						{
 							tags.add(t);
 						}
+                        String newstrLine = image.getName();
+                        for (DressState state: DressState.values())
+                        {
+                            if (strLine.contains(state.tagName()))
+                            {
+                                newstrLine += (" " + state.tagName()); 
+                            }
+                        }
+						for(PictureTag tag: tags)
+						{
+							newstrLine += (" " + tag.tagName()); 
+						}
+						added = true;
+						strLine = newstrLine;
+					}
+		            inputBuffer.append(strLine);
+		            inputBuffer.append('\n');
+				}
+				//Close the input stream
+				br.close();
+				if (!added)
+				{
+				    strLine = image.getName();
+					for(PictureTag tag: tagsToAdd)
+					{
+						strLine += (" " + tag.tagName()); 
+					}
+		            inputBuffer.append(strLine);
+		            inputBuffer.append('\n');	
+				}
+				
+	            FileOutputStream fileOut = new FileOutputStream(tagsFile);
+	            fileOut.write(inputBuffer.toString().getBytes());
+	            fileOut.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
+	}
+	
+	public boolean setDressState(DressState dressState, File image)
+	{
+		if (tagsFile == null)
+		{
+			TeaseLogger.getLogger().log(Level.SEVERE, "Invalid Tags File");
+			return false;
+		}
+		else
+		{
+            try {
+				FileInputStream fstream = new FileInputStream(tagsFile);
+				BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+				String strLine;
+				StringBuffer inputBuffer = new StringBuffer();
+
+				boolean added = false;
+				//Read line by line
+				while ((strLine = br.readLine()) != null) {
+					if (strLine.contains(image.getName()))
+					{
+						HashSet<PictureTag> tags = new HashSet<PictureTag>();
+						for (PictureTag thisTag: PictureTag.values())
+						{
+							if (strLine.contains(thisTag.tagName()))
+							{
+								tags.add(thisTag);
+							}
+						}
 						strLine = image.getName();
+						if (dressState != null)
+						{
+						    strLine += (" " + dressState.tagName()); 
+						}
 						for(PictureTag tag: tags)
 						{
 							strLine += (" " + tag.tagName()); 
@@ -75,13 +150,17 @@ public class TagsFile {
 				br.close();
 				if (!added)
 				{
+				    if (dressState == null)
+				    {
+				        return false;
+				    }
 					strLine = image.getName();
-					for(PictureTag tag: tagsToAdd)
-					{
-						strLine += (" " + tag.tagName()); 
-					}
+                    if (dressState != null)
+                    {
+                        strLine += " " + dressState.tagName(); 
+                    }
 		            inputBuffer.append(strLine);
-		            inputBuffer.append('\n');	
+		            inputBuffer.append('\n');
 				}
 				
 	            FileOutputStream fileOut = new FileOutputStream(tagsFile);
@@ -117,12 +196,20 @@ public class TagsFile {
 				{
 					if (strLine.contains(image.getName()))
 					{
-						strLine = image.getName();
+						String newstrLine = image.getName();
+						for (DressState state: DressState.values())
+						{
+							if (strLine.contains(state.tagName()))
+							{
+								newstrLine += (" " + state.tagName()); 
+							}
+						}
 						for(PictureTag tag: tagsToSet)
 						{
-							strLine += (" " + tag.tagName()); 
+							newstrLine += (" " + tag.tagName()); 
 						}
 						replaced = true;
+						strLine = newstrLine;
 					}
 		            inputBuffer.append(strLine);
 		            inputBuffer.append('\n');		
@@ -131,11 +218,11 @@ public class TagsFile {
 				br.close();
 				if (!replaced)
 				{
-					strLine = image.getName();
-					for(PictureTag tag: tagsToSet)
-					{
-						strLine += (" " + tag.tagName()); 
-					}
+				    strLine = image.getName();
+                    for(PictureTag tag: tagsToSet)
+                    {
+                        strLine += (" " + tag.tagName()); 
+                    }
 					if (!strLine.equals(image.getName()))
 					{
 			            inputBuffer.append(strLine);
@@ -230,6 +317,10 @@ public class TagsFile {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+		if (toReturn == null)
+		{
+		    toReturn = new HashSet<PictureTag>();
 		}
 		return toReturn;
 	}

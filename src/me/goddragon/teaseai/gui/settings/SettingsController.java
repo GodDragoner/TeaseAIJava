@@ -161,6 +161,12 @@ public class SettingsController {
     
     @FXML
     protected Label descriptionLabel;
+    
+    @FXML
+    protected GridPane urlGridPane;
+    
+    @FXML
+    protected GridPane contactGridPane;
 
 
     public void initiate() {

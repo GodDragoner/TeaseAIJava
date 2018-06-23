@@ -44,4 +44,8 @@ public enum DressState {
     public int getRank() {
         return rank;
     }
+    public String tagName()
+    {
+    	return tagName;
+    }
 }

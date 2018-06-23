@@ -171,20 +171,17 @@ public class TaggedPicture {
         return dressState;
     }
     
-    private void getTagsFromFile()
-    {
-    	if (imageTagFile == null)
-    	{
-    		TeaseLogger.getLogger().log(Level.WARNING, "No image tag file defined for this file");
-    		return;
-    	}
-    	
-    }
 
     public void setDressState(DressState dressState) {
         this.dressState = dressState;
+        imageTagFile.setDressState(dressState , this.file);
+        if (dressState == null && (tags == null || tags.size() == 0))
+        {
+            imageTagFile.deleteTags(file);
+        }
     }
 
+    @SuppressWarnings("unchecked")
     public HashSet<PictureTag> getTags() {
     	HashSet<PictureTag> temp = imageTagFile.getTags(file);
     	if (temp != null)
@@ -238,7 +235,7 @@ public class TaggedPicture {
     			return;
     		}
     		//if tagslist is empty, delete tags
-    		if (setTags.size() == 0)
+    		if ((tags == null || setTags.size() == 0) && dressState == null)
     		{
     			imageTagFile.deleteTags(file);
     		}
