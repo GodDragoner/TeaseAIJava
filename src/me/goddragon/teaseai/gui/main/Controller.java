@@ -24,6 +24,7 @@ import me.goddragon.teaseai.api.chat.ChatParticipant;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.gui.settings.SettingsController;
+import me.goddragon.teaseai.utils.FileUtils;
 
 import java.io.File;
 
@@ -75,6 +76,9 @@ public class Controller {
     @FXML
     private FlowPane lazySubPane;
 
+    @FXML
+    private GridPane contactImageGrid;
+
     public Controller(Stage stage) {
         this.stage = stage;
     }
@@ -97,7 +101,7 @@ public class Controller {
                 if (ke.getCode().equals(KeyCode.ENTER)) {
                     String currentText = chatTextField.getText();
 
-                    if(currentText.length() == 0 || currentText == null) {
+                    if (currentText.length() == 0 || currentText == null) {
                         return;
                     }
 
@@ -117,11 +121,11 @@ public class Controller {
         startChatButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                if(PersonalityManager.getManager().getActivePersonality() == null) {
+                if (PersonalityManager.getManager().getActivePersonality() == null) {
                     return;
                 }
 
-                if(TeaseAI.application.getSession().isStarted()) {
+                if (TeaseAI.application.getSession().isStarted()) {
                     startChatButton.setDisable(true);
 
                     //Notify the thread because we want it continue and then end anyway
@@ -147,7 +151,7 @@ public class Controller {
         personalityChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Personality>() {
             @Override
             public void changed(ObservableValue<? extends Personality> observableValue, Personality oldValue, Personality newValue) {
-                if(TeaseAI.application.getSession() != null) {
+                if (TeaseAI.application.getSession() != null) {
                     TeaseAI.application.getSession().setActivePersonality(newValue);
                     TeaseAI.application.LAST_SELECTED_PERSONALITY.setValue(newValue.getName().getValue()).save();
                 }
@@ -158,7 +162,7 @@ public class Controller {
         menuSettingsButton.setGraphic(settingsLabel);
         settingsLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent  e) {
+            public void handle(MouseEvent e) {
                 SettingsController.openGUI();
             }
         });
@@ -169,14 +173,16 @@ public class Controller {
 
     public void loadDomInfo() {
         domImageView.setPreserveRatio(true);
-        domImageView.fitWidthProperty().bind(domImageViewStackPane.widthProperty());
-        domImageView.fitHeightProperty().bind(domImageViewStackPane.heightProperty());
+        Pane pane = new Pane();
+        contactImageGrid.add(pane, 0, 2);
+        domImageView.fitWidthProperty().bind(pane.widthProperty());
+        domImageView.fitHeightProperty().bind(pane.heightProperty());
 
         ChatParticipant domParticipant = ChatHandler.getHandler().getMainDomParticipant();
         ChatParticipant subParticipant = ChatHandler.getHandler().getSubParticipant();
 
         File domImage = domParticipant.getContact().getImage();
-        if(domImage != null && domImage.exists()) {
+        if (domImage != null && domImage.exists()) {
             domImageView.setImage(new Image(domImage.toURI().toString()));
         } else {
             domImageView.setImage(null);
@@ -208,11 +214,13 @@ public class Controller {
                 File image = chooser.showOpenDialog(stage);
 
                 if (image != null && image.exists()) {
-                    if ((image.getName().endsWith(".jpg") || image.getName().endsWith(".png"))) {
+                    String extension = FileUtils.getExtension(image);
+
+                    if ((extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png"))) {
                         domParticipant.getContact().IMAGE_PATH.setValue(image.getPath());
                         domParticipant.getContact().IMAGE_PATH.save();
 
-                        if(image != null && image.exists()) {
+                        if (image != null && image.exists()) {
                             domImageView.setImage(new Image(image.toURI().toString()));
                         } else {
                             domImageView.setImage(null);

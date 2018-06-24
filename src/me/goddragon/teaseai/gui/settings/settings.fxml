@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
@@ -16,7 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<GridPane gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="383.0" prefWidth="552.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="383.0" prefWidth="552.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="427.0" />
     </columnConstraints>
@@ -24,41 +25,41 @@
         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="382.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="440.0" prefWidth="624.0" tabClosingPolicy="UNAVAILABLE">
+        <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="554.0" prefWidth="809.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
-            <Tab text="General">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <GridPane layoutX="14.0" prefHeight="354.0" prefWidth="552.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="9.0" prefWidth="9.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="202.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="2.0" prefWidth="75.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="210.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="96.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints maxHeight="-Infinity" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="255.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="214.0" text="Preferred Tease Duration (minutes):" GridPane.columnIndex="1" />
-                              <TextField fx:id="preferredTeaseLengthField" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="60" GridPane.columnIndex="3" />
-                              <Button fx:id="saveGeneralSettingsButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Save Settings" GridPane.columnIndex="5" GridPane.rowIndex="4" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Font Size:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="fontSizeComboBox" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Default Type Speed:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <ComboBox fx:id="defaultTypeSpeedComboBox" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                           </children>
-                        </GridPane>
-                     </children></AnchorPane>
-              </content>
-            </Tab>
+                <Tab text="General">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <GridPane layoutX="14.0" prefHeight="354.0" prefWidth="552.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="9.0" prefWidth="9.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="202.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="20.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="2.0" prefWidth="75.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="210.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="96.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="255.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="214.0" text="Preferred Tease Duration (minutes):" GridPane.columnIndex="1" />
+                                        <TextField fx:id="preferredTeaseLengthField" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="60" GridPane.columnIndex="3" />
+                                        <Button fx:id="saveGeneralSettingsButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Save Settings" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                        <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Font Size:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <ComboBox fx:id="fontSizeComboBox" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                        <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Default Type Speed:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        <ComboBox fx:id="defaultTypeSpeedComboBox" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    </children>
+                                </GridPane>
+                            </children></AnchorPane>
+                    </content>
+                </Tab>
                 <Tab text="Media">
                     <content>
                         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -86,21 +87,21 @@
                                                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                                     </rowConstraints>
                                                                     <children>
-                                                                        <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="344.0" prefWidth="280.0" GridPane.columnIndex="1">
+                                                                        <GridPane fx:id="urlGridPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="344.0" prefWidth="280.0" GridPane.columnIndex="1">
                                                                             <columnConstraints>
                                                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                                             </columnConstraints>
                                                                             <rowConstraints>
                                                                                 <RowConstraints maxHeight="-Infinity" prefHeight="23.0" />
                                                                                 <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="230.0" vgrow="SOMETIMES" />
-                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+                                                                                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
                                                                             </rowConstraints>
                                                                             <children>
                                                                                 <GridPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" GridPane.rowIndex="2">
                                                                                     <columnConstraints>
                                                                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+                                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
                                                                                     </columnConstraints>
                                                                                     <rowConstraints>
                                                                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -111,31 +112,31 @@
                                                                                         <TextField fx:id="addURLTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="140.0" GridPane.rowIndex="1" />
                                                                                         <Button fx:id="addURLButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="Add URL" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                                                         <Button fx:id="deleteURLButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="56.0" prefWidth="140.0" text="Delete URL(s)" GridPane.columnIndex="1" />
-                                                                  <Button fx:id="refreshURLButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="37.0" prefWidth="104.0" text="Refresh URL(s)" GridPane.columnIndex="2" />
-                                                                  <Label fx:id="urlProgressLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="98.0" text="0 files found" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                                                        <Button fx:id="refreshURLButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="37.0" prefWidth="104.0" text="Refresh URL(s)" GridPane.columnIndex="2" />
+                                                                                        <Label fx:id="urlProgressLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="98.0" text="0 files found" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                                                     </children>
                                                                                 </GridPane>
-                                                            <StackPane fx:id="urlImageViewStackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                                               <children>
-                                                                   <ImageView fx:id="urlFileImagePreview" fitHeight="238.0" fitWidth="282.0" pickOnBounds="true" preserveRatio="true" />
-                                                               </children>
-                                                            </StackPane>
-                                                            <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Preview" textAlignment="CENTER" />
+                                                                                <StackPane fx:id="urlImageViewStackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                                                                    <children>
+                                                                                        <ImageView fx:id="urlFileImagePreview" fitHeight="238.0" fitWidth="282.0" pickOnBounds="true" preserveRatio="true" />
+                                                                                    </children>
+                                                                                </StackPane>
+                                                                                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Preview" textAlignment="CENTER" />
                                                                             </children>
                                                                         </GridPane>
-                                                      <GridPane>
-                                                        <columnConstraints>
-                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                        </columnConstraints>
-                                                        <rowConstraints>
-                                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-                                                          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="302.0" vgrow="SOMETIMES" />
-                                                        </rowConstraints>
-                                                         <children>
-                                                                              <ListView fx:id="urlFilesList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" GridPane.rowIndex="1" />
-                                                            <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="URLs" textAlignment="CENTER" />
-                                                         </children>
-                                                      </GridPane>
+                                                                        <GridPane>
+                                                                            <columnConstraints>
+                                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                            </columnConstraints>
+                                                                            <rowConstraints>
+                                                                                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                                                                                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="302.0" vgrow="SOMETIMES" />
+                                                                            </rowConstraints>
+                                                                            <children>
+                                                                                <ListView fx:id="urlFilesList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" GridPane.rowIndex="1" />
+                                                                                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="URLs" textAlignment="CENTER" />
+                                                                            </children>
+                                                                        </GridPane>
                                                                     </children>
                                                                 </GridPane>
                                                             </children>
@@ -149,7 +150,7 @@
                                                                 <GridPane layoutY="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="325.0" prefWidth="552.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                     <columnConstraints>
                                                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="278.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="55.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="55.0" />
                                                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="257.0" />
                                                                     </columnConstraints>
                                                                     <rowConstraints>
@@ -161,45 +162,45 @@
                                                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                                             </columnConstraints>
                                                                             <rowConstraints>
-                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                                                                                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
                                                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                                             </rowConstraints>
                                                                             <children>
                                                                                 <ListView fx:id="urlFetishTypeList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="189.0" prefWidth="292.0" GridPane.rowIndex="1" />
                                                                                 <ListView fx:id="assignedURLFileList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3" />
-                                                            <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Select Genre" textAlignment="CENTER" />
-                                                            <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Assigned URLs" textAlignment="CENTER" GridPane.rowIndex="2" />
+                                                                                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Select Genre" textAlignment="CENTER" />
+                                                                                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Assigned URLs" textAlignment="CENTER" GridPane.rowIndex="2" />
                                                                             </children>
                                                                         </GridPane>
-                                                      <GridPane>
-                                                        <columnConstraints>
-                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                        </columnConstraints>
-                                                        <rowConstraints>
-                                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-                                                          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="298.0" vgrow="SOMETIMES" />
-                                                        </rowConstraints>
-                                                         <children>
-                                                                              <ListView fx:id="urlFileDragDropList" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-                                                            <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="URLs" textAlignment="CENTER" />
-                                                         </children>
-                                                      </GridPane>
-                                                      <GridPane fx:id="moveMediaURLGridPane" GridPane.columnIndex="1">
-                                                        <columnConstraints>
-                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="120.0" />
-                                                        </columnConstraints>
-                                                        <rowConstraints>
-                                                          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="270.0" vgrow="SOMETIMES" />
-                                                          <RowConstraints maxHeight="28" minHeight="28.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                                                            <RowConstraints maxHeight="28" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                                                        </rowConstraints>
-                                                         <children>
-                                                            <Button fx:id="assignMediaURLButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="28.0" text="&gt;&gt;&gt;" GridPane.rowIndex="1" />
-                                                            <Button fx:id="removeMediaURLButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="28.0" text="&lt;&lt;&lt;" GridPane.rowIndex="2" />
-                                                         </children>
-                                                      </GridPane>
+                                                                        <GridPane>
+                                                                            <columnConstraints>
+                                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                            </columnConstraints>
+                                                                            <rowConstraints>
+                                                                                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                                                                                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="298.0" vgrow="SOMETIMES" />
+                                                                            </rowConstraints>
+                                                                            <children>
+                                                                                <ListView fx:id="urlFileDragDropList" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                                                                                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="URLs" textAlignment="CENTER" />
+                                                                            </children>
+                                                                        </GridPane>
+                                                                        <GridPane fx:id="moveMediaURLGridPane" GridPane.columnIndex="1">
+                                                                            <columnConstraints>
+                                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="120.0" />
+                                                                            </columnConstraints>
+                                                                            <rowConstraints>
+                                                                                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="270.0" vgrow="SOMETIMES" />
+                                                                                <RowConstraints maxHeight="28" minHeight="28.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                                                                <RowConstraints maxHeight="28" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                                                            </rowConstraints>
+                                                                            <children>
+                                                                                <Button fx:id="assignMediaURLButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="28.0" text="&gt;&gt;&gt;" GridPane.rowIndex="1" />
+                                                                                <Button fx:id="removeMediaURLButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="28.0" text="&lt;&lt;&lt;" GridPane.rowIndex="2" />
+                                                                            </children>
+                                                                        </GridPane>
                                                                     </children>
                                                                 </GridPane>
                                                             </children></AnchorPane>
@@ -214,13 +215,13 @@
                                                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                                     </columnConstraints>
                                                                     <rowConstraints>
-                                                      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
                                                                         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="125.0" vgrow="SOMETIMES" />
                                                                         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="199.0" vgrow="SOMETIMES" />
                                                                     </rowConstraints>
                                                                     <children>
                                                                         <ListView fx:id="mediaFetishTypeList" prefHeight="83.0" prefWidth="552.0" GridPane.rowIndex="1" />
-                                                                        <GridPane GridPane.rowIndex="2">
+                                                                        <GridPane prefHeight="332.0" prefWidth="528.0" GridPane.rowIndex="2">
                                                                             <columnConstraints>
                                                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -236,13 +237,13 @@
                                                                                     <rowConstraints>
                                                                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
                                                                                         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="166.0" vgrow="SOMETIMES" />
-                                                                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                                                     </rowConstraints>
                                                                                     <children>
                                                                                         <GridPane GridPane.rowIndex="2">
                                                                                             <columnConstraints>
                                                                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="216.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="30.0" />
+                                                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="30.0" />
                                                                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="60.0" />
                                                                                             </columnConstraints>
                                                                                             <rowConstraints>
@@ -251,49 +252,75 @@
                                                                                             <children>
                                                                                                 <Button fx:id="addImagePathButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Add" GridPane.columnIndex="2" />
                                                                                                 <TextField fx:id="addImagePathTextBox" />
-                                                                        <Button fx:id="addImagePathFileChooserButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="58.0" text="..." GridPane.columnIndex="1" />
+                                                                                                <Button fx:id="addImagePathFileChooserButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="58.0" text="..." GridPane.columnIndex="1" />
                                                                                             </children>
                                                                                         </GridPane>
                                                                                         <ListView fx:id="imagePathListView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-                                                                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Image Paths" textAlignment="CENTER" />
+                                                                                        <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Image Paths" textAlignment="CENTER" />
                                                                                     </children>
                                                                                 </GridPane>
-                                                            <GridPane GridPane.columnIndex="1">
-                                                               <columnConstraints>
-                                                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                               </columnConstraints>
-                                                               <rowConstraints>
-                                                                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-                                                                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="166.0" vgrow="SOMETIMES" />
-                                                                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                               </rowConstraints>
-                                                               <children>
-                                                                  <GridPane GridPane.rowIndex="2">
-                                                                     <columnConstraints>
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="216.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="30.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="60.0" />
-                                                                     </columnConstraints>
-                                                                     <rowConstraints>
-                                                                        <RowConstraints />
-                                                                     </rowConstraints>
-                                                                     <children>
-                                                                        <Button fx:id="addVideoPathButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Add" GridPane.columnIndex="2" />
-                                                                        <TextField fx:id="addVideoPathTextBox" />
-                                                                        <Button fx:id="addVideoPathFileChooserButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="159.0" text="..." GridPane.columnIndex="1" />
-                                                                     </children>
-                                                                  </GridPane>
-                                                                  <ListView fx:id="videoPathListView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-                                                                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Video Paths" textAlignment="CENTER" />
-                                                               </children>
-                                                            </GridPane>
+                                                                                <GridPane GridPane.columnIndex="1">
+                                                                                    <columnConstraints>
+                                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                                    </columnConstraints>
+                                                                                    <rowConstraints>
+                                                                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                                                                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="166.0" vgrow="SOMETIMES" />
+                                                                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                    </rowConstraints>
+                                                                                    <children>
+                                                                                        <GridPane GridPane.rowIndex="2">
+                                                                                            <columnConstraints>
+                                                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="216.0" />
+                                                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="30.0" />
+                                                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="60.0" />
+                                                                                            </columnConstraints>
+                                                                                            <rowConstraints>
+                                                                                                <RowConstraints />
+                                                                                            </rowConstraints>
+                                                                                            <children>
+                                                                                                <Button fx:id="addVideoPathButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Add" GridPane.columnIndex="2" />
+                                                                                                <TextField fx:id="addVideoPathTextBox" />
+                                                                                                <Button fx:id="addVideoPathFileChooserButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="159.0" text="..." GridPane.columnIndex="1" />
+                                                                                            </children>
+                                                                                        </GridPane>
+                                                                                        <ListView fx:id="videoPathListView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                                                                                        <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Video Paths" textAlignment="CENTER" />
+                                                                                    </children>
+                                                                                </GridPane>
                                                                             </children>
                                                                         </GridPane>
-                                                      <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Select Genre" textAlignment="CENTER" />
+                                                                        <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Select Genre" textAlignment="CENTER" />
                                                                     </children>
                                                                 </GridPane>
                                                             </children>
                                                         </AnchorPane>
+                                                    </content>
+                                                </Tab>
+                                                <Tab text="Media Tagging">
+                                                    <content>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                            <children>
+                                                                <GridPane layoutX="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="318.0" prefWidth="551.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                    <columnConstraints>
+                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="485.59997558593744" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="485.59997558593744" />
+                                                                    </columnConstraints>
+                                                                    <rowConstraints>
+                                                                        <RowConstraints maxHeight="29.4" minHeight="4.000007534027098" prefHeight="29.4" valignment="CENTER" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="48.6" vgrow="SOMETIMES" />
+                                                                    </rowConstraints>
+                                                                    <children>
+                                                                        <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="36.0" prefWidth="552.0" text="Current Tagging Folder" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                                                                        <TextField fx:id="taggingFolderText" maxWidth="-Infinity" prefHeight="23.0" prefWidth="200.0" promptText="Tagging Folder" translateX="70.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                                                                            <GridPane.margin>
+                                                                                <Insets />
+                                                                            </GridPane.margin>
+                                                                        </TextField>
+                                                                        <Button fx:id="taggingFolderButton" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="26.0" prefWidth="58.0" text="..." translateX="70.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                                                                    </children>
+                                                                </GridPane>
+                                                            </children></AnchorPane>
                                                     </content>
                                                 </Tab>
                                             </tabs>
@@ -307,132 +334,132 @@
                 <Tab text="Contacts">
                     <content>
                         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <GridPane layoutY="1.0" prefHeight="350.0" prefWidth="552.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <ListView fx:id="domContactListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
-                              <GridPane GridPane.columnIndex="1">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="191.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="-Infinity" minHeight="9.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="97.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <TextField fx:id="domContactNameField" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="276.0" promptText="Dom Name" GridPane.rowIndex="2" />
-                                    <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="99.0" prefWidth="280.0" GridPane.rowIndex="5">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="138.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="138.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="37.0" minHeight="5.0" prefHeight="37.0" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="55.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-                                      </rowConstraints>
-                                       <children>
-                                          <Button fx:id="saveContactButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="59.0" prefWidth="136.0" text="Save Settings" GridPane.rowIndex="2" />
-                                       </children>
-                                    </GridPane>
-                                    <StackPane fx:id="domContactImageStackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0">
-                                       <children>
-                                          <Label fx:id="clickContactAvatarText" alignment="CENTER" contentDisplay="TEXT_ONLY" prefHeight="181.0" prefWidth="273.0" text="Click here to set the contact avatar" textAlignment="JUSTIFY" wrapText="true">
-                                             <font>
-                                                <Font size="17.0" />
-                                             </font></Label>
-                                          <ImageView fx:id="domContactImageView" fitHeight="185.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true" />
-                                       </children>
-                                    </StackPane>
-                                    <GridPane GridPane.rowIndex="4">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="244.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="32.0" />
-                                      </columnConstraints>
-                                       <children>
-                                          <TextField fx:id="domContactImageSetPathText" prefHeight="25.0" prefWidth="186.0" promptText="Image Set Path" />
-                                          <Button fx:id="domContactImageSetPathButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" text="..." GridPane.columnIndex="1" />
-                                       </children>
-                                       <rowConstraints>
-                                          <RowConstraints />
-                                       </rowConstraints>
-                                    </GridPane>
-                                    <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Contact Name" textAlignment="CENTER" GridPane.rowIndex="1" />
-                                    <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Image Sets Path" textAlignment="CENTER" GridPane.rowIndex="3" />
-                                 </children>
-                              </GridPane>
-                           </children>
-                        </GridPane>
-                     </children></AnchorPane>
-                    </content>
-                </Tab>
-            <Tab text="Personality">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TabPane prefHeight="354.0" prefWidth="552.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <tabs>
-                            <Tab text="Variables">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="254.0" prefWidth="256.0">
-                                       <children>
-                                          <GridPane prefHeight="325.0" prefWidth="552.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <GridPane layoutY="1.0" prefHeight="350.0" prefWidth="552.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <ListView fx:id="domContactListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
+                                        <GridPane fx:id="contactGridPane" GridPane.columnIndex="1">
                                             <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
                                             </columnConstraints>
                                             <rowConstraints>
+                                                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="191.0" vgrow="SOMETIMES" />
                                                 <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-                                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="306.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="-Infinity" minHeight="9.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="97.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
-                                             <children>
-                                                <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                  <columnConstraints>
-                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="69.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="194.0" />
-                                                  </columnConstraints>
-                                                  <rowConstraints>
-                                                    <RowConstraints maxHeight="21.0" minHeight="0.0" prefHeight="21.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="12.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints maxHeight="141.0" minHeight="10.0" prefHeight="141.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="104.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                  </rowConstraints>
-                                                   <children>
-                                                      <Label prefHeight="17.0" prefWidth="141.0" text="Value:" />
-                                                      <TextField fx:id="variableValueTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="17.0" GridPane.columnIndex="1" />
-                                                      <Button fx:id="variableSaveButton" mnemonicParsing="false" prefHeight="49.0" prefWidth="221.0" text="Save Variable" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                                      <CheckBox fx:id="onlySupportedVariablesCheckbox" mnemonicParsing="false" prefHeight="90.0" prefWidth="202.0" text="Only supported variables" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                      <Label alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="146.0" prefWidth="77.0" text="Description:" GridPane.rowIndex="2" />
-                                                      <Label fx:id="descriptionLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="142.0" prefWidth="200.0" text="None" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                   </children>
+                                            <children>
+                                                <TextField fx:id="domContactNameField" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="276.0" promptText="Dom Name" GridPane.rowIndex="2" />
+                                                <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="99.0" prefWidth="280.0" GridPane.rowIndex="5">
+                                                    <columnConstraints>
+                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="138.0" />
+                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="138.0" />
+                                                    </columnConstraints>
+                                                    <rowConstraints>
+                                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        <RowConstraints maxHeight="37.0" minHeight="5.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                                                        <RowConstraints maxHeight="55.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                                                    </rowConstraints>
+                                                    <children>
+                                                        <Button fx:id="saveContactButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="59.0" prefWidth="136.0" text="Save Settings" GridPane.rowIndex="2" />
+                                                    </children>
                                                 </GridPane>
-                                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="280.0" text="Options" GridPane.columnIndex="1" />
-                                                <ListView fx:id="variableListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-                                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="281.0" text="Variables" />
-                                             </children>
-                                          </GridPane>
-                                       </children>
-                                    </AnchorPane>
-                              </content>
-                            </Tab>
-                          </tabs>
-                        </TabPane>
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
+                                                <StackPane fx:id="domContactImageStackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0">
+                                                    <children>
+                                                        <Label fx:id="clickContactAvatarText" alignment="CENTER" contentDisplay="TEXT_ONLY" prefHeight="181.0" prefWidth="273.0" text="Click here to set the contact avatar" textAlignment="JUSTIFY" wrapText="true">
+                                                            <font>
+                                                                <Font size="17.0" />
+                                                            </font></Label>
+                                                        <ImageView fx:id="domContactImageView" fitHeight="185.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true" />
+                                                    </children>
+                                                </StackPane>
+                                                <GridPane GridPane.rowIndex="4">
+                                                    <columnConstraints>
+                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="244.0" />
+                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="32.0" />
+                                                    </columnConstraints>
+                                                    <children>
+                                                        <TextField fx:id="domContactImageSetPathText" prefHeight="25.0" prefWidth="186.0" promptText="Image Set Path" />
+                                                        <Button fx:id="domContactImageSetPathButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" text="..." GridPane.columnIndex="1" />
+                                                    </children>
+                                                    <rowConstraints>
+                                                        <RowConstraints />
+                                                    </rowConstraints>
+                                                </GridPane>
+                                                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Contact Name" textAlignment="CENTER" GridPane.rowIndex="1" />
+                                                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Image Sets Path" textAlignment="CENTER" GridPane.rowIndex="3" />
+                                            </children>
+                                        </GridPane>
+                                    </children>
+                                </GridPane>
+                            </children></AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Personality">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TabPane prefHeight="354.0" prefWidth="552.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <tabs>
+                                        <Tab text="Variables">
+                                            <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="254.0" prefWidth="256.0">
+                                                    <children>
+                                                        <GridPane prefHeight="325.0" prefWidth="552.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                            <columnConstraints>
+                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+                                                            </columnConstraints>
+                                                            <rowConstraints>
+                                                                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                                                                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="306.0" vgrow="SOMETIMES" />
+                                                            </rowConstraints>
+                                                            <children>
+                                                                <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                                    <columnConstraints>
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="69.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="194.0" />
+                                                                    </columnConstraints>
+                                                                    <rowConstraints>
+                                                                        <RowConstraints maxHeight="21.0" minHeight="0.0" prefHeight="21.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="12.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="141.0" minHeight="10.0" prefHeight="141.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="104.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                    </rowConstraints>
+                                                                    <children>
+                                                                        <Label prefHeight="17.0" prefWidth="141.0" text="Value:" />
+                                                                        <TextField fx:id="variableValueTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="17.0" GridPane.columnIndex="1" />
+                                                                        <Button fx:id="variableSaveButton" mnemonicParsing="false" prefHeight="49.0" prefWidth="221.0" text="Save Variable" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                        <CheckBox fx:id="onlySupportedVariablesCheckbox" mnemonicParsing="false" prefHeight="90.0" prefWidth="202.0" text="Only supported variables" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                        <Label alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="146.0" prefWidth="77.0" text="Description:" GridPane.rowIndex="2" />
+                                                                        <Label fx:id="descriptionLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="142.0" prefWidth="200.0" text="None" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                    </children>
+                                                                </GridPane>
+                                                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="280.0" text="Options" GridPane.columnIndex="1" />
+                                                                <ListView fx:id="variableListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                                                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="281.0" text="Variables" />
+                                                            </children>
+                                                        </GridPane>
+                                                    </children>
+                                                </AnchorPane>
+                                            </content>
+                                        </Tab>
+                                    </tabs>
+                                </TabPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
             </tabs>
         </TabPane>
     </children>

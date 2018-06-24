@@ -105,7 +105,7 @@ public class FileUtils {
 
         //Iterate over all files
         for (String file : files) {
-            if(!new File(folder, file).isDirectory() && file.endsWith(fileName)) {
+            if (!new File(folder, file).isDirectory() && file.endsWith(fileName)) {
                 return true;
             }
         }
@@ -118,15 +118,15 @@ public class FileUtils {
 
         //Iterate over all files
         for (String file : files) {
-            if(!new File(parentFolder, file).isDirectory()) {
-                if(file.endsWith(fileName)) {
+            if (!new File(parentFolder, file).isDirectory()) {
+                if (file.endsWith(fileName)) {
                     return new File(parentFolder, file);
                 }
             } else {
                 //Try to find the file one directory deeper
                 File foundFile = findFile(new File(parentFolder, file), fileName);
 
-                if(foundFile != null) {
+                if (foundFile != null) {
                     return foundFile;
                 }
             }
@@ -168,16 +168,16 @@ public class FileUtils {
     }
 
     public static void delete(File file) throws IOException {
-        if(file.isDirectory()) {
+        if (file.isDirectory()) {
             //Directory is empty, then delete it
-            if(file.list().length == 0) {
+            if (file.list().length == 0) {
                 file.delete();
 
             } else {
                 //List all the directory contents
                 String files[] = file.list();
 
-                for(String temp : files) {
+                for (String temp : files) {
                     //Construct the file structure
                     File fileDelete = new File(file, temp);
 
@@ -186,7 +186,7 @@ public class FileUtils {
                 }
 
                 //Check the directory again, if empty then delete it
-                if(file.list().length == 0) {
+                if (file.list().length == 0) {
                     file.delete();
                 }
             }
@@ -195,6 +195,40 @@ public class FileUtils {
             //If file, then delete it
             file.delete();
         }
+    }
+
+    public static String stripExtension(String str) {
+        //Handle null case specially.
+        if (str == null) {
+            return null;
+        }
+
+        //Get position of last '.'.
+        int pos = str.lastIndexOf(".");
+
+        //If there wasn't any '.' just return the string as is.
+        if (pos == -1) {
+            return str;
+        }
+
+        //Otherwise return the string, up to the dot.
+        return str.substring(0, pos);
+    }
+
+
+    public static String getExtension(File file) {
+        String extension = "";
+
+        int i = file.getPath().lastIndexOf('.');
+        if (i > 0) {
+            extension = file.getPath().substring(i + 1).toLowerCase();
+        }
+
+        return extension;
+    }
+
+    public static String getNormalizedFileName(File file) {
+        return stripExtension(file.getName()) + "." + getExtension(file).toLowerCase();
     }
 
     /**
@@ -211,7 +245,7 @@ public class FileUtils {
         try {
             //note that each / is a directory down in the "jar tree" been the jar the root of the tree
             stream = TeaseAI.class.getResourceAsStream(resourceName);
-            if(stream == null) {
+            if (stream == null) {
                 throw new Exception("Cannot get resource \"" + resourceName + "\" from jar file.");
             }
 

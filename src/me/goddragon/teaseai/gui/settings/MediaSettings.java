@@ -20,6 +20,7 @@ public class MediaSettings {
         new URLGenreSettings(settingsController).initiate();
         new GenreMediaSettings(settingsController).initiate();
         new URLMediaSettings(settingsController).initiate();
+        MediaTagging.create(settingsController);
     }
 
     public void saveMediaPaths(MediaType mediaType, MediaFetishType mediaFetishType) {

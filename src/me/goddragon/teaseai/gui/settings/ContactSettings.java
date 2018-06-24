@@ -9,10 +9,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.chat.ChatParticipant;
+import me.goddragon.teaseai.utils.FileUtils;
 
 import java.io.File;
 
@@ -73,7 +75,8 @@ public class ContactSettings {
                 File image = chooser.showOpenDialog(settingsController.stage);
 
                 if (image != null && image.exists()) {
-                    if ((image.getName().toLowerCase().endsWith(".jpg") || image.getName().toLowerCase().endsWith(".png") || image.getName().toLowerCase().endsWith(".jpeg"))) {
+                    String extension = FileUtils.getExtension(image);
+                    if ((extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("jpeg"))) {
                         getSelectedContact().getContact().IMAGE_PATH.setValue(image.getPath());
                         getSelectedContact().getContact().IMAGE_PATH.save();
                         updateContactData();
@@ -116,8 +119,11 @@ public class ContactSettings {
         });
 
         settingsController.domContactImageView.setPreserveRatio(true);
-        settingsController.domContactImageView.fitWidthProperty().bind(settingsController.domContactImageStackPane.widthProperty());
-        settingsController.domContactImageView.fitHeightProperty().bind(settingsController.domContactImageStackPane.heightProperty());
+        Pane pane = new Pane();
+        pane.setVisible(false);
+        settingsController.contactGridPane.add(pane, 0, 0);
+        settingsController.domContactImageView.fitWidthProperty().bind(pane.widthProperty());
+        settingsController.domContactImageView.fitHeightProperty().bind(pane.heightProperty());
 
         settingsController.domContactImageSetPathButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -136,7 +142,7 @@ public class ContactSettings {
                 chooser.setInitialDirectory(defaultDirectory);
                 File selectedDirectory = chooser.showDialog(settingsController.stage);
 
-                if(selectedDirectory != null) {
+                if (selectedDirectory != null) {
                     settingsController.domContactImageSetPathText.setText(selectedDirectory.getPath());
                     getSelectedContact().getContact().IMAGE_SET_PATH.setValue(selectedDirectory.getPath());
                     getSelectedContact().getContact().IMAGE_SET_PATH.save();
@@ -166,7 +172,7 @@ public class ContactSettings {
 
             settingsController.domContactNameField.setText(participant.getContact().NAME.getValue());
 
-            if(participant.getContact().getImageFolder() != null && participant.getContact().getImageFolder().exists()) {
+            if (participant.getContact().getImageFolder() != null && participant.getContact().getImageFolder().exists()) {
                 settingsController.domContactImageSetPathText.setText(participant.getContact().getImageFolder().getPath());
             } else {
                 settingsController.domContactImageSetPathText.setText("");
