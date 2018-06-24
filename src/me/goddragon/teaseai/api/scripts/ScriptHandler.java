@@ -152,8 +152,9 @@ public class ScriptHandler {
         }
     }
     
-    public File getPersonnalityFile(String fileName) {
+    public File getPersonalityFile(String fileName) {
     	File file = FileUtils.getRandomMatchingFile(currentPersonality.getFolder().getAbsolutePath() + File.separator + fileName);
+
     	if (file == null || !file.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "File " + fileName + " does not exist.");
             return null;

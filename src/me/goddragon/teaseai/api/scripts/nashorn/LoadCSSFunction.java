@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
+import javafx.scene.Scene;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.utils.TeaseLogger;
@@ -7,8 +8,6 @@ import me.goddragon.teaseai.utils.TeaseLogger;
 import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Level;
-
-import javafx.scene.Scene;
 
 /**
  * Created by Go-mei-sa on 15.06.2018.
@@ -29,7 +28,7 @@ public class LoadCSSFunction extends CustomFunction {
         super.call(object, args);
 
         if(args.length == 1) {
-            File cssFile = ScriptHandler.getHandler().getPersonnalityFile(args[0].toString());
+            File cssFile = ScriptHandler.getHandler().getPersonalityFile(args[0].toString());
             if (cssFile != null) {
             	Scene scene = TeaseAI.application.getScene();
             	scene.getStylesheets().clear();
