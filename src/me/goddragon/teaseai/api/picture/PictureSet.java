@@ -18,10 +18,8 @@ public class PictureSet {
     private final List<TaggedPicture> taggedPictures = new ArrayList<>();
 
     public PictureSet(File folder) {
-        long currentMillis = System.currentTimeMillis();
         TagsFile tagFile = TagsFile.getTagsFile(folder);
 
-        System.out.println("1: " + (System.currentTimeMillis() - currentMillis));
         /*for (File file : folder.listFiles()) {
             if (file.isFile() && file.getName().endsWith(".txt")) {
                 tagFile = file;
@@ -37,8 +35,6 @@ public class PictureSet {
         for(File taggedFile : tagFile.getTaggedFiles()) {
             taggedPictures.add(new TaggedPicture(taggedFile));
         }
-
-        System.out.println("2: " + (System.currentTimeMillis() - currentMillis));
     }
 
     public TaggedPicture getRandomPictureForStates(DressState... dressStates) {
