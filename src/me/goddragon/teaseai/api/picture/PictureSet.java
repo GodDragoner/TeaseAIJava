@@ -18,46 +18,27 @@ public class PictureSet {
     private final List<TaggedPicture> taggedPictures = new ArrayList<>();
 
     public PictureSet(File folder) {
-        File tagFile = null;
-        for (File file : folder.listFiles()) {
+        long currentMillis = System.currentTimeMillis();
+        TagsFile tagFile = TagsFile.getTagsFile(folder);
+
+        System.out.println("1: " + (System.currentTimeMillis() - currentMillis));
+        /*for (File file : folder.listFiles()) {
             if (file.isFile() && file.getName().endsWith(".txt")) {
                 tagFile = file;
                 break;
             }
-        }
+        }*/
 
         if(tagFile == null) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Folder '" + folder.getAbsolutePath() + "' is missing a tags file.");
             return;
         }
 
-        try {
-            // Open the file
-            FileInputStream fstream = new FileInputStream(tagFile);
-            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-
-            String strLine;
-
-            //Read File Line By Line
-            while ((strLine = br.readLine()) != null) {
-                if (!strLine.contains(" ")) {
-                    TeaseLogger.getLogger().log(Level.SEVERE, "Illegal tagged file. Line is '" + strLine + "' in folder " + folder.getAbsolutePath());
-                    return;
-                }
-
-                int endIndex = strLine.toLowerCase().indexOf(".jpg") + 4;
-                String fileName = strLine.substring(0, endIndex);
-                String[] split = strLine.substring(endIndex).trim().split(" ");
-                if (split.length < 1) {
-                    TeaseLogger.getLogger().log(Level.SEVERE, "Illegal tagged file. Line is '" + strLine + "' in folder " + folder.getAbsolutePath());
-                    return;
-                }
-
-                taggedPictures.add(new TaggedPicture(fileName, split, folder));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        for(File taggedFile : tagFile.getTaggedFiles()) {
+            taggedPictures.add(new TaggedPicture(taggedFile));
         }
+
+        System.out.println("2: " + (System.currentTimeMillis() - currentMillis));
     }
 
     public TaggedPicture getRandomPictureForStates(DressState... dressStates) {
