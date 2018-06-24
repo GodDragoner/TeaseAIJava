@@ -32,7 +32,7 @@ public class LoadCSSFunction extends CustomFunction {
             if (cssFile != null) {
             	Scene scene = TeaseAI.application.getScene();
             	scene.getStylesheets().clear();
-            	scene.getStylesheets().add("file://" + cssFile.getAbsolutePath());
+            	scene.getStylesheets().add(cssFile.toURI().toString());
             }
             return null;
         }
