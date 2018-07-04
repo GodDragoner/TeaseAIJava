@@ -5,6 +5,7 @@ import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
@@ -40,7 +41,7 @@ public class TaggedPicture {
             return;
         }
 
-        for(int x = 0; x < tags.length; x++) {
+        for (int x = 0; x < tags.length; x++) {
             String tag = tags[x];
 
             //Too short to be a real tag
@@ -60,7 +61,7 @@ public class TaggedPicture {
             }
         }
 
-        if(dressState == null) {
+        if (dressState == null) {
             this.dressState = DressState.FULLY_DRESSED;
         }
 
@@ -94,13 +95,17 @@ public class TaggedPicture {
 
         this.dressState = imageTagFile.getDressState(this.file);
 
-        if(dressState == null) {
+        if (dressState == null) {
             this.dressState = DressState.FULLY_DRESSED;
         }
 
         if (tags == null) {
             tags = new HashSet<>();
         }
+    }
+
+    public boolean isDuplicate() {
+        return PictureHandler.getHandler().checkDuplicate(file);
     }
 
     public boolean move(String newPath) {
@@ -169,7 +174,7 @@ public class TaggedPicture {
     }
 
     public void setDressState(DressState dressState) {
-        if(this.dressState == dressState) {
+        if (this.dressState == dressState) {
             return;
         }
 
@@ -225,18 +230,15 @@ public class TaggedPicture {
         }
     }
 
-    public boolean hasTags(HashSet<PictureTag> theseTags) {
-        if (tags.containsAll(theseTags)) {
-            return true;
-        }
-        return false;
+    public boolean hasTags(PictureTag... tags) {
+        return hasTags(Arrays.asList(tags));
     }
 
-    public boolean hasTags(PictureTag... theseTags) {
-        getTags();
-        if (tags.containsAll(Arrays.asList(theseTags))) {
+    public boolean hasTags(Collection<PictureTag> tags) {
+        if(this.tags.containsAll(tags)) {
             return true;
         }
+
         return false;
     }
 

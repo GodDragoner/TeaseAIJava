@@ -10,10 +10,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 
 public class PictureHandler {
@@ -122,29 +119,34 @@ public class PictureHandler {
     }
 
     public List<TaggedPicture> getTaggedPicturesExact(PictureTag... imageTags) {
-        ArrayList<TaggedPicture> picturesWithTags = new ArrayList<>();
-
-        synchronized (uniquePictures) {
-            for (File thisFile : uniquePictures.values()) {
-                TaggedPicture thisImage = new TaggedPicture(thisFile);
-                if (thisImage.hasTags(imageTags)) {
-                    picturesWithTags.add(thisImage);
-                }
-            }
-        }
-
-        if (picturesWithTags.size() == 0) {
-            return null;
-        } else {
-            return picturesWithTags;
-        }
+        return getTaggedPicturesExact(Arrays.asList(imageTags));
     }
 
-    public List<TaggedPicture> getTaggedPicturesExact(HashSet<PictureTag> imageTags) {
+    public List<TaggedPicture> getTaggedPicturesExact(Collection<PictureTag> imageTags) {
+        return getTaggedPicturesExact(null, imageTags);
+    }
+
+    public ArrayList<TaggedPicture> getTaggedPicturesExact(File folder, PictureTag... imageTags) {
+        return getTaggedPicturesExact(folder, Arrays.asList(imageTags));
+    }
+
+    public ArrayList<TaggedPicture> getTaggedPicturesExact(File folder, Collection<PictureTag> imageTags) {
         ArrayList<TaggedPicture> picturesWithTags = new ArrayList<>();
 
+        Collection<File> files;
+
+        if(folder != null) {
+           files = Arrays.asList(folder.listFiles(new FilenameFilter() {
+                public boolean accept(File dir, String name) {
+                    return name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".gif");
+                }
+            }));
+        } else {
+            files = uniquePictures.values();
+        }
+
         synchronized (uniquePictures) {
-            for (File thisFile : uniquePictures.values()) {
+            for (File thisFile : files) {
                 TaggedPicture thisImage = new TaggedPicture(thisFile);
                 if (thisImage.hasTags(imageTags)) {
                     picturesWithTags.add(thisImage);
@@ -219,6 +221,7 @@ public class PictureHandler {
             TeaseLogger.getLogger().log(Level.SEVERE, "MD5 error: " + e.getMessage());
             return null;
         }
+
         FileInputStream is;
         try {
             is = new FileInputStream(file);
@@ -226,6 +229,7 @@ public class PictureHandler {
             TeaseLogger.getLogger().log(Level.SEVERE, "MD5 error: " + e.getMessage());
             return null;
         }
+
         byte[] buffer = new byte[8192];
         int read;
         try {
