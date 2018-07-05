@@ -240,7 +240,7 @@ public class TagsFile {
 
                 if (!replaced) {
                     String strLine = image.getName();
-                    
+
                     for (PictureTag tag : tagsToSet) {
                         strLine += (" " + tag.getTagName());
                     }

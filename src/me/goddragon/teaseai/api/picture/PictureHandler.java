@@ -130,17 +130,34 @@ public class PictureHandler {
         return getTaggedPicturesExact(folder, Arrays.asList(imageTags));
     }
 
+    public ArrayList<TaggedPicture> getTaggedPicturesExact(File folder, String... imageTags) {
+        Collection<PictureTag> pictureTags = new HashSet<>();
+
+        for (String tag : imageTags) {
+            pictureTags.add(PictureTag.valueOf(tag.toUpperCase()));
+        }
+
+        return getTaggedPicturesExact(folder, pictureTags);
+    }
+
     public ArrayList<TaggedPicture> getTaggedPicturesExact(File folder, Collection<PictureTag> imageTags) {
         ArrayList<TaggedPicture> picturesWithTags = new ArrayList<>();
 
         Collection<File> files;
 
-        if(folder != null) {
-           files = Arrays.asList(folder.listFiles(new FilenameFilter() {
+        if(folder != null && folder.list() == null) {
+            File[] fileArray = folder.listFiles(new FilenameFilter() {
                 public boolean accept(File dir, String name) {
                     return name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".gif");
                 }
-            }));
+            });
+
+            //Nothing found
+            if(fileArray == null) {
+                files = new ArrayList<>();
+            } else {
+                files = Arrays.asList(fileArray);
+            }
         } else {
             files = uniquePictures.values();
         }
