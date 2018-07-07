@@ -234,13 +234,17 @@ public class TagsFile {
                     inputBuffer.append('\n');
                 }
 
-                lines.set(lines.indexOf(replaceLine), newLine);
+                if (replaced) {
+                    lines.set(lines.indexOf(replaceLine), newLine);
+                }
 
                 if (!replaced) {
                     String strLine = image.getName();
+
                     for (PictureTag tag : tagsToSet) {
                         strLine += (" " + tag.getTagName());
                     }
+
                     if (!strLine.equals(image.getName())) {
                         inputBuffer.append(strLine);
                         inputBuffer.append('\n');
@@ -300,7 +304,7 @@ public class TagsFile {
         } else {
             String line = getImageLine(image);
 
-            if(line == null) {
+            if (line == null) {
                 return toReturn;
             }
 
@@ -320,7 +324,7 @@ public class TagsFile {
         } else {
             String line = getImageLine(image);
 
-            if(line == null) {
+            if (line == null) {
                 return null;
             }
 

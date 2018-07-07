@@ -37,7 +37,7 @@ import java.util.logging.Level;
  */
 public class TeaseAI extends Application {
 
-    public static final String VERSION = "1.0.12";
+    public static final String VERSION = "1.0.13";
     public static final String UPDATE_FOLDER = "Updates";
 
     public static double JAVA_VERSION = getJavaVersion();
