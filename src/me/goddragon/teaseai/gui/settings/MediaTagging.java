@@ -22,6 +22,7 @@ import me.goddragon.teaseai.api.picture.DressState;
 import me.goddragon.teaseai.api.picture.PictureHandler;
 import me.goddragon.teaseai.api.picture.PictureTag;
 import me.goddragon.teaseai.api.picture.PictureTag.TagType;
+import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.api.picture.TaggedPicture;
 
 import java.io.File;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.logging.Level;
 
 public class MediaTagging {
 
@@ -163,6 +165,7 @@ public class MediaTagging {
     public void setUpButtons() {
         currentTaggedPicture = files[currentFile];
         currentImageTags = (HashSet<PictureTag>) currentTaggedPicture.getTags().clone();
+
         currentDressState = currentTaggedPicture.getDressState();
 
         if (currentImageTags == null) {

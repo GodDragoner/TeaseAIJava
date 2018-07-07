@@ -10,3 +10,4 @@ target
 Personalities/*
 Images/*
 Logs/*
+/bin/

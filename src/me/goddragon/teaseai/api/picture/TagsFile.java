@@ -233,8 +233,10 @@ public class TagsFile {
                     inputBuffer.append(strLine);
                     inputBuffer.append('\n');
                 }
-
-                lines.set(lines.indexOf(replaceLine), newLine);
+                if (replaced)
+                {
+                    lines.set(lines.indexOf(replaceLine), newLine);
+                }
 
                 if (!replaced) {
                     String strLine = image.getName();

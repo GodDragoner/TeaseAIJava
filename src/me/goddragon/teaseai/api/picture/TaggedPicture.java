@@ -80,6 +80,8 @@ public class TaggedPicture {
             TeaseLogger.getLogger().log(Level.SEVERE, "Duplicate file " + file.getPath());
             return;
         }*/
+        
+        PictureHandler.getHandler().addUniquePicture(file);
 
         String extension = FileUtils.getExtension(file).toLowerCase();
 
@@ -102,7 +104,12 @@ public class TaggedPicture {
             tags = new HashSet<>();
         }
     }
-
+    
+    public boolean isDuplicate()
+    {
+        return PictureHandler.getHandler().checkDuplicate(file);
+    }
+    
     public boolean move(String newPath) {
         File folder = this.file.getParentFile();
         HashSet<PictureTag> localTags = getTags();

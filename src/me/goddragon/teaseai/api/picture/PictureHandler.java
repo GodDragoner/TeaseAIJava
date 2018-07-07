@@ -139,6 +139,35 @@ public class PictureHandler {
             return picturesWithTags;
         }
     }
+    
+    public ArrayList<TaggedPicture> getTaggedPicturesExact(File folder, String... imageTags) {
+        PictureTag[] pictureTags = new PictureTag[imageTags.length];
+        for (int i = 0 ; i < imageTags.length; i++)
+        {
+            pictureTags[i] = PictureTag.valueOf(imageTags[i].toUpperCase());
+        }
+        TeaseLogger.getLogger().log(Level.INFO, "debug 1" + pictureTags[0].toString());
+        ArrayList<TaggedPicture> picturesWithTags = new ArrayList<>();
+
+        File[] files = folder.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".gif");
+            }
+        });
+        TeaseLogger.getLogger().log(Level.INFO, "debug 2 " + files.length);
+        for (File thisFile : files) {
+            TaggedPicture thisImage = new TaggedPicture(thisFile);
+            if (thisImage.hasTags(pictureTags)) {
+                picturesWithTags.add(thisImage);
+            }
+        }
+
+        if (picturesWithTags.size() == 0) {
+            return null;
+        } else {
+            return picturesWithTags;
+        }
+    }
 
     public List<TaggedPicture> getTaggedPicturesExact(HashSet<PictureTag> imageTags) {
         ArrayList<TaggedPicture> picturesWithTags = new ArrayList<>();
