@@ -169,7 +169,9 @@ public class TagsFile {
                     inputBuffer.append('\n');
                 }
 
+                if (added) {
                 lines.set(lines.indexOf(replaceLine), newLine);
+                }
 
                 if (!added) {
                     if (dressState == null) {

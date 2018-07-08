@@ -16,6 +16,7 @@ import java.util.logging.Level;
 public class PictureSet {
 
     private final List<TaggedPicture> taggedPictures = new ArrayList<>();
+    private final List<TaggedPicture> allPictures = new ArrayList<>();
 
     public PictureSet(File folder) {
         TagsFile tagFile = TagsFile.getTagsFile(folder);
@@ -34,6 +35,15 @@ public class PictureSet {
 
         for(File taggedFile : tagFile.getTaggedFiles()) {
             taggedPictures.add(new TaggedPicture(taggedFile));
+        }
+        File[] files = folder.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".gif");
+            }
+        });
+        for (File file : files)
+        {
+            allPictures.add(new TaggedPicture(file));
         }
     }
 
@@ -60,7 +70,6 @@ public class PictureSet {
 
     public TaggedPicture getRandomPictureForTagStates(List<TaggedPicture> taggedPictures, List<DressState> dressStates, List<PictureTag> pictureTags) {
         List<TaggedPicture> validPictures = new ArrayList<>();
-
         pictureLoop:
         for (TaggedPicture taggedPicture : taggedPictures) {
             //Remove all pictures that don't have a specific tag
@@ -97,7 +106,8 @@ public class PictureSet {
 
             //We don't have any pictures to show anyway
             if (taggedPictures.isEmpty()) {
-                return null;
+                TaggedPicture picture = allPictures.get(RandomUtils.randInt(0, allPictures.size() - 1));
+                return picture;
             }
             //Okay we have been beaten. Show a random image
             else {
@@ -111,5 +121,9 @@ public class PictureSet {
 
     public Collection<TaggedPicture> getTaggedPictures() {
         return taggedPictures;
+    }
+    
+    public Collection<TaggedPicture> getAllPictures() {
+        return allPictures;
     }
 }

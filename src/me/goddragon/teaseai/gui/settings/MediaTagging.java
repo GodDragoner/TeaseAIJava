@@ -167,6 +167,7 @@ public class MediaTagging {
         currentImageTags = (HashSet<PictureTag>) currentTaggedPicture.getTags().clone();
 
         currentDressState = currentTaggedPicture.getDressState();
+        TeaseLogger.getLogger().log(Level.INFO, "Tagged picture dressstate " + currentTaggedPicture.getDressState());
 
         if (currentImageTags == null) {
             currentImageTags = new HashSet<>();

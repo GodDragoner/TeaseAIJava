@@ -324,7 +324,7 @@ public class ChatParticipant {
             PictureSet pictureSet = new PictureSet(file);
 
             //No pictures => ignore the set
-            if(pictureSet.getTaggedPictures().isEmpty()) {
+            if(pictureSet.getTaggedPictures().isEmpty() && pictureSet.getAllPictures().isEmpty()) {
                 continue;
             }
 
@@ -339,7 +339,7 @@ public class ChatParticipant {
             while (this.pictureSet == null && loops < 20) {
                 PictureSet pictureSet = pictureSets.get(RandomUtils.randInt(0, pictureSets.size() - 1));
 
-                if (!pictureSet.getTaggedPictures().isEmpty()) {
+                if (!pictureSet.getAllPictures().isEmpty()) {
                     this.pictureSet = pictureSet;
                 }
 

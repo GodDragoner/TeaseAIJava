@@ -38,6 +38,7 @@ public class Session {
         activePersonality.getVariableHandler().setVariable("fetishesBallTorture", TeaseAI.application.FETISH_BALLTORTURE.toString(), true);
         activePersonality.getVariableHandler().setVariable("fetishesBDSMPositions", TeaseAI.application.FETISH_BDSMPOSITIONS.toString(), true);
         activePersonality.getVariableHandler().setVariable("fetishesBladderControl", TeaseAI.application.FETISH_BLADDERCONTROL.toString(), true);
+        activePersonality.getVariableHandler().setVariable("fetishesBodyMarking", TeaseAI.application.FETISH_BODYMARKING.toString(), true);
         activePersonality.getVariableHandler().setVariable("fetishesBondage", TeaseAI.application.FETISH_BONDAGE.toString(), true);
         activePersonality.getVariableHandler().setVariable("fetishesCockSucking", TeaseAI.application.FETISH_COCKSUCKING.toString(), true);
         activePersonality.getVariableHandler().setVariable("fetishesCockTorture", TeaseAI.application.FETISH_COCKTORTURE.toString(), true);

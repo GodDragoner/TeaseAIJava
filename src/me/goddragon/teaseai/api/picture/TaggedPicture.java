@@ -61,9 +61,9 @@ public class TaggedPicture {
             }
         }
 
-        if (dressState == null) {
-            this.dressState = DressState.FULLY_DRESSED;
-        }
+        /*if (dressState == null) {
+            setDressState(DressState.FULLY_DRESSED);
+        }*/
 
         getTagsFolder();
     }
@@ -95,9 +95,9 @@ public class TaggedPicture {
 
         this.dressState = imageTagFile.getDressState(this.file);
 
-        if (dressState == null) {
-            this.dressState = DressState.FULLY_DRESSED;
-        }
+        /*if (dressState == null) {
+            setDressState(DressState.FULLY_DRESSED);
+        }*/
 
         if (tags == null) {
             tags = new HashSet<>();
