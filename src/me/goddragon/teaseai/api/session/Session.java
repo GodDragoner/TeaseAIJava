@@ -33,6 +33,21 @@ public class Session {
         activePersonality.getVariableHandler().setVariable("domFriend2Name", ChatHandler.getHandler().getParticipantById(3).getName(), true);
         activePersonality.getVariableHandler().setVariable("domFriend3Name", ChatHandler.getHandler().getParticipantById(4).getName(), true);
         activePersonality.getVariableHandler().setVariable("prefSessionLength", TeaseAI.application.PREFERRED_SESSION_DURATION.getInt(), true);
+        
+        activePersonality.getVariableHandler().setVariable("fetishesAnal", TeaseAI.application.FETISH_ANAL.toString(), true);
+        activePersonality.getVariableHandler().setVariable("fetishesBallTorture", TeaseAI.application.FETISH_BALLTORTURE.toString(), true);
+        activePersonality.getVariableHandler().setVariable("fetishesBDSMPositions", TeaseAI.application.FETISH_BDSMPOSITIONS.toString(), true);
+        activePersonality.getVariableHandler().setVariable("fetishesBladderControl", TeaseAI.application.FETISH_BLADDERCONTROL.toString(), true);
+        activePersonality.getVariableHandler().setVariable("fetishesBondage", TeaseAI.application.FETISH_BONDAGE.toString(), true);
+        activePersonality.getVariableHandler().setVariable("fetishesCockSucking", TeaseAI.application.FETISH_COCKSUCKING.toString(), true);
+        activePersonality.getVariableHandler().setVariable("fetishesCockTorture", TeaseAI.application.FETISH_COCKTORTURE.toString(), true);
+        activePersonality.getVariableHandler().setVariable("fetishesCumEating", TeaseAI.application.FETISH_CUMEATING.toString(), true);
+        activePersonality.getVariableHandler().setVariable("fetishesExercise", TeaseAI.application.FETISH_EXERCISE.toString(), true);
+        activePersonality.getVariableHandler().setVariable("fetishesFeet", TeaseAI.application.FETISH_FEET.toString(), true);
+        activePersonality.getVariableHandler().setVariable("fetishesNippleTorture", TeaseAI.application.FETISH_NIPPLETORTURE.toString(), true);
+        activePersonality.getVariableHandler().setVariable("fetishesSelfFellatio", TeaseAI.application.FETISH_SELFFELLATIO.toString(), true);
+        activePersonality.getVariableHandler().setVariable("fetishesSissy", TeaseAI.application.FETISH_SISSY.toString(), true);
+        
 
         TeaseAI.application.getController().getChatWindow().getChildren().clear();
 
@@ -81,6 +96,21 @@ public class Session {
     }
 
     public void end() {
+        TeaseAI.application.FETISH_ANAL.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesAnal").toString());
+        TeaseAI.application.FETISH_BALLTORTURE.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesBallTorture").toString());
+        TeaseAI.application.FETISH_BDSMPOSITIONS.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesBDSMPositions").toString());
+        TeaseAI.application.FETISH_BLADDERCONTROL.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesBladderControl").toString());
+        TeaseAI.application.FETISH_BODYMARKING.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesBodyMarking").toString());
+        TeaseAI.application.FETISH_BONDAGE.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesBondage").toString());
+        TeaseAI.application.FETISH_COCKSUCKING.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesCockSucking").toString());
+        TeaseAI.application.FETISH_COCKTORTURE.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesCockTorture").toString());
+        TeaseAI.application.FETISH_CUMEATING.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesCumEating").toString());
+        TeaseAI.application.FETISH_EXERCISE.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesExercise").toString());
+        TeaseAI.application.FETISH_FEET.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesFeet").toString());
+        TeaseAI.application.FETISH_NIPPLETORTURE.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesNippleTorture").toString());
+        TeaseAI.application.FETISH_SELFFELLATIO.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesSelfFellatio").toString());
+        TeaseAI.application.FETISH_SISSY.setValue(activePersonality.getVariableHandler().getVariableValue("fetishesSissy").toString());
+        
         //Restore the previous state of the start button and set the new session
         TeaseAI.application.runOnUIThread(new Runnable() {
             @Override

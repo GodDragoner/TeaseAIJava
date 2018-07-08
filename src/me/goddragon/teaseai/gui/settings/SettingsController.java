@@ -26,6 +26,7 @@ public class SettingsController {
     protected ContactSettings contactSettings = new ContactSettings(this);
     protected GeneralSettings generalSettings = new GeneralSettings(this);
     protected DebugSettings debugSettings = new DebugSettings(this);
+    protected FetishesSettings fetishesSettings = new FetishesSettings(this);
 
     protected Stage stage;
 
@@ -168,12 +169,58 @@ public class SettingsController {
 
     @FXML
     protected GridPane contactGridPane;
+    
+    @FXML
+    protected Button saveFetishesSettingsButton;
+
+    @FXML
+    protected ComboBox analBox;
+    
+    @FXML
+    protected ComboBox feetBox;
+    
+    @FXML
+    protected ComboBox cocktortureBox;
+    
+    @FXML
+    protected ComboBox balltortureBox;
+    
+    @FXML
+    protected ComboBox nippletortureBox;
+    
+    @FXML
+    protected ComboBox cumeatingBox;
+    
+    @FXML
+    protected ComboBox exerciseBox;
+    
+    @FXML
+    protected ComboBox bdsmpositionsBox;
+    
+    @FXML
+    protected ComboBox bondageBox;
+    
+    @FXML
+    protected ComboBox sissyBox;
+    
+    @FXML
+    protected ComboBox cocksuckingBox;
+    
+    @FXML
+    protected ComboBox selffellatioBox;
+    
+    @FXML
+    protected ComboBox bodymarkingBox;
+    
+    @FXML
+    protected ComboBox bladdercontrolBox;
 
     public void initiate() {
         mediaSettings.initiate();
         contactSettings.initiate();
         generalSettings.initiate();
         debugSettings.initiate();
+        fetishesSettings.initiate();
     }
 
     public static void openGUI() {

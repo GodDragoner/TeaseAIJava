@@ -58,6 +58,20 @@ public class TeaseAI extends Application {
     public final ConfigValue DEFAULT_TYPE_SPEED = new ConfigValue("defaultTypeSpeed", TypeSpeed.MEDIUM, configHandler);
     public final ConfigValue LAST_SELECTED_PERSONALITY = new ConfigValue("lastSelectedPersonality", "null", configHandler);
     public final ConfigValue TEASE_AI_PROPERTIES_LINK = new ConfigValue("teaseAIPropertiesLink", "https://gist.githubusercontent.com/GodDragoner/6c7193903cb0695ff891e8468ad279cd/raw/TeaseAI.properties", configHandler);
+    public final ConfigValue FETISH_ANAL = new ConfigValue("fetishAnal", "Undecided", configHandler);
+    public final ConfigValue FETISH_FEET = new ConfigValue("fetishFeet", "Undecided", configHandler);
+    public final ConfigValue FETISH_COCKTORTURE = new ConfigValue("fetishCockTorture", "Undecided", configHandler);
+    public final ConfigValue FETISH_BALLTORTURE = new ConfigValue("fetishBallTorture", "Undecided", configHandler);
+    public final ConfigValue FETISH_NIPPLETORTURE = new ConfigValue("fetishNippleTorture", "Undecided", configHandler);
+    public final ConfigValue FETISH_CUMEATING = new ConfigValue("fetishCumEating", "Undecided", configHandler);
+    public final ConfigValue FETISH_EXERCISE = new ConfigValue("fetishExercise", "Undecided", configHandler);
+    public final ConfigValue FETISH_BDSMPOSITIONS = new ConfigValue("fetishBDSMPositions", "Undecided", configHandler);
+    public final ConfigValue FETISH_BONDAGE = new ConfigValue("fetishBondage", "Undecided", configHandler);
+    public final ConfigValue FETISH_SISSY = new ConfigValue("fetishSissy", "Undecided", configHandler);
+    public final ConfigValue FETISH_COCKSUCKING = new ConfigValue("fetishCockSucking", "Undecided", configHandler);
+    public final ConfigValue FETISH_SELFFELLATIO = new ConfigValue("fetishSelfFellatio", "Undecided", configHandler);
+    public final ConfigValue FETISH_BODYMARKING = new ConfigValue("fetishBodyMarking", "Undecided", configHandler);
+    public final ConfigValue FETISH_BLADDERCONTROL = new ConfigValue("fetishBladderControl", "Undecided", configHandler);
 
     private Session session;
 
