@@ -14,10 +14,11 @@ import java.util.logging.Level;
 public class PictureSelector {
 
     public TaggedPicture getPicture(Session session, ChatParticipant participant) {
-        if(participant.getPictureSet().getTaggedPictures().isEmpty() && participant.getPictureSet().getAllPictures().isEmpty()) {
-            TeaseLogger.getLogger().log(Level.INFO, "pictureset tagged and all pics are empty");
+        if(participant.getPictureSet().getAllPictures().isEmpty()) {
+            TeaseLogger.getLogger().log(Level.INFO, "Picture set doesn't hold any pictures");
             return null;
         }
+        
         long minutesPassed = TimeUnit.MILLISECONDS.toMinutes(session.getRuntime());
         int preferredSessionDuration = TeaseAI.application.PREFERRED_SESSION_DURATION.getInt();
         double percentage = minutesPassed/preferredSessionDuration*100D;
