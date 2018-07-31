@@ -324,7 +324,7 @@ public class ChatParticipant {
             PictureSet pictureSet = new PictureSet(file);
 
             //No pictures => ignore the set
-            if(pictureSet.getTaggedPictures().isEmpty() && pictureSet.getAllPictures().isEmpty()) {
+            if(pictureSet.getAllPictures().isEmpty()) {
                 continue;
             }
 
