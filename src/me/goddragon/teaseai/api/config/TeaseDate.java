@@ -98,6 +98,10 @@ public class TeaseDate {
         return calendar.get(Calendar.DAY_OF_MONTH);
     }
 
+    public int getDayOfWeek() {
+        return calendar.get(Calendar.DAY_OF_WEEK);
+    }
+
     public int getMonth() {
         return calendar.get(Calendar.MONTH);
     }
