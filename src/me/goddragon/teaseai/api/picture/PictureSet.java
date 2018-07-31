@@ -36,13 +36,14 @@ public class PictureSet {
         for(File taggedFile : tagFile.getTaggedFiles()) {
             taggedPictures.add(new TaggedPicture(taggedFile));
         }
+        
         File[] files = folder.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 return name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".gif");
             }
         });
-        for (File file : files)
-        {
+        
+        for (File file : files) {
             allPictures.add(new TaggedPicture(file));
         }
     }
@@ -106,8 +107,11 @@ public class PictureSet {
 
             //We don't have any pictures to show anyway
             if (taggedPictures.isEmpty()) {
-                TaggedPicture picture = allPictures.get(RandomUtils.randInt(0, allPictures.size() - 1));
-                return picture;
+                if(allPictures.isEmpty()) {
+                    return null;
+                }
+                
+                return allPictures.get(RandomUtils.randInt(0, allPictures.size() - 1));
             }
             //Okay we have been beaten. Show a random image
             else {
