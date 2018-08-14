@@ -42,48 +42,52 @@ public class MediaHandler {
         }
 
         try {
-            currentVideoPlayer = new MediaPlayer(new Media(file.toURI().toURL().toExternalForm()));
-            currentVideoPlayer.setAutoPlay(true);
-            this.imagesLocked = true;
-
-            TeaseAI.application.runOnUIThread(new Runnable() {
-                @Override
-                public void run() {
-                    MediaView mediaView = TeaseAI.application.getController().getMediaView();
-                    StackPane mediaViewBox = TeaseAI.application.getController().getMediaViewBox();
-
-                    //Handle visibilities
-                    mediaView.setOpacity(1);
-                    TeaseAI.application.getController().getImageView().setOpacity(0);
-
-                    mediaView.setPreserveRatio(true);
-                    mediaView.fitWidthProperty().bind(mediaViewBox.widthProperty());
-                    mediaView.fitHeightProperty().bind(mediaViewBox.heightProperty());
-                    mediaView.setMediaPlayer(currentVideoPlayer);
-                }
-            });
-
-            //Check if we want to wait for the media to finish
-            if(wait) {
-                waitForPlayer(currentVideoPlayer);
-                currentVideoPlayer = null;
-            } else {
-                //Unlock the images again (of course they can be unlocked by the user during the video)
-                currentVideoPlayer.setOnEndOfMedia(new Runnable() {
-                    @Override
-                    public void run() {
-                        imagesLocked = false;
-                        currentVideoPlayer = null;
-                    }
-                });
-            }
-
-            return currentVideoPlayer;
+            return playVideo(file.toURI().toURL().toExternalForm(), wait);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    public MediaPlayer playVideo(String uri, boolean wait) {
+        currentVideoPlayer = new MediaPlayer(new Media(uri));
+        currentVideoPlayer.setAutoPlay(true);
+        this.imagesLocked = true;
+
+        TeaseAI.application.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                MediaView mediaView = TeaseAI.application.getController().getMediaView();
+                StackPane mediaViewBox = TeaseAI.application.getController().getMediaViewBox();
+
+                //Handle visibilities
+                mediaView.setOpacity(1);
+                TeaseAI.application.getController().getImageView().setOpacity(0);
+
+                mediaView.setPreserveRatio(true);
+                mediaView.fitWidthProperty().bind(mediaViewBox.widthProperty());
+                mediaView.fitHeightProperty().bind(mediaViewBox.heightProperty());
+                mediaView.setMediaPlayer(currentVideoPlayer);
+            }
+        });
+
+        //Check if we want to wait for the media to finish
+        if(wait) {
+            waitForPlayer(currentVideoPlayer);
+            currentVideoPlayer = null;
+        } else {
+            //Unlock the images again (of course they can be unlocked by the user during the video)
+            currentVideoPlayer.setOnEndOfMedia(new Runnable() {
+                @Override
+                public void run() {
+                    imagesLocked = false;
+                    currentVideoPlayer = null;
+                }
+            });
+        }
+
+        return currentVideoPlayer;
     }
 
     public void stopVideo() {

@@ -29,24 +29,34 @@ public class PlayVideoFunction extends CustomFunction {
         switch(args.length) {
             case 1:
                 if(args[0] instanceof String) {
-                    File file = FileUtils.getRandomMatchingFile(args[0].toString());
-                    if(file == null) {
-                        TeaseLogger.getLogger().log(Level.SEVERE, "Matching video file for path " + args[0] + " does not exist.");
-                        return null;
-                    }
+                    String arg = (String) args[0];
+                    if(arg.startsWith("http://") || arg.startsWith("https://")) {
+                        return MediaHandler.getHandler().playVideo(arg, false);
+                    } else {
+                        File file = FileUtils.getRandomMatchingFile(args[0].toString());
+                        if(file == null) {
+                            TeaseLogger.getLogger().log(Level.SEVERE, "Matching video file for path " + args[0] + " does not exist.");
+                            return null;
+                        }
 
-                    return MediaHandler.getHandler().playVideo(file);
+                        return MediaHandler.getHandler().playVideo(file);
+                    }
                 }
                 break;
             case 2:
                 if(args[1] instanceof Boolean) {
-                    File file = FileUtils.getRandomMatchingFile(args[0].toString());
-                    if(file == null) {
-                        TeaseLogger.getLogger().log(Level.SEVERE, "Matching video file for path " + args[0] + " does not exist.");
-                        return null;
-                    }
+                    String arg = (String) args[0];
+                    if(arg.startsWith("http://") || arg.startsWith("https://")) {
+                        return MediaHandler.getHandler().playVideo(arg, (Boolean) args[1]);
+                    } else {
+                        File file = FileUtils.getRandomMatchingFile(args[0].toString());
+                        if(file == null) {
+                            TeaseLogger.getLogger().log(Level.SEVERE, "Matching video file for path " + args[0] + " does not exist.");
+                            return null;
+                        }
 
-                    return MediaHandler.getHandler().playVideo(file, (Boolean) args[1]);
+                        return MediaHandler.getHandler().playVideo(file);
+                    }
                 }
 
                 break;

@@ -5,6 +5,7 @@ import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.chat.ChatParticipant;
 import me.goddragon.teaseai.api.chat.SenderType;
 import me.goddragon.teaseai.api.config.TeaseDate;
+import me.goddragon.teaseai.api.media.MediaHandler;
 import me.goddragon.teaseai.api.runnable.TeaseRunnableHandler;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
@@ -98,6 +99,11 @@ public class Session {
                 
                 //Clear css
                 TeaseAI.application.getScene().getStylesheets().clear();
+
+                //Reset playing video
+                if(MediaHandler.getHandler().getCurrentVideoPlayer() != null) {
+                    MediaHandler.getHandler().getCurrentVideoPlayer().stop();
+                }
 
                 //Initialize a new session instance
                 TeaseAI.application.initializeNewSession();
