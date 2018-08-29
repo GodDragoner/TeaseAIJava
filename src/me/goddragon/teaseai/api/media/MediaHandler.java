@@ -7,7 +7,10 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
+import me.goddragon.teaseai.utils.media.AnimatedGif;
+import me.goddragon.teaseai.utils.media.Animation;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -27,6 +30,7 @@ public class MediaHandler {
     private HashMap<URI, MediaPlayer> playingAudioClips = new HashMap<>();
 
     private MediaPlayer currentVideoPlayer = null;
+    private Animation currentAnimation = null;
     private boolean imagesLocked = false;
 
     private String currentImageURL;
@@ -36,7 +40,7 @@ public class MediaHandler {
     }
 
     public MediaPlayer playVideo(File file, boolean wait) {
-        if(!file.exists()) {
+        if (!file.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Video " + file.getPath() + " does not exist.");
             return null;
         }
@@ -73,7 +77,7 @@ public class MediaHandler {
         });
 
         //Check if we want to wait for the media to finish
-        if(wait) {
+        if (wait) {
             waitForPlayer(currentVideoPlayer);
             currentVideoPlayer = null;
         } else {
@@ -100,13 +104,18 @@ public class MediaHandler {
     }
 
     public void showPicture(File file, int durationSeconds) {
-        if(file == null) {
-            ImageView imageView = TeaseAI.application.getController().getImageView();
-            imageView.setImage(null);
+        if (file == null) {
+            TeaseAI.application.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    removePicture();
+                }
+            });
+
             return;
         }
 
-        if(!file.exists()) {
+        if (!file.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Picture " + file.getPath() + " does not exist.");
             return;
         }
@@ -126,12 +135,34 @@ public class MediaHandler {
                 mediaView.setOpacity(0);
                 imageView.setOpacity(1);
 
-                imageView.setImage(new Image(file.toURI().toString()));
+                //Stop any current image animation that might be running before displaying a new picture
+                stopCurrentAnimation();
+
+                if (FileUtils.getExtension(file).equalsIgnoreCase("gif")) {
+                    currentAnimation = new AnimatedGif(file.toURI().toString());
+                    currentAnimation.setCycleCount(Integer.MAX_VALUE);
+                    currentAnimation.play(imageView);
+                } else {
+                    imageView.setImage(new Image(file.toURI().toString()));
+                }
             }
         });
 
-        if(durationSeconds > 0) {
-            TeaseAI.application.sleepPossibleScripThread(durationSeconds*1000);
+        if (durationSeconds > 0) {
+            TeaseAI.application.sleepPossibleScripThread(durationSeconds * 1000);
+        }
+    }
+
+    private void removePicture() {
+        ImageView imageView = TeaseAI.application.getController().getImageView();
+        stopCurrentAnimation();
+        imageView.setImage(null);
+    }
+
+    private void stopCurrentAnimation() {
+        if (currentAnimation != null) {
+            currentAnimation.stop();
+            currentAnimation = null;
         }
     }
 
@@ -162,8 +193,8 @@ public class MediaHandler {
     }
 
     public MediaPlayer playAudio(File file, boolean wait) {
-        if(file == null || !file.exists()) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "Audio " + (file == null? "null" : file.getPath()) + " does not exist.");
+        if (file == null || !file.exists()) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Audio " + (file == null ? "null" : file.getPath()) + " does not exist.");
             return null;
         }
 
@@ -171,7 +202,7 @@ public class MediaHandler {
         playingAudioClips.put(file.toURI(), mediaPlayer);
         mediaPlayer.play();
 
-        if(wait) {
+        if (wait) {
             waitForPlayer(mediaPlayer);
         }
 

@@ -1,22 +1,17 @@
 package me.goddragon.teaseai.api.media;
 
+import com.tumblr.jumblr.JumblrClient;
+import com.tumblr.jumblr.types.*;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.control.Label;
-import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.utils.RandomUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.ConnectException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -65,7 +60,7 @@ public class MediaURL extends MediaHolder implements Observable {
 
         this.file = new File(URL_FILE_PATH + File.separator + urlFileName);
         if (!file.exists()) {
-            if(url == null) {
+            if (url == null) {
                 TeaseLogger.getLogger().log(Level.SEVERE, "URL file '" + file.getPath() + "' does not exist.");
                 return;
             }
@@ -146,17 +141,53 @@ public class MediaURL extends MediaHolder implements Observable {
     public void loadImagesFromTumblrURL(Label progressLabel) {
         mediaURLs.clear();
 
-        int currentIndex = 0;
+        // Create a new client
+        JumblrClient client = new JumblrClient("6XgzfM8rK0ddEkEIyuhanGzLDUX6q3zxfaZErn9hCw9ngHKl2M", "CA9J5P5kU7uCDRSgN6l4TjZduIFZOh4mTgvm2wE9z1wKyY0hOg");
+        //client.setToken("oauth_token", "oauth_token_secret");
+
+
+        Blog blog = client.blogInfo(url.replace("http://", "").replace("https://", "").replace("/", ""));
+        for (Post post : blog.posts()) {
+            System.out.println("Post");
+            if (post instanceof PhotoPost) {
+                for (Photo photo : ((PhotoPost) post).getPhotos()) {
+                        /*Field f = photo.getClass().getDeclaredField("source");
+                        f.setAccessible(true);
+                        String source = (String) f.get(photo);
+
+                        System.out.println(source);
+                        if(source != null && source.length() > 0) {
+
+                        }*/
+
+                    PhotoSize biggestSize = null;
+                    int widthHeight = 0;
+                    for (PhotoSize size : photo.getSizes()) {
+                        if(size.getHeight() + size.getWidth() > widthHeight) {
+                            widthHeight = size.getHeight() + size.getWidth();
+                            biggestSize = size;
+                        }
+                    }
+
+                    mediaURLs.add(biggestSize.getUrl());
+                }
+            }
+        }
+
+        /*int currentIndex = 0;
         int num = 50;
         int imagesFound = num;
 
         while (imagesFound >= num) {
             imagesFound = 0;
-            String apiUrl = url + "/api/read?type=photo&num=" + num + "&start=" + currentIndex;
+            String apiUrl = url + "/api/read?type=photo&filter=text&num=" + num + "&start=" + currentIndex;
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             try {
                 DocumentBuilder db = dbf.newDocumentBuilder();
+
                 Document doc = db.parse(new URL(apiUrl).openStream());
+
+
                 NodeList nodeList = doc.getElementsByTagName("photo-url");
                 for (int x = 0; x < nodeList.getLength(); x++) {
                     Node node = nodeList.item(x);
@@ -171,6 +202,7 @@ public class MediaURL extends MediaHolder implements Observable {
                     }
                 }
             } catch (ParserConfigurationException | SAXException | IOException e) {
+                e.printStackTrace();
                 TeaseLogger.getLogger().log(Level.SEVERE, "Failed to find image-url in tumblr blog '" + url + "'.", e);
             }
 
@@ -185,7 +217,7 @@ public class MediaURL extends MediaHolder implements Observable {
                     }
                 });
             }
-        }
+        }*/
     }
 
     public void deleteFile() {
@@ -231,7 +263,7 @@ public class MediaURL extends MediaHolder implements Observable {
                 String url = mediaURLs.get(RandomUtils.randInt(0, mediaURLs.size() - 1));
 
                 try {
-                   return MediaHandler.getHandler().getImageFromURL(url);
+                    return MediaHandler.getHandler().getImageFromURL(url);
                 } catch (IOException e) {
                     //Try different media if picture is down
                     if (e instanceof ConnectException && loops < 10) {

@@ -146,10 +146,17 @@ public class URLMediaSettings {
                 }
 
                 if (settingsController.urlFilesList.getSelectionModel().getSelectedItems().size() == 1) {
+
                     //Fetch the image on a secondary thread
                     new Thread() {
                         @Override
                         public void run() {
+                            //No media found
+                            if(((MediaURL) settingsController.urlFilesList.getSelectionModel().getSelectedItem()).getMediaURLs().isEmpty()) {
+                                settingsController.urlFileImagePreview.setImage(null);
+                                return;
+                            }
+
                             settingsController.urlFileImagePreview.setImage(new Image(((MediaURL) settingsController.urlFilesList.getSelectionModel().getSelectedItem()).getRandomMedia().toURI().toString()));
                         }
                     }.start();

@@ -37,7 +37,7 @@ import java.util.logging.Level;
  */
 public class TeaseAI extends Application {
 
-    public static final String VERSION = "1.0.13";
+    public static final String VERSION = "1.0.14";
     public static final String UPDATE_FOLDER = "Updates";
 
     public static double JAVA_VERSION = getJavaVersion();
@@ -95,6 +95,8 @@ public class TeaseAI extends Application {
 
                 PersonalityManager.getManager().loadPersonalities();
 
+                progressForm.setNameSync("Finishing startup...");
+
                 TeaseAI.application.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
@@ -105,6 +107,7 @@ public class TeaseAI extends Application {
                         }
                     }
                 });
+
                 return null;
             }
         };
