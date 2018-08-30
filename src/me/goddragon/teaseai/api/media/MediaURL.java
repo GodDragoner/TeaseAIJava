@@ -13,7 +13,9 @@ import org.w3c.dom.NodeList;
 import java.io.*;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -147,10 +149,19 @@ public class MediaURL extends MediaHolder implements Observable {
 
 
         Blog blog = client.blogInfo(url.replace("http://", "").replace("https://", "").replace("/", ""));
-        for (Post post : blog.posts()) {
-            System.out.println("Post");
-            if (post instanceof PhotoPost) {
-                for (Photo photo : ((PhotoPost) post).getPhotos()) {
+
+        int posts = blog.getPostCount();
+        int postsPerRequest = 20;
+
+        Map<String, Object> parameters = new HashMap<>();
+
+        int offset = 0;
+        while(true) {
+            offset = Math.min(offset + postsPerRequest, posts);
+            parameters.put("offset", offset);
+            for (Post post : blog.posts(parameters)) {
+                if (post instanceof PhotoPost) {
+                    for (Photo photo : ((PhotoPost) post).getPhotos()) {
                         /*Field f = photo.getClass().getDeclaredField("source");
                         f.setAccessible(true);
                         String source = (String) f.get(photo);
@@ -160,17 +171,22 @@ public class MediaURL extends MediaHolder implements Observable {
 
                         }*/
 
-                    PhotoSize biggestSize = null;
-                    int widthHeight = 0;
-                    for (PhotoSize size : photo.getSizes()) {
-                        if(size.getHeight() + size.getWidth() > widthHeight) {
-                            widthHeight = size.getHeight() + size.getWidth();
-                            biggestSize = size;
+                        PhotoSize biggestSize = null;
+                        int widthHeight = 0;
+                        for (PhotoSize size : photo.getSizes()) {
+                            if(size.getHeight() + size.getWidth() > widthHeight) {
+                                widthHeight = size.getHeight() + size.getWidth();
+                                biggestSize = size;
+                            }
                         }
-                    }
 
-                    mediaURLs.add(biggestSize.getUrl());
+                        mediaURLs.add(biggestSize.getUrl());
+                    }
                 }
+            }
+
+            if(offset == posts) {
+                break;
             }
         }
 
