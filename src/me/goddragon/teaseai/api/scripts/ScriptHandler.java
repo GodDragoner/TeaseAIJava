@@ -76,6 +76,9 @@ public class ScriptHandler {
         registerFunction(new GetCurrentImageURLFunction());
         registerFunction(new OpenLinkInBrowserFunction());
         registerFunction(new LoadCSSFunction());
+        registerFunction(new RandomIntegerFunction());
+        registerFunction(new RandomDoubleFunction());
+        registerFunction(new SelectRandomFunction());
 
         engine.put("run", (Consumer<String>) this::evalScript);
     }

@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by GodDragon on 23.03.2018.
  */
 public class RandomUtils {
+
     public static int randInt(int min, int max) {
         if (min == max || min > max) {
             return min;

@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.SelectionMode;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.PersonalityVariable;
 import me.goddragon.teaseai.api.config.VariableHandler;
@@ -16,7 +17,7 @@ import java.util.TreeMap;
  */
 public class DebugSettings {
 
-    private final VariableHandler variableHandler = TeaseAI.application.getSession().getActivePersonality() == null? null : TeaseAI.application.getSession().getActivePersonality().getVariableHandler();
+    private final VariableHandler variableHandler = TeaseAI.application.getSession().getActivePersonality() == null ? null : TeaseAI.application.getSession().getActivePersonality().getVariableHandler();
     private final SettingsController settingsController;
 
     public DebugSettings(SettingsController settingsController) {
@@ -52,13 +53,14 @@ public class DebugSettings {
             public void handle(ActionEvent event) {
                 PersonalityVariable personalityVariable = getSelectedVariable();
 
-                if(personalityVariable == null) {
+                if (personalityVariable == null) {
                     return;
                 }
 
                 String variable = personalityVariable.getConfigName();
 
                 if (variable != null && variableHandler != null) {
+                    //TODO: Support arrays
                     variableHandler.setVariable(variable, variableHandler.getObjectFromString(settingsController.variableValueTextField.getText()));
                 }
             }
@@ -73,18 +75,23 @@ public class DebugSettings {
     }
 
     public void updateVariableList() {
-        if(variableHandler != null) {
+        if (variableHandler != null) {
             settingsController.variableListView.getSelectionModel().clearSelection();
             settingsController.variableListView.getItems().clear();
 
             for (PersonalityVariable entry : new TreeMap<>(variableHandler.getVariables()).values()) {
-                if(!settingsController.onlySupportedVariablesCheckbox.isSelected() || entry.isSupportedByPersonality()) {
+                //TODO: Show and support array variables
+                if (entry.getValue() != null && entry.getValue().getClass().isArray() || entry.getValue() instanceof ScriptObjectMirror && ((ScriptObjectMirror) entry.getValue()).isArray()) {
+                    continue;
+                }
+
+                if (!settingsController.onlySupportedVariablesCheckbox.isSelected() || entry.isSupportedByPersonality()) {
                     settingsController.variableListView.getItems().add(entry);
                 }
             }
         }
 
-        if(settingsController.variableListView.getItems().isEmpty()) {
+        if (settingsController.variableListView.getItems().isEmpty()) {
             settingsController.variableValueTextField.setDisable(true);
             settingsController.variableSaveButton.setDisable(true);
         }
@@ -96,11 +103,11 @@ public class DebugSettings {
         if (variable != null && variableHandler != null) {
             Object object = variable.getValue();
 
-            if(object != null) {
+            if (object != null) {
                 settingsController.variableValueTextField.setText(object.toString());
             }
 
-            if(variable.isSupportedByPersonality()) {
+            if (variable.isSupportedByPersonality()) {
                 settingsController.descriptionLabel.setText(variable.getDescription());
             } else {
                 settingsController.descriptionLabel.setText("");

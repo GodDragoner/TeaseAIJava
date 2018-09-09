@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.api.config;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -51,11 +52,32 @@ public class VariableHandler {
                     FileInputStream fstream = new FileInputStream(file);
                     BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
-                    //We only need the first line
-                    String strLine = br.readLine();
+                    List<String> lines = new ArrayList<>();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        lines.add(line);
+                    }
 
-                    if (strLine != null) {
-                        PersonalityVariable personalityVariable = new PersonalityVariable(file.getName().substring(0, file.getName().length() - 4), getObjectFromString(strLine));
+                    if(lines.size() == 0) {
+                        TeaseLogger.getLogger().log(Level.SEVERE, file.getName() + " did not contain any variable value.");
+                        continue;
+                    }
+
+                    Object value = null;
+
+                    if(lines.size() > 1) {
+                        value = lines.toArray(new String[] {});
+                    } else {
+                        //We only need the first line
+                        String strLine = lines.get(0);
+
+                        if(strLine != null) {
+                            value = getObjectFromString(strLine);
+                        }
+                    }
+
+                    if (value != null) {
+                        PersonalityVariable personalityVariable = new PersonalityVariable(file.getName().substring(0, file.getName().length() - 4), value);
 
                         //If we already know about this variable try to restore custom information
                         if(variableExist(personalityVariable.getConfigName())) {
@@ -139,7 +161,21 @@ public class VariableHandler {
         File variableFile = getVariableFile(name);
 
         if (variableFile != null) {
-            List<String> lines = Arrays.asList(value.toString());
+            List<String> lines;
+
+            //Support arrays
+            if(value instanceof ScriptObjectMirror && ((ScriptObjectMirror) value).isArray()) {
+                String[] strings =((ScriptObjectMirror) value).to(String[].class);
+
+                lines = new ArrayList<>();
+
+                for(String string : strings) {
+                    lines.add(string);
+                }
+            } else {
+                lines = Arrays.asList(value.toString());
+            }
+
 
             try {
                 Files.write(Paths.get(variableFile.toURI()), lines, Charset.forName("UTF-8"));

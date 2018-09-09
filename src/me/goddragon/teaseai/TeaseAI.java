@@ -72,6 +72,8 @@ public class TeaseAI extends Application {
             return;
         }
 
+        TeaseLogger.getLogger().log(Level.INFO, "Launching TAJ " + VERSION);
+
         //Will allow us to use ecma6 language
         System.setProperty("nashorn.args", "--language=es6");
 
