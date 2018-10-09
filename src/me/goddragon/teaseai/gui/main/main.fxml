@@ -18,7 +18,7 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.TextFlow?>
 
-<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="426.0" minWidth="0.0" prefWidth="234.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="1046.0" />
@@ -59,7 +59,10 @@
         <TextField fx:id="chatTextField" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="863.0" promptText="Type to chat..." styleClass="inputTextField" GridPane.columnIndex="1" GridPane.hgrow="always" GridPane.rowIndex="2" GridPane.vgrow="always" />
         <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="245.0">
             <menus>
-                <Menu mnemonicParsing="false" styleClass="fileMenu" text="File" />
+                <Menu mnemonicParsing="false" styleClass="fileMenu" text="File">
+               <items>
+                  <MenuItem fx:id="runScriptMenuItem" mnemonicParsing="false" text="Run Script" />
+               </items></Menu>
                 <Menu fx:id="menuSettingsButton" mnemonicParsing="false" />
                 <Menu mnemonicParsing="false" styleClass="helpMenu" text="Help">
                     <items>

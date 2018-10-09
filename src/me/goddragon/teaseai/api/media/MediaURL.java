@@ -1,21 +1,25 @@
 package me.goddragon.teaseai.api.media;
 
-import com.tumblr.jumblr.JumblrClient;
-import com.tumblr.jumblr.types.*;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.control.Label;
+import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.utils.RandomUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.ConnectException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -139,12 +143,15 @@ public class MediaURL extends MediaHolder implements Observable {
         return urlFileName;
     }
 
+    public static void loadImagesFromTumblrURL() {
+
+    }
 
     public void loadImagesFromTumblrURL(Label progressLabel) {
         mediaURLs.clear();
 
         // Create a new client
-        JumblrClient client = new JumblrClient("6XgzfM8rK0ddEkEIyuhanGzLDUX6q3zxfaZErn9hCw9ngHKl2M", "CA9J5P5kU7uCDRSgN6l4TjZduIFZOh4mTgvm2wE9z1wKyY0hOg");
+        /*JumblrClient client = new JumblrClient("6XgzfM8rK0ddEkEIyuhanGzLDUX6q3zxfaZErn9hCw9ngHKl2M", "CA9J5P5kU7uCDRSgN6l4TjZduIFZOh4mTgvm2wE9z1wKyY0hOg");
         //client.setToken("oauth_token", "oauth_token_secret");
 
 
@@ -171,7 +178,7 @@ public class MediaURL extends MediaHolder implements Observable {
 
                         }*/
 
-                        PhotoSize biggestSize = null;
+                        /*PhotoSize biggestSize = null;
                         int widthHeight = 0;
                         for (PhotoSize size : photo.getSizes()) {
                             if(size.getHeight() + size.getWidth() > widthHeight) {
@@ -188,9 +195,9 @@ public class MediaURL extends MediaHolder implements Observable {
             if(offset == posts) {
                 break;
             }
-        }
+        }*/
 
-        /*int currentIndex = 0;
+        int currentIndex = 0;
         int num = 50;
         int imagesFound = num;
 
@@ -201,8 +208,13 @@ public class MediaURL extends MediaHolder implements Observable {
             try {
                 DocumentBuilder db = dbf.newDocumentBuilder();
 
-                Document doc = db.parse(new URL(apiUrl).openStream());
+                //Create an URL connection object
+                URLConnection urlConnection = new URL(apiUrl).openConnection();
 
+                //Different user Agent so we can bypass the GPDR thing
+                urlConnection.setRequestProperty("User-Agent", "curl/7.54.0");
+
+                Document doc = db.parse(urlConnection.getInputStream());
 
                 NodeList nodeList = doc.getElementsByTagName("photo-url");
                 for (int x = 0; x < nodeList.getLength(); x++) {
@@ -217,7 +229,9 @@ public class MediaURL extends MediaHolder implements Observable {
                         }
                     }
                 }
-            } catch (ParserConfigurationException | SAXException | IOException e) {
+            } catch (SAXException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException | IOException e) {
                 e.printStackTrace();
                 TeaseLogger.getLogger().log(Level.SEVERE, "Failed to find image-url in tumblr blog '" + url + "'.", e);
             }
@@ -233,7 +247,7 @@ public class MediaURL extends MediaHolder implements Observable {
                     }
                 });
             }
-        }*/
+        }
     }
 
     public void deleteFile() {

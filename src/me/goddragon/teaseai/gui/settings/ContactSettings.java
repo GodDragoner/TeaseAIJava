@@ -53,7 +53,7 @@ public class ContactSettings {
             @Override
             public void handle(MouseEvent event) {
                 FileChooser chooser = new FileChooser();
-                chooser.setTitle("Select Media Folder");
+                chooser.setTitle("Select Picture");
 
                 String dir;
                 if (new File(getSelectedContact().getContact().IMAGE_PATH.getValue()).exists()) {

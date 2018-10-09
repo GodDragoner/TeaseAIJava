@@ -28,7 +28,7 @@ import me.goddragon.teaseai.utils.FileUtils;
 
 import java.io.File;
 
-public class Controller {
+public class MainGuiController {
 
     private final Stage stage;
     private LazySubController lazySubController;
@@ -79,7 +79,11 @@ public class Controller {
     @FXML
     private GridPane contactImageGrid;
 
-    public Controller(Stage stage) {
+    //Run Script Menu Item
+    @FXML
+    private MenuItem runScriptMenuItem;
+
+    public MainGuiController(Stage stage) {
         this.stage = stage;
     }
 
@@ -141,9 +145,43 @@ public class Controller {
                     }*/
 
                     TeaseAI.application.getSession().start();
+                }
+            }
+        });
 
-                    personalityChoiceBox.setDisable(true);
-                    startChatButton.setText("Stop");
+        runScriptMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (PersonalityManager.getManager().getActivePersonality() == null) {
+                    return;
+                }
+
+                FileChooser chooser = new FileChooser();
+                chooser.setTitle("Select Script");
+
+                File defaultDirectory = TeaseAI.application.getSession().getActivePersonality().getFolder();
+                chooser.setInitialDirectory(defaultDirectory);
+
+                chooser.getExtensionFilters().addAll(
+                        new FileChooser.ExtensionFilter("Javascript", "*.js")
+                );
+
+                File script = chooser.showOpenDialog(stage);
+
+                if (script != null && script.exists()) {
+                    String extension = FileUtils.getExtension(script);
+                    if ((extension.equalsIgnoreCase("js"))) {
+                        PersonalityManager.getManager().setActivePersonality((Personality) getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
+
+                        TeaseAI.application.getSession().startWithScript(script);
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Invalid File");
+                        alert.setHeaderText(null);
+                        alert.setContentText("The given file is not a supported script file.");
+
+                        alert.showAndWait();
+                    }
                 }
             }
         });

@@ -25,7 +25,7 @@ import me.goddragon.teaseai.api.session.Session;
 import me.goddragon.teaseai.api.session.StrokeHandler;
 import me.goddragon.teaseai.gui.ProgressForm;
 import me.goddragon.teaseai.gui.StartupProgressPane;
-import me.goddragon.teaseai.gui.main.Controller;
+import me.goddragon.teaseai.gui.main.MainGuiController;
 import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.update.UpdateHandler;
 
@@ -37,7 +37,7 @@ import java.util.logging.Level;
  */
 public class TeaseAI extends Application {
 
-    public static final String VERSION = "1.0.15";
+    public static final String VERSION = "1.0.16";
     public static final String UPDATE_FOLDER = "Updates";
 
     public static double JAVA_VERSION = getJavaVersion();
@@ -45,7 +45,7 @@ public class TeaseAI extends Application {
     public static TeaseAI application;
     private ConfigHandler configHandler = new ConfigHandler("TeaseAI.properties");
     private MediaCollection mediaCollection;
-    private Controller controller;
+    private MainGuiController controller;
     private Thread mainThread;
     private Stage primaryStage;
     public Thread scriptThread;
@@ -132,7 +132,7 @@ public class TeaseAI extends Application {
         startupProgressPane.close();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/main/main.fxml"));
-        controller = new Controller(primaryStage);
+        controller = new MainGuiController(primaryStage);
         loader.setController(controller);
         Parent root = loader.load();
         primaryStage.setTitle("Tease-AI " + VERSION);
@@ -264,7 +264,7 @@ public class TeaseAI extends Application {
         }
     }
 
-    public Controller getController() {
+    public MainGuiController getController() {
         return controller;
     }
 

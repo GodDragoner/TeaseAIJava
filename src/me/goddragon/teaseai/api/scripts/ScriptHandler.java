@@ -79,6 +79,8 @@ public class ScriptHandler {
         registerFunction(new RandomIntegerFunction());
         registerFunction(new RandomDoubleFunction());
         registerFunction(new SelectRandomFunction());
+        registerFunction(new RunOnGuiThreadFunction());
+        registerFunction(new WakeScriptThreadFunction());
 
         engine.put("run", (Consumer<String>) this::evalScript);
     }
@@ -90,6 +92,18 @@ public class ScriptHandler {
     }
 
     public void startPersonality(Personality personality) {
+        File mainScript = new File(personality.getFolder().getAbsolutePath() + File.separator + "main.js");
+
+        if(!mainScript.isFile() || !mainScript.exists()) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Personality '" + currentPersonality.getName() + "' is missing the main.js script");
+        } else {
+            startPersonality(personality, mainScript);
+        }
+
+        TeaseAI.application.getSession().end();
+    }
+
+    public void startPersonality(Personality personality, File startScript) {
         //Reassign because we want to clear the catch
         this.engine = new ScriptEngineManager().getEngineByName("nashorn");
         ScriptHandler.getHandler().load();
@@ -101,11 +115,11 @@ public class ScriptHandler {
         VocabularyHandler.getHandler().loadVocabulariesFromPersonality(personality);
         ResponseHandler.getHandler().loadResponsesFromPersonality(personality);
 
-        File mainScript = new File(personality.getFolder().getAbsolutePath() + File.separator + "main.js");
+
         try {
-            runScript(mainScript);
+            runScript(startScript);
         } catch (FileNotFoundException e) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "Personality '" + currentPersonality.getName() + "' is missing the main.js script");
+            TeaseLogger.getLogger().log(Level.SEVERE, "Tried to run non-existent script '" + startScript.getName() + "'.");
         }
 
         TeaseAI.application.getSession().end();

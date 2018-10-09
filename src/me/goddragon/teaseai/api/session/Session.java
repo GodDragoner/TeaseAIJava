@@ -12,6 +12,7 @@ import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
+import java.io.File;
 import java.util.logging.Level;
 
 /**
@@ -24,6 +25,33 @@ public class Session {
     private long startedAt;
 
     public void start() {
+        setupStart();
+
+        TeaseAI.application.scriptThread = new Thread() {
+            @Override
+            public void run() {
+                ScriptHandler.getHandler().startPersonality(PersonalityManager.getManager().getActivePersonality());
+            }
+        };
+
+        TeaseAI.application.scriptThread.start();
+    }
+
+    public void startWithScript(File file) {
+        setupStart();
+
+        TeaseAI.application.scriptThread = new Thread() {
+            @Override
+            public void run() {
+                ScriptHandler.getHandler().startPersonality(PersonalityManager.getManager().getActivePersonality(), file);
+            }
+        };
+
+        TeaseAI.application.scriptThread.start();
+    }
+
+
+    public void setupStart() {
         startedAt = System.currentTimeMillis();
         started = true;
 
@@ -37,14 +65,8 @@ public class Session {
 
         TeaseAI.application.getController().getChatWindow().getChildren().clear();
 
-        TeaseAI.application.scriptThread = new Thread() {
-            @Override
-            public void run() {
-                ScriptHandler.getHandler().startPersonality(PersonalityManager.getManager().getActivePersonality());
-            }
-        };
-
-        TeaseAI.application.scriptThread.start();
+        TeaseAI.application.getController().getPersonalityChoiceBox().setDisable(true);
+        TeaseAI.application.getController().getStartChatButton().setText("Stop");
     }
 
     public void checkForInteraction() {
