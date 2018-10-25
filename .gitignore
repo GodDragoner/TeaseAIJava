@@ -10,3 +10,6 @@ target
 Personalities/*
 Images/*
 Logs/*
+Dependencies/*
+JavaFX/*
+out/*

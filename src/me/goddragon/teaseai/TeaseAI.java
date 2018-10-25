@@ -40,7 +40,6 @@ public class TeaseAI extends Application {
     public static final String VERSION = "1.0.16";
     public static final String UPDATE_FOLDER = "Updates";
 
-    public static double JAVA_VERSION = getJavaVersion();
 
     public static TeaseAI application;
     private ConfigHandler configHandler = new ConfigHandler("TeaseAI.properties");
@@ -63,11 +62,11 @@ public class TeaseAI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        if(JAVA_VERSION < 10) {
+        if(Main.JAVA_VERSION < 10) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Old Java Version Detected");
             alert.setHeaderText(null);
-            alert.setContentText("You are using java version "  + JAVA_VERSION + " which is not supported. Please use Java 10 or higher. This program will close now.");
+            alert.setContentText("You are using java version "  + Main.JAVA_VERSION + " which is not supported. Please use Java 10 or higher. This program will close now.");
             alert.showAndWait();
             return;
         }
@@ -310,7 +309,4 @@ public class TeaseAI extends Application {
     }
 
 
-    static double getJavaVersion() {
-        return Double.parseDouble(System.getProperty("java.specification.version"));
-    }
 }
