@@ -13,6 +13,7 @@ import java.util.logging.Level;
 public class Main {
 
     public static double JAVA_VERSION = getJavaVersion();
+    public static String OPERATING_SYSTEM = System.getProperty("os.name").toLowerCase();
 
     public static void main(String[] args) {
         if (args.length == 0 && JAVA_VERSION > 10) {
@@ -20,24 +21,36 @@ public class Main {
                 //Re-launch the app itself with VM option passed
                 File currentDir = Paths.get(System.getProperty("user.dir")).toFile();
 
-                File libFolder = null;
-                for (File file : currentDir.listFiles()) {
-                    if (file.isDirectory()) {
-                        for (File dirFile : file.listFiles()) {
-                            if (dirFile.isDirectory() && dirFile.getName().equals("lib")) {
-                                libFolder = dirFile;
-                            }
-                        }
-                    }
-                }
+                if (getLibFolder() == null) {
 
-                if (libFolder == null) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "No JavaFX installation found. Starting download...");
 
                     String fileName = "openJFX";
 
                     if(!new File( fileName + ".zip").exists()) {
-                        URL url = new URL("http://download2.gluonhq.com/openjfx/11/openjfx-11_windows-x64_bin-sdk.zip");
+                        if(!System.getProperty("os.arch").contains("64")) {
+                            TeaseLogger.getLogger().log(Level.SEVERE, "x86 systems are currently not supported by the auto updater. Please fetch your own version of JavaFX.");
+                            System.exit(0);
+                            return;
+                        }
+
+                        String downloadPath;
+                        if (isWindows()) {
+                            TeaseLogger.getLogger().log(Level.SEVERE, "Your running Windows. Fetching OpenJFX SDK...");
+                            downloadPath = "https://github.com/GodDragoner/TeaseAIJava/raw/master/Resources/openjfx_windows-x64_bin-sdk.zip";
+                        } else if (isMac()) {
+                            TeaseLogger.getLogger().log(Level.SEVERE, "Your running MacOS. Fetching OpenJFX SDK...");
+                            downloadPath = "https://github.com/GodDragoner/TeaseAIJava/raw/master/Resources/openjfx_windows-x64_bin-sdk.zip";
+                        } else if (isUnix()) {
+                            TeaseLogger.getLogger().log(Level.SEVERE, "Your running Linux/Unix. Fetching OpenJFX SDK...");
+                            downloadPath = "https://github.com/GodDragoner/TeaseAIJava/raw/master/Resources/openjfx_windows-x64_bin-sdk.zip";
+                        } else {
+                            TeaseLogger.getLogger().log(Level.SEVERE, "Your OS is not supported by JavaFX yet!");
+                            System.exit(0);
+                            return;
+                        }
+
+                        URL url = new URL(downloadPath);
                         HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
                         long completeFileSize = httpConnection.getContentLength();
 
@@ -70,21 +83,18 @@ public class Main {
 
                     //Unzip the downloaded file
                     ZipUtils.unzipFile(new File(fileName + ".zip"), currentDir);
-
                     //Delete the downloaded zip file
                     //newUpdateZipFile.delete();
-
-                    TeaseLogger.getLogger().log(Level.SEVERE, "No JavaFX installation found...");
-                } else {
-                    Process process = Runtime.getRuntime().exec(new String[]{"java", "\"--module-path=" + libFolder.getPath() + "\"", "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar", "test"});
-                    BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                    String line;
-                    while ((line = input.readLine()) != null) {
-                        System.out.println(line);
-                    }
-
-                    input.close();
                 }
+
+                Process process = Runtime.getRuntime().exec(new String[]{"java", "\"--module-path=" + getLibFolder().getPath() + "\"", "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar", "test"});
+                BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String line;
+                while ((line = input.readLine()) != null) {
+                    System.out.println(line);
+                }
+
+                input.close();
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
@@ -95,6 +105,52 @@ public class Main {
         }
     }
 
+
+    private static File getLibFolder() {
+        File currentDir = Paths.get(System.getProperty("user.dir")).toFile();
+
+        File libFolder = null;
+        for (File file : currentDir.listFiles()) {
+            if (file.isDirectory()) {
+                for (File dirFile : file.listFiles()) {
+                    if (dirFile.isDirectory() && dirFile.getName().equals("lib")) {
+                        libFolder = dirFile;
+                    }
+                }
+            }
+        }
+
+        return libFolder;
+    }
+
+    public static boolean isWindows() {
+        return (OPERATING_SYSTEM.indexOf("win") >= 0);
+    }
+
+    public static boolean isMac() {
+        return (OPERATING_SYSTEM.indexOf("mac") >= 0);
+    }
+
+    public static boolean isUnix() {
+        return (OPERATING_SYSTEM.indexOf("nix") >= 0 || OPERATING_SYSTEM.indexOf("nux") >= 0 || OPERATING_SYSTEM.indexOf("aix") > 0 );
+    }
+
+    public static boolean isSolaris() {
+        return (OPERATING_SYSTEM.indexOf("sunos") >= 0);
+    }
+    public static String getOS(){
+        if (isWindows()) {
+            return "win";
+        } else if (isMac()) {
+            return "osx";
+        } else if (isUnix()) {
+            return "uni";
+        } else if (isSolaris()) {
+            return "sol";
+        } else {
+            return "err";
+        }
+    }
 
     static double getJavaVersion() {
         return Double.parseDouble(System.getProperty("java.specification.version"));
