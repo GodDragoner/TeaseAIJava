@@ -3,12 +3,12 @@ package me.goddragon.teaseai;
 import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.ZipUtils;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.logging.Level;
-
 
 public class Main {
 
@@ -23,13 +23,23 @@ public class Main {
 
                 if (getLibFolder() == null) {
 
-                    TeaseLogger.getLogger().log(Level.SEVERE, "No JavaFX installation found. Starting download...");
+                    TeaseLogger.getLogger().log(Level.SEVERE, "No JavaFX installation found. Asking for download...");
 
                     String fileName = "openJFX";
 
                     if(!new File( fileName + ".zip").exists()) {
+                        int dialogButton = JOptionPane.YES_NO_OPTION;
+                        int dialogResult = JOptionPane.showConfirmDialog (null, "No OpenJFX installation found. Would you like to download?","OpenJFX", dialogButton);
+
+                        if(dialogResult != JOptionPane.YES_OPTION){
+                            JOptionPane.showMessageDialog(null, "Can't run on Java 11 or higher without OpenJFX. Exiting...");
+                            System.exit(0);
+                            return;
+                        }
+
                         if(!System.getProperty("os.arch").contains("64")) {
-                            TeaseLogger.getLogger().log(Level.SEVERE, "x86 systems are currently not supported by the auto updater. Please fetch your own version of JavaFX.");
+                            JOptionPane.showMessageDialog(null, "x86 systems are currently not supported by the auto updater." +
+                                    " Please fetch your own version of OpenFX from https://gluonhq.com/products/javafx/");
                             System.exit(0);
                             return;
                         }
@@ -40,41 +50,48 @@ public class Main {
                             downloadPath = "https://github.com/GodDragoner/TeaseAIJava/raw/master/Resources/openjfx_windows-x64_bin-sdk.zip";
                         } else if (isMac()) {
                             TeaseLogger.getLogger().log(Level.SEVERE, "Your running MacOS. Fetching OpenJFX SDK...");
-                            downloadPath = "https://github.com/GodDragoner/TeaseAIJava/raw/master/Resources/openjfx_windows-x64_bin-sdk.zip";
+                            downloadPath = "https://github.com/GodDragoner/TeaseAIJava/raw/master/Resources/openjfx_osx-x64_bin-sdk.zip";
                         } else if (isUnix()) {
                             TeaseLogger.getLogger().log(Level.SEVERE, "Your running Linux/Unix. Fetching OpenJFX SDK...");
-                            downloadPath = "https://github.com/GodDragoner/TeaseAIJava/raw/master/Resources/openjfx_windows-x64_bin-sdk.zip";
+                            downloadPath = "https://github.com/GodDragoner/TeaseAIJava/raw/master/Resources/openjfx_linux-x64_bin-sdk.zip";
                         } else {
-                            TeaseLogger.getLogger().log(Level.SEVERE, "Your OS is not supported by JavaFX yet!");
+                            JOptionPane.showMessageDialog(null, "Your OS is not supported by JavaFX yet! Exiting.");
                             System.exit(0);
                             return;
                         }
+
 
                         URL url = new URL(downloadPath);
                         HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
                         long completeFileSize = httpConnection.getContentLength();
 
-                        java.io.BufferedInputStream in = new java.io.BufferedInputStream(httpConnection.getInputStream());
-                        java.io.FileOutputStream fos = new java.io.FileOutputStream(fileName + ".zip");
-                        java.io.BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
+                        ProgressMonitor progressMonitor = new ProgressMonitor(null, "Downloading OpenJFX...", "", 0, (int) completeFileSize);
+
+                        BufferedInputStream in = new BufferedInputStream(httpConnection.getInputStream());
+                        FileOutputStream fos = new FileOutputStream(fileName + ".zip");
+                        BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
+
                         byte[] data = new byte[1024];
                         long downloadedFileSize = 0;
                         int x;
-                        int oldProgress = 0;
+                        //int oldProgress = 0;
 
                         while ((x = in.read(data, 0, 1024)) >= 0) {
                             downloadedFileSize += x;
 
                             //Calculate progress
-                            final int currentProgress = (int) ((((double) downloadedFileSize) / ((double) completeFileSize)) * 100d);
+                            //final int currentProgress = (int) ((((double) downloadedFileSize) / ((double) completeFileSize)) * 100d);
 
-                            if (currentProgress > oldProgress) {
+                            progressMonitor.setProgress((int) downloadedFileSize);
+
+                            /*if (currentProgress > oldProgress) {
                                 TeaseLogger.getLogger().log(Level.INFO, "Download Progress at " + currentProgress + "%");
                                 oldProgress = currentProgress;
-                            }
+                            }*/
 
                             bout.write(data, 0, x);
                         }
+
                         bout.close();
                         in.close();
                     }
@@ -87,8 +104,8 @@ public class Main {
                     //newUpdateZipFile.delete();
                 }
 
-                Process process = Runtime.getRuntime().exec(new String[]{"java", "\"--module-path=" + getLibFolder().getPath() + "\"", "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar", "test"});
-                BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                Process process = Runtime.getRuntime().exec(new String[]{"java", "--module-path=" + getLibFolder().getPath() + "", "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar", "test"});
+                BufferedReader input = new BufferedReader(new InputStreamReader(process.getErrorStream()));
                 String line;
                 while ((line = input.readLine()) != null) {
                     System.out.println(line);
