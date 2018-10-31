@@ -13,3 +13,4 @@ Logs/*
 Dependencies/*
 JavaFX/*
 out/*
+/bin/

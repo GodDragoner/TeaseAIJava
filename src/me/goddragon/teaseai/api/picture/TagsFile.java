@@ -104,15 +104,17 @@ public class TagsFile {
                     inputBuffer.append(strLine);
                     inputBuffer.append('\n');
                 }
-
+                TeaseLogger.getLogger().log(Level.INFO, "Added = " + added);
                 if (!added) {
                     String strLine = image.getName();
                     for (PictureTag tag : tagsToAdd) {
                         strLine += (" " + tag.getTagName());
                     }
-
-                    inputBuffer.append(strLine);
-                    inputBuffer.append('\n');
+                    if (!strLine.equals(image.getName())) {
+                        inputBuffer.append(strLine);
+                        inputBuffer.append('\n');
+                        lines.add(strLine);
+                    }
                 }
 
                 FileOutputStream fileOut = new FileOutputStream(tagsFile);
@@ -168,8 +170,10 @@ public class TagsFile {
                     inputBuffer.append(strLine);
                     inputBuffer.append('\n');
                 }
-
-                lines.set(lines.indexOf(replaceLine), newLine);
+                TeaseLogger.getLogger().log(Level.INFO, "Added = " + added);
+                if (added) {
+                    lines.set(lines.indexOf(replaceLine), newLine);
+                }
 
                 if (!added) {
                     if (dressState == null) {
@@ -177,11 +181,10 @@ public class TagsFile {
                     }
 
                     String strLine = image.getName();
-                    if (dressState != null) {
-                        strLine += " " + dressState.getTagName();
-                    }
+                    strLine += " " + dressState.getTagName();
                     inputBuffer.append(strLine);
                     inputBuffer.append('\n');
+                    lines.add(strLine);
                 }
 
                 FileOutputStream fileOut = new FileOutputStream(tagsFile);
@@ -248,6 +251,7 @@ public class TagsFile {
                     if (!strLine.equals(image.getName())) {
                         inputBuffer.append(strLine);
                         inputBuffer.append('\n');
+                        lines.add(strLine);
                     }
                 }
 
