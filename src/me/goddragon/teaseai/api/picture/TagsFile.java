@@ -104,13 +104,14 @@ public class TagsFile {
                     inputBuffer.append(strLine);
                     inputBuffer.append('\n');
                 }
-                TeaseLogger.getLogger().log(Level.INFO, "Added = " + added);
+         
                 if (!added) {
                     String strLine = image.getName();
                     for (PictureTag tag : tagsToAdd) {
                         strLine += (" " + tag.getTagName());
                     }
-                    if (!strLine.equals(image.getName())) {
+                    
+                    if (!tagsToAdd.isEmpty()) {
                         inputBuffer.append(strLine);
                         inputBuffer.append('\n');
                         lines.add(strLine);
@@ -170,12 +171,10 @@ public class TagsFile {
                     inputBuffer.append(strLine);
                     inputBuffer.append('\n');
                 }
-                TeaseLogger.getLogger().log(Level.INFO, "Added = " + added);
+    
                 if (added) {
                     lines.set(lines.indexOf(replaceLine), newLine);
-                }
-
-                if (!added) {
+                } else {
                     if (dressState == null) {
                         return false;
                     }
