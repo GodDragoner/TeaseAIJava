@@ -106,15 +106,19 @@ public class TagsFile {
                     inputBuffer.append('\n');
                 }
 
+
                 //Check whether we already set all tags or whether the image is a new one and we need to append it as a new line
                 if (!added) {
                     String strLine = image.getName();
                     for (PictureTag tag : tagsToAdd) {
                         strLine += (" " + tag.getTagName());
                     }
-
-                    inputBuffer.append(strLine);
-                    inputBuffer.append('\n');
+                    
+                    if (!tagsToAdd.isEmpty()) {
+                        inputBuffer.append(strLine);
+                        inputBuffer.append('\n');
+                        lines.add(strLine);
+                    }
                 }
 
                 FileOutputStream fileOut = new FileOutputStream(tagsFile);
@@ -170,20 +174,19 @@ public class TagsFile {
                     inputBuffer.append(strLine);
                     inputBuffer.append('\n');
                 }
-
-                lines.set(lines.indexOf(replaceLine), newLine);
-
-                if (!added) {
+    
+                if (added) {
+                    lines.set(lines.indexOf(replaceLine), newLine);
+                } else {
                     if (dressState == null) {
                         return false;
                     }
 
                     String strLine = image.getName();
-                    if (dressState != null) {
-                        strLine += " " + dressState.getTagName();
-                    }
+                    strLine += " " + dressState.getTagName();
                     inputBuffer.append(strLine);
                     inputBuffer.append('\n');
+                    lines.add(strLine);
                 }
 
                 FileOutputStream fileOut = new FileOutputStream(tagsFile);
@@ -250,6 +253,7 @@ public class TagsFile {
                     if (!strLine.equals(image.getName())) {
                         inputBuffer.append(strLine);
                         inputBuffer.append('\n');
+                        lines.add(strLine);
                     }
                 }
 
