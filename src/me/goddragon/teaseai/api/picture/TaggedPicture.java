@@ -103,6 +103,42 @@ public class TaggedPicture {
             tags = new HashSet<>();
         }
     }
+    
+    public TaggedPicture(File file , boolean readOnly) {
+        this.file = file;
+
+        if (!file.exists()) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "File does not exist!");
+            return;
+        }
+
+        //Not relevant here. Make a dedicated gui that can allow you to list all duplicated files
+        /*if (PictureHandler.getHandler().checkDuplicate(file)) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Duplicate file " + file.getPath());
+            return;
+        }*/
+
+        String extension = FileUtils.getExtension(file).toLowerCase();
+
+        if (!extension.equals("png") && !extension.equals("jpg") && !extension.equals("gif")) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Invalid file extension " + extension + ". Expected format png jpg or gif!");
+            return;
+        }
+
+        getTagsFolder();
+
+        this.tags = imageTagFile.getTags(this.file);
+
+        this.dressState = imageTagFile.getDressState(this.file);
+
+        if (dressState == null && !readOnly) {
+            this.dressState = DressState.FULLY_DRESSED;
+        }
+
+        if (tags == null) {
+            tags = new HashSet<>();
+        }
+    }
 
     public boolean isDuplicate() {
         return PictureHandler.getHandler().checkDuplicate(file);
