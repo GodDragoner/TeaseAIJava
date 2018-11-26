@@ -87,14 +87,15 @@ public class TagsFile {
 
                         for (DressState state : DressState.values()) {
                             if (strLine.contains(state.getTagName())) {
-                                newstrLine += (" " + state.getTagName());
+                                newstrLine += " " + state.getTagName();
                             }
                         }
 
                         for (PictureTag tag : tags) {
-                            newstrLine += (" " + tag.getTagName());
+                            newstrLine += " " + tag.getTagName();
                         }
 
+                        //File was already tagged before and we just added the new tags to it so we need to set this to true
                         added = true;
 
                         lines.set(lines.indexOf(strLine), newstrLine);
@@ -104,7 +105,9 @@ public class TagsFile {
                     inputBuffer.append(strLine);
                     inputBuffer.append('\n');
                 }
-         
+
+
+                //Check whether we already set all tags or whether the image is a new one and we need to append it as a new line
                 if (!added) {
                     String strLine = image.getName();
                     for (PictureTag tag : tagsToAdd) {
