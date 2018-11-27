@@ -2,6 +2,7 @@ package me.goddragon.teaseai.gui.main;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,8 +26,13 @@ import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.gui.settings.SettingsController;
 import me.goddragon.teaseai.utils.FileUtils;
+import me.goddragon.teaseai.utils.libraries.imagescaling.ResampleFilters;
+import me.goddragon.teaseai.utils.libraries.imagescaling.ResampleOp;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+
+import javax.imageio.ImageIO;
 
 public class MainGuiController {
 
@@ -221,7 +227,61 @@ public class MainGuiController {
 
         File domImage = domParticipant.getContact().getImage();
         if (domImage != null && domImage.exists()) {
-            domImageView.setImage(new Image(domImage.toURI().toString()));
+            double paneWidth = ((StackPane)domImageView.getParent()).getWidth();
+            double paneHeight = ((StackPane)domImageView.getParent()).getHeight();
+            BufferedImage scaledImage = null;
+            try
+            {
+                BufferedImage originalImage = ImageIO.read(domImage);
+                int originalImageHeight = originalImage.getHeight();
+                int originalImageWidth = originalImage.getWidth();
+                double scaleFactorWidth = originalImageWidth / paneWidth;
+                double scaleFactorHeight = originalImageHeight / paneHeight;
+                boolean needsScaling = true;
+                int newWidth = 0;
+                int newHeight = 0;
+                
+                if (scaleFactorHeight > scaleFactorWidth)
+                {
+                    if (scaleFactorHeight <= 2.0)
+                    {
+                        needsScaling = false;
+                    }
+                    else
+                    {
+                        newWidth = (int)(originalImageWidth / scaleFactorHeight);
+                        newHeight = (int)(originalImageHeight / scaleFactorHeight);
+                    }
+                }
+                else
+                {
+                    if (scaleFactorWidth <= 2.0)
+                    {
+                        needsScaling = false;
+                    }
+                    else
+                    {
+                        newWidth = (int)(originalImageWidth / scaleFactorWidth);
+                        newHeight = (int)(originalImageHeight / scaleFactorWidth);
+                    }
+                }
+                if (needsScaling)
+                {
+                    ResampleOp resizeOp = new ResampleOp(newWidth, newHeight);
+                    resizeOp.setFilter(ResampleFilters.getLanczos3Filter());
+                    scaledImage = resizeOp.filter(originalImage, null);
+                }
+                else
+                {
+                    scaledImage = originalImage;
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            
+            domImageView.setImage(SwingFXUtils.toFXImage(scaledImage, null));
         } else {
             domImageView.setImage(null);
         }
@@ -259,7 +319,61 @@ public class MainGuiController {
                         domParticipant.getContact().IMAGE_PATH.save();
 
                         if (image != null && image.exists()) {
-                            domImageView.setImage(new Image(image.toURI().toString()));
+                            double paneWidth = ((StackPane)domImageView.getParent()).getWidth();
+                            double paneHeight = ((StackPane)domImageView.getParent()).getHeight();
+                            BufferedImage scaledImage = null;
+                            try
+                            {
+                                BufferedImage originalImage = ImageIO.read(image);
+                                int originalImageHeight = originalImage.getHeight();
+                                int originalImageWidth = originalImage.getWidth();
+                                double scaleFactorWidth = originalImageWidth / paneWidth;
+                                double scaleFactorHeight = originalImageHeight / paneHeight;
+                                boolean needsScaling = true;
+                                int newWidth = 0;
+                                int newHeight = 0;
+                                
+                                if (scaleFactorHeight > scaleFactorWidth)
+                                {
+                                    if (scaleFactorHeight <= 2.0)
+                                    {
+                                        needsScaling = false;
+                                    }
+                                    else
+                                    {
+                                        newWidth = (int)(originalImageWidth / scaleFactorHeight);
+                                        newHeight = (int)(originalImageHeight / scaleFactorHeight);
+                                    }
+                                }
+                                else
+                                {
+                                    if (scaleFactorWidth <= 2.0)
+                                    {
+                                        needsScaling = false;
+                                    }
+                                    else
+                                    {
+                                        newWidth = (int)(originalImageWidth / scaleFactorWidth);
+                                        newHeight = (int)(originalImageHeight / scaleFactorWidth);
+                                    }
+                                }
+                                if (needsScaling)
+                                {
+                                    ResampleOp resizeOp = new ResampleOp(newWidth, newHeight);
+                                    resizeOp.setFilter(ResampleFilters.getLanczos3Filter());
+                                    scaledImage = resizeOp.filter(originalImage, null);
+                                }
+                                else
+                                {
+                                    scaledImage = originalImage;
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                            
+                            domImageView.setImage(SwingFXUtils.toFXImage(scaledImage, null));
                         } else {
                             domImageView.setImage(null);
                         }

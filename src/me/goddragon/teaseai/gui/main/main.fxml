@@ -42,7 +42,7 @@
                         <StackPane fx:id="mediaViewBox" layoutX="6.0" layoutY="-13.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="334.0" prefWidth="1157.0" styleClass="centerStackPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
                                 <MediaView id="mediaView" fx:id="mediaView" fitHeight="334.0" fitWidth="1157.0" />
-                                <ImageView fx:id="imageView" fitHeight="334.0" fitWidth="1157.0" pickOnBounds="true" preserveRatio="true" />
+                                <ImageView fx:id="imageView" fitHeight="511.0" fitWidth="1157.0" pickOnBounds="true" preserveRatio="true" />
                             </children>
                         </StackPane>
                     </children>
