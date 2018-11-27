@@ -28,7 +28,7 @@ public class PictureSet {
         }
 
         for(File taggedFile : tagFile.getTaggedFiles()) {
-            taggedPictures.add(new TaggedPicture(taggedFile));
+            taggedPictures.add(new TaggedPicture(taggedFile, true));
         }
     }
 
