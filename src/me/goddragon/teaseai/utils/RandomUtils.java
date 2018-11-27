@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -15,15 +16,9 @@ public class RandomUtils {
         if (min == max || min > max) {
             return min;
         }
-
-        ArrayList<Integer> list = new ArrayList<>();
-        for (int i = min; i <= max; i++) {
-            list.add(new Integer(i));
-        }
-
-        Collections.shuffle(list);
-
-        return list.get(0);
+        
+        //This is a better way to do random than using a list with shuffle
+        return new Random().nextInt(max - min + 1) + min;
     }
 
     public static Object getWinner(HashMap<?, ? extends Number> idChances) {

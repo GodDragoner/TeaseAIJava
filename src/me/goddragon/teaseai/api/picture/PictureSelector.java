@@ -17,10 +17,15 @@ import java.util.logging.Level;
 public class PictureSelector {
 
     public TaggedPicture getPicture(Session session, ChatParticipant participant) {
-        if(participant.getPictureSet().getTaggedPictures().isEmpty()) {
+        if(participant.getPictureSet().getTaggedPictures().isEmpty() && participant.getPictureSet().getFolder().listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return (name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".gif"));
+            }
+        }).length == 0) {
             return null;
         }
-
+        
         long minutesPassed = TimeUnit.MILLISECONDS.toMinutes(session.getRuntime());
         int preferredSessionDuration = TeaseAI.application.PREFERRED_SESSION_DURATION.getInt();
         double percentage = minutesPassed/preferredSessionDuration*100D;
