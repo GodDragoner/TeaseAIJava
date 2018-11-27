@@ -16,16 +16,11 @@ import java.util.logging.Level;
 public class PictureSet {
 
     private final List<TaggedPicture> taggedPictures = new ArrayList<>();
+    private final File folder;
 
     public PictureSet(File folder) {
+        this.folder = folder;
         TagsFile tagFile = TagsFile.getTagsFile(folder);
-
-        /*for (File file : folder.listFiles()) {
-            if (file.isFile() && file.getName().endsWith(".txt")) {
-                tagFile = file;
-                break;
-            }
-        }*/
 
         if(tagFile == null) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Folder '" + folder.getAbsolutePath() + "' is missing a tags file.");
@@ -111,5 +106,10 @@ public class PictureSet {
 
     public Collection<TaggedPicture> getTaggedPictures() {
         return taggedPictures;
+    }
+    
+    public File getFolder()
+    {
+        return folder;
     }
 }
