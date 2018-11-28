@@ -2,7 +2,7 @@ package me.goddragon.teaseai.utils.media;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Region;
 import me.goddragon.teaseai.utils.libraries.imagescaling.ResampleFilters;
 import me.goddragon.teaseai.utils.libraries.imagescaling.ResampleOp;
 
@@ -13,8 +13,8 @@ import java.io.File;
 public class ImageUtils {
 
     public static void setImageInView(File image, ImageView imageView) {
-        double paneWidth = ((StackPane) imageView.getParent()).getWidth();
-        double paneHeight = ((StackPane) imageView.getParent()).getHeight();
+        double paneWidth = ((Region) imageView.getParent()).getWidth();
+        double paneHeight = ((Region) imageView.getParent()).getHeight();
 
         imageView.setImage(SwingFXUtils.toFXImage(ImageUtils.resizeImage(image, paneWidth, paneHeight), null));
     }

@@ -171,10 +171,11 @@ public class PictureHandler {
                 files = Arrays.asList(fileArray);
             }
         } else {
-            files = uniquePictures.values();
+            files = new ArrayList<>();
+            //files = uniquePictures.values();
         }
 
-        synchronized (uniquePictures) {
+        //synchronized (uniquePictures) {
             for (File thisFile : files) {
                 TaggedPicture thisImage = new TaggedPicture(thisFile);
                 if (thisImage.hasTags(imageTags)) {
@@ -183,7 +184,7 @@ public class PictureHandler {
                     }
                 }
             }
-        }
+        //}
 
         if (picturesWithTags.size() == 0) {
             return null;
