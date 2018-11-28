@@ -16,10 +16,12 @@ import me.goddragon.teaseai.utils.RandomUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -326,12 +328,7 @@ public class ChatParticipant {
             PictureSet pictureSet = new PictureSet(file);
 
             //No pictures => ignore the set
-            if(pictureSet.getTaggedPictures().isEmpty() && pictureSet.getFolder().listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    return (name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".gif"));
-                }
-            }).length == 0) {
+            if(pictureSet.getTaggedPictures().isEmpty() && pictureSet.getPicturesInFolder().length == 0) {
                 continue;
             }
 
@@ -345,12 +342,7 @@ public class ChatParticipant {
             int loops = 0;
             while (this.pictureSet == null && loops < 20) {
                 PictureSet pictureSet = pictureSets.get(RandomUtils.randInt(0, pictureSets.size() - 1));
-                if (!pictureSet.getTaggedPictures().isEmpty() || pictureSet.getFolder().listFiles(new FilenameFilter() {
-                    @Override
-                    public boolean accept(File dir, String name) {
-                        return (name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".gif"));
-                    }
-                }).length > 0) {
+                if (!pictureSet.getTaggedPictures().isEmpty() || pictureSet.getPicturesInFolder().length > 0) {
                     this.pictureSet = pictureSet;
                 }
 

@@ -16,18 +16,19 @@ import java.util.logging.Level;
 public class PictureSet {
 
     private final List<TaggedPicture> taggedPictures = new ArrayList<>();
+    private File[] picturesInFolder;
     private final File folder;
 
     public PictureSet(File folder) {
         this.folder = folder;
         TagsFile tagFile = TagsFile.getTagsFile(folder);
 
-        if(tagFile == null) {
+        if (tagFile == null) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Folder '" + folder.getAbsolutePath() + "' is missing a tags file.");
             return;
         }
 
-        for(File taggedFile : tagFile.getTaggedFiles()) {
+        for (File taggedFile : tagFile.getTaggedFiles()) {
             taggedPictures.add(new TaggedPicture(taggedFile, true));
         }
     }
@@ -37,7 +38,7 @@ public class PictureSet {
     }
 
     public TaggedPicture getRandomPicture(DressState dressState, PictureTag... pictureTags) {
-        return getRandomPictureForTagStates(Arrays.asList(new DressState[] {dressState}), Arrays.asList(pictureTags));
+        return getRandomPictureForTagStates(Arrays.asList(new DressState[]{dressState}), Arrays.asList(pictureTags));
     }
 
     public TaggedPicture getRandomPicture(List<TaggedPicture> taggedPictures, PictureTag... pictureTags) {
@@ -49,7 +50,7 @@ public class PictureSet {
     }
 
     public TaggedPicture getRandomPictureForTagStates(List<DressState> dressStates, List<PictureTag> pictureTags) {
-       return getRandomPictureForTagStates(taggedPictures, dressStates, pictureTags);
+        return getRandomPictureForTagStates(taggedPictures, dressStates, pictureTags);
     }
 
 
@@ -66,7 +67,7 @@ public class PictureSet {
             }
 
             //If we are supposed to search for a specific dress state we check whether our picture fits those guidelines
-            if(!dressStates.isEmpty() && !dressStates.contains(taggedPicture.getDressState())) {
+            if (!dressStates.isEmpty() && !dressStates.contains(taggedPicture.getDressState())) {
                 continue pictureLoop;
             }
 
@@ -87,7 +88,7 @@ public class PictureSet {
 
             //Try finding an alternative image that shows less
             if (lowerDressState != null) {
-                return getRandomPictureForTagStates(Arrays.asList(new DressState[] {lowerDressState}), pictureTags);
+                return getRandomPictureForTagStates(Arrays.asList(new DressState[]{lowerDressState}), pictureTags);
             }
 
             //We don't have any pictures to show anyway
@@ -103,13 +104,24 @@ public class PictureSet {
         return validPictures.get(RandomUtils.randInt(0, validPictures.size() - 1));
     }
 
+    public File[] getPicturesInFolder() {
+        if(picturesInFolder == null) {
+            picturesInFolder = getFolder().listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return (name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".gif"));
+                }
+            });
+        }
+
+        return picturesInFolder;
+    }
 
     public Collection<TaggedPicture> getTaggedPictures() {
         return taggedPictures;
     }
-    
-    public File getFolder()
-    {
+
+    public File getFolder() {
         return folder;
     }
 }
