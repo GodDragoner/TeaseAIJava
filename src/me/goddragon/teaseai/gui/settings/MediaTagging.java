@@ -270,7 +270,7 @@ public class MediaTagging {
         ArrayList<TaggedPicture> taggedList = new ArrayList<>();
 
         for (File thisFile : locFiles) {
-            TaggedPicture thisTaggedPic = new TaggedPicture(thisFile);
+            TaggedPicture thisTaggedPic = new TaggedPicture(thisFile, true);
             if (thisTaggedPic.getFile() != null) {
                 taggedList.add(thisTaggedPic);
             }
