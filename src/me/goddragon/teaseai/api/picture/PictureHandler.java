@@ -119,28 +119,43 @@ public class PictureHandler {
     }
 
     public List<TaggedPicture> getTaggedPicturesExact(PictureTag... imageTags) {
-        return getTaggedPicturesExact(Arrays.asList(imageTags));
+        return getTaggedPicturesExact(null, Arrays.asList(imageTags));
     }
 
-    public List<TaggedPicture> getTaggedPicturesExact(Collection<PictureTag> imageTags) {
-        return getTaggedPicturesExact(null, imageTags);
+    public List<TaggedPicture> getTaggedPicturesExact(DressState dressState, Collection<PictureTag> imageTags) {
+        return getTaggedPicturesExact(null, imageTags, dressState);
     }
 
-    public ArrayList<TaggedPicture> getTaggedPicturesExact(File folder, PictureTag... imageTags) {
-        return getTaggedPicturesExact(folder, Arrays.asList(imageTags));
+    public ArrayList<TaggedPicture> getTaggedPicturesExact(File folder, DressState dressState, PictureTag... imageTags) {
+        return getTaggedPicturesExact(folder, Arrays.asList(imageTags), dressState);
     }
 
     public ArrayList<TaggedPicture> getTaggedPicturesExact(File folder, String... imageTags) {
         Collection<PictureTag> pictureTags = new HashSet<>();
-
+        DressState[] allDressStates = DressState.values();
+        DressState dressState = null;
+        
         for (String tag : imageTags) {
-            pictureTags.add(PictureTag.valueOf(tag.toUpperCase()));
+            boolean checkPictureTag = true;
+            tag = tag.toLowerCase().replaceAll("tag", "");
+            for (DressState dress: allDressStates)
+            {
+                if (tag.equalsIgnoreCase(dress.toString()))
+                {
+                    dressState = DressState.valueOf(tag.toUpperCase());
+                    checkPictureTag = false;
+                }
+            }
+            if (checkPictureTag)
+            {
+                pictureTags.add(PictureTag.valueOf(tag.toUpperCase()));
+            }
         }
 
-        return getTaggedPicturesExact(folder, pictureTags);
+        return getTaggedPicturesExact(folder, pictureTags, dressState);
     }
 
-    public ArrayList<TaggedPicture> getTaggedPicturesExact(File folder, Collection<PictureTag> imageTags) {
+    public ArrayList<TaggedPicture> getTaggedPicturesExact(File folder, Collection<PictureTag> imageTags, DressState dressState) {
         ArrayList<TaggedPicture> picturesWithTags = new ArrayList<>();
 
         Collection<File> files;
@@ -161,11 +176,12 @@ public class PictureHandler {
         } else {
             files = uniquePictures.values();
         }
-
-        synchronized (uniquePictures) {
-            for (File thisFile : files) {
-                TaggedPicture thisImage = new TaggedPicture(thisFile);
-                if (thisImage.hasTags(imageTags)) {
+        
+        for (File thisFile : files) {
+            TaggedPicture thisImage = new TaggedPicture(thisFile);
+            if (thisImage.hasTags(imageTags)) {
+                if (dressState == null || thisImage.getDressState().equals(dressState))
+                {
                     picturesWithTags.add(thisImage);
                 }
             }
