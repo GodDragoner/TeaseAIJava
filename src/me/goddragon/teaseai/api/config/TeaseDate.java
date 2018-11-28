@@ -148,4 +148,9 @@ public class TeaseDate {
     public Calendar getCalendar() {
         return calendar;
     }
+
+    @Override
+    public TeaseDate clone() {
+        return new TeaseDate(calendar.getTime());
+    }
 }
