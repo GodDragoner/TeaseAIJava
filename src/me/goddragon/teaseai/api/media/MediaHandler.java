@@ -1,8 +1,5 @@
 package me.goddragon.teaseai.api.media;
 
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.control.SplitPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
@@ -11,12 +8,10 @@ import javafx.scene.media.MediaView;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
-import me.goddragon.teaseai.utils.libraries.imagescaling.ResampleFilters;
-import me.goddragon.teaseai.utils.libraries.imagescaling.ResampleOp;
 import me.goddragon.teaseai.utils.media.AnimatedGif;
 import me.goddragon.teaseai.utils.media.Animation;
+import me.goddragon.teaseai.utils.media.ImageUtils;
 
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -24,8 +19,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-
-import javax.imageio.ImageIO;
 
 /**
  * Created by GodDragon on 22.03.2018.
@@ -150,61 +143,7 @@ public class MediaHandler {
                     currentAnimation.setCycleCount(Integer.MAX_VALUE);
                     currentAnimation.play(imageView);
                 } else {
-                    double paneWidth = ((StackPane)imageView.getParent()).getWidth();
-                    double paneHeight = ((StackPane)imageView.getParent()).getHeight();
-                    BufferedImage scaledImage = null;
-                    try
-                    {
-                        BufferedImage originalImage = ImageIO.read(file);
-                        int originalImageHeight = originalImage.getHeight();
-                        int originalImageWidth = originalImage.getWidth();
-                        double scaleFactorWidth = originalImageWidth / paneWidth;
-                        double scaleFactorHeight = originalImageHeight / paneHeight;
-                        boolean needsScaling = true;
-                        int newWidth = 0;
-                        int newHeight = 0;
-                        
-                        if (scaleFactorHeight > scaleFactorWidth)
-                        {
-                            if (scaleFactorHeight <= 2.0)
-                            {
-                                needsScaling = false;
-                            }
-                            else
-                            {
-                                newWidth = (int)(originalImageWidth / scaleFactorHeight);
-                                newHeight = (int)(originalImageHeight / scaleFactorHeight);
-                            }
-                        }
-                        else
-                        {
-                            if (scaleFactorWidth <= 2.0)
-                            {
-                                needsScaling = false;
-                            }
-                            else
-                            {
-                                newWidth = (int)(originalImageWidth / scaleFactorWidth);
-                                newHeight = (int)(originalImageHeight / scaleFactorWidth);
-                            }
-                        }
-                        if (needsScaling)
-                        {
-                            ResampleOp resizeOp = new ResampleOp(newWidth, newHeight);
-                            resizeOp.setFilter(ResampleFilters.getLanczos3Filter());
-                            scaledImage = resizeOp.filter(originalImage, null);
-                        }
-                        else
-                        {
-                            scaledImage = originalImage;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                    
-                    imageView.setImage(SwingFXUtils.toFXImage(scaledImage, null));
+                    ImageUtils.setImageInView(file, imageView);
                 }
             }
         });

@@ -7,7 +7,6 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
@@ -15,6 +14,7 @@ import javafx.stage.FileChooser;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.chat.ChatParticipant;
 import me.goddragon.teaseai.utils.FileUtils;
+import me.goddragon.teaseai.utils.media.ImageUtils;
 
 import java.io.File;
 
@@ -163,7 +163,7 @@ public class ContactSettings {
             File image = participant.getContact().getImage();
 
             if (image != null && image.exists() && image.isFile() && (image.getName().toLowerCase().endsWith(".jpg") || image.getName().toLowerCase().endsWith(".png") || image.getName().toLowerCase().endsWith(".jpeg"))) {
-                settingsController.domContactImageView.setImage(new Image(image.toURI().toString()));
+                ImageUtils.setImageInView(image, settingsController.domContactImageView);
                 settingsController.clickContactAvatarText.setText("");
             } else {
                 settingsController.domContactImageView.setImage(null);

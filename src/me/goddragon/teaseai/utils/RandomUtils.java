@@ -1,10 +1,6 @@
 package me.goddragon.teaseai.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -18,7 +14,7 @@ public class RandomUtils {
         }
         
         //This is a better way to do random than using a list with shuffle
-        return new Random().nextInt(max - min + 1) + min;
+        return ThreadLocalRandom.current().nextInt(max - min + 1) + min;
     }
 
     public static Object getWinner(HashMap<?, ? extends Number> idChances) {
