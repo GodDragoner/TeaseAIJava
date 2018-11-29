@@ -132,23 +132,20 @@ public class PictureHandler {
 
     public ArrayList<TaggedPicture> getTaggedPicturesExact(File folder, String... imageTags) {
         Collection<PictureTag> pictureTags = new HashSet<>();
-        DressState[] allDressStates = DressState.values();
         DressState dressState = null;
-        
+
         for (String tag : imageTags) {
-            boolean checkPictureTag = true;
+            //Legacy solution to allow people to use same terminology as in TAI
             tag = tag.toLowerCase().replaceAll("tag", "");
-            for (DressState dress: allDressStates)
-            {
-                if (tag.equalsIgnoreCase(dress.toString()))
-                {
-                    dressState = DressState.valueOf(tag.toUpperCase());
-                    checkPictureTag = false;
+
+            try {
+                dressState = DressState.valueOf(tag.toUpperCase());
+            } catch(IllegalArgumentException ex) {
+                try {
+                    pictureTags.add(PictureTag.valueOf(tag.toUpperCase()));
+                } catch (IllegalArgumentException ex2) {
+                    TeaseLogger.getLogger().log(Level.SEVERE, "Trying to find images with tag '"  + tag + "' which is neither a dress state nor a valid tag");
                 }
-            }
-            if (checkPictureTag)
-            {
-                pictureTags.add(PictureTag.valueOf(tag.toUpperCase()));
             }
         }
 
@@ -160,7 +157,7 @@ public class PictureHandler {
 
         Collection<File> files;
 
-        if(folder != null && folder.list() != null && folder.list().length != 0) {
+        if (folder != null && folder.list() != null && folder.list().length != 0) {
             File[] fileArray = folder.listFiles(new FilenameFilter() {
                 public boolean accept(File dir, String name) {
                     return name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".gif");
@@ -168,24 +165,26 @@ public class PictureHandler {
             });
 
             //Nothing found
-            if(fileArray == null) {
+            if (fileArray == null) {
                 files = new ArrayList<>();
             } else {
                 files = Arrays.asList(fileArray);
             }
         } else {
-            files = uniquePictures.values();
+            files = new ArrayList<>();
+            //files = uniquePictures.values();
         }
-        
-        for (File thisFile : files) {
-            TaggedPicture thisImage = new TaggedPicture(thisFile);
-            if (thisImage.hasTags(imageTags)) {
-                if (dressState == null || thisImage.getDressState().equals(dressState))
-                {
-                    picturesWithTags.add(thisImage);
+
+        //synchronized (uniquePictures) {
+            for (File thisFile : files) {
+                TaggedPicture thisImage = new TaggedPicture(thisFile);
+                if (thisImage.hasTags(imageTags)) {
+                    if (dressState == null || thisImage.getDressState().equals(dressState)) {
+                        picturesWithTags.add(thisImage);
+                    }
                 }
             }
-        }
+        //}
 
         if (picturesWithTags.size() == 0) {
             return null;
@@ -197,7 +196,7 @@ public class PictureHandler {
     public boolean checkDuplicate(File isDupe) {
         String fileMd5 = calculateMD5(isDupe);
 
-        if(uniquePictures == null) {
+        if (uniquePictures == null) {
             loadUniquePictures();
         }
 
