@@ -4,6 +4,9 @@ import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -119,12 +122,23 @@ public class TaggedPicture {
         deleteTags();
         File newFile = new File(newPath);
         TeaseLogger.getLogger().log(Level.INFO, "Moving file to " + newPath);
-
-        if (!file.renameTo(newFile)) {
+        
+        try
+        {
+            Files.move(file.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+        catch (IOException e)
+        {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Failed to move file to path " + newPath);
+            e.printStackTrace();
+        }
+        
+        /*if (!file.renameTo(newFile)) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Failed to move file to path " + newPath);
             return false;
-        }
+        }*/
 
+        newFile = new File(newPath);
         if (!newFile.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Failed to move file to path " + newPath);
             return false;
