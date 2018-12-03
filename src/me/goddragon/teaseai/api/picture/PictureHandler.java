@@ -44,9 +44,9 @@ public class PictureHandler {
     }
 
     public void setDefaultFolders() {
-        File normal = new File(getTeasePath() + "//images//normal");
-        File liked = new File(getTeasePath() + "//images//liked");
-        File loved = new File(getTeasePath() + "//images//loved");
+        File normal = new File(getTeasePath() + File.separator + "images"  + File.separator + "normal");
+        File liked = new File(getTeasePath()  + File.separator +  "images"  + File.separator + "liked");
+        File loved = new File(getTeasePath()  + File.separator +  "images"  + File.separator + "loved");
         ArrayList<File> defFiles = new ArrayList<>();
 
         if (normal.exists()) {

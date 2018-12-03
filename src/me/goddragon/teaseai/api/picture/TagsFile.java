@@ -397,7 +397,7 @@ public class TagsFile {
 
         if (files.length == 0) {
             TeaseLogger.getLogger().log(Level.WARNING, "No tag file found in folder " + folder.getAbsolutePath());
-            toReturn = new TagsFile(PictureHandler.getOrCreateFile(folder.getPath() + "\\ImageTags.txt"));
+            toReturn = new TagsFile(PictureHandler.getOrCreateFile(folder.getPath() + File.separator + "ImageTags.txt"));
         } else if (files.length == 1 && files[0].getName().equalsIgnoreCase("imagetags.txt")) {
             toReturn = new TagsFile(files[0]);
         } else {
@@ -411,7 +411,7 @@ public class TagsFile {
 
             if (toReturn == null) {
                 TeaseLogger.getLogger().log(Level.WARNING, "Unable to identify tag file out of " + files.length + " txt files");
-                toReturn = new TagsFile(PictureHandler.getOrCreateFile(folder.getPath() + "\\ImageTags.txt"));
+                toReturn = new TagsFile(PictureHandler.getOrCreateFile(folder.getPath() + File.separator + "ImageTags.txt"));
             }
         }
 
