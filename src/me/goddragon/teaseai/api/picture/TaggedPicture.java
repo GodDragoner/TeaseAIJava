@@ -75,8 +75,8 @@ public class TaggedPicture {
         this(file, false);
 
     }
-    
-    public TaggedPicture(File file , boolean readOnly) {
+
+    public TaggedPicture(File file, boolean readOnly) {
         this.file = file;
 
         if (!file.exists()) {
@@ -122,13 +122,10 @@ public class TaggedPicture {
         deleteTags();
         File newFile = new File(newPath);
         TeaseLogger.getLogger().log(Level.INFO, "Moving file to " + newPath);
-        
-        try
-        {
+
+        try {
             Files.move(file.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Failed to move file to path " + newPath);
             e.printStackTrace();
         }
@@ -254,7 +251,7 @@ public class TaggedPicture {
     }
 
     public boolean hasTags(Collection<PictureTag> tags) {
-        if(this.tags.containsAll(tags)) {
+        if (this.tags.containsAll(tags)) {
             return true;
         }
 
