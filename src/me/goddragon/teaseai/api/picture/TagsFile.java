@@ -386,7 +386,6 @@ public class TagsFile {
         if (tagFiles.containsKey(folder)) {
             return tagFiles.get(folder);
         }
-
         TagsFile toReturn = null;
 
         File[] files = folder.listFiles(new FilenameFilter() {

@@ -7,8 +7,19 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.file.*;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.security.cert.X509Certificate;
 
 /**
  * Created by GodDragon on 05.04.2018.
@@ -254,7 +265,7 @@ public class FileUtils {
 
             int readBytes;
             byte[] buffer = new byte[4096];
-            jarFolder = new File(TeaseAI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile().getPath().replace('\\', '/');
+            jarFolder = getTAJPath().replace('\\', '/');
             resStreamOut = new FileOutputStream(jarFolder + resourceName);
             while ((readBytes = stream.read(buffer)) > 0) {
                 resStreamOut.write(buffer, 0, readBytes);
@@ -267,6 +278,54 @@ public class FileUtils {
         }
 
         return jarFolder + resourceName;
+    }
+    
+    public static void disableSslVerification() {
+        try
+        {
+            // Create a trust manager that does not validate certificate chains
+            TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+                @Override
+                public void checkClientTrusted(
+                        java.security.cert.X509Certificate[] arg0, String arg1)
+                        throws CertificateException
+                {
+                    // TODO Auto-generated method stub
+                    
+                }
+                @Override
+                public void checkServerTrusted(
+                        java.security.cert.X509Certificate[] arg0, String arg1)
+                        throws CertificateException
+                {
+                    // TODO Auto-generated method stub
+                    
+                }
+            }
+            };
+
+            // Install the all-trusting trust manager
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+            // Create all-trusting host name verifier
+            HostnameVerifier allHostsValid = new HostnameVerifier() {
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            };
+
+            // Install the all-trusting host verifier
+            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
     }
     
     public static String getTAJPath()

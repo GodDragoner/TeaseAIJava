@@ -1,6 +1,6 @@
 package me.goddragon.teaseai.api.picture;
 
-import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.logging.Level;
@@ -23,15 +22,6 @@ public class PictureHandler {
         loadUniquePictures();
     }
 
-    public static String getTeasePath() {
-        try {
-            return (new File(TeaseAI.class.getProtectionDomain().getCodeSource().getLocation().toURI())).getParent();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public static PictureHandler getHandler() {
         return handler;
     }
@@ -44,9 +34,9 @@ public class PictureHandler {
     }
 
     public void setDefaultFolders() {
-        File normal = new File(getTeasePath() + File.separator + "images"  + File.separator + "normal");
-        File liked = new File(getTeasePath()  + File.separator +  "images"  + File.separator + "liked");
-        File loved = new File(getTeasePath()  + File.separator +  "images"  + File.separator + "loved");
+        File normal = new File(FileUtils.getTAJPath() + File.separator + "Images"  + File.separator + "Normal");
+        File liked = new File(FileUtils.getTAJPath()  + File.separator +  "Images"  + File.separator + "Liked");
+        File loved = new File(FileUtils.getTAJPath()  + File.separator +  "Images"  + File.separator + "Loved");
         ArrayList<File> defFiles = new ArrayList<>();
 
         if (normal.exists()) {
