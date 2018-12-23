@@ -1,5 +1,7 @@
 package me.goddragon.teaseai.gui.settings;
 
+import java.io.File;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -12,6 +14,7 @@ import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.media.MediaHolder;
 import me.goddragon.teaseai.api.media.MediaType;
 import me.goddragon.teaseai.api.media.MediaURL;
+import me.goddragon.teaseai.utils.libraries.ripme.App;
 
 /**
  * Created by GodDragon on 28.03.2018.
@@ -34,8 +37,36 @@ public class URLMediaSettings {
             @Override
             public void handle(MouseEvent event) {
                 String url = settingsController.addURLTextField.getText().toLowerCase();
+                //Ski23 testing
+                
+                settingsController.addURLButton.setDisable(true);
+                settingsController.addURLTextField.setDisable(true);
+                settingsController.refreshURLButton.setDisable(true);
 
-                String ending = "tumblr.com";
+                settingsController.addURLTextField.setText(url);
+                
+                new Thread() {
+                    @Override
+                    public void run() {
+                        File mediaFile = App.mediaUrlRip(url, MediaURL.URL_FILE_PATH, false);
+                        MediaURL mediaURL = new MediaURL(MediaType.IMAGE, mediaFile);
+                        TeaseAI.application.getMediaCollection().addMediaHolder(null, mediaURL);
+
+                        TeaseAI.application.runOnUIThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateURLList();
+                                settingsController.addURLButton.setDisable(false);
+                                settingsController.addURLTextField.setDisable(false);
+                                settingsController.refreshURLButton.setDisable(false);
+                            }
+                        });
+                    }
+                }.start();
+                
+                return;
+                //end ski23 testing
+                /*String ending = "tumblr.com";
                 if (url != null && url.contains(ending)) {
                     if (!url.endsWith(ending)) {
                         url = url.substring(0, url.indexOf(ending) + ending.length());
@@ -77,7 +108,7 @@ public class URLMediaSettings {
                     alert.setContentText("The given URL is either invalid or not supported. Please only use tumblr urls.");
 
                     alert.showAndWait();
-                }
+                }*/
             }
         });
 
