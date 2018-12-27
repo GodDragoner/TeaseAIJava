@@ -6,11 +6,13 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.jsoup.nodes.Document;
 
 import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage.STATUS;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
+import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.libraries.ripme.ui.MainWindow;
 
 /**
@@ -112,6 +114,7 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
                 }
 
                 if (imageURLs.isEmpty()) {
+                    TeaseLogger.getLogger().log(Level.SEVERE, "No image found at " + doc.location());
                     throw new IOException("No images found at " + doc.location());
                 }
 
@@ -168,7 +171,7 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
                 break;
             }
         }
-
+        TeaseLogger.getLogger().log(Level.INFO, "debug 123");
         // If they're using a thread pool, wait for it.
         if (getThreadPool() != null) {
             LOGGER.debug("Waiting for threadpool " + getThreadPool().getClass().getName());
@@ -184,7 +187,7 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
      * @return 
      *      Filename of the URL
      */
-    private String fileNameFromURL(URL url) {
+    protected String fileNameFromURL(URL url) {
         String saveAs = url.toExternalForm();
         if (saveAs.substring(saveAs.length() - 1) == "/") { saveAs = saveAs.substring(0,saveAs.length() - 1) ;}
         saveAs = saveAs.substring(saveAs.lastIndexOf('/')+1);
@@ -212,7 +215,7 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
         String saveAs = fileNameFromURL(url);
         return saveText(url,subdirectory,text,index,saveAs);
     }
-    private boolean saveText(URL url, String subdirectory, String text, int index, String fileName) {
+    protected boolean saveText(URL url, String subdirectory, String text, int index, String fileName) {
         // Not the best for some cases, like FurAffinity. Overridden there.
         try {
             stopCheck();
