@@ -1,6 +1,7 @@
 package me.goddragon.teaseai.gui.settings;
 
 import java.io.File;
+import java.net.URL;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,6 +16,7 @@ import me.goddragon.teaseai.api.media.MediaHolder;
 import me.goddragon.teaseai.api.media.MediaType;
 import me.goddragon.teaseai.api.media.MediaURL;
 import me.goddragon.teaseai.utils.libraries.ripme.App;
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractRipper;
 
 /**
  * Created by GodDragon on 28.03.2018.
@@ -39,57 +41,44 @@ public class URLMediaSettings {
                 String url = settingsController.addURLTextField.getText().toLowerCase();
                 //Ski23 testing
                 
-                settingsController.addURLButton.setDisable(true);
-                settingsController.addURLTextField.setDisable(true);
-                settingsController.refreshURLButton.setDisable(true);
-
-                settingsController.addURLTextField.setText(url);
-                
-                new Thread() {
-                    @Override
-                    public void run() {
-                        File mediaFile = App.mediaUrlRip(url, MediaURL.URL_FILE_PATH, false);
-                        MediaURL mediaURL = new MediaURL(MediaType.IMAGE, mediaFile);
-                        TeaseAI.application.getMediaCollection().addMediaHolder(null, mediaURL);
-
-                        TeaseAI.application.runOnUIThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateURLList();
-                                settingsController.addURLButton.setDisable(false);
-                                settingsController.addURLTextField.setDisable(false);
-                                settingsController.refreshURLButton.setDisable(false);
-                            }
-                        });
+                if (url != null && !url.trim().equals(""))
+                {
+                    try
+                    {
+                        URL testUrl = new URL(url);
+                        AbstractRipper.getRipper(testUrl);
                     }
-                }.start();
-                
-                return;
-                //end ski23 testing
-                /*String ending = "tumblr.com";
-                if (url != null && url.contains(ending)) {
-                    if (!url.endsWith(ending)) {
-                        url = url.substring(0, url.indexOf(ending) + ending.length());
-                    }
+                    catch (Exception e)
+                    {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Invalid URL");
+                        alert.setHeaderText(null);
+                        alert.setContentText("The given URL is either invalid or not supported. Please only use supported urls.");
 
-                    if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                        url = "https://" + url;
+                        alert.showAndWait();
+                        return;
                     }
-
                     settingsController.addURLButton.setDisable(true);
                     settingsController.addURLTextField.setDisable(true);
                     settingsController.refreshURLButton.setDisable(true);
-
+    
                     settingsController.addURLTextField.setText(url);
-
-                    String finalUrl = url;
+                    
                     new Thread() {
                         @Override
                         public void run() {
-                            MediaURL mediaURL = new MediaURL(MediaType.IMAGE, finalUrl, null, settingsController.urlProgressLabel);
-                            mediaURL.saveToFile();
+                            File mediaFile;
+                            try
+                            {
+                                mediaFile = App.mediaUrlRip(url, MediaURL.URL_FILE_PATH, false);
+                            }
+                            catch (Exception e)
+                            {
+                                return;
+                            }
+                            MediaURL mediaURL = new MediaURL(MediaType.IMAGE, mediaFile);
                             TeaseAI.application.getMediaCollection().addMediaHolder(null, mediaURL);
-
+    
                             TeaseAI.application.runOnUIThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -101,19 +90,21 @@ public class URLMediaSettings {
                             });
                         }
                     }.start();
-                } else {
+                }
+                else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Invalid URL");
                     alert.setHeaderText(null);
-                    alert.setContentText("The given URL is either invalid or not supported. Please only use tumblr urls.");
+                    alert.setContentText("The given URL is either invalid or not supported. Please only use supported urls.");
 
                     alert.showAndWait();
-                }*/
+                }
+                return;
             }
         });
 
-        settingsController.refreshURLButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
+        //settingsController.refreshURLButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            /*@Override
             public void handle(MouseEvent event) {
                 new Thread() {
                     @Override
@@ -125,6 +116,45 @@ public class URLMediaSettings {
 
                         for (Object object : settingsController.urlFilesList.getSelectionModel().getSelectedItems()) {
                             MediaURL mediaURL = (MediaURL) object;
+                            //ski23 start
+                            settingsController.addURLButton.setDisable(true);
+                            settingsController.addURLTextField.setDisable(true);
+                            settingsController.refreshURLButton.setDisable(true);
+            
+                            settingsController.addURLTextField.setText(mediaURL.getUrl());
+                            
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    File mediaFile;
+                                    try
+                                    {
+                                        mediaFile = App.mediaUrlRip(mediaURL.getUrl(), MediaURL.URL_FILE_PATH, false);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        return;
+                                    }
+                                    MediaURL mediaURL = new MediaURL(MediaType.IMAGE, mediaFile);
+                                    TeaseAI.application.getMediaCollection().addMediaHolder(null, mediaURL);
+            
+                                    TeaseAI.application.runOnUIThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            updateURLList();
+                                            settingsController.addURLButton.setDisable(false);
+                                            settingsController.addURLTextField.setDisable(false);
+                                            settingsController.refreshURLButton.setDisable(false);
+                                        }
+                                    });
+                                }
+                            }.start();
+                            
+                            
+                            
+                            
+                            //ski23 end
+                            
                             mediaURL.loadImagesFromTumblrURL(settingsController.urlProgressLabel);
                             mediaURL.saveToFile();
 
@@ -141,8 +171,8 @@ public class URLMediaSettings {
                         }
                     }
                 }.start();
-            }
-        });
+            }*/
+        //});
 
         //Set it as disabled by default because nothing is selected
         settingsController.deleteURLButton.setDisable(true);

@@ -3,6 +3,7 @@ package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.video;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.nodes.Document;
 
+import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.VideoRipper;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 
@@ -28,7 +30,7 @@ public class PornhubRipper extends VideoRipper {
 
     @Override
     public boolean canRip(URL url) {
-        Pattern p = Pattern.compile("^https?://[wm.]*pornhub\\.com/view_video.php\\?viewkey=[a-z0-9]+$");
+        Pattern p = Pattern.compile("^https?://[w|m|.]*pornhub\\.com/view_video\\.php\\?viewkey=[a-z0-9]+$");
         Matcher m = p.matcher(url.toExternalForm());
         return m.matches();
     }
@@ -59,6 +61,7 @@ public class PornhubRipper extends VideoRipper {
         String html = doc.body().html();
         Pattern p = Pattern.compile("^.*flashvars_[0-9]+ = (.+});.*$", Pattern.DOTALL);
         Matcher m = p.matcher(html);
+        //TeaseLogger.getLogger().log(Level.INFO, html);
         if (m.matches()) {
             String title = null, vidUrl = null;
             try {
@@ -69,10 +72,10 @@ public class PornhubRipper extends VideoRipper {
 
                 vidUrl = null;
                 for (String quality : new String[] {"1080", "720", "480", "240"}) {
-                    Pattern pv = Pattern.compile("\"format\":\"\",\"quality\":\"" + quality + "\",\"videoUrl\":\"(.*?)\"");
+                    Pattern pv = Pattern.compile("\"format\":\"(mp4|upshell)\",\"quality\":\"" + quality + "\",\"videoUrl\":\"(.*?)\"");
                     Matcher mv = pv.matcher(html);
                     if (mv.find()) {
-                        vidUrl = mv.group(1).replace("\\/", "/");
+                        vidUrl = mv.group(2).replace("\\/", "/");
                         break;
                     }
                 }

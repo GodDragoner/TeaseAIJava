@@ -537,7 +537,7 @@ public abstract class AbstractRipper
                 // Incompatible rippers *will* throw exceptions during instantiation.
             }
         }
-        for (Constructor<?> constructor : getRipperConstructors("me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers")) {
+        for (Constructor<?> constructor : getRipperConstructors("me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.video")) {
             try {
                 VideoRipper ripper = (VideoRipper) constructor.newInstance(url); // by design: can throw ClassCastException
                 LOGGER.debug("Found video ripper: " + ripper.getClass().getName());

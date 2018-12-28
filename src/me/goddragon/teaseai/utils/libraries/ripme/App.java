@@ -52,7 +52,6 @@ public class App {
      */
     public static void main(String[] args) throws MalformedURLException {
         //Ski23 Testing only
-        Utils.setConfigBoolean("download.save_order", true);
         Utils.setConfigBoolean("urls_only.save", true);
         Utils.setConfigBoolean("errors.skip404", true);
         Utils.setConfigBoolean("download.save_order", false);
@@ -60,7 +59,15 @@ public class App {
         Utils.setConfigBoolean("album_titles.save", true);
         Utils.setConfigBoolean("no_subfolder", true);
         String url = "https://www.reddit.com/r/EarthPorn/";
-        ripURL(url, false);
+        try
+        {
+            ripURL(url, false);
+        }
+        catch (Exception e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         System.out.println("Finished");
         System.exit(0);
         
@@ -101,14 +108,13 @@ public class App {
         }
     }
 
-    public static File mediaUrlRip(String url, String directory, boolean useForTease)
+    public static File mediaUrlRip(String url, String directory, boolean useForTease) throws Exception
     {
-        Utils.setConfigBoolean("download.save_order", true);
         Utils.setConfigBoolean("urls_only.save", true);
         Utils.setConfigBoolean("errors.skip404", true);
         Utils.setConfigBoolean("download.save_order", false);
         Utils.setConfigString("rips.directory", directory);
-        Utils.setConfigBoolean("album_titles.save", true);
+        Utils.setConfigBoolean("album_titles.save", false);
         Utils.setConfigBoolean("no_subfolder", true);
         Utils.setConfigBoolean("media_url", true);
         Utils.setConfigBoolean("use_for_tease", useForTease);
@@ -266,7 +272,7 @@ public class App {
                 }
             } catch (FileNotFoundException fne) {
                 logger.error("[!] File containing list of URLs not found. Cannot continue.");
-            } catch (IOException ioe) {
+            } catch (Exception ioe) {
                 logger.error("[!] Failed reading file containing list of URLs. Cannot continue.");
             }
         }
@@ -274,7 +280,15 @@ public class App {
         //The URL to rip.
         if (cl.hasOption('u')) {
             String url = cl.getOptionValue('u').trim();
-            ripURL(url, !cl.hasOption("n"));
+            try
+            {
+                ripURL(url, !cl.hasOption("n"));
+            }
+            catch (Exception e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
 
         if (cl.hasOption('j')) {
@@ -287,8 +301,9 @@ public class App {
      * Attempt to rip targetURL.
      * @param targetURL URL to rip
      * @param saveConfig Whether or not you want to save the config (?)
+     * @throws Exception 
      */
-    private static void ripURL(String targetURL, boolean saveConfig) {
+    private static void ripURL(String targetURL, boolean saveConfig) throws Exception {
         try {
             URL url = new URL(targetURL);
             rip(url);
@@ -302,9 +317,17 @@ public class App {
             }
         } catch (MalformedURLException e) {
             logger.error("[!] Given URL is not valid. Expected URL format is http://domain.com/...");
+            if (Utils.getConfigBoolean("media_url", false))
+            {
+                throw e;
+            }
             // System.exit(-1);
         } catch (Exception e) {
             logger.error("[!] Error while ripping URL " + targetURL, e);
+            if (Utils.getConfigBoolean("media_url", false))
+            {
+                throw e;
+            }
             // System.exit(-1);
         }
     }
