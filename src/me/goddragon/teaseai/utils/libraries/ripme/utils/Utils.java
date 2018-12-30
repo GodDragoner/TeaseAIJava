@@ -30,7 +30,6 @@ import java.util.ResourceBundle;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import static java.lang.Math.toIntExact;
 
 /**
  * Common utility functions used in various places throughout the project.
@@ -56,10 +55,35 @@ public class Utils {
 
             if (!file.exists()) {
                 // Use default bundled with .jar
-                configPath = CONFIG_FILE;
+                //configPath = CONFIG_FILE;
+                config = new PropertiesConfiguration();
+                config.addProperty("threads.size", 5);
+                config.addProperty("file.overwrite", true);
+                config.addProperty("download.retries", 2);
+                config.addProperty("download.timeout", 60000);
+                config.addProperty("page.timeout", 5000);
+                config.addProperty("download.max_size", 104857600);
+                config.addProperty("error.skip404", true);
+                config.addProperty("twitter.auth", "VW9Ybjdjb1pkd2J0U3kwTUh2VXVnOm9GTzVQVzNqM29LQU1xVGhnS3pFZzhKbGVqbXU0c2lHQ3JrUFNNZm8=");
+                config.addProperty("tumblr.auth", "JFNLu3CbINQjRdUvZibXW9VpSEVYYtiPJ86o8YmvgLZIoKyuNX");
+                config.addProperty("gw.api", "gonewild");
+                config.addProperty("twitter.max_requests", 10);
+                config.addProperty("clipboard.autorip", false);
+                config.addProperty("download.save_order", false);
+                config.addProperty("auto.update", false);
+                config.addProperty("log.level", "Log level: Debug");
+                config.addProperty("play.sound", false);
+                config.addProperty("download.show_popup", false);
+                config.addProperty("log.save", false);
+                config.addProperty("urls_only.save", true);
+                config.addProperty("album_titles.save", false);
+                config.addProperty("lang", "en_US");
             }
-
-            config = new PropertiesConfiguration(configPath);
+            else
+            {
+                config = new PropertiesConfiguration(configPath);
+            }
+            
             LOGGER.info("Loaded " + config.getPath());
 
             if (file.exists()) {

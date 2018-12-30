@@ -60,7 +60,7 @@ public class URLMediaSettings {
                     }
                     settingsController.addURLButton.setDisable(true);
                     settingsController.addURLTextField.setDisable(true);
-                    settingsController.refreshURLButton.setDisable(true);
+                    //settingsController.refreshURLButton.setDisable(true);
     
                     settingsController.addURLTextField.setText(url);
                     
@@ -85,7 +85,7 @@ public class URLMediaSettings {
                                     updateURLList();
                                     settingsController.addURLButton.setDisable(false);
                                     settingsController.addURLTextField.setDisable(false);
-                                    settingsController.refreshURLButton.setDisable(false);
+                                    //settingsController.refreshURLButton.setDisable(false);
                                 }
                             });
                         }
@@ -199,11 +199,11 @@ public class URLMediaSettings {
                 if (newValue != null) {
                     settingsController.useURLForTease.setDisable(false);
                     settingsController.deleteURLButton.setDisable(false);
-                    settingsController.refreshURLButton.setDisable(false);
+                    //settingsController.refreshURLButton.setDisable(false);
                 } else {
                     settingsController.useURLForTease.setDisable(true);
                     settingsController.deleteURLButton.setDisable(true);
-                    settingsController.refreshURLButton.setDisable(true);
+                    //settingsController.refreshURLButton.setDisable(true);
                 }
 
                 if (settingsController.urlFilesList.getSelectionModel().getSelectedItems().size() == 1) {

@@ -118,7 +118,7 @@ public class App {
         Utils.setConfigBoolean("no_subfolder", true);
         Utils.setConfigBoolean("media_url", true);
         Utils.setConfigBoolean("use_for_tease", useForTease);
-        ripURL(url, false);
+        ripURL(url, true);
         return new File(Utils.getConfigString("url_file", null));
     }
     

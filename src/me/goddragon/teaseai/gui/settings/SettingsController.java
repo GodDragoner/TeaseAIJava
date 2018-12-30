@@ -10,6 +10,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.scripts.personality.Personality;
+import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 
 import java.io.IOException;
 
@@ -25,7 +27,7 @@ public class SettingsController {
     protected MediaSettings mediaSettings = new MediaSettings(this);
     protected ContactSettings contactSettings = new ContactSettings(this);
     protected GeneralSettings generalSettings = new GeneralSettings(this);
-    protected DebugSettings debugSettings = new DebugSettings(this);
+    protected PersonalitySettings debugSettings = new PersonalitySettings(this);
 
     protected Stage stage;
 
@@ -168,8 +170,15 @@ public class SettingsController {
 
     @FXML
     protected GridPane contactGridPane;
+    
+    @FXML
+    protected TabPane PersonalitiesPane;
 
     public void initiate() {
+        for (Personality personality: PersonalityManager.getManager().getPersonalities())
+        {
+            personality.addSettingsToGui();
+        }
         mediaSettings.initiate();
         contactSettings.initiate();
         generalSettings.initiate();
@@ -200,5 +209,12 @@ public class SettingsController {
 
     public static void setController(SettingsController controller) {
         SettingsController.controller = controller;
+    }
+    
+    public Tab addPersonalityToSettingsPane(String personalityName)
+    {
+        Tab newTab = new Tab(personalityName);
+        PersonalitiesPane.getTabs().add(0, newTab);
+        return newTab;
     }
 }
