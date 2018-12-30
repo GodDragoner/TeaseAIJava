@@ -7,6 +7,7 @@ import javafx.scene.control.ButtonType;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
+import me.goddragon.teaseai.api.config.PersonalitySettingsHandler;
 import me.goddragon.teaseai.api.config.VariableHandler;
 import me.goddragon.teaseai.api.picture.PictureSelector;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
@@ -36,6 +37,7 @@ public class Personality {
     private final String folderName;
     private final ConfigHandler configHandler;
     private final VariableHandler variableHandler;
+    private PersonalitySettingsHandler settingsHandler;
 
     private PictureSelector pictureSelector = new PictureSelector();
 
@@ -45,6 +47,7 @@ public class Personality {
         this.variableHandler = new VariableHandler(this);
 
         this.name = new ConfigValue("name", "Default Personality", configHandler);
+        
         this.version = new ConfigValue("version", "1.0", configHandler);
         this.downloadLink = new ConfigValue("updateDownloadZipLink", "null", configHandler);
         this.personalityPropertiesLink = new ConfigValue("personalityPropertiesLink", "null", configHandler);
@@ -53,7 +56,13 @@ public class Personality {
         variableHandler.loadVariables();
         configHandler.loadConfig();
     }
-
+    
+    public void addSettingsToGui()
+    {
+        this.settingsHandler = new PersonalitySettingsHandler(this.name.getValue());
+        this.settingsHandler.addPanel("General Settings");
+    }
+    
     public boolean checkForUpdate() {
         //No link given
         if (personalityPropertiesLink == null || personalityPropertiesLink.getValue() == null || personalityPropertiesLink.getValue().equals("null")) {
@@ -353,5 +362,10 @@ public class Personality {
     @Override
     public String toString() {
         return name + " (" + version + ")";
+    }
+    
+    public PersonalitySettingsHandler getSettingsHandler()
+    {
+        return this.settingsHandler;
     }
 }

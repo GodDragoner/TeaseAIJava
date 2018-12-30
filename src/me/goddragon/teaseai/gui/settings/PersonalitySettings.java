@@ -7,20 +7,22 @@ import javafx.event.EventHandler;
 import javafx.scene.control.SelectionMode;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.config.PersonalitySettingsPanel;
 import me.goddragon.teaseai.api.config.PersonalityVariable;
 import me.goddragon.teaseai.api.config.VariableHandler;
 
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 /**
  * Created by GodDragon on 05.04.2018.
  */
-public class DebugSettings {
+public class PersonalitySettings {
 
     private final VariableHandler variableHandler = TeaseAI.application.getSession().getActivePersonality() == null ? null : TeaseAI.application.getSession().getActivePersonality().getVariableHandler();
     private final SettingsController settingsController;
 
-    public DebugSettings(SettingsController settingsController) {
+    public PersonalitySettings(SettingsController settingsController) {
         this.settingsController = settingsController;
     }
 
@@ -79,6 +81,7 @@ public class DebugSettings {
             settingsController.variableListView.getSelectionModel().clearSelection();
             settingsController.variableListView.getItems().clear();
 
+            ArrayList<PersonalitySettingsPanel> panels = TeaseAI.application.getSession().getActivePersonality().getSettingsHandler().getSettingsPanels();
             for (PersonalityVariable entry : new TreeMap<>(variableHandler.getVariables()).values()) {
                 //TODO: Show and support array variables
                 if (entry.getValue() != null && entry.getValue().getClass().isArray() || entry.getValue() instanceof ScriptObjectMirror && ((ScriptObjectMirror) entry.getValue()).isArray()) {
@@ -88,7 +91,20 @@ public class DebugSettings {
                 if (!settingsController.onlySupportedVariablesCheckbox.isSelected() || entry.isSupportedByPersonality()) {
                     settingsController.variableListView.getItems().add(entry);
                 }
+                
+                if (entry.isSupportedByPersonality())
+                {
+                    if (entry.getValue() == Boolean.FALSE || entry.getValue() == Boolean.TRUE)
+                    {
+                        panels.get(panels.size() - 1).addCheckBox(entry);
+                    }
+                    else if (entry.getValue() instanceof String)
+                    {
+                        panels.get(panels.size() - 1).addTextBox(entry);
+                    }
+                }
             }
+            panels.get(panels.size() - 1).addGuiComponents();
         }
 
         if (settingsController.variableListView.getItems().isEmpty()) {

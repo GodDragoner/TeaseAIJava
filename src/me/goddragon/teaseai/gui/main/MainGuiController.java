@@ -212,7 +212,7 @@ public class MainGuiController {
     public void loadDomInfo() {
         domImageView.setPreserveRatio(true);
         Pane pane = new Pane();
-        contactImageGrid.add(pane, 0, 2);
+        contactImageGrid.add(pane, 0, 1);
         domImageView.fitWidthProperty().bind(pane.widthProperty());
         domImageView.fitHeightProperty().bind(pane.heightProperty());
 
@@ -226,7 +226,7 @@ public class MainGuiController {
             domImageView.setImage(null);
         }
 
-        domImageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 FileChooser chooser = new FileChooser();
