@@ -28,6 +28,14 @@ public class PersonalitySettingsPanel
     {
         this.name = panelName;
         basePane = new AnchorPane();
+        
+        setUp();
+        components = new ArrayList<GUIComponent>();
+    }
+    
+    public void setUp()
+    {
+        basePane.getChildren().clear();
         GridPane baseGridPane = new GridPane();
         ColumnConstraints column1 = new ColumnConstraints();
         column1.setPercentWidth(100);
@@ -38,7 +46,7 @@ public class PersonalitySettingsPanel
         AnchorPane.setLeftAnchor(baseGridPane, 0.0);
         AnchorPane.setBottomAnchor(baseGridPane, 0.0);
         baseGridPane.getRowConstraints().add(new RowConstraints(rowHeight, rowHeight, rowHeight));
-        Label label = new Label(panelName);
+        Label label = new Label(name);
         baseGridPane.add(label, 0, 0);
         GridPane.setHalignment(label, HPos.CENTER);
         label.setAlignment(Pos.CENTER);
@@ -65,8 +73,6 @@ public class PersonalitySettingsPanel
         column7.setPercentWidth(22.5);
         column8.setPercentWidth(2.5);
         gridPane.getColumnConstraints().addAll(column2, column3, column4, column5, column6, column7, column8);
-        
-        components = new ArrayList<GUIComponent>();
     }
 
     public void addGuiComponents()
@@ -158,14 +164,17 @@ public class PersonalitySettingsPanel
 
     public void addCheckBox(PersonalityVariable variable)
     {
-        components
-                .add(new CheckBoxComponent(variable, variable.getCustomName()));
+        components.add(new CheckBoxComponent(variable, variable.getCustomName()));
     }
 
     public void addTextBox(PersonalityVariable variable)
     {
-        components
-                .add(new TextBoxComponent(variable, variable.getCustomName()));
+        components.add(new TextBoxComponent(variable, variable.getCustomName()));
+    }
+    
+    public void addOptionsList(PersonalityVariable variable, ArrayList<String> options)
+    {
+        components.add(new OptionsListComponent(variable, variable.getCustomName(), options));
     }
 
     public AnchorPane getAnchorPane()

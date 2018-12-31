@@ -22,6 +22,8 @@ public class PersonalityManager {
     private BiConsumer<Integer, Integer> progressUpdate ;
 
     private final Collection<Personality> personalities = new ArrayList<>();
+    
+    private static Personality currentlyLoadingPersonality;
 
     public void loadPersonalities() {
         personalities.clear();
@@ -117,5 +119,15 @@ public class PersonalityManager {
 
     public static void setManager(PersonalityManager manager) {
         PersonalityManager.manager = manager;
+    }
+    
+    public void setLoadingPersonality(Personality personality)
+    {
+        currentlyLoadingPersonality = personality;
+    }
+    
+    public Personality getLoadingPersonality()
+    {
+        return currentlyLoadingPersonality;
     }
 }
