@@ -7,9 +7,12 @@ import javafx.event.EventHandler;
 import javafx.scene.control.SelectionMode;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.config.PersonalitiesSettingsHandler;
 import me.goddragon.teaseai.api.config.PersonalitySettingsPanel;
 import me.goddragon.teaseai.api.config.PersonalityVariable;
 import me.goddragon.teaseai.api.config.VariableHandler;
+import me.goddragon.teaseai.api.scripts.personality.Personality;
+import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
@@ -30,6 +33,8 @@ public class PersonalitySettings {
         settingsController.onlySupportedVariablesCheckbox.setSelected(true);
 
         updateVariableList();
+        
+        addPersonalityGUIs();
 
         settingsController.variableListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<PersonalityVariable>() {
             @Override
@@ -76,12 +81,41 @@ public class PersonalitySettings {
         });
     }
 
+    public void addPersonalityGUIs()
+    {
+        for (Personality personality: PersonalityManager.getManager().getPersonalities())
+        {
+            VariableHandler variableHandler = personality.getVariableHandler();
+            PersonalitySettingsPanel panel = personality.getSettingsHandler().getPanel("General Settings");
+            for (PersonalityVariable thisVar: variableHandler.getVariables().values())
+            {
+                if (!PersonalitiesSettingsHandler.getHandler().hasComponent(thisVar))
+                {
+                    PersonalitiesSettingsHandler.getHandler().addGuiComponent(thisVar);
+                    
+                    if (thisVar.isSupportedByPersonality())
+                    {
+                        if (thisVar.getValue() == Boolean.FALSE || thisVar.getValue() == Boolean.TRUE)
+                        {
+                            panel.addCheckBox(thisVar);
+                        }
+                        else if (thisVar.getValue() instanceof String)
+                        {
+                            panel.addTextBox(thisVar);
+                        }
+                    }
+                }
+            }
+            panel.addGuiComponents();
+        }
+    }
+    
     public void updateVariableList() {
         if (variableHandler != null) {
             settingsController.variableListView.getSelectionModel().clearSelection();
             settingsController.variableListView.getItems().clear();
 
-            ArrayList<PersonalitySettingsPanel> panels = TeaseAI.application.getSession().getActivePersonality().getSettingsHandler().getSettingsPanels();
+            //ArrayList<PersonalitySettingsPanel> panels = TeaseAI.application.getSession().getActivePersonality().getSettingsHandler().getSettingsPanels();
             for (PersonalityVariable entry : new TreeMap<>(variableHandler.getVariables()).values()) {
                 //TODO: Show and support array variables
                 if (entry.getValue() != null && entry.getValue().getClass().isArray() || entry.getValue() instanceof ScriptObjectMirror && ((ScriptObjectMirror) entry.getValue()).isArray()) {
@@ -92,7 +126,7 @@ public class PersonalitySettings {
                     settingsController.variableListView.getItems().add(entry);
                 }
                 
-                if (entry.isSupportedByPersonality())
+                /*if (entry.isSupportedByPersonality())
                 {
                     if (entry.getValue() == Boolean.FALSE || entry.getValue() == Boolean.TRUE)
                     {
@@ -102,9 +136,9 @@ public class PersonalitySettings {
                     {
                         panels.get(panels.size() - 1).addTextBox(entry);
                     }
-                }
+                }*/
             }
-            panels.get(panels.size() - 1).addGuiComponents();
+            //panels.get(panels.size() - 1).addGuiComponents();
         }
 
         if (settingsController.variableListView.getItems().isEmpty()) {

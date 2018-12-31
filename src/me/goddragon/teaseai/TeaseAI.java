@@ -15,6 +15,7 @@ import me.goddragon.teaseai.api.chat.response.Response;
 import me.goddragon.teaseai.api.chat.response.ResponseHandler;
 import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
+import me.goddragon.teaseai.api.config.PersonalitiesSettingsHandler;
 import me.goddragon.teaseai.api.media.MediaCollection;
 import me.goddragon.teaseai.api.media.MediaFetishType;
 import me.goddragon.teaseai.api.media.MediaHandler;
@@ -117,6 +118,7 @@ public class TeaseAI extends Application {
         startupProgressPane.addProgressBar(progressForm);
         startupProgressPane.show();
 
+        new PersonalitiesSettingsHandler();
         task.setOnSucceeded(event -> startupProgressPane.getDialogStage().close());
 
         Thread thread = new Thread(task);

@@ -2,6 +2,8 @@ package me.goddragon.teaseai.api.config;
 
 import java.util.ArrayList;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -11,7 +13,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import me.goddragon.teaseai.gui.settings.SettingsController;
 
 public class PersonalitySettingsHandler
 {
@@ -31,17 +32,18 @@ public class PersonalitySettingsHandler
     {
         settingsPanels = new ArrayList<PersonalitySettingsPanel>();
         this.personalityName = personalityName;
+        
     }
     
-    public void addPanel(String panelName)
+    public PersonalitySettingsPanel addPanel(String panelName)
     {
-        addSettingsPanel(panelName);
+        return addSettingsPanel(panelName);
     }
-    public void addSettingsPanel(String panelName)
+    public PersonalitySettingsPanel addSettingsPanel(String panelName)
     {
         if (settingsPanels.isEmpty())
         {
-            PersonalityTab = SettingsController.getController().addPersonalityToSettingsPane(personalityName);
+            PersonalityTab = PersonalitiesSettingsHandler.getHandler().addPersonalityTab(personalityName);
             setupPersonalityTab();
         }
         Label toAdd = new Label(panelName);
@@ -51,6 +53,7 @@ public class PersonalitySettingsHandler
         settingsPanels.add(thisPanel);
         menusList.getSelectionModel().select(toAdd);
         updateMenuContent();
+        return thisPanel;
     }
     
     private void updateMenuContent()
@@ -89,13 +92,34 @@ public class PersonalitySettingsHandler
         personalityGridPane.add(testLabel, 0, 0);
         personalityGridPane.add(testLabel2, 1, 0);*/
         personalityGridPane.getRowConstraints().add(new RowConstraints(30, 40, 40));
-        menusList = new ListView<>();
+        menusList = new ListView<Label>();
         menusList.setOrientation(Orientation.HORIZONTAL);
         personalityGridPane.add(menusList, 0, 0);
+        menusList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Label>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Label> observable, Label oldValue, Label newValue) {
+                updateMenuContent();
+            }
+        });
     }
     
     public ArrayList<PersonalitySettingsPanel> getSettingsPanels()
     {
         return settingsPanels;
+    }
+    
+    public PersonalitySettingsPanel getPanel(String panelName)
+    {
+        PersonalitySettingsPanel toReturn = null;
+        for (PersonalitySettingsPanel panel: settingsPanels)
+        {
+            if (panel.getName().equals(panelName))
+            {
+                toReturn = panel;
+                break;
+            }
+        }
+        return toReturn;
     }
 }

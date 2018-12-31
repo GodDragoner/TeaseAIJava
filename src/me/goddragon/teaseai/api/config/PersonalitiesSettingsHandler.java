@@ -3,16 +3,21 @@ package me.goddragon.teaseai.api.config;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javafx.scene.control.Tab;
+
 public class PersonalitiesSettingsHandler
 {
-    private static HashSet<GUIComponent> addedComponents;
+    private static HashSet<PersonalityVariable> addedComponents;
     private static PersonalitiesSettingsHandler thisHandler;
     private static ArrayList<PersonalitySettingsHandler> personalitySettingsHandlers;
+    private static ArrayList<Tab> personalityTabsToAdd;
     
     public PersonalitiesSettingsHandler()
     {
         thisHandler = this;
         personalitySettingsHandlers = new ArrayList<PersonalitySettingsHandler>();
+        personalityTabsToAdd = new ArrayList<Tab>();
+        addedComponents = new HashSet<PersonalityVariable>();
     }
     
     public static PersonalitiesSettingsHandler getHandler()
@@ -25,12 +30,14 @@ public class PersonalitiesSettingsHandler
         personalitySettingsHandlers.add(handler);
     }
     
-    public boolean containsComponent(GUIComponent comp)
+    public Tab addPersonalityTab(String personalityName)
     {
-        return addedComponents.contains(comp);
+        Tab newTab = new Tab(personalityName);
+        personalityTabsToAdd.add(newTab);
+        return newTab;
     }
     
-    public void addGuiComponent(GUIComponent comp)
+    public void addGuiComponent(PersonalityVariable comp)
     {
         if (addedComponents.contains(comp))
         {
@@ -40,5 +47,15 @@ public class PersonalitiesSettingsHandler
         {
             addedComponents.add(comp);
         }
+    }
+    
+    public boolean hasComponent(PersonalityVariable comp)
+    {
+        return addedComponents.contains(comp);
+    }
+    
+    public ArrayList<Tab> getTabsToAdd()
+    {
+        return personalityTabsToAdd;
     }
 }

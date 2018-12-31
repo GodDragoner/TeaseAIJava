@@ -31,6 +31,8 @@ public class ScriptHandler {
 
     public void load() {
         registerFunction(new SendMessageFunction());
+        registerFunction(new AddSettingsPanelFunction());
+        registerFunction(new AddCheckBoxFunction());
         registerFunction(new SendInputFunction());
         registerFunction(new PlayAudioFunction());
         registerFunction(new PlayVideoFunction());

@@ -7,6 +7,7 @@ import javafx.scene.control.ButtonType;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
+import me.goddragon.teaseai.api.config.PersonalitiesSettingsHandler;
 import me.goddragon.teaseai.api.config.PersonalitySettingsHandler;
 import me.goddragon.teaseai.api.config.VariableHandler;
 import me.goddragon.teaseai.api.picture.PictureSelector;
@@ -55,12 +56,17 @@ public class Personality {
         //Load in all config and variable values (we need to do this before the update because the update check needs the version config value)
         variableHandler.loadVariables();
         configHandler.loadConfig();
+        this.settingsHandler = new PersonalitySettingsHandler(this.name.getValue());
+        PersonalityManager.getManager().setLoadingPersonality(this);
+        onProgramStart();
     }
     
     public void addSettingsToGui()
     {
-        this.settingsHandler = new PersonalitySettingsHandler(this.name.getValue());
-        this.settingsHandler.addPanel("General Settings");
+        if (this.settingsHandler.getPanel("General Settings") == null)
+        {
+            this.settingsHandler.addPanel("General Settings");
+        }
     }
     
     public boolean checkForUpdate() {
@@ -275,6 +281,19 @@ public class Personality {
         });
     }
 
+    public void onProgramStart()
+    {
+        File loadFile = new File(getFolder().getAbsolutePath() + File.separator + "programstart.js");
+
+        if (loadFile.exists()) {
+            try {
+                ScriptHandler.getHandler().runScript(loadFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
     public void load() {
         File loadFile = new File(getFolder().getAbsolutePath() + File.separator + "load.js");
 
