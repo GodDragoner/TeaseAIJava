@@ -5,6 +5,7 @@ import me.goddragon.teaseai.api.chat.response.ResponseHandler;
 import me.goddragon.teaseai.api.chat.vocabulary.VocabularyHandler;
 import me.goddragon.teaseai.api.scripts.nashorn.*;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
+import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -33,6 +34,9 @@ public class ScriptHandler {
         registerFunction(new SendMessageFunction());
         registerFunction(new AddSettingsPanelFunction());
         registerFunction(new AddCheckBoxFunction());
+        registerFunction(new AddTextBoxFunction());
+        registerFunction(new AddOptionsListFunction());
+        registerFunction(new AddSpinnerFunction());
         registerFunction(new SendInputFunction());
         registerFunction(new PlayAudioFunction());
         registerFunction(new PlayVideoFunction());
@@ -83,8 +87,8 @@ public class ScriptHandler {
         registerFunction(new SelectRandomFunction());
         registerFunction(new RunOnGuiThreadFunction());
         registerFunction(new WakeScriptThreadFunction());
-
-        engine.put("run", (Consumer<String>) this::evalScript);
+        registerFunction(new RunFunction());
+        //engine.put("run", (Consumer<String>) this::evalScript);
     }
 
     public void registerFunction(CustomFunction function) {
@@ -132,7 +136,12 @@ public class ScriptHandler {
             scriptName += ".js";
         }
 
-        File script = FileUtils.getRandomMatchingFile(currentPersonality.getFolder().getAbsolutePath() + File.separator + scriptName);
+        Personality personality = currentPersonality;
+        if (personality == null)
+        {
+            personality = PersonalityManager.getManager().getLoadingPersonality();
+        }
+        File script = FileUtils.getRandomMatchingFile(personality.getFolder().getAbsolutePath() + File.separator + scriptName);
 
         if(script == null || !script.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Script " + scriptName + " does not exist.");

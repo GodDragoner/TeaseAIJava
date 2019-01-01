@@ -49,9 +49,19 @@ public class PersonalitiesSettingsHandler
         }
     }
     
+    
+    
     public boolean hasComponent(PersonalityVariable comp)
     {
-        return addedComponents.contains(comp);
+        boolean equivalentVar = false;
+        for (PersonalityVariable var: addedComponents)
+        {
+            if (var.equals(comp))
+            {
+                equivalentVar = true;
+            }
+        }
+        return addedComponents.contains(comp) || equivalentVar;
     }
     
     public ArrayList<Tab> getTabsToAdd()

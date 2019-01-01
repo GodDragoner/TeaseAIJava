@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.Tab;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.PersonalitiesSettingsHandler;
@@ -87,26 +88,48 @@ public class PersonalitySettings {
         {
             VariableHandler variableHandler = personality.getVariableHandler();
             PersonalitySettingsPanel panel = personality.getSettingsHandler().getPanel("General Settings");
+            boolean needToAdd = true;
+            for (Tab tab:PersonalitiesSettingsHandler.getHandler().getTabsToAdd())
+            {
+                if (tab.getText().equals(personality.getName().getValue()))
+                {
+                    needToAdd = false;
+                }
+            }
             for (PersonalityVariable thisVar: variableHandler.getVariables().values())
             {
                 if (!PersonalitiesSettingsHandler.getHandler().hasComponent(thisVar))
                 {
-                    PersonalitiesSettingsHandler.getHandler().addGuiComponent(thisVar);
                     
                     if (thisVar.isSupportedByPersonality())
                     {
+                        if (needToAdd)
+                        {
+                            if (personality.getSettingsHandler().getPanel("General Settings") == null)
+                            {
+                                personality.getSettingsHandler().addPanel("General Settings");
+                                panel = personality.getSettingsHandler().getPanel("General Settings");
+                            }
+                            needToAdd = false;
+                        }
                         if (thisVar.getValue() == Boolean.FALSE || thisVar.getValue() == Boolean.TRUE)
                         {
+                            PersonalitiesSettingsHandler.getHandler().addGuiComponent(thisVar);
                             panel.addCheckBox(thisVar);
                         }
                         else if (thisVar.getValue() instanceof String)
                         {
+                            PersonalitiesSettingsHandler.getHandler().addGuiComponent(thisVar);
                             panel.addTextBox(thisVar);
                         }
                     }
                 }
             }
-            panel.addGuiComponents();
+            
+            for (PersonalitySettingsPanel panel2: personality.getSettingsHandler().getSettingsPanels())
+            {
+                panel2.addGuiComponents();
+            }
         }
     }
     

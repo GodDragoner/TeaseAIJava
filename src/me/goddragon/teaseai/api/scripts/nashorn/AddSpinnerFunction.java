@@ -10,11 +10,10 @@ import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
-public class AddCheckBoxFunction extends CustomFunction
+public class AddSpinnerFunction extends CustomFunction
 {
-
-    public AddCheckBoxFunction() {
-        super("addCheckBox");
+    public AddSpinnerFunction() {
+        super("addSpinner", "addValueRange", "addRange");
     }
 
     @Override
@@ -26,7 +25,7 @@ public class AddCheckBoxFunction extends CustomFunction
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        if (args.length != 2)
+        if (args.length != 4)
         {
             TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
         }
@@ -60,12 +59,48 @@ public class AddCheckBoxFunction extends CustomFunction
                     if (!PersonalitiesSettingsHandler.getHandler().hasComponent(variable))
                     {
                         PersonalitiesSettingsHandler.getHandler().addGuiComponent(variable);
-                        panel.addCheckBox(variable);
+                        int min = 0;
+                        int max = 0;
+                        
+                        if (args[2] instanceof Integer)
+                        {
+                            min = (Integer) args[2];
+                        }
+                        else if (isInteger((String)args[2]))
+                        {
+                            min = Integer.parseInt((String)args[2]);
+                        }
+                        
+                        if (args[3] instanceof Integer)
+                        {
+                            max = (Integer) args[3];
+                        }
+                        else if (isInteger((String)args[3]))
+                        {
+                            max = Integer.parseInt((String)args[3]);
+                        }
+                        
+                        panel.addSpinner(variable, min, max);
                     }
                 }
             }
         }
 
         return null;
+    }
+    private static boolean isInteger(String s) {
+        return isInteger(s,10);
+    }
+
+    private static boolean isInteger(String s, int radix) {
+        if(s.isEmpty()) return false;
+        for(int i = 0; i < s.length(); i++) {
+            if(i == 0 && s.charAt(i) == '-') {
+                if(s.length() == 1) return false;
+                else continue;
+            }
+            if(Character.digit(s.charAt(i),radix) < 0) return false;
+        }
+        return true;
     }
 }
