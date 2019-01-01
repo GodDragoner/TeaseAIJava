@@ -77,6 +77,7 @@ public class PersonalitySettingsPanel
 
     public void addGuiComponents()
     {
+        setUp();
         ArrayList<GUIComponent> firstColumn = new ArrayList<GUIComponent>();
         ArrayList<GUIComponent> seoondColumn = new ArrayList<GUIComponent>();
         ArrayList<GUIComponent> flexible = new ArrayList<GUIComponent>();
@@ -175,6 +176,11 @@ public class PersonalitySettingsPanel
     public void addOptionsList(PersonalityVariable variable, ArrayList<String> options)
     {
         components.add(new OptionsListComponent(variable, variable.getCustomName(), options));
+    }
+    
+    public void addSpinner(PersonalityVariable variable, int min, int max)
+    {
+        components.add(new SpinnerComponent(variable, variable.getCustomName(), min, max));
     }
 
     public AnchorPane getAnchorPane()

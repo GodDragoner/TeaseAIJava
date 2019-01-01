@@ -92,11 +92,11 @@ public class VariableHandler {
                         PersonalityVariable personalityVariable;
                         if (isSupported)
                         {
-                            personalityVariable = new PersonalityVariable(file.getName().substring(0, file.getName().length() - 4), value, customName, description);
+                            personalityVariable = new PersonalityVariable(file.getName().substring(0, file.getName().length() - 4), value, customName, description, personality.getName().getValue());
                         }
                         else
                         {
-                            personalityVariable = new PersonalityVariable(file.getName().substring(0, file.getName().length() - 4), value);
+                            personalityVariable = new PersonalityVariable(file.getName().substring(0, file.getName().length() - 4), value, personality.getName().getValue());
                         }
                         if (needsUpdatedToNewSystem)
                         {
@@ -167,7 +167,7 @@ public class VariableHandler {
 
             personalityVariable.setValue(value);
         } else {
-            personalityVariable = new PersonalityVariable(name, value);
+            personalityVariable = new PersonalityVariable(name, value, personality.getName().getValue());
 
             if(nonSetSupportedVariables.containsKey(name)) {
                 PersonalityVariable supportedVariable = nonSetSupportedVariables.get(name);
@@ -337,7 +337,7 @@ public class VariableHandler {
                 setVariable(personalityVariable.getConfigName(), personalityVariable.getValue());
             }
         } else {
-            PersonalityVariable personalityVariable = new PersonalityVariable(variableName, null);
+            PersonalityVariable personalityVariable = new PersonalityVariable(variableName, null, personality.getName().getValue());
             personalityVariable.setDescription(description);
             personalityVariable.setCustomName(customName);
             personalityVariable.setSupportedByPersonality(true);

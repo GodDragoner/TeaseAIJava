@@ -56,5 +56,6 @@ public class OptionsListComponent extends GUIComponent
                 variable.setValue(choiceBox.getItems().get((Integer) number2));
             }
           });
+        this.setting = choiceBox;
     }
 }

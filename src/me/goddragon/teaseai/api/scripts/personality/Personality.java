@@ -54,19 +54,11 @@ public class Personality {
         this.personalityPropertiesLink = new ConfigValue("personalityPropertiesLink", "null", configHandler);
 
         //Load in all config and variable values (we need to do this before the update because the update check needs the version config value)
-        variableHandler.loadVariables();
         configHandler.loadConfig();
+        variableHandler.loadVariables();
         this.settingsHandler = new PersonalitySettingsHandler(this.name.getValue());
         PersonalityManager.getManager().setLoadingPersonality(this);
         onProgramStart();
-    }
-    
-    public void addSettingsToGui()
-    {
-        if (this.settingsHandler.getPanel("General Settings") == null)
-        {
-            this.settingsHandler.addPanel("General Settings");
-        }
     }
     
     public boolean checkForUpdate() {

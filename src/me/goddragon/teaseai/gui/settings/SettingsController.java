@@ -179,15 +179,11 @@ public class SettingsController {
         mediaSettings.initiate();
         contactSettings.initiate();
         generalSettings.initiate();
-        for (Personality personality: PersonalityManager.getManager().getPersonalities())
-        {
-            personality.addSettingsToGui();
-        }
+        debugSettings.initiate();
         for (Tab tab: PersonalitiesSettingsHandler.getHandler().getTabsToAdd())
         {
             PersonalitiesPane.getTabs().add(0, tab);
         }
-        debugSettings.initiate();
     }
 
     public static void openGUI() {

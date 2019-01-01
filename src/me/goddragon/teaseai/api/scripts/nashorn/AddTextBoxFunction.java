@@ -10,11 +10,10 @@ import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
-public class AddCheckBoxFunction extends CustomFunction
+public class AddTextBoxFunction extends CustomFunction
 {
-
-    public AddCheckBoxFunction() {
-        super("addCheckBox");
+    public AddTextBoxFunction() {
+        super("addTextBox", "addTextField");
     }
 
     @Override
@@ -60,7 +59,7 @@ public class AddCheckBoxFunction extends CustomFunction
                     if (!PersonalitiesSettingsHandler.getHandler().hasComponent(variable))
                     {
                         PersonalitiesSettingsHandler.getHandler().addGuiComponent(variable);
-                        panel.addCheckBox(variable);
+                        panel.addTextBox(variable);
                     }
                 }
             }

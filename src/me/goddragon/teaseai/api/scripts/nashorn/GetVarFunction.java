@@ -1,5 +1,7 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
+import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -23,13 +25,22 @@ public class GetVarFunction extends CustomFunction {
     @Override
     public Object call(Object object, Object... args) {
         super.call(object, args);
-
+        Personality personality;
+        if (TeaseAI.application.getSession() == null)
+        {
+            personality = PersonalityManager.getManager().getLoadingPersonality();
+        }
+        else
+        {
+            personality = PersonalityManager.getManager().getActivePersonality();
+        }
+        
         switch (args.length) {
             case 1:
-                return PersonalityManager.getManager().getActivePersonality().getVariableHandler().getVariableValue(args[0].toString());
+                return personality.getVariableHandler().getVariableValue(args[0].toString());
             case 2:
-                if(PersonalityManager.getManager().getActivePersonality().getVariableHandler().variableExist(args[0].toString())) {
-                    return PersonalityManager.getManager().getActivePersonality().getVariableHandler().getVariableValue(args[0].toString());
+                if(personality.getVariableHandler().variableExist(args[0].toString())) {
+                    return personality.getVariableHandler().getVariableValue(args[0].toString());
                 } else {
                     //Return default
                     return args[1];

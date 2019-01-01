@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 import me.goddragon.teaseai.TeaseAI;
@@ -10,11 +11,10 @@ import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
-public class AddCheckBoxFunction extends CustomFunction
+public class AddOptionsListFunction extends CustomFunction
 {
-
-    public AddCheckBoxFunction() {
-        super("addCheckBox");
+    public AddOptionsListFunction() {
+        super("addOptionsList");
     }
 
     @Override
@@ -26,7 +26,7 @@ public class AddCheckBoxFunction extends CustomFunction
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        if (args.length != 2)
+        if (args.length < 3)
         {
             TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
         }
@@ -60,7 +60,12 @@ public class AddCheckBoxFunction extends CustomFunction
                     if (!PersonalitiesSettingsHandler.getHandler().hasComponent(variable))
                     {
                         PersonalitiesSettingsHandler.getHandler().addGuiComponent(variable);
-                        panel.addCheckBox(variable);
+                        ArrayList<String> options = new ArrayList<String>();
+                        for (int i = 2; i < args.length; i++)
+                        {
+                            options.add((String)args[i]);
+                        }
+                        panel.addOptionsList(variable, options);
                     }
                 }
             }
