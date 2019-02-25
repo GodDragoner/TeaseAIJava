@@ -42,36 +42,29 @@ public class PersonalitySettings {
             public void changed(ObservableValue<? extends PersonalityVariable> observable, PersonalityVariable PersonalityVariable, PersonalityVariable newValue) {
                 if (newValue != null) {
                     settingsController.variableValueTextField.setDisable(false);
-                    settingsController.variableSaveButton.setDisable(false);
                     updateVariableData();
                 } else {
                     settingsController.variableValueTextField.setText("");
                     settingsController.descriptionLabel.setText("");
                     settingsController.variableValueTextField.setDisable(true);
-                    settingsController.variableSaveButton.setDisable(true);
                 }
             }
         });
 
         settingsController.variableListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         settingsController.variableListView.getSelectionModel().selectFirst();
-
-        settingsController.variableSaveButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                PersonalityVariable personalityVariable = getSelectedVariable();
-
-                if (personalityVariable == null) {
-                    return;
-                }
-
-                String variable = personalityVariable.getConfigName();
-
-                if (variable != null && variableHandler != null) {
-                    //TODO: Support arrays
-                    variableHandler.setVariable(variable, variableHandler.getObjectFromString(settingsController.variableValueTextField.getText()));
-                }
+        
+        settingsController.variableValueTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (variableHandler == null)
+            {
+                return;
             }
+            PersonalityVariable personalityVariable = getSelectedVariable();
+            if (personalityVariable == null) {
+                return;
+            }
+            variableHandler.setVariable(personalityVariable.getConfigName(), variableHandler.getObjectFromString(newValue));
+            
         });
 
         settingsController.onlySupportedVariablesCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -166,7 +159,6 @@ public class PersonalitySettings {
 
         if (settingsController.variableListView.getItems().isEmpty()) {
             settingsController.variableValueTextField.setDisable(true);
-            settingsController.variableSaveButton.setDisable(true);
         }
     }
 

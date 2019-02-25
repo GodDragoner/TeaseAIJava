@@ -20,7 +20,7 @@ public class SpinnerComponent extends GUIComponent
     
     public SpinnerComponent(PersonalityVariable variable, String settingString, int min, int max)
     {
-        super(settingString);
+        super(settingString, variable.getDescription());
         // TODO Auto-generated constructor stub
         this.variable = variable;
         this.min = min;

@@ -13,6 +13,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class PersonalitySettingsPanel
@@ -23,6 +24,7 @@ public class PersonalitySettingsPanel
     private ArrayList<GUIComponent> components;
     private GridPane gridPane;
     private int gridPaneRows = 0;
+    private ScrollPane scrollPane;
 
     public PersonalitySettingsPanel(String panelName)
     {
@@ -53,7 +55,7 @@ public class PersonalitySettingsPanel
         label.setFont(new Font(15.0));
         
         gridPane = new GridPane();
-        ScrollPane scrollPane = new ScrollPane(gridPane);
+        scrollPane = new ScrollPane(gridPane);
         scrollPane.setFitToWidth(true);
         
         baseGridPane.add(scrollPane, 0, 1);
@@ -186,6 +188,11 @@ public class PersonalitySettingsPanel
     public AnchorPane getAnchorPane()
     {
         return basePane;
+    }
+    
+    public ScrollPane getScrollPane()
+    {
+        return scrollPane;
     }
 
     public String getName()

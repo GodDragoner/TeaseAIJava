@@ -13,6 +13,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.chat.ChatParticipant;
+import me.goddragon.teaseai.gui.main.MainGuiController;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.media.ImageUtils;
 
@@ -35,13 +36,11 @@ public class ContactSettings {
             @Override
             public void changed(ObservableValue<? extends ChatParticipant> observable, ChatParticipant oldValue, ChatParticipant newValue) {
                 if (newValue != null) {
-                    settingsController.saveContactButton.setDisable(false);
                     settingsController.domContactNameField.setDisable(false);
                     updateContactData();
                 } else {
                     settingsController.domContactImageView.setImage(null);
                     settingsController.domContactNameField.setDisable(true);
-                    settingsController.saveContactButton.setDisable(true);
                 }
             }
         });
@@ -79,6 +78,7 @@ public class ContactSettings {
                     if ((extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("jpeg"))) {
                         getSelectedContact().getContact().IMAGE_PATH.setValue(image.getPath());
                         getSelectedContact().getContact().IMAGE_PATH.save();
+                        getSelectedContact().getContact().save();
                         updateContactData();
                     } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -97,23 +97,12 @@ public class ContactSettings {
 
             if (contact != null) {
                 contact.getContact().NAME.setValue(newValue);
-            }
-        });
-
-        settingsController.saveContactButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                ChatParticipant contact = getSelectedContact();
-
-                if (contact != null) {
-                    //Update to the newest path
-                    getSelectedContact().getContact().IMAGE_SET_PATH.setValue(settingsController.domContactImageSetPathText.getText());
-
-                    contact.getContact().save();
-
-                    //Update the name in the chat participant too
-                    contact.setName(contact.getContact().NAME.getValue());
-                    updateContactList();
+                
+                contact.setName(contact.getContact().NAME.getValue());
+                updateContactList();
+                if (contact.getId() == 1)
+                {
+                    MainGuiController.getController().getDomNameTextField().setText(contact.getContact().NAME.getValue());
                 }
             }
         });

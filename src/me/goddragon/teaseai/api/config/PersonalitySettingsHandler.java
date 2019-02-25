@@ -32,7 +32,7 @@ public class PersonalitySettingsHandler
     {
         settingsPanels = new ArrayList<PersonalitySettingsPanel>();
         this.personalityName = personalityName;
-        
+        PersonalitiesSettingsHandler.getHandler().addPersonalitySettingsHandler(this);
     }
     
     public PersonalitySettingsPanel addPanel(String panelName)

@@ -68,4 +68,9 @@ public class PersonalitiesSettingsHandler
     {
         return personalityTabsToAdd;
     }
+    
+    public ArrayList<PersonalitySettingsHandler> getSettingsHandlers()
+    {
+        return personalitySettingsHandlers;
+    }
 }
