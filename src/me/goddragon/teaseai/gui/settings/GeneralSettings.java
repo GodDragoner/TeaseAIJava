@@ -1,5 +1,7 @@
 package me.goddragon.teaseai.gui.settings;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.TextFormatter;
@@ -34,13 +36,44 @@ public class GeneralSettings {
         settingsController.preferredTeaseLengthField.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), 0, integerFilter));
 
         settingsController.preferredTeaseLengthField.setText(TeaseAI.application.PREFERRED_SESSION_DURATION.getValue());
-
-        settingsController.saveGeneralSettingsButton.setOnAction(new EventHandler<ActionEvent>() {
+        
+        settingsController.preferredTeaseLengthField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                saveSettings();
+                
+                TeaseAI.application.PREFERRED_SESSION_DURATION.setValue(settingsController.preferredTeaseLengthField.getText()).save();
             }
         });
+        
+        settingsController.fontSizeComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Double>()
+        {
+
+            @Override
+            public void changed(ObservableValue<? extends Double> observable,
+                    Double oldValue, Double newValue)
+            {
+                TeaseAI.application.CHAT_TEXT_SIZE.setValue(settingsController.fontSizeComboBox.getSelectionModel().getSelectedItem().toString()).save();
+            }
+        });
+        
+        settingsController.defaultTypeSpeedComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TypeSpeed>()
+        {
+
+            @Override
+            public void changed(ObservableValue<? extends TypeSpeed> observable,
+                    TypeSpeed oldValue, TypeSpeed newValue)
+            {
+                TeaseAI.application.DEFAULT_TYPE_SPEED.setValue(settingsController.defaultTypeSpeedComboBox.getSelectionModel().getSelectedItem().toString()).save();
+                //if the session hasn't started yet we can adjust the type speed
+                if(!TeaseAI.application.getSession().isStarted()) {
+                    for(ChatParticipant chatParticipant : ChatHandler.getHandler().getParticipants()) {
+                        chatParticipant.setTypeSpeed(TypeSpeed.valueOf(TeaseAI.application.DEFAULT_TYPE_SPEED.getValue()));
+                    }
+                }
+                   
+            }
+        });
+
 
         for(double x = 10; x <= 60; x+= .5) {
             settingsController.fontSizeComboBox.getItems().add(x);
@@ -53,18 +86,5 @@ public class GeneralSettings {
         }
 
         settingsController.defaultTypeSpeedComboBox.getSelectionModel().select(TypeSpeed.valueOf(TeaseAI.application.DEFAULT_TYPE_SPEED.getValue()));
-    }
-
-    public void saveSettings() {
-        TeaseAI.application.PREFERRED_SESSION_DURATION.setValue(settingsController.preferredTeaseLengthField.getText()).save();
-        TeaseAI.application.CHAT_TEXT_SIZE.setValue(settingsController.fontSizeComboBox.getSelectionModel().getSelectedItem().toString()).save();
-        TeaseAI.application.DEFAULT_TYPE_SPEED.setValue(settingsController.defaultTypeSpeedComboBox.getSelectionModel().getSelectedItem().toString()).save();
-
-        //if the session hasn't started yet we can adjust the type speed
-        if(!TeaseAI.application.getSession().isStarted()) {
-            for(ChatParticipant chatParticipant : ChatHandler.getHandler().getParticipants()) {
-                chatParticipant.setTypeSpeed(TypeSpeed.valueOf(TeaseAI.application.DEFAULT_TYPE_SPEED.getValue()));
-            }
-        }
     }
 }

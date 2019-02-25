@@ -6,13 +6,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.chat.TypeSpeed;
 import me.goddragon.teaseai.api.config.PersonalitiesSettingsHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
+import me.goddragon.teaseai.gui.main.MainGuiController;
 
 import java.io.IOException;
 
@@ -29,6 +32,7 @@ public class SettingsController {
     protected ContactSettings contactSettings = new ContactSettings(this);
     protected GeneralSettings generalSettings = new GeneralSettings(this);
     protected PersonalitySettings debugSettings = new PersonalitySettings(this);
+    protected AppearanceSettings appearanceSettings = new AppearanceSettings(this, MainGuiController.getController());
 
     protected Stage stage;
 
@@ -37,13 +41,10 @@ public class SettingsController {
     protected TextField preferredTeaseLengthField;
 
     @FXML
-    protected Button saveGeneralSettingsButton;
+    protected ComboBox<Double> fontSizeComboBox;
 
     @FXML
-    protected ComboBox fontSizeComboBox;
-
-    @FXML
-    protected ComboBox defaultTypeSpeedComboBox;
+    protected ComboBox<TypeSpeed> defaultTypeSpeedComboBox;
 
     @FXML
     protected ListView urlFilesList;
@@ -129,9 +130,6 @@ public class SettingsController {
     protected TextField domContactNameField;
 
     @FXML
-    protected Button saveContactButton;
-
-    @FXML
     protected StackPane domContactImageStackPane;
 
     @FXML
@@ -149,9 +147,6 @@ public class SettingsController {
 
     @FXML
     protected TextField variableValueTextField;
-
-    @FXML
-    protected Button variableSaveButton;
 
     @FXML
     protected CheckBox onlySupportedVariablesCheckbox;
@@ -174,6 +169,60 @@ public class SettingsController {
     
     @FXML
     protected TabPane PersonalitiesPane;
+    
+    @FXML
+    protected ComboBox<String> ThemesList;
+    
+    @FXML
+    protected ColorPicker PrimaryColor;
+    
+    @FXML
+    protected ColorPicker ChatWindowColor;
+    
+    @FXML
+    protected ColorPicker ChatColor;
+    
+    @FXML
+    protected ColorPicker ChatBackground;
+    
+    @FXML
+    protected ColorPicker DateColor;
+    
+    @FXML
+    protected ColorPicker SubColor;
+    
+    @FXML
+    protected ColorPicker DomColor;
+    
+    @FXML
+    protected ColorPicker Friend1Color;
+    
+    @FXML
+    protected ColorPicker Friend2Color;
+    
+    @FXML
+    protected ColorPicker Friend3Color;
+    
+    @FXML
+    protected TabPane SettingsPanes;
+    
+    @FXML
+    protected AnchorPane SettingsBackground;
+    
+    @FXML
+    protected AnchorPane GeneralTab;
+    
+    @FXML
+    protected AnchorPane AppearanceTab;
+    
+    @FXML
+    protected AnchorPane PersonalityTab;
+    
+    @FXML
+    protected AnchorPane MediaTab;
+    
+    @FXML
+    protected AnchorPane ContactsTab;
 
     public void initiate() {
         mediaSettings.initiate();
@@ -184,9 +233,18 @@ public class SettingsController {
         {
             PersonalitiesPane.getTabs().add(0, tab);
         }
+        appearanceSettings.initiate();
     }
 
     public static void openGUI() {
+        if (controller != null)
+        {
+            if (controller.stage.isShowing())
+            {
+                controller.stage.toFront();
+                return;
+            }
+        }
         controller = new SettingsController();
         FXMLLoader loader = new FXMLLoader(TeaseAI.class.getResource("gui/settings/settings.fxml"));
         loader.setController(SettingsController.getController());
@@ -195,7 +253,9 @@ public class SettingsController {
             Parent root = loader.load();
             controller.stage = new Stage();
             controller.stage.setTitle("Tease-AI Settings");
-            controller.stage.setScene(new Scene(root, 1280, 650));
+            Scene newScene = new Scene(root, 1280, 650);
+            newScene.getStylesheets().add(SettingsController.class.getResource("/textFormat.css").toExternalForm());
+            controller.stage.setScene(newScene);
             controller.stage.show();
 
             controller.initiate();
@@ -210,5 +270,10 @@ public class SettingsController {
 
     public static void setController(SettingsController controller) {
         SettingsController.controller = controller;
+    }
+    
+    public AppearanceSettings getAppearanceSettings()
+    {
+        return appearanceSettings;
     }
 }

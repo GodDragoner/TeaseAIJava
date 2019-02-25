@@ -27,6 +27,7 @@ import me.goddragon.teaseai.api.session.StrokeHandler;
 import me.goddragon.teaseai.gui.ProgressForm;
 import me.goddragon.teaseai.gui.StartupProgressPane;
 import me.goddragon.teaseai.gui.main.MainGuiController;
+import me.goddragon.teaseai.gui.settings.AppearanceSettings;
 import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.update.UpdateHandler;
 
@@ -138,6 +139,7 @@ public class TeaseAI extends Application {
         Parent root = loader.load();
         primaryStage.setTitle("Tease-AI " + VERSION);
         mainScene = new Scene(root, 1480, 720);
+        mainScene.getStylesheets().add(getClass().getResource("/textFormat.css").toExternalForm());
         primaryStage.setScene(mainScene);
         primaryStage.show();
         controller.initiate();
@@ -284,6 +286,7 @@ public class TeaseAI extends Application {
 
         //Reset the temporary variables
         session.getActivePersonality().getVariableHandler().clearTemporaryVariables();
+        AppearanceSettings.loadSelectedTheme();
     }
 
     public Thread getScriptThread() {
@@ -309,6 +312,9 @@ public class TeaseAI extends Application {
     public Scene getScene() {
         return mainScene;
     }
-
-
+    
+    public static TeaseAI getApplication()
+    {
+        return application;
+    }
 }

@@ -17,7 +17,7 @@ public class OptionsListComponent extends GUIComponent
     
     public OptionsListComponent(PersonalityVariable variable, String settingString, ArrayList<String> options)
     {
-        super(settingString);
+        super(settingString, variable.getDescription());
         // TODO Auto-generated constructor stub
         this.variable = variable;
         this.options = options;

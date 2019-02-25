@@ -11,7 +11,7 @@ public class TextBoxComponent extends GUIComponent
     
     public TextBoxComponent(PersonalityVariable variable, String settingString)
     {
-        super(settingString);
+        super(settingString, variable.getDescription());
         // TODO Auto-generated constructor stub
         this.variable = variable;
         setUp();
