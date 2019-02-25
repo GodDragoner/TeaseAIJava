@@ -1,11 +1,8 @@
 package me.goddragon.teaseai.utils;
 
-import me.goddragon.teaseai.Main;
 import me.goddragon.teaseai.TeaseAI;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URLDecoder;
 import java.nio.file.*;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -327,23 +324,8 @@ public class FileUtils {
             e.printStackTrace();
         }
     }
-    
-    public static String getTAJPath()
-    {
-        try
-        {
-            /*File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
-            System.out.println(jarDir.getAbsolutePath());
-            return jarDir.getAbsolutePath();*/
-            return Paths.get(System.getProperty("user.dir")).toString();
 
-
-        }
-        catch (Exception e)
-        {
-            // TODO Auto-generated catch block
-            System.out.println("error:" + e.getLocalizedMessage());
-            return null;
-        }
+    public static String getTAJPath() {
+        return Paths.get(System.getProperty("user.dir")).toString();
     }
 }
