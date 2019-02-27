@@ -121,9 +121,15 @@ public class TaggedPicture {
         HashSet<PictureTag> localTags = getTags();
         deleteTags();
         File newFile = new File(newPath);
-        TeaseLogger.getLogger().log(Level.INFO, "Moving file to " + newPath);
-
-        try {
+        File tempFile = newFile;
+        if (!tempFile.getParentFile().exists())
+        {
+            tempFile.getParentFile().mkdirs();
+        }
+        
+        try
+        {
+            TeaseLogger.getLogger().log(Level.INFO, "Moving file to " + newPath);
             Files.move(file.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Failed to move file to path " + newPath);
@@ -137,7 +143,7 @@ public class TaggedPicture {
 
         newFile = new File(newPath);
         if (!newFile.exists()) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "Failed to move file to path " + newPath);
+            TeaseLogger.getLogger().log(Level.SEVERE, "Failed to move file to path2 " + newPath);
             return false;
         }
 
@@ -161,7 +167,7 @@ public class TaggedPicture {
         TeaseLogger.getLogger().log(Level.INFO, "File tags after move " + this.tags.toString());
         return true;
     }
-
+    
     public void delete() {
         deleteTags();
         File folder = this.file.getParentFile();

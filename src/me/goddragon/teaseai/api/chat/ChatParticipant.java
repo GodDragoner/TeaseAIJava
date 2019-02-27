@@ -37,7 +37,6 @@ public class ChatParticipant {
     private SenderType type;
     private boolean active = false;
     private TypeSpeed typeSpeed;
-    private Color chatColor;
 
     private PictureSet pictureSet;
 
@@ -64,43 +63,6 @@ public class ChatParticipant {
         this.contact = contact;
         this.typeSpeed = ChatHandler.getHandler().getTypeSpeed();
 
-        switch (id) {
-            case 0:
-                chatColor = Color.DARKCYAN;
-                break;
-            case 1:
-                chatColor = Color.RED;
-                break;
-            case 2:
-                chatColor = Color.ORANGE;
-                break;
-            case 3:
-                chatColor = Color.LIGHTGREEN;
-                break;
-            case 4:
-                chatColor = Color.MEDIUMVIOLETRED;
-                break;
-            case 5:
-                chatColor = Color.TEAL;
-                break;
-            default:
-                chatColor = Color.SALMON;
-                break;
-        }
-
-        if (type == SenderType.SUB) {
-            active = true;
-        }
-
-        choosePictureSet();
-    }
-
-    public ChatParticipant(int id, String name, SenderType type, Color chatColor, Contact contact) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.chatColor = chatColor;
-
         if (type == SenderType.SUB) {
             active = true;
         }
@@ -119,7 +81,7 @@ public class ChatParticipant {
     public void sendInteract(String type) {
         Text nameText = new Text(name + " ");
         nameText.setFont(Font.font(null, FontWeight.BOLD, TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 2));
-        nameText.setFill(chatColor);
+        nameText.setFill(ChatHandler.getHandler().getParticipantColors()[id]);
 
         Text messageText = new Text(type + " the chat room.");
         messageText.setFill(Color.AQUA);
@@ -145,6 +107,7 @@ public class ChatParticipant {
 
         Text messageText = new Text(message);
         messageText.setFont(Font.font(null, FontWeight.NORMAL, TeaseAI.application.CHAT_TEXT_SIZE.getDouble()));
+        messageText.setFill(ChatHandler.getHandler().getDefaultChatColor());
 
         sendMessage(message, messageText, millisToWait);
     }
@@ -159,13 +122,36 @@ public class ChatParticipant {
 
     public void sendMessage(String rawMessage, long millisToWait, List<Text> messages) {
         DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
-
+        if (messages.size() == 1 && messages.get(0).getFill().equals(Color.BLACK))
+        {
+            messages.get(0).setFill(ChatHandler.getHandler().getDefaultChatColor());
+        }
+        else
+        {
+            boolean allBlack = true;
+            for (Text text: messages)
+            {
+                if (!text.getFill().equals(Color.BLACK))
+                {
+                    allBlack = false;
+                    break;
+                }
+            }
+            if (allBlack)
+            {
+                for (Text text: messages)
+                {
+                    text.setFill(ChatHandler.getHandler().getDefaultChatColor());
+                }
+            }
+        }
+                
         Text dateText = new Text(dateFormat.format(new Date()) + " ");
-        dateText.setFill(Color.DARKGRAY);
+        dateText.setFill(ChatHandler.getHandler().getDateColor());
         dateText.setFont(Font.font(null, FontWeight.MEDIUM,  TeaseAI.application.CHAT_TEXT_SIZE.getDouble()));
         Text text = new Text(name + ": ");
 
-        text.setFill(chatColor);
+        text.setFill(ChatHandler.getHandler().getParticipantColors()[id]);
 
         text.setFont(Font.font(null, FontWeight.BOLD,  TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 1));
         //Check whether we can find a response fitting right now
@@ -303,14 +289,6 @@ public class ChatParticipant {
 
     public void setTypeSpeed(TypeSpeed typeSpeed) {
         this.typeSpeed = typeSpeed;
-    }
-
-    public Color getChatColor() {
-        return chatColor;
-    }
-
-    public void setChatColor(Color chatColor) {
-        this.chatColor = chatColor;
     }
 
     public Contact getContact() {

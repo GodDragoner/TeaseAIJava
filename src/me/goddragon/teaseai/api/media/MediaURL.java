@@ -28,7 +28,7 @@ import java.util.logging.Level;
 public class MediaURL extends MediaHolder implements Observable {
 
     public static final String URL_FILE_PATH = "Images" + File.separator + "System" + File.separator + "URL Files";
-    public static final String IMAGE_DOWNLOAD_PATH = "Images" + File.separator + "System" + File.separator + "Tumblr";
+    public static final String IMAGE_DOWNLOAD_PATH = "Images" + File.separator + "System" + File.separator + "Downloaded Images";
 
     private String url;
     private boolean useForTease = false;

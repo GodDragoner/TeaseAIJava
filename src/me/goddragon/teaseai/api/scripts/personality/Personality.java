@@ -7,6 +7,8 @@ import javafx.scene.control.ButtonType;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
+import me.goddragon.teaseai.api.config.PersonalitiesSettingsHandler;
+import me.goddragon.teaseai.api.config.PersonalitySettingsHandler;
 import me.goddragon.teaseai.api.config.VariableHandler;
 import me.goddragon.teaseai.api.picture.PictureSelector;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
@@ -36,6 +38,7 @@ public class Personality {
     private final String folderName;
     private final ConfigHandler configHandler;
     private final VariableHandler variableHandler;
+    private PersonalitySettingsHandler settingsHandler;
 
     private PictureSelector pictureSelector = new PictureSelector();
 
@@ -45,15 +48,19 @@ public class Personality {
         this.variableHandler = new VariableHandler(this);
 
         this.name = new ConfigValue("name", "Default Personality", configHandler);
+        
         this.version = new ConfigValue("version", "1.0", configHandler);
         this.downloadLink = new ConfigValue("updateDownloadZipLink", "null", configHandler);
         this.personalityPropertiesLink = new ConfigValue("personalityPropertiesLink", "null", configHandler);
 
         //Load in all config and variable values (we need to do this before the update because the update check needs the version config value)
-        variableHandler.loadVariables();
         configHandler.loadConfig();
+        variableHandler.loadVariables();
+        this.settingsHandler = new PersonalitySettingsHandler(this.name.getValue());
+        PersonalityManager.getManager().setLoadingPersonality(this);
+        onProgramStart();
     }
-
+    
     public boolean checkForUpdate() {
         //No link given
         if (personalityPropertiesLink == null || personalityPropertiesLink.getValue() == null || personalityPropertiesLink.getValue().equals("null")) {
@@ -266,6 +273,19 @@ public class Personality {
         });
     }
 
+    public void onProgramStart()
+    {
+        File loadFile = new File(getFolder().getAbsolutePath() + File.separator + "programstart.js");
+
+        if (loadFile.exists()) {
+            try {
+                ScriptHandler.getHandler().runScript(loadFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
     public void load() {
         File loadFile = new File(getFolder().getAbsolutePath() + File.separator + "load.js");
 
@@ -353,5 +373,10 @@ public class Personality {
     @Override
     public String toString() {
         return name + " (" + version + ")";
+    }
+    
+    public PersonalitySettingsHandler getSettingsHandler()
+    {
+        return this.settingsHandler;
     }
 }

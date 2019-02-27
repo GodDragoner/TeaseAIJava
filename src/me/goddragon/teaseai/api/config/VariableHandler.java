@@ -36,15 +36,6 @@ public class VariableHandler {
         personalityVariableFolder = new File(personality.getSystemFolder().getPath() + File.separator + "Variables");
         personalityVariableFolder.mkdirs();
 
-        /*supportedVariablesFile = new File(personality.getFolder().getPath() + File.separator + "variableInformation.txt");
-        if(!supportedVariablesFile.exists()) {
-            try {
-                supportedVariablesFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
-
         for (File file : personalityVariableFolder.listFiles()) {
             if (file.isFile() && file.getName().endsWith(".var")) {
                 try {
@@ -64,6 +55,27 @@ public class VariableHandler {
                     }
 
                     Object value = null;
+                    boolean isSupported = false;
+                    String description = "";
+                    String customName = "";
+                    boolean needsUpdatedToNewSystem = false;
+                    Object lastLine = getObjectFromString(lines.get(lines.size()-1));
+                    
+                    if (lastLine instanceof Boolean && lines.size() > 1)
+                    {
+                        lines = lines.subList(0, lines.size() - 1);
+                    }
+                    else if (lines.size() > 3 && getObjectFromString(lines.get(lines.size()-3)) instanceof Boolean)
+                    {
+                        isSupported = true;
+                        description = (String) lastLine;
+                        customName = (String) getObjectFromString(lines.get(lines.size()-2));
+                        lines = lines.subList(0, lines.size() - 3);
+                    }
+                    else {
+                        //This variable is still using the old system. 
+                        needsUpdatedToNewSystem = true;
+                    }
 
                     if(lines.size() > 1) {
                         value = lines.toArray(new String[] {});
@@ -77,8 +89,25 @@ public class VariableHandler {
                     }
 
                     if (value != null) {
-                        PersonalityVariable personalityVariable = new PersonalityVariable(file.getName().substring(0, file.getName().length() - 4), value);
-
+                        PersonalityVariable personalityVariable;
+                        if (isSupported)
+                        {
+                            personalityVariable = new PersonalityVariable(file.getName().substring(0, file.getName().length() - 4), value, customName, description, personality.getName().getValue());
+                        }
+                        else
+                        {
+                            personalityVariable = new PersonalityVariable(file.getName().substring(0, file.getName().length() - 4), value, personality.getName().getValue());
+                        }
+                        if (needsUpdatedToNewSystem)
+                        {
+                            if (isSupported)
+                            {
+                                nonSetSupportedVariables.put(personalityVariable.getConfigName(), personalityVariable);
+                            }
+                            deleteVariable(personalityVariable.getConfigName());
+                            setVariable(personalityVariable.getConfigName(), personalityVariable.getValue());
+                        }
+                        
                         //If we already know about this variable try to restore custom information
                         if(variableExist(personalityVariable.getConfigName())) {
                             PersonalityVariable existingVariable = getVariable(personalityVariable.getConfigName());
@@ -138,7 +167,7 @@ public class VariableHandler {
 
             personalityVariable.setValue(value);
         } else {
-            personalityVariable = new PersonalityVariable(name, value);
+            personalityVariable = new PersonalityVariable(name, value, personality.getName().getValue());
 
             if(nonSetSupportedVariables.containsKey(name)) {
                 PersonalityVariable supportedVariable = nonSetSupportedVariables.get(name);
@@ -172,10 +201,22 @@ public class VariableHandler {
                 for(String string : strings) {
                     lines.add(string);
                 }
+                lines.add(personalityVariable.isSupportedByPersonality() + "");
+                if (personalityVariable.isSupportedByPersonality())
+                {
+                    lines.add(personalityVariable.getCustomName());
+                    lines.add(personalityVariable.getDescription());
+                }
             } else {
-                lines = Arrays.asList(value.toString());
+                if (personalityVariable.isSupportedByPersonality())
+                {
+                    lines = Arrays.asList(value.toString(), "true", personalityVariable.getCustomName(), personalityVariable.getDescription());
+                }
+                else
+                {
+                    lines = Arrays.asList(value.toString(), "false");
+                }
             }
-
 
             try {
                 Files.write(Paths.get(variableFile.toURI()), lines, Charset.forName("UTF-8"));
@@ -287,8 +328,16 @@ public class VariableHandler {
             personalityVariable.setDescription(description);
             personalityVariable.setCustomName(customName);
             personalityVariable.setSupportedByPersonality(true);
+            PersonalityVariable thisVariable = variables.get(variableName);
+            if (!thisVariable.isSupportedByPersonality() || !thisVariable.getDescription().equals(description) || thisVariable.getCustomName().equals(customName))
+            {
+                variables.remove(variableName);
+                nonSetSupportedVariables.put(variableName, personalityVariable);
+                deleteVariable(personalityVariable.getConfigName());
+                setVariable(personalityVariable.getConfigName(), personalityVariable.getValue());
+            }
         } else {
-            PersonalityVariable personalityVariable = new PersonalityVariable(variableName, null);
+            PersonalityVariable personalityVariable = new PersonalityVariable(variableName, null, personality.getName().getValue());
             personalityVariable.setDescription(description);
             personalityVariable.setCustomName(customName);
             personalityVariable.setSupportedByPersonality(true);
@@ -310,7 +359,7 @@ public class VariableHandler {
         classes.add(Double.class);
         classes.add(Float.class);
 
-        for(Class clazz : classes)
+        for(Class<?> clazz : classes)
             try {
                 Method method = clazz.getDeclaredMethod("valueOf", String.class);
                 if (method != null) {
