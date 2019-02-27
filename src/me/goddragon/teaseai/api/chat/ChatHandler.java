@@ -3,6 +3,7 @@ package me.goddragon.teaseai.api.chat;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import me.goddragon.teaseai.TeaseAI;
@@ -20,7 +21,14 @@ public class ChatHandler {
     public static final int MAIN_DOM_SENDER_ID = 1;
 
     private static ChatHandler handler = new ChatHandler();
+    
     private TypeSpeed typeSpeed = TypeSpeed.valueOf(TeaseAI.application.DEFAULT_TYPE_SPEED.getValue());
+    
+    private Color defaultChatColor = Color.BLACK;
+    
+    private Color dateColor;
+    
+    private Color[] participantColors;
 
     /**
      * Millis waited after each message by default
@@ -49,6 +57,8 @@ public class ChatHandler {
     private ChatParticipant currentDom = null;
 
     public ChatHandler() {
+        dateColor = Color.DARKGRAY;
+        participantColors = new Color[] {Color.DARKCYAN, Color.RED, Color.ORANGE, Color.LIGHTGREEN, Color.MEDIUMVIOLETRED};
         TextFlow textFlow = TeaseAI.application.getController().getChatWindow();
         ScrollPane textContainer = TeaseAI.application.getController().getChatScrollPane();
         textFlow.getChildren().addListener(
@@ -362,7 +372,33 @@ public class ChatHandler {
         return senders;
     }
 
+    public Color getDefaultChatColor()
+    {
+        return defaultChatColor;
+    }
+    
+    public Color getDateColor()
+    {
+        return dateColor;
+    }
+    
+    public void setDateColor(Color newColor)
+    {
+        dateColor = newColor;
+    }
+    
+    public void setDefaultChatColor(Color newColor)
+    {
+        defaultChatColor = newColor;
+    }
+    
+    public Color[] getParticipantColors()
+    {
+        return participantColors;
+    }
+    
     public static void setHandler(ChatHandler handler) {
         ChatHandler.handler = handler;
     }
+
 }

@@ -1,6 +1,8 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
 import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.scripts.personality.Personality;
+import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.Arrays;
@@ -23,11 +25,22 @@ public class RegisterSupportedVariableFunction extends CustomFunction {
     @Override
     public Object call(Object object, Object... args) {
         if(args.length >= 3) {
+            
+            Personality personality;
+            if (TeaseAI.application.getSession() == null)
+            {
+                personality = PersonalityManager.getManager().getLoadingPersonality();
+            }
+            else
+            {
+                personality = PersonalityManager.getManager().getActivePersonality();
+            }
+            
             String variableName = args[0].toString();
             String customName = args[1].toString();
             String description = args[2].toString();
 
-            TeaseAI.application.getSession().getActivePersonality().getVariableHandler().setVariableSupport(variableName, customName, description);
+            personality.getVariableHandler().setVariableSupport(variableName, customName, description);
             return null;
         }
 

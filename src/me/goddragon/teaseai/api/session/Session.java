@@ -10,6 +10,7 @@ import me.goddragon.teaseai.api.runnable.TeaseRunnableHandler;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
+import me.goddragon.teaseai.gui.settings.AppearanceSettings;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
@@ -120,7 +121,7 @@ public class Session {
                 TeaseAI.application.getController().getChatWindow().getChildren().clear();
                 
                 //Clear css
-                TeaseAI.application.getScene().getStylesheets().clear();
+                //TeaseAI.application.getScene().getStylesheets().clear();
 
                 //Reset playing video
                 if(MediaHandler.getHandler().getCurrentVideoPlayer() != null) {

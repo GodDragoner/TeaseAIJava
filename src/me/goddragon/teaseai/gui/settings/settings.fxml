@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -17,25 +18,19 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<GridPane gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="383.0" prefWidth="552.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="427.0" />
-    </columnConstraints>
-    <rowConstraints>
-        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="382.0" vgrow="SOMETIMES" />
-    </rowConstraints>
-    <children>
-        <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="554.0" prefWidth="809.0" tabClosingPolicy="UNAVAILABLE">
+<AnchorPane fx:id="SettingsBackground" prefHeight="472.0" prefWidth="704.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+        <TabPane fx:id="SettingsPanes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="554.0" prefWidth="809.0" styleClass="floating" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
                 <Tab text="General">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <AnchorPane fx:id="GeneralTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
                                 <GridPane layoutX="14.0" prefHeight="354.0" prefWidth="552.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="9.0" prefWidth="9.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="202.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="20.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="2.0" prefWidth="75.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="210.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="96.0" />
@@ -48,21 +43,133 @@
                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
-                                        <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="214.0" text="Preferred Tease Duration (minutes):" GridPane.columnIndex="1" />
-                                        <TextField fx:id="preferredTeaseLengthField" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="60" GridPane.columnIndex="3" />
-                                        <Button fx:id="saveGeneralSettingsButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Save Settings" GridPane.columnIndex="5" GridPane.rowIndex="4" />
-                                        <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Font Size:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                        <ComboBox fx:id="fontSizeComboBox" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                        <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Default Type Speed:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                        <ComboBox fx:id="defaultTypeSpeedComboBox" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                        <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="214.0" scaleY="0.9" text="Preferred Tease Duration (minutes):" GridPane.columnIndex="1" />
+                                        <TextField fx:id="preferredTeaseLengthField" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="60" scaleY="0.9" GridPane.columnIndex="3" />
+                                        <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" scaleY="0.9" text="Font Size:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <ComboBox fx:id="fontSizeComboBox" prefWidth="150.0" scaleY="0.9" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                        <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" scaleY="0.9" text="Default Type Speed:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        <ComboBox fx:id="defaultTypeSpeedComboBox" prefWidth="150.0" scaleY="0.9" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                                     </children>
                                 </GridPane>
-                            </children></AnchorPane>
+                            </children>
+                  </AnchorPane>
+                    </content>
+                </Tab>
+            <Tab text="Appearance">
+               <content>
+                  <AnchorPane fx:id="AppearanceTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane layoutX="14.0" prefHeight="354.0" prefWidth="552.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="9.0" prefWidth="9.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.0" minWidth="10.0" prefWidth="115.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="2.0" prefWidth="130.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="210.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="96.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="-Infinity" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" scaleY="0.9" text="Theme" GridPane.columnIndex="1" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" scaleY="0.9" text="Primary Color" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" scaleY="0.9" text="Chat Window" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <ColorPicker fx:id="PrimaryColor" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                              <ColorPicker fx:id="ChatWindowColor" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                              <ComboBox fx:id="ThemesList" prefWidth="150.0" GridPane.columnIndex="3" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" scaleY="0.9" text="Chat Background" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <ColorPicker fx:id="ChatBackground" layoutX="139.0" layoutY="60.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="88.0" prefHeight="22.0" prefWidth="207.0" text="Chat Color" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <ColorPicker fx:id="ChatColor" layoutX="140.0" layoutY="87.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="114.0" prefHeight="22.0" prefWidth="207.0" text="Date Color" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <ColorPicker fx:id="DateColor" layoutX="140.0" layoutY="112.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="140.0" prefHeight="22.0" prefWidth="207.0" text="Sub Name Color" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="165.0" prefHeight="22.0" prefWidth="207.0" text="Dom Name Color" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="191.0" prefHeight="22.0" prefWidth="207.0" text="Friend 1 Color" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="216.0" prefHeight="22.0" prefWidth="207.0" text="Friend 2 Color" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="242.0" prefHeight="22.0" prefWidth="207.0" text="Friend 3 Color" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                              <ColorPicker fx:id="Friend2Color" layoutX="140.0" layoutY="138.0" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+                              <ColorPicker fx:id="Friend1Color" layoutX="10.0" layoutY="10.0" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                              <ColorPicker fx:id="DomColor" layoutX="10.0" layoutY="10.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                              <ColorPicker fx:id="SubColor" layoutX="10.0" layoutY="10.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                              <ColorPicker fx:id="Friend3Color" layoutX="140.0" layoutY="240.0" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+                <Tab text="Personality">
+                    <content>
+                        <AnchorPane fx:id="PersonalityTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TabPane fx:id="PersonalitiesPane" prefHeight="354.0" prefWidth="552.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <tabs>
+                              <Tab text="Variables">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="254.0" prefWidth="256.0" styleClass="floating">
+                                       <children>
+                                          <GridPane prefHeight="325.0" prefWidth="552.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="306.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="69.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="194.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="21.0" minHeight="0.0" prefHeight="21.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="12.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="141.0" minHeight="10.0" prefHeight="141.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="104.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <Label prefHeight="17.0" prefWidth="141.0" text="Value:" />
+                                                      <TextField fx:id="variableValueTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="17.0" GridPane.columnIndex="1" />
+                                                      <CheckBox fx:id="onlySupportedVariablesCheckbox" mnemonicParsing="false" prefHeight="90.0" prefWidth="202.0" text="Only supported variables" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <Label alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="146.0" prefWidth="77.0" text="Description:" GridPane.rowIndex="2" />
+                                                      <Label fx:id="descriptionLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="142.0" prefWidth="200.0" text="None" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                   </children>
+                                                </GridPane>
+                                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="280.0" text="Options" GridPane.columnIndex="1" />
+                                                <ListView fx:id="variableListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="281.0" text="Variables" />
+                                             </children>
+                                          </GridPane>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                                    </tabs>
+                                </TabPane>
+                            </children>
+                        </AnchorPane>
                     </content>
                 </Tab>
                 <Tab text="Media">
                     <content>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <AnchorPane fx:id="MediaTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
                                 <GridPane layoutX="-1.0" layoutY="-1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="358.0" prefWidth="562.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
@@ -109,10 +216,9 @@
                                                                                     </rowConstraints>
                                                                                     <children>
                                                                                         <CheckBox fx:id="useURLForTease" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Use URL(s) for tease" />
-                                                                                        <TextField fx:id="addURLTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="140.0" GridPane.rowIndex="1" />
-                                                                                        <Button fx:id="addURLButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="Add URL" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                                        <TextField fx:id="addURLTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="140.0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                                                                                        <Button fx:id="addURLButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="Add URL" GridPane.columnIndex="2" />
                                                                                         <Button fx:id="deleteURLButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="56.0" prefWidth="140.0" text="Delete URL(s)" GridPane.columnIndex="1" />
-                                                                                        <Button fx:id="refreshURLButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="37.0" prefWidth="104.0" text="Refresh URL(s)" GridPane.columnIndex="2" />
                                                                                         <Label fx:id="urlProgressLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="98.0" text="0 files found" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                                                     </children>
                                                                                 </GridPane>
@@ -203,7 +309,8 @@
                                                                         </GridPane>
                                                                     </children>
                                                                 </GridPane>
-                                                            </children></AnchorPane>
+                                                            </children>
+                                          </AnchorPane>
                                                     </content>
                                                 </Tab>
                                                 <Tab text="Genre Media">
@@ -320,7 +427,8 @@
                                                                         <Button fx:id="taggingFolderButton" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="26.0" prefWidth="58.0" text="..." translateX="70.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP" />
                                                                     </children>
                                                                 </GridPane>
-                                                            </children></AnchorPane>
+                                                            </children>
+                                          </AnchorPane>
                                                     </content>
                                                 </Tab>
                                             </tabs>
@@ -333,7 +441,7 @@
                 </Tab>
                 <Tab text="Contacts">
                     <content>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <AnchorPane fx:id="ContactsTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
                                 <GridPane layoutY="1.0" prefHeight="350.0" prefWidth="552.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
@@ -369,16 +477,14 @@
                                                         <RowConstraints maxHeight="37.0" minHeight="5.0" prefHeight="37.0" vgrow="SOMETIMES" />
                                                         <RowConstraints maxHeight="55.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
                                                     </rowConstraints>
-                                                    <children>
-                                                        <Button fx:id="saveContactButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="59.0" prefWidth="136.0" text="Save Settings" GridPane.rowIndex="2" />
-                                                    </children>
                                                 </GridPane>
                                                 <StackPane fx:id="domContactImageStackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="200.0">
                                                     <children>
                                                         <Label fx:id="clickContactAvatarText" alignment="CENTER" contentDisplay="TEXT_ONLY" prefHeight="181.0" prefWidth="273.0" text="Click here to set the contact avatar" textAlignment="JUSTIFY" wrapText="true">
                                                             <font>
                                                                 <Font size="17.0" />
-                                                            </font></Label>
+                                                            </font>
+                                          </Label>
                                                         <ImageView fx:id="domContactImageView" fitHeight="185.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true" />
                                                     </children>
                                                 </StackPane>
@@ -401,66 +507,11 @@
                                         </GridPane>
                                     </children>
                                 </GridPane>
-                            </children></AnchorPane>
-                    </content>
-                </Tab>
-                <Tab text="Personality">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <children>
-                                <TabPane prefHeight="354.0" prefWidth="552.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                    <tabs>
-                                        <Tab text="Variables">
-                                            <content>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="254.0" prefWidth="256.0">
-                                                    <children>
-                                                        <GridPane prefHeight="325.0" prefWidth="552.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                            <columnConstraints>
-                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
-                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
-                                                            </columnConstraints>
-                                                            <rowConstraints>
-                                                                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-                                                                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="306.0" vgrow="SOMETIMES" />
-                                                            </rowConstraints>
-                                                            <children>
-                                                                <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                                    <columnConstraints>
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="69.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="194.0" />
-                                                                    </columnConstraints>
-                                                                    <rowConstraints>
-                                                                        <RowConstraints maxHeight="21.0" minHeight="0.0" prefHeight="21.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="12.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="141.0" minHeight="10.0" prefHeight="141.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="104.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                    </rowConstraints>
-                                                                    <children>
-                                                                        <Label prefHeight="17.0" prefWidth="141.0" text="Value:" />
-                                                                        <TextField fx:id="variableValueTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="17.0" GridPane.columnIndex="1" />
-                                                                        <Button fx:id="variableSaveButton" mnemonicParsing="false" prefHeight="49.0" prefWidth="221.0" text="Save Variable" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                                                        <CheckBox fx:id="onlySupportedVariablesCheckbox" mnemonicParsing="false" prefHeight="90.0" prefWidth="202.0" text="Only supported variables" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                                        <Label alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="146.0" prefWidth="77.0" text="Description:" GridPane.rowIndex="2" />
-                                                                        <Label fx:id="descriptionLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="142.0" prefWidth="200.0" text="None" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                                    </children>
-                                                                </GridPane>
-                                                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="280.0" text="Options" GridPane.columnIndex="1" />
-                                                                <ListView fx:id="variableListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-                                                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="281.0" text="Variables" />
-                                                            </children>
-                                                        </GridPane>
-                                                    </children>
-                                                </AnchorPane>
-                                            </content>
-                                        </Tab>
-                                    </tabs>
-                                </TabPane>
                             </children>
-                        </AnchorPane>
+                  </AnchorPane>
                     </content>
                 </Tab>
             </tabs>
         </TabPane>
-    </children>
-</GridPane>
+   </children>
+</AnchorPane>
