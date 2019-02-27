@@ -62,6 +62,7 @@ public class TeaseAI extends Application {
 
     private Session session;
 
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         if(Main.JAVA_VERSION < 10) {
