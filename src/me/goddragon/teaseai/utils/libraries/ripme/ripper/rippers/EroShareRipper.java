@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -103,7 +104,7 @@ public class EroShareRipper extends AbstractHTMLRipper {
                 return getHost() + "_" + getGID(url) + "_" + title.trim();
             } catch (IOException e) {
                 // Fall back to default album naming convention
-                LOGGER.info("Unable to find title at " + url);
+                LOGGER.log(Level.INFO, "Unable to find title at " + url);
             }
             return super.getAlbumTitle(url);
         }
@@ -139,7 +140,7 @@ public class EroShareRipper extends AbstractHTMLRipper {
             try {
                 video_page = Http.url("eroshae.com" + link.attr("href")).get();
             } catch (IOException e) {
-                LOGGER.warn("Failed to log link in Jsoup");
+                LOGGER.log(Level.WARNING, "Failed to log link in Jsoup");
                 video_page = null;
                 e.printStackTrace();
             }

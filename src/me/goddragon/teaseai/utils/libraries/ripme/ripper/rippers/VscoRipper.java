@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.json.JSONObject;
@@ -75,7 +76,7 @@ public class VscoRipper extends AbstractHTMLRipper {
             try {
                 toRip.add(vscoImageToURL(url.toExternalForm()));
             } catch (IOException ex) {
-                LOGGER.debug("Failed to convert " + url.toString() + " to external form.");
+                LOGGER.log(Level.FINE, "Failed to convert " + url.toString() + " to external form.");
             }
             
         } else {
@@ -110,7 +111,7 @@ public class VscoRipper extends AbstractHTMLRipper {
             json = json.replaceAll("\\)", "");
             return new JSONObject(json).getString("tkn");
         } catch (IOException e) {
-            LOGGER.error("Could not get user tkn");
+            LOGGER.log(Level.SEVERE, "Could not get user tkn");
             return null;
         }
     }
@@ -135,7 +136,7 @@ public class VscoRipper extends AbstractHTMLRipper {
             JSONObject j = Http.url(purl).cookies(cookies).getJSON();
             return j;
         } catch (IOException e) {
-            LOGGER.error("Could not profile images");
+            LOGGER.log(Level.SEVERE, "Could not profile images");
             return null;
         }
     }
@@ -147,7 +148,7 @@ public class VscoRipper extends AbstractHTMLRipper {
             JSONObject j = Http.url("https://vsco.co/ajxp/" + tkn + "/2.0/sites?subdomain=" + username).cookies(cookies).getJSON();
             return Integer.toString(j.getJSONArray("sites").getJSONObject(0).getInt("id"));
         } catch (IOException e) {
-            LOGGER.error("Could not get site id");
+            LOGGER.log(Level.SEVERE, "Could not get site id");
             return null;
         }
     }
@@ -166,14 +167,14 @@ public class VscoRipper extends AbstractHTMLRipper {
                 givenURL = givenURL.replaceAll("\\?h=[0-9]+", "");//replace the "?h=xxx" tag at the end of the URL (where each x is a number)
                 
                 result = givenURL;
-                LOGGER.debug("Found image URL: " + givenURL);
+                LOGGER.log(Level.FINE, "Found image URL: " + givenURL);
                 break;//immediately stop after getting URL (there should only be 1 image to be downloaded)
             }
         }
         
         //Means website changed, things need to be fixed.
         if (result.isEmpty()){
-            LOGGER.error("Could not find image URL at: " + url);
+            LOGGER.log(Level.SEVERE, "Could not find image URL at: " + url);
         }
         
         return result;

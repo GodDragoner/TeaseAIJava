@@ -46,7 +46,7 @@ public class URLMediaSettings {
                     try
                     {
                         URL testUrl = new URL(url);
-                        AbstractRipper.getRipper(testUrl);
+                        //AbstractRipper.getRipper(testUrl);
                     }
                     catch (Exception e)
                     {

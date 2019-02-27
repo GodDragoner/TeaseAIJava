@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +37,7 @@ public class LusciousRipper extends AbstractHTMLRipper {
         // "url" is an instance field of the superclass
         Document page = Http.url(url).get();
         URL firstUrl = new URL("https://luscious.net" +  page.select("div > div.item.thumbnail.ic_container > a").first().attr("href"));
-        LOGGER.info("First page is " + "https://luscious.net" +  page.select("div > div.album_cover_item > a").first().attr("href"));
+        LOGGER.log(Level.INFO, "First page is " + "https://luscious.net" +  page.select("div > div.album_cover_item > a").first().attr("href"));
         return Http.url(firstUrl).get();
     }
 

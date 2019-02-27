@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.json.JSONObject;
-
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage.STATUS;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 
 /**
@@ -50,15 +49,13 @@ public abstract class AbstractJSONRipper extends AlbumRipper {
     @Override
     public void rip() throws IOException {
         int index = 0;
-        LOGGER.info("Retrieving " + this.url);
-        sendUpdate(STATUS.LOADING_RESOURCE, this.url.toExternalForm());
+        LOGGER.log(Level.INFO, "Retrieving " + this.url);
         JSONObject json = getFirstPage();
 
         while (json != null) {
             List<String> imageURLs = getURLsFromJSON(json);
             
             if (alreadyDownloadedUrls >= Utils.getConfigInteger("history.end_rip_after_already_seen", 1000000000) && !isThisATest()) {
-                 sendUpdate(STATUS.DOWNLOAD_COMPLETE, "Already seen the last " + alreadyDownloadedUrls + " images ending rip");
                  break;
             }
             
@@ -79,7 +76,7 @@ public abstract class AbstractJSONRipper extends AlbumRipper {
                 }
                 
                 index += 1;
-                LOGGER.debug("Found image url #" + index+ ": " + imageURL);
+                LOGGER.log(Level.FINE, "Found image url #" + index+ ": " + imageURL);
                 downloadURL(new URL(imageURL), index);
             }
 
@@ -88,17 +85,16 @@ public abstract class AbstractJSONRipper extends AlbumRipper {
             }
 
             try {
-                sendUpdate(STATUS.LOADING_RESOURCE, "next page");
                 json = getNextPage(json);
             } catch (IOException e) {
-                LOGGER.info("Can't get next page: " + e.getMessage());
+                LOGGER.log(Level.INFO, "Can't get next page: " + e.getMessage());
                 break;
             }
         }
 
         // If they're using a thread pool, wait for it.
         if (getThreadPool() != null) {
-            LOGGER.debug("Waiting for threadpool " + getThreadPool().getClass().getName());
+            LOGGER.log(Level.FINE, "Waiting for threadpool " + getThreadPool().getClass().getName());
             getThreadPool().waitForThreads();
         }
         waitForThreads();

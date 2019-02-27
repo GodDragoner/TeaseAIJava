@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,7 +19,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage.STATUS;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 
 public class EightmusesRipper extends AbstractHTMLRipper {
@@ -71,7 +71,7 @@ public class EightmusesRipper extends AbstractHTMLRipper {
             return getHost() + "_" + title.trim();
         } catch (IOException e) {
             // Fall back to default album naming convention
-            LOGGER.info("Unable to find title at " + url);
+            LOGGER.log(Level.INFO, "Unable to find title at " + url);
         }
         return super.getAlbumTitle(url);
     }
@@ -97,19 +97,18 @@ public class EightmusesRipper extends AbstractHTMLRipper {
             if (thumb.attr("href").contains("/comics/album/")) {
                 String subUrl = "https://www.8muses.com" + thumb.attr("href");
                 try {
-                    LOGGER.info("Retrieving " + subUrl);
-                    sendUpdate(STATUS.LOADING_RESOURCE, subUrl);
+                    LOGGER.log(Level.INFO, "Retrieving " + subUrl);
                     Document subPage = Http.url(subUrl).get();
                     // If the page below this one has images this line will download them
                     List<String> subalbumImages = getURLsFromPage(subPage);
-                    LOGGER.info("Found " + subalbumImages.size() + " images in subalbum");
+                    LOGGER.log(Level.INFO, "Found " + subalbumImages.size() + " images in subalbum");
                 } catch (IOException e) {
-                    LOGGER.warn("Error while loading subalbum " + subUrl, e);
+                    LOGGER.log(Level.WARNING, "Error while loading subalbum " + subUrl, e);
                 }
 
             } else if (thumb.attr("href").contains("/comics/picture/")) {
-                LOGGER.info("This page is a album");
-                LOGGER.info("Ripping image");
+                LOGGER.log(Level.INFO, "This page is a album");
+                LOGGER.log(Level.INFO, "Ripping image");
                 if (super.isStopped()) break;
                 // Find thumbnail image source
                 String image = null;
@@ -151,7 +150,7 @@ public class EightmusesRipper extends AbstractHTMLRipper {
     }
 
     public String getSubdir(String rawHref) {
-        LOGGER.info("Raw title: " + rawHref);
+        LOGGER.log(Level.INFO, "Raw title: " + rawHref);
         String title = rawHref;
         title = title.replaceAll("8muses - Sex and Porn Comics", "");
         title = title.replaceAll("\\s+", " ");
@@ -159,7 +158,7 @@ public class EightmusesRipper extends AbstractHTMLRipper {
         title = title.replaceAll("\\| ", "");
         title = title.replace(" - ", "-");
         title = title.replace(" ", "-");
-        LOGGER.info(title);
+        LOGGER.log(Level.INFO, title);
         return title;
     }
 

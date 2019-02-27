@@ -3,6 +3,7 @@ package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,7 +12,6 @@ import org.jsoup.nodes.Element;
 
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AlbumRipper;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.DownloadThreadPool;
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage.STATUS;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 
@@ -75,8 +75,7 @@ public class MotherlessRipper extends AlbumRipper {
             if (isStopped()) {
                 break;
             }
-            LOGGER.info("Retrieving " + nextURL);
-            sendUpdate(STATUS.LOADING_RESOURCE, nextURL);
+            LOGGER.log(Level.INFO, "Retrieving " + nextURL);
             Document doc = Http.url(nextURL)
                                .referrer("http://motherless.com")
                                .get();
@@ -152,10 +151,10 @@ public class MotherlessRipper extends AlbumRipper {
                     }
                     addURLToDownload(new URL(file), prefix);
                 } else {
-                    LOGGER.warn("[!] could not find '__fileurl' at " + url);
+                    LOGGER.log(Level.WARNING, "[!] could not find '__fileurl' at " + url);
                 }
             } catch (IOException e) {
-                LOGGER.error("[!] Exception while loading/parsing " + this.url, e);
+                LOGGER.log(Level.SEVERE, "[!] Exception while loading/parsing " + this.url, e);
             }
         }
     }

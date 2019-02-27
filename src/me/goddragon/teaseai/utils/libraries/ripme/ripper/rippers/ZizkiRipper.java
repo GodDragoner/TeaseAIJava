@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,11 +55,11 @@ public class ZizkiRipper extends AbstractHTMLRipper {
 
             Element authorSpan = getFirstPage().select("span[class=creator]").first();
             String author = authorSpan.select("a").first().text();
-            LOGGER.debug("Author: " + author);
+            LOGGER.log(Level.FINE, "Author: " + author);
             return getHost() + "_" + author + "_" + title.trim();
         } catch (IOException e) {
             // Fall back to default album naming convention
-            LOGGER.info("Unable to find title at " + url);
+            LOGGER.log(Level.INFO, "Unable to find title at " + url);
         }
         return super.getAlbumTitle(url);
     }
@@ -77,9 +78,9 @@ public class ZizkiRipper extends AbstractHTMLRipper {
     public List<String> getURLsFromPage(Document page) {
         List<String> imageURLs = new ArrayList<>();
         // Page contains images
-        LOGGER.info("Look for images.");
+        LOGGER.log(Level.INFO, "Look for images.");
         for (Element thumb : page.select("img")) {
-            LOGGER.info("Img");
+            LOGGER.log(Level.INFO, "Img");
             if (super.isStopped()) break;
             // Find thumbnail image source
             String image = null;
@@ -88,7 +89,7 @@ public class ZizkiRipper extends AbstractHTMLRipper {
             if (thumb.hasAttr("typeof")) {
                 img_type = thumb.attr("typeof");
                 if (img_type.equals("foaf:Image")) {
-                  LOGGER.debug("Found image with " + img_type);
+                  LOGGER.log(Level.FINE, "Found image with " + img_type);
                   if (thumb.parent() != null &&
                       thumb.parent().parent() != null &&
                       thumb.parent().parent().attr("class") != null &&
@@ -96,7 +97,7 @@ public class ZizkiRipper extends AbstractHTMLRipper {
                      )
                   {
                      src = thumb.attr("src");
-                     LOGGER.debug("Found url with " + src);
+                     LOGGER.log(Level.FINE, "Found url with " + src);
                      if (!src.contains("zizki.com")) {
                      } else {
                        imageURLs.add(src.replace("/styles/medium/public/","/styles/large/public/"));

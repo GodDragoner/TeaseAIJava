@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
+import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
@@ -10,14 +11,14 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 public class BooruRipper extends AbstractHTMLRipper {
-    private static final Logger logger = Logger.getLogger(BooruRipper.class);
+    private static final TeaseLogger logger = TeaseLogger.getLogger();
 
     private static Pattern gidPattern = null;
 
@@ -36,7 +37,7 @@ public class BooruRipper extends AbstractHTMLRipper {
 
     @Override
     public String getHost() {
-        logger.info(url.toExternalForm().split("/")[2]);
+        logger.log(Level.INFO, url.toExternalForm().split("/")[2]);
         return url.toExternalForm().split("/")[2].split("\\.")[0];
     }
 
@@ -99,7 +100,7 @@ public class BooruRipper extends AbstractHTMLRipper {
         try {
             return Utils.filesystemSafe(new URI(getTerm(url).replaceAll("&tags=", "")).getPath());
         } catch (URISyntaxException ex) {
-            logger.error(ex);
+            logger.log(Level.SEVERE, ex.getMessage());
         }
 
         throw new MalformedURLException("Expected xbooru.com URL format: " + getHost() + ".com/index.php?tags=searchterm - got " + url + " instead");

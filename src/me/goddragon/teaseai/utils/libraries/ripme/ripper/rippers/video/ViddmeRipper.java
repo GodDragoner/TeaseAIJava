@@ -3,6 +3,7 @@ package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.video;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,7 +54,7 @@ public class ViddmeRipper extends VideoRipper {
 
     @Override
     public void rip() throws IOException {
-        LOGGER.info("    Retrieving " + this.url.toExternalForm());
+        LOGGER.log(Level.INFO, "    Retrieving " + this.url.toExternalForm());
         Document doc = Http.url(this.url).get();
         Elements videos = doc.select("meta[name=twitter:player:stream]");
         if (videos.isEmpty()) {

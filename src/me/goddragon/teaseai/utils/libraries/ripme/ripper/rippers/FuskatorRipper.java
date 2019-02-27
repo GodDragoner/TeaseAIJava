@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,7 +68,7 @@ public class FuskatorRipper extends AbstractHTMLRipper {
         try {
             baseUrl = URLDecoder.decode(baseUrl, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            LOGGER.warn("Error while decoding " + baseUrl, e);
+            LOGGER.log(Level.WARNING, "Error while decoding " + baseUrl, e);
         }
         if (baseUrl.startsWith("//")) {
             baseUrl = "http:" + baseUrl;

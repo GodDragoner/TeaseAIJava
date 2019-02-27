@@ -3,6 +3,7 @@ package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.video;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,7 +56,7 @@ public class YuvutuRipper extends VideoRipper {
 
     @Override
     public void rip() throws IOException {
-        LOGGER.info("Retrieving " + this.url);
+        LOGGER.log(Level.INFO, "Retrieving " + this.url);
         Document doc = Http.url(url).get();
         Element iframe = doc.select("iframe").first();
         String iframeSrc = iframe.attr("src");

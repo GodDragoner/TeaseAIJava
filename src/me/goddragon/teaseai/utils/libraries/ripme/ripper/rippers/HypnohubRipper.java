@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,14 +54,14 @@ public class HypnohubRipper extends AbstractHTMLRipper {
     }
 
     private String ripPost(String url) throws IOException {
-        LOGGER.info(url);
+        LOGGER.log(Level.INFO, url);
         Document doc = Http.url(url).get();
         return "https:" +  doc.select("img.image").attr("src");
 
     }
 
     private String ripPost(Document doc) {
-        LOGGER.info(url);
+        LOGGER.log(Level.INFO, url.toString());
         return "https:" +  doc.select("img.image").attr("src");
 
     }

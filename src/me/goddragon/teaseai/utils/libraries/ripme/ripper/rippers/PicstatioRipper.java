@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +23,7 @@ public class PicstatioRipper extends AbstractHTMLRipper {
 
     private String getFullSizedImageFromURL(String fileName) {
         try {
-            LOGGER.info("https://www.picstatio.com/wallpaper/" + fileName + "/download");
+            LOGGER.log(Level.INFO, "https://www.picstatio.com/wallpaper/" + fileName + "/download");
             return Http.url("https://www.picstatio.com/wallpaper/" + fileName + "/download").get().select("p.text-center > span > a").attr("href");
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,7 +71,7 @@ public class PicstatioRipper extends AbstractHTMLRipper {
         List<String> result = new ArrayList<>();
         for (Element e : doc.select("img.img")) {
             String imageName = e.parent().attr("href");
-            LOGGER.info(getFullSizedImageFromURL(imageName.split("/")[2]));
+            LOGGER.log(Level.INFO, getFullSizedImageFromURL(imageName.split("/")[2]));
             result.add(getFullSizedImageFromURL(imageName.split("/")[2]));
         }
         return result;

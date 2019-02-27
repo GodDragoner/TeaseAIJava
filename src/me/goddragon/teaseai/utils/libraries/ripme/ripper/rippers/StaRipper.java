@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,9 +66,9 @@ public class StaRipper extends AbstractHTMLRipper {
                     cookies.putAll(resp.cookies());
                     thumbPage = resp.parse();
                 } catch (MalformedURLException e) {
-                    LOGGER.info(thumbPageURL + " is a malformed URL");
+                    LOGGER.log(Level.INFO, thumbPageURL + " is a malformed URL");
                 } catch (IOException e) {
-                    LOGGER.info(e.getMessage());
+                    LOGGER.log(Level.INFO, e.getMessage());
                 }
                 String imageDownloadUrl = thumbPage.select("a.dev-page-download").attr("href");
                 if (imageDownloadUrl != null && !imageDownloadUrl.equals("")) {
@@ -97,10 +98,10 @@ public class StaRipper extends AbstractHTMLRipper {
                     .followRedirects(false)
                     .execute();
             String imageURL = response.header("Location");
-            LOGGER.info(imageURL);
+            LOGGER.log(Level.INFO, imageURL);
             return imageURL;
             } catch (IOException e) {
-                LOGGER.info("Got error message " + e.getMessage() + " trying to download " + url);
+                LOGGER.log(Level.INFO, "Got error message " + e.getMessage() + " trying to download " + url);
                 return null;
             }
     }

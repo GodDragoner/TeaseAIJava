@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,7 +78,7 @@ public class ManganeloRipper extends AbstractHTMLRipper {
     }
 
     private List<String> getURLsFromChap(Document doc) {
-        LOGGER.debug("Getting urls from " + doc.location());
+        LOGGER.log(Level.FINE, "Getting urls from " + doc.location());
         List<String> result = new ArrayList<>();
         for (Element el : doc.select(".vung-doc > img")) {
             result.add(el.attr("src"));

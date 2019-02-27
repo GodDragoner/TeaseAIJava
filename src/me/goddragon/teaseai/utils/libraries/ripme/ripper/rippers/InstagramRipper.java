@@ -11,6 +11,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.security.*;
@@ -25,7 +26,6 @@ import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 import java.util.HashMap;
 
@@ -66,7 +66,7 @@ public class InstagramRipper extends AbstractJSONRipper {
     @Override
     public URL sanitizeURL(URL url) throws MalformedURLException {
        URL san_url = new URL(url.toExternalForm().replaceAll("\\?hl=\\S*", ""));
-       LOGGER.info("sanitized URL is " + san_url.toExternalForm());
+       LOGGER.log(Level.INFO, "sanitized URL is " + san_url.toExternalForm());
         return san_url;
     }
 
@@ -187,7 +187,7 @@ public class InstagramRipper extends AbstractJSONRipper {
     @Override
     public JSONObject getFirstPage() throws IOException {
         Connection.Response resp = Http.url(url).response();
-        LOGGER.info(resp.cookies());
+        LOGGER.log(Level.INFO, resp.cookies().toString());
         csrftoken = resp.cookie("csrftoken");
         Document p = resp.parse();
         // Get the query hash so we can download the next page
@@ -200,7 +200,7 @@ public class InstagramRipper extends AbstractJSONRipper {
             Document doc = Http.url("https://www.instagram.com/p/" + videoID).get();
             return doc.select("meta[property=og:video]").attr("content");
         } catch (IOException e) {
-            LOGGER.warn("Unable to get page " + "https://www.instagram.com/p/" + videoID);
+            LOGGER.log(Level.WARNING, "Unable to get page " + "https://www.instagram.com/p/" + videoID);
         }
         return "";
     }
@@ -285,9 +285,9 @@ public class InstagramRipper extends AbstractJSONRipper {
                                 addURLToDownload(new URL(toAdd.get(slideShowInt)), image_date + data.getString("shortcode"));
                             }
                         } catch (MalformedURLException e) {
-                            LOGGER.error("Unable to download slide show, URL was malformed");
+                            LOGGER.log(Level.SEVERE, "Unable to download slide show, URL was malformed");
                         } catch (IOException e) {
-                            LOGGER.error("Unable to download slide show");
+                            LOGGER.log(Level.SEVERE, "Unable to download slide show");
                         }
                     }
                 }
@@ -302,12 +302,10 @@ public class InstagramRipper extends AbstractJSONRipper {
                     } else {
                         if (!Utils.getConfigBoolean("instagram.download_images_only", false)) {
                             addURLToDownload(new URL(getVideoFromPage(data.getString("shortcode"))), image_date);
-                        } else {
-                            sendUpdate(RipStatusMessage.STATUS.DOWNLOAD_WARN, "Skipping video " + data.getString("shortcode"));
                         }
                     }
                 } catch (MalformedURLException e) {
-                    LOGGER.info("Got MalformedURLException");
+                    LOGGER.log(Level.INFO, "Got MalformedURLException");
                     return imageURLs;
                 }
 
@@ -317,7 +315,7 @@ public class InstagramRipper extends AbstractJSONRipper {
             }
 
         } else { // We're ripping from a single page
-            LOGGER.info("Ripping from single page");
+            LOGGER.log(Level.INFO, "Ripping from single page");
             imageURLs = getPostsFromSinglePage(json);
         }
 
@@ -326,7 +324,7 @@ public class InstagramRipper extends AbstractJSONRipper {
 
     private String getIGGis(String variables) {
         String stringToMD5 = rhx_gis + ":" + variables;
-        LOGGER.debug("String to md5 is \"" + stringToMD5 + "\"");
+        LOGGER.log(Level.FINE, "String to md5 is \"" + stringToMD5 + "\"");
         try {
             byte[] bytesOfMessage = stringToMD5.getBytes("UTF-8");
 
@@ -360,7 +358,7 @@ public class InstagramRipper extends AbstractJSONRipper {
                      toreturn = getPage("https://www.instagram.com/graphql/query/?query_hash=" + qHash +
                                      "&variables=" + vars, ig_gis);
                     // Sleep for a while to avoid a ban
-                    LOGGER.info(toreturn);
+                    LOGGER.log(Level.INFO, toreturn.toString());
                     if (!pageHasImages(toreturn)) {
                         throw new IOException("No more pages");
                     }
@@ -376,9 +374,9 @@ public class InstagramRipper extends AbstractJSONRipper {
                 sleep(2500);
                 String vars = "{\"id\":\"" + userID + "\",\"first\":12,\"after\":\"" + nextPageID + "\"}";
                 String ig_gis = getIGGis(vars);
-                LOGGER.info(ig_gis);
+                LOGGER.log(Level.INFO, ig_gis);
 
-                LOGGER.info("https://www.instagram.com/graphql/query/?query_hash=" + qHash + "&variables=" + vars);
+                LOGGER.log(Level.INFO, "https://www.instagram.com/graphql/query/?query_hash=" + qHash + "&variables=" + vars);
                 toreturn = getPage("https://www.instagram.com/graphql/query/?query_hash=" + qHash + "&variables=" + vars, ig_gis);
                 if (!pageHasImages(toreturn)) {
                     throw new IOException("No more pages");
@@ -398,7 +396,7 @@ public class InstagramRipper extends AbstractJSONRipper {
     }
 
     private boolean pageHasImages(JSONObject json) {
-        LOGGER.info(json);
+        LOGGER.log(Level.INFO, json.toString());
         int numberOfImages = json.getJSONObject("data").getJSONObject("user")
                 .getJSONObject("edge_owner_to_timeline_media").getJSONArray("edges").length();
         if (numberOfImages == 0) {
@@ -426,11 +424,11 @@ public class InstagramRipper extends AbstractJSONRipper {
             return new JSONObject(sb.toString());
 
         } catch (MalformedURLException e) {
-            LOGGER.info("Unable to get query_hash, " + url + " is a malformed URL");
+            LOGGER.log(Level.INFO, "Unable to get query_hash, " + url + " is a malformed URL");
             return null;
         } catch (IOException e) {
-            LOGGER.info("Unable to get query_hash");
-            LOGGER.info(e.getMessage());
+            LOGGER.log(Level.INFO, "Unable to get query_hash");
+            LOGGER.log(Level.INFO, e.getMessage());
             return null;
         }
     }
@@ -451,11 +449,11 @@ public class InstagramRipper extends AbstractJSONRipper {
             in.close();
 
         } catch (MalformedURLException e) {
-            LOGGER.info("Unable to get query_hash, " + jsFileURL + " is a malformed URL");
+            LOGGER.log(Level.INFO, "Unable to get query_hash, " + jsFileURL + " is a malformed URL");
             return null;
         } catch (IOException e) {
-            LOGGER.info("Unable to get query_hash");
-            LOGGER.info(e.getMessage());
+            LOGGER.log(Level.INFO, "Unable to get query_hash");
+            LOGGER.log(Level.INFO, e.getMessage());
             return null;
         }
         if (!rippingTag) {
@@ -478,7 +476,7 @@ public class InstagramRipper extends AbstractJSONRipper {
                 return m.group(1);
             }
         }
-        LOGGER.error("Could not find query_hash on " + jsFileURL);
+        LOGGER.log(Level.SEVERE, "Could not find query_hash on " + jsFileURL);
         return null;
 
     }

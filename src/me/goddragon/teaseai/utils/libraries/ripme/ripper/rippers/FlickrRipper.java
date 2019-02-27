@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.nodes.Document;
@@ -69,20 +69,18 @@ public class FlickrRipper extends AbstractHTMLRipper {
             // You have to use .html here as .text will strip most of the javascript
             m = p.matcher(e.html());
             if (m.find()) {
-                LOGGER.info("Found api key:" + m.group(1));
+                LOGGER.log(Level.INFO, "Found api key:" + m.group(1));
                 return m.group(1);
             }
         }
-        LOGGER.error("Unable to get api key");
+        LOGGER.log(Level.SEVERE, "Unable to get api key");
         // A nice error message to tell our users what went wrong
-        sendUpdate(RipStatusMessage.STATUS.DOWNLOAD_WARN, "Unable to extract api key from flickr");
-        sendUpdate(RipStatusMessage.STATUS.DOWNLOAD_WARN, "Using hardcoded api key");
         return "935649baf09b2cc50628e2b306e4da5d";
     }
 
     // The flickr api is a monster of weird settings so we just request everything that the webview does
     private String apiURLBuilder(String photoset, String pageNumber, String apiKey) {
-        LOGGER.info("https://api.flickr.com/services/rest?extras=can_addmeta," +
+        LOGGER.log(Level.INFO, "https://api.flickr.com/services/rest?extras=can_addmeta," +
                 "can_comment,can_download,can_share,contact,count_comments,count_faves,count_views,date_taken," +
                 "date_upload,icon_urls_deep,isfavorite,ispro,license,media,needs_interstitial,owner_name," +
                 "owner_datecreate,path_alias,realname,rotation,safety_level,secret_k,secret_h,url_c,url_f,url_h,url_k," +
@@ -111,13 +109,13 @@ public class FlickrRipper extends AbstractHTMLRipper {
             apiURL = apiURLBuilder(getPhotosetID(url.toExternalForm()), page, apiKey);
             pageURL = new URL(apiURL);
         }  catch (MalformedURLException e) {
-            LOGGER.error("Unable to get api link " + apiURL + " is malformed");
+            LOGGER.log(Level.SEVERE, "Unable to get api link " + apiURL + " is malformed");
         }
         try {
-            LOGGER.info(Http.url(pageURL).ignoreContentType().get().text());
+            LOGGER.log(Level.INFO, Http.url(pageURL).ignoreContentType().get().text());
             return new JSONObject(Http.url(pageURL).ignoreContentType().get().text());
         } catch (IOException e) {
-            LOGGER.error("Unable to get api link " + apiURL + " is malformed");
+            LOGGER.log(Level.SEVERE, "Unable to get api link " + apiURL + " is malformed");
             return null;
         }
     }
@@ -215,10 +213,10 @@ public class FlickrRipper extends AbstractHTMLRipper {
                 break;
             } else {
                 int totalPages = jsonData.getJSONObject("photoset").getInt("pages");
-                LOGGER.info(jsonData);
+                LOGGER.log(Level.INFO, jsonData.toString());
                 JSONArray pictures = jsonData.getJSONObject("photoset").getJSONArray("photo");
                 for (int i = 0; i < pictures.length(); i++) {
-                    LOGGER.info(i);
+                    LOGGER.log(Level.INFO, i + "");
                     JSONObject data = (JSONObject) pictures.get(i);
                     // TODO this is a total hack, we should loop over all image sizes and pick the biggest one and not
                     // just assume
@@ -226,7 +224,7 @@ public class FlickrRipper extends AbstractHTMLRipper {
                     for ( String imageSize : imageSizes) {
                         try {
                             addURLToDownload(new URL(data.getString("url_" + imageSize)));
-                            LOGGER.info("Adding picture " + data.getString("url_" + imageSize));
+                            LOGGER.log(Level.INFO, "Adding picture " + data.getString("url_" + imageSize));
                             break;
                         } catch (org.json.JSONException ignore) {
                         // TODO warn the user when we hit a Malformed url
