@@ -1,7 +1,5 @@
 package me.goddragon.teaseai.api.config;
 
-import java.util.ArrayList;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Orientation;
@@ -14,35 +12,33 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-public class PersonalitySettingsHandler
-{
+import java.util.ArrayList;
+
+public class PersonalitySettingsHandler {
     private ArrayList<PersonalitySettingsPanel> settingsPanels;
-    
+
     private Tab PersonalityTab;
-    
+
     private String personalityName;
-    
+
     private GridPane personalityGridPane;
-    
+
     private ListView<Label> menusList;
-    
+
     private AnchorPane currentlyStored;
-    
-    public PersonalitySettingsHandler(String personalityName)
-    {
+
+    public PersonalitySettingsHandler(String personalityName) {
         settingsPanels = new ArrayList<PersonalitySettingsPanel>();
         this.personalityName = personalityName;
         PersonalitiesSettingsHandler.getHandler().addPersonalitySettingsHandler(this);
     }
-    
-    public PersonalitySettingsPanel addPanel(String panelName)
-    {
+
+    public PersonalitySettingsPanel addPanel(String panelName) {
         return addSettingsPanel(panelName);
     }
-    public PersonalitySettingsPanel addSettingsPanel(String panelName)
-    {
-        if (settingsPanels.isEmpty())
-        {
+
+    public PersonalitySettingsPanel addSettingsPanel(String panelName) {
+        if (settingsPanels.isEmpty()) {
             PersonalityTab = PersonalitiesSettingsHandler.getHandler().addPersonalityTab(personalityName);
             setupPersonalityTab();
         }
@@ -55,16 +51,12 @@ public class PersonalitySettingsHandler
         updateMenuContent();
         return thisPanel;
     }
-    
-    private void updateMenuContent()
-    {
+
+    private void updateMenuContent() {
         String currentlySelected = menusList.getSelectionModel().getSelectedItem().getText();
-        for (PersonalitySettingsPanel panel: settingsPanels)
-        {
-            if (panel.getName().equals(currentlySelected))
-            {
-                if (currentlyStored != null)
-                {
+        for (PersonalitySettingsPanel panel : settingsPanels) {
+            if (panel.getName().equalsIgnoreCase(currentlySelected)) {
+                if (currentlyStored != null) {
                     personalityGridPane.getChildren().remove(currentlyStored);
                 }
                 currentlyStored = panel.getAnchorPane();
@@ -72,14 +64,14 @@ public class PersonalitySettingsHandler
             }
         }
     }
-    
-    private void setupPersonalityTab()
-    {
+
+    private void setupPersonalityTab() {
         personalityGridPane = new GridPane();
         PersonalityTab.setContent(personalityGridPane);
-        ColumnConstraints column1 = new ColumnConstraints();
-        column1.setPercentWidth(100);
-        personalityGridPane.getColumnConstraints().add(column1);
+        ColumnConstraints column = new ColumnConstraints();
+        column.setPercentWidth(100);
+        personalityGridPane.getColumnConstraints().add(column);
+
         /*ColumnConstraints column2 = new ColumnConstraints();
         column2.setPercentWidth(60);
         ObservableList<ColumnConstraints> constraints = personalityGridPane.getColumnConstraints();
@@ -91,8 +83,9 @@ public class PersonalitySettingsHandler
         testLabel2.setAlignment(Pos.CENTER);
         personalityGridPane.add(testLabel, 0, 0);
         personalityGridPane.add(testLabel2, 1, 0);*/
+
         personalityGridPane.getRowConstraints().add(new RowConstraints(30, 40, 40));
-        menusList = new ListView<Label>();
+        menusList = new ListView<>();
         menusList.setOrientation(Orientation.HORIZONTAL);
         personalityGridPane.add(menusList, 0, 0);
         menusList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Label>() {
@@ -103,23 +96,21 @@ public class PersonalitySettingsHandler
             }
         });
     }
-    
-    public ArrayList<PersonalitySettingsPanel> getSettingsPanels()
-    {
+
+    public ArrayList<PersonalitySettingsPanel> getSettingsPanels() {
         return settingsPanels;
     }
-    
-    public PersonalitySettingsPanel getPanel(String panelName)
-    {
+
+    public PersonalitySettingsPanel getPanel(String panelName) {
         PersonalitySettingsPanel toReturn = null;
-        for (PersonalitySettingsPanel panel: settingsPanels)
-        {
-            if (panel.getName().equals(panelName))
-            {
+
+        for (PersonalitySettingsPanel panel : settingsPanels) {
+            if (panel.getName().equalsIgnoreCase(panelName)) {
                 toReturn = panel;
                 break;
             }
         }
+
         return toReturn;
     }
 }

@@ -164,6 +164,9 @@ public class TeaseAI extends Application {
         initializeNewSession();
 
         controller.loadDomInfo();
+
+        //Load theme last so everything is setup
+        AppearanceSettings.loadSelectedTheme();
     }
 
     public boolean checkForNewResponses() {

@@ -49,7 +49,7 @@ public class VariableHandler {
                         lines.add(line);
                     }
 
-                    if(lines.size() == 0) {
+                    if (lines.size() == 0) {
                         TeaseLogger.getLogger().log(Level.SEVERE, file.getName() + " did not contain any variable value.");
                         continue;
                     }
@@ -59,60 +59,51 @@ public class VariableHandler {
                     String description = "";
                     String customName = "";
                     boolean needsUpdatedToNewSystem = false;
-                    Object lastLine = getObjectFromString(lines.get(lines.size()-1));
-                    
-                    if (lastLine instanceof Boolean && lines.size() > 1)
-                    {
+                    Object lastLine = getObjectFromString(lines.get(lines.size() - 1));
+
+                    if (lastLine instanceof Boolean && lines.size() > 1) {
                         lines = lines.subList(0, lines.size() - 1);
-                    }
-                    else if (lines.size() > 3 && getObjectFromString(lines.get(lines.size()-3)) instanceof Boolean)
-                    {
+                    } else if (lines.size() > 3 && getObjectFromString(lines.get(lines.size() - 3)) instanceof Boolean) {
                         isSupported = true;
                         description = (String) lastLine;
-                        customName = (String) getObjectFromString(lines.get(lines.size()-2));
+                        customName = (String) getObjectFromString(lines.get(lines.size() - 2));
                         lines = lines.subList(0, lines.size() - 3);
-                    }
-                    else {
+                    } else {
                         //This variable is still using the old system. 
                         needsUpdatedToNewSystem = true;
                     }
 
-                    if(lines.size() > 1) {
-                        value = lines.toArray(new String[] {});
+                    if (lines.size() > 1) {
+                        value = lines.toArray(new String[]{});
                     } else {
                         //We only need the first line
                         String strLine = lines.get(0);
 
-                        if(strLine != null) {
+                        if (strLine != null) {
                             value = getObjectFromString(strLine);
                         }
                     }
 
                     if (value != null) {
                         PersonalityVariable personalityVariable;
-                        if (isSupported)
-                        {
+                        if (isSupported) {
                             personalityVariable = new PersonalityVariable(file.getName().substring(0, file.getName().length() - 4), value, customName, description, personality.getName().getValue());
-                        }
-                        else
-                        {
+                        } else {
                             personalityVariable = new PersonalityVariable(file.getName().substring(0, file.getName().length() - 4), value, personality.getName().getValue());
                         }
-                        if (needsUpdatedToNewSystem)
-                        {
-                            if (isSupported)
-                            {
+                        if (needsUpdatedToNewSystem) {
+                            if (isSupported) {
                                 nonSetSupportedVariables.put(personalityVariable.getConfigName(), personalityVariable);
                             }
                             deleteVariable(personalityVariable.getConfigName());
                             setVariable(personalityVariable.getConfigName(), personalityVariable.getValue());
                         }
-                        
+
                         //If we already know about this variable try to restore custom information
-                        if(variableExist(personalityVariable.getConfigName())) {
+                        if (variableExist(personalityVariable.getConfigName())) {
                             PersonalityVariable existingVariable = getVariable(personalityVariable.getConfigName());
                             //Check whether this variable has any relevant information
-                            if(existingVariable.isSupportedByPersonality()) {
+                            if (existingVariable.isSupportedByPersonality()) {
                                 personalityVariable.setDescription(existingVariable.getDescription());
                                 personalityVariable.setCustomName(existingVariable.getCustomName());
                             }
@@ -156,7 +147,7 @@ public class VariableHandler {
         name = name.toLowerCase();
 
         PersonalityVariable personalityVariable;
-        if(variableExist(name)) {
+        if (variableExist(name)) {
             //Just update the existing value
             personalityVariable = getVariable(name);
 
@@ -169,7 +160,7 @@ public class VariableHandler {
         } else {
             personalityVariable = new PersonalityVariable(name, value, personality.getName().getValue());
 
-            if(nonSetSupportedVariables.containsKey(name)) {
+            if (nonSetSupportedVariables.containsKey(name)) {
                 PersonalityVariable supportedVariable = nonSetSupportedVariables.get(name);
                 personalityVariable.setSupportedByPersonality(true);
                 personalityVariable.setCustomName(supportedVariable.getCustomName());
@@ -193,27 +184,23 @@ public class VariableHandler {
             List<String> lines;
 
             //Support arrays
-            if(value instanceof ScriptObjectMirror && ((ScriptObjectMirror) value).isArray()) {
-                String[] strings =((ScriptObjectMirror) value).to(String[].class);
+            if (value instanceof ScriptObjectMirror && ((ScriptObjectMirror) value).isArray()) {
+                String[] strings = ((ScriptObjectMirror) value).to(String[].class);
 
                 lines = new ArrayList<>();
 
-                for(String string : strings) {
+                for (String string : strings) {
                     lines.add(string);
                 }
                 lines.add(personalityVariable.isSupportedByPersonality() + "");
-                if (personalityVariable.isSupportedByPersonality())
-                {
+                if (personalityVariable.isSupportedByPersonality()) {
                     lines.add(personalityVariable.getCustomName());
                     lines.add(personalityVariable.getDescription());
                 }
             } else {
-                if (personalityVariable.isSupportedByPersonality())
-                {
+                if (personalityVariable.isSupportedByPersonality()) {
                     lines = Arrays.asList(value.toString(), "true", personalityVariable.getCustomName(), personalityVariable.getDescription());
-                }
-                else
-                {
+                } else {
                     lines = Arrays.asList(value.toString(), "false");
                 }
             }
@@ -231,11 +218,11 @@ public class VariableHandler {
     public void deleteVariable(String name) {
         name = name.toLowerCase();
 
-        if(variableExist(name)) {
+        if (variableExist(name)) {
             PersonalityVariable personalityVariable = getVariable(name);
 
             //Move the supported variable to the list of not yet set variables
-            if(personalityVariable.isSupportedByPersonality()) {
+            if (personalityVariable.isSupportedByPersonality()) {
                 nonSetSupportedVariables.put(name, personalityVariable);
             }
         }
@@ -285,8 +272,8 @@ public class VariableHandler {
 
     public Collection<PersonalityVariable> getTemporaryVariables() {
         Collection<PersonalityVariable> tempVariables = new HashSet<>();
-        for(PersonalityVariable variable : variables.values()) {
-            if(variable.isTemporary()) {
+        for (PersonalityVariable variable : variables.values()) {
+            if (variable.isTemporary()) {
                 tempVariables.add(variable);
             }
         }
@@ -296,7 +283,7 @@ public class VariableHandler {
 
     public void clearTemporaryVariables() {
         //Remove all temporary variables
-        for(PersonalityVariable tempVariable : getTemporaryVariables()) {
+        for (PersonalityVariable tempVariable : getTemporaryVariables()) {
             variables.remove(tempVariable.getConfigName());
         }
     }
@@ -323,14 +310,13 @@ public class VariableHandler {
     public void setVariableSupport(String variableName, String customName, String description) {
         variableName = variableName.toLowerCase();
 
-        if(variableExist(variableName)) {
+        if (variableExist(variableName)) {
             PersonalityVariable personalityVariable = getVariable(variableName);
             personalityVariable.setDescription(description);
             personalityVariable.setCustomName(customName);
             personalityVariable.setSupportedByPersonality(true);
             PersonalityVariable thisVariable = variables.get(variableName);
-            if (!thisVariable.isSupportedByPersonality() || !thisVariable.getDescription().equals(description) || thisVariable.getCustomName().equals(customName))
-            {
+            if (!thisVariable.isSupportedByPersonality() || !thisVariable.getDescription().equals(description) || thisVariable.getCustomName().equals(customName)) {
                 variables.remove(variableName);
                 nonSetSupportedVariables.put(variableName, personalityVariable);
                 deleteVariable(personalityVariable.getConfigName());
@@ -348,18 +334,18 @@ public class VariableHandler {
 
     public Object getObjectFromString(String string) {
         //Check for boolean first, because anything that is not true will be treated as false otherwise
-        if(string.equals("true") || string.equals("false")) {
+        if (string.equals("true") || string.equals("false")) {
             return Boolean.valueOf(string);
         }
 
-        Collection< Class<?>> classes = new ArrayList<>();
+        Collection<Class<?>> classes = new ArrayList<>();
         classes.add(TeaseDate.class);
         classes.add(Integer.class);
         classes.add(Long.class);
         classes.add(Double.class);
         classes.add(Float.class);
 
-        for(Class<?> clazz : classes)
+        for (Class<?> clazz : classes)
             try {
                 Method method = clazz.getDeclaredMethod("valueOf", String.class);
                 if (method != null) {

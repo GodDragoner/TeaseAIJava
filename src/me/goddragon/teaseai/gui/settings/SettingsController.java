@@ -13,8 +13,6 @@ import javafx.stage.Stage;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.TypeSpeed;
 import me.goddragon.teaseai.api.config.PersonalitiesSettingsHandler;
-import me.goddragon.teaseai.api.scripts.personality.Personality;
-import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.gui.main.MainGuiController;
 
 import java.io.IOException;
@@ -24,8 +22,6 @@ import java.io.IOException;
  * Created by GodDragon on 27.03.2018.
  */
 public class SettingsController {
-
-
     private static SettingsController controller;
 
     protected MediaSettings mediaSettings = new MediaSettings(this);
@@ -38,213 +34,211 @@ public class SettingsController {
 
     //General
     @FXML
-    protected TextField preferredTeaseLengthField;
+    public TextField preferredTeaseLengthField;
 
     @FXML
-    protected ComboBox<Double> fontSizeComboBox;
+    public ComboBox<Double> fontSizeComboBox;
 
     @FXML
-    protected ComboBox<TypeSpeed> defaultTypeSpeedComboBox;
+    public ComboBox<TypeSpeed> defaultTypeSpeedComboBox;
 
     @FXML
-    protected ListView urlFilesList;
+    public ListView urlFilesList;
 
     @FXML
-    protected TextField addURLTextField;
+    public TextField addURLTextField;
 
     @FXML
-    protected Button addURLButton;
+    public Button addURLButton;
 
     @FXML
-    protected Button deleteURLButton;
+    public Button deleteURLButton;
 
     @FXML
-    protected Button refreshURLButton;
+    public Button refreshURLButton;
 
     @FXML
-    protected Label urlProgressLabel;
+    public Label urlProgressLabel;
 
     @FXML
-    protected StackPane urlImageViewStackPane;
+    public StackPane urlImageViewStackPane;
 
     @FXML
-    protected ImageView urlFileImagePreview;
+    public ImageView urlFileImagePreview;
 
     @FXML
-    protected CheckBox useURLForTease;
+    public CheckBox useURLForTease;
 
     @FXML
-    protected ListView urlFileDragDropList;
+    public ListView urlFileDragDropList;
 
     @FXML
-    protected ListView assignedURLFileList;
+    public ListView assignedURLFileList;
 
     @FXML
-    protected ListView urlFetishTypeList;
+    public ListView urlFetishTypeList;
 
     @FXML
-    protected GridPane moveMediaURLGridPane;
+    public GridPane moveMediaURLGridPane;
 
     @FXML
-    protected Button assignMediaURLButton;
+    public Button assignMediaURLButton;
 
     @FXML
-    protected Button removeMediaURLButton;
+    public Button removeMediaURLButton;
 
     //Media Files and Folders
     @FXML
-    protected ListView mediaFetishTypeList;
+    public ListView mediaFetishTypeList;
 
     @FXML
-    protected Button addImagePathButton;
+    public Button addImagePathButton;
 
     @FXML
-    protected TextField addImagePathTextBox;
+    public TextField addImagePathTextBox;
 
     @FXML
-    protected Button addImagePathFileChooserButton;
+    public Button addImagePathFileChooserButton;
 
     @FXML
-    protected ListView imagePathListView;
+    public ListView imagePathListView;
 
     @FXML
-    protected Button addVideoPathButton;
+    public Button addVideoPathButton;
 
     @FXML
-    protected TextField addVideoPathTextBox;
+    public TextField addVideoPathTextBox;
 
     @FXML
-    protected Button addVideoPathFileChooserButton;
+    public Button addVideoPathFileChooserButton;
 
     @FXML
-    protected ListView videoPathListView;
+    public ListView videoPathListView;
 
     //Contacts
     @FXML
-    protected ListView domContactListView;
+    public ListView domContactListView;
 
     @FXML
-    protected ImageView domContactImageView;
+    public ImageView domContactImageView;
 
     @FXML
-    protected TextField domContactNameField;
+    public TextField domContactNameField;
 
     @FXML
-    protected StackPane domContactImageStackPane;
+    public StackPane domContactImageStackPane;
 
     @FXML
-    protected TextField domContactImageSetPathText;
+    public TextField domContactImageSetPathText;
 
     @FXML
-    protected Button domContactImageSetPathButton;
+    public Button domContactImageSetPathButton;
 
     @FXML
-    protected Label clickContactAvatarText;
+    public Label clickContactAvatarText;
 
     //Debug
     @FXML
-    protected ListView variableListView;
+    public ListView variableListView;
 
     @FXML
-    protected TextField variableValueTextField;
+    public TextField variableValueTextField;
 
     @FXML
-    protected CheckBox onlySupportedVariablesCheckbox;
+    public CheckBox onlySupportedVariablesCheckbox;
 
     //Tagging
     @FXML
-    protected TextField taggingFolderText;
+    public TextField taggingFolderText;
 
     @FXML
-    protected Button taggingFolderButton;
+    public Button taggingFolderButton;
 
     @FXML
-    protected Label descriptionLabel;
+    public Label descriptionLabel;
 
     @FXML
-    protected GridPane urlGridPane;
+    public GridPane urlGridPane;
 
     @FXML
-    protected GridPane contactGridPane;
-    
+    public GridPane contactGridPane;
+
     @FXML
-    protected TabPane PersonalitiesPane;
-    
+    public TabPane PersonalitiesPane;
+
     @FXML
-    protected ComboBox<String> ThemesList;
-    
+    public ComboBox<String> ThemesList;
+
     @FXML
-    protected ColorPicker PrimaryColor;
-    
+    public ColorPicker PrimaryColor;
+
     @FXML
-    protected ColorPicker ChatWindowColor;
-    
+    public ColorPicker ChatWindowColor;
+
     @FXML
-    protected ColorPicker ChatColor;
-    
+    public ColorPicker ChatColor;
+
     @FXML
-    protected ColorPicker ChatBackground;
-    
+    public ColorPicker ChatBackground;
+
     @FXML
-    protected ColorPicker DateColor;
-    
+    public ColorPicker DateColor;
+
     @FXML
-    protected ColorPicker SubColor;
-    
+    public ColorPicker SubColor;
+
     @FXML
-    protected ColorPicker DomColor;
-    
+    public ColorPicker DomColor;
+
     @FXML
-    protected ColorPicker Friend1Color;
-    
+    public ColorPicker Friend1Color;
+
     @FXML
-    protected ColorPicker Friend2Color;
-    
+    public ColorPicker Friend2Color;
+
     @FXML
-    protected ColorPicker Friend3Color;
-    
+    public ColorPicker Friend3Color;
+
     @FXML
-    protected TabPane SettingsPanes;
-    
+    public TabPane SettingsPanes;
+
     @FXML
-    protected AnchorPane SettingsBackground;
-    
+    public AnchorPane SettingsBackground;
+
     @FXML
-    protected AnchorPane GeneralTab;
-    
+    public AnchorPane GeneralTab;
+
     @FXML
-    protected AnchorPane AppearanceTab;
-    
+    public AnchorPane AppearanceTab;
+
     @FXML
-    protected AnchorPane PersonalityTab;
-    
+    public AnchorPane PersonalityTab;
+
     @FXML
-    protected AnchorPane MediaTab;
-    
+    public AnchorPane MediaTab;
+
     @FXML
-    protected AnchorPane ContactsTab;
+    public AnchorPane ContactsTab;
 
     public void initiate() {
         mediaSettings.initiate();
         contactSettings.initiate();
         generalSettings.initiate();
         debugSettings.initiate();
-        for (Tab tab: PersonalitiesSettingsHandler.getHandler().getTabsToAdd())
-        {
+        for (Tab tab : PersonalitiesSettingsHandler.getHandler().getTabsToAdd()) {
             PersonalitiesPane.getTabs().add(0, tab);
         }
         appearanceSettings.initiate();
     }
 
     public static void openGUI() {
-        if (controller != null)
-        {
-            if (controller.stage.isShowing())
-            {
+        if (controller != null) {
+            if (controller.stage.isShowing()) {
                 controller.stage.toFront();
                 return;
             }
         }
+
         controller = new SettingsController();
         FXMLLoader loader = new FXMLLoader(TeaseAI.class.getResource("gui/settings/settings.fxml"));
         loader.setController(SettingsController.getController());
@@ -271,9 +265,8 @@ public class SettingsController {
     public static void setController(SettingsController controller) {
         SettingsController.controller = controller;
     }
-    
-    public AppearanceSettings getAppearanceSettings()
-    {
+
+    public AppearanceSettings getAppearanceSettings() {
         return appearanceSettings;
     }
 }
