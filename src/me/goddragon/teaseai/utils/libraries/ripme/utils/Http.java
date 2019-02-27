@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
-import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
@@ -13,6 +13,7 @@ import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractRipper;
 
 /**
@@ -23,7 +24,7 @@ import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractRipper;
 public class Http {
 
     private static final int    TIMEOUT = Utils.getConfigInteger("page.timeout", 5 * 1000);
-    private static final Logger logger  = Logger.getLogger(Http.class);
+    private static final TeaseLogger logger  = TeaseLogger.getLogger();
 
     private int retries;
     private String url;
@@ -130,7 +131,7 @@ public class Http {
                 response = connection.execute();
                 return response;
             } catch (IOException e) {
-                logger.warn("Error while loading " + url, e);
+                logger.log(Level.WARNING, "Error while loading " + url.toString());
                 lastException = e;
             }
         }

@@ -5,16 +5,15 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AlbumRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.ui.UpdateUtils;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.RipUtils;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
@@ -32,7 +31,7 @@ public class RedditRipper extends AlbumRipper {
     private static final String HOST   = "reddit";
     private static final String DOMAIN = "reddit.com";
 
-    private static final String REDDIT_USER_AGENT = "RipMe:github.com/RipMeApp/ripme:" + UpdateUtils.getThisJarVersion() + " (by /u/metaprime and /u/ineedmorealts)";
+    private static final String REDDIT_USER_AGENT = "RipMe:github.com/RipMeApp/ripme:1.0.15 (by /u/metaprime and /u/ineedmorealts)";
 
     private static final int SLEEP_TIME = 2000;
 
@@ -71,7 +70,6 @@ public class RedditRipper extends AlbumRipper {
         URL jsonURL = getJsonURL(this.url);
         while (true) {
             if (shouldAddURL()) {
-                sendUpdate(RipStatusMessage.STATUS.DOWNLOAD_COMPLETE_HISTORY, "Already seen the last " + alreadyDownloadedUrls + " images ending rip");
                 break;
             }
             jsonURL = getAndParseAndReturnNext(jsonURL);
@@ -117,7 +115,7 @@ public class RedditRipper extends AlbumRipper {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
-            LOGGER.warn("Interrupted while sleeping", e);
+            LOGGER.log(Level.WARNING, "Interrupted while sleeping", e);
         }
         return nextURL;
     }
@@ -129,7 +127,7 @@ public class RedditRipper extends AlbumRipper {
             try {
                 Thread.sleep(timeDiff);
             } catch (InterruptedException e) {
-                LOGGER.warn("[!] Interrupted while waiting to load next page", e);
+                LOGGER.log(Level.WARNING, "[!] Interrupted while waiting to load next page", e);
                 return new JSONArray();
             }
         }
@@ -148,7 +146,7 @@ public class RedditRipper extends AlbumRipper {
         } else if (jsonObj instanceof JSONArray) {
             jsonArray = (JSONArray) jsonObj;
         } else {
-            LOGGER.warn("[!] Unable to parse JSON: " + jsonString);
+            LOGGER.log(Level.WARNING, "[!] Unable to parse JSON: " + jsonString);
         }
         return jsonArray;
     }
@@ -208,7 +206,7 @@ public class RedditRipper extends AlbumRipper {
                     largestHeight = Integer.parseInt(height);
                     baseURL = doc.select("MPD > Period > AdaptationSet > Representation[height=" + height + "]").select("BaseURL").text();
                 }
-                LOGGER.info("H " + e.attr("height") + " V " + e.attr("width"));
+                LOGGER.log(Level.INFO, "H " + e.attr("height") + " V " + e.attr("width"));
             }
             return new URL(vidURL + "/" + baseURL);
         } catch (IOException e) {

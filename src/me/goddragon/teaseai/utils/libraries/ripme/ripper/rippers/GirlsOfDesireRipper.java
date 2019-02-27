@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +41,7 @@ public class GirlsOfDesireRipper extends AbstractHTMLRipper {
             return getHost() + "_" + elems.first().text();
         } catch (Exception e) {
             // Fall back to default album naming convention
-            LOGGER.warn("Failed to get album title from " + url, e);
+            LOGGER.log(Level.WARNING, "Failed to get album title from " + url, e);
         }
         return super.getAlbumTitle(url);
     }

@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,7 +51,7 @@ public class ImagearnRipper extends AbstractHTMLRipper {
             try {
                 url = getGalleryFromImage(url);
             } catch (Exception e) {
-                LOGGER.error("[!] " + e.getMessage(), e);
+                LOGGER.log(Level.SEVERE, "[!] " + e.getMessage(), e);
             }
         }
         return url;
@@ -59,11 +60,11 @@ public class ImagearnRipper extends AbstractHTMLRipper {
     private URL getGalleryFromImage(URL url) throws IOException {
         Document doc = Http.url(url).get();
         for (Element link : doc.select("a[href~=^gallery\\.php.*$]")) {
-            LOGGER.info("LINK: " + link.toString());
+            LOGGER.log(Level.INFO, "LINK: " + link.toString());
             if (link.hasAttr("href")
                     && link.attr("href").contains("gallery.php")) {
                 url = new URL("http://imagearn.com/" + link.attr("href"));
-                LOGGER.info("[!] Found gallery from given link: " + url);
+                LOGGER.log(Level.INFO, "[!] Found gallery from given link: " + url);
                 return url;
             }
         }
@@ -83,7 +84,7 @@ public class ImagearnRipper extends AbstractHTMLRipper {
             return getHost() + "_" + title + "_" + getGID(url);
         } catch (Exception e) {
             // Fall back to default album naming convention
-            LOGGER.warn("Failed to get album title from " + url, e);
+            LOGGER.log(Level.WARNING, "Failed to get album title from " + url, e);
         }
         return super.getAlbumTitle(url);
     }
@@ -98,7 +99,7 @@ public class ImagearnRipper extends AbstractHTMLRipper {
                 String image = imagedoc.select("a.thickbox").first().attr("href");
                 imageURLs.add(image);
             } catch (IOException e) {
-                LOGGER.warn("Was unable to download page: " + imageURL);
+                LOGGER.log(Level.WARNING, "Was unable to download page: " + imageURL);
             }
         }
         return imageURLs;

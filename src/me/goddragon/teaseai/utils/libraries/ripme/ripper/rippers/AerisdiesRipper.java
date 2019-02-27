@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,7 +58,7 @@ public class AerisdiesRipper extends AbstractHTMLRipper {
             return getHost() + "_" + getGID(url) + "_" + title.trim();
         } catch (IOException e) {
             // Fall back to default album naming convention
-            LOGGER.info("Unable to find title at " + url);
+            LOGGER.log(Level.INFO, "Unable to find title at " + url);
         }
         return super.getAlbumTitle(url);
     }

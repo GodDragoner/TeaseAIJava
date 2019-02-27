@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,10 +53,10 @@ public class MotherlessVideoRipper extends VideoRipper {
 
     @Override
     public void rip() throws IOException {
-        LOGGER.info("    Retrieving " + this.url);
+        LOGGER.log(Level.INFO, "    Retrieving " + this.url);
         String html = Http.url(this.url).get().toString();
         if (html.contains("__fileurl = '")) {
-            LOGGER.error("WTF");
+            LOGGER.log(Level.SEVERE, "WTF");
         }
         List<String> vidUrls = Utils.between(html, "__fileurl = '", "';");
         if (vidUrls.isEmpty()) {

@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractRipper;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.EroShareRipper;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.EromeRipper;
@@ -14,85 +16,84 @@ import me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.ImgurRipper;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.VidbleRipper;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.GfycatRipper;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 
 public class RipUtils {
-    private static final Logger logger = Logger.getLogger(RipUtils.class);
+    private static final TeaseLogger logger = TeaseLogger.getLogger();
 
     public static List<URL> getFilesFromURL(URL url) {
         List<URL> result = new ArrayList<>();
 
-        logger.debug("Checking " + url);
+        logger.log(Level.FINE, "Checking " + url);
         // Imgur album
         if ((url.getHost().endsWith("imgur.com"))
                 && url.toExternalForm().contains("imgur.com/a/")) {
             try {
-                logger.debug("Fetching imgur album at " + url);
+                logger.log(Level.FINE, "Fetching imgur album at " + url);
                 ImgurRipper.ImgurAlbum imgurAlbum = ImgurRipper.getImgurAlbum(url);
                 for (ImgurRipper.ImgurImage imgurImage : imgurAlbum.images) {
-                    logger.debug("Got imgur image: " + imgurImage.url);
+                    logger.log(Level.FINE, "Got imgur image: " + imgurImage.url);
                     result.add(imgurImage.url);
                 }
             } catch (IOException e) {
-                logger.error("[!] Exception while loading album " + url, e);
+                logger.log(Level.SEVERE, "[!] Exception while loading album " + url, e);
             }
             return result;
         }
         else if (url.getHost().endsWith("imgur.com") && url.toExternalForm().contains(",")) {
             // Imgur image series.
             try {
-                logger.debug("Fetching imgur series at " + url);
+                logger.log(Level.FINE, "Fetching imgur series at " + url);
                 ImgurRipper.ImgurAlbum imgurAlbum = ImgurRipper.getImgurSeries(url);
                 for (ImgurRipper.ImgurImage imgurImage : imgurAlbum.images) {
-                    logger.debug("Got imgur image: " + imgurImage.url);
+                    logger.log(Level.FINE, "Got imgur image: " + imgurImage.url);
                     result.add(imgurImage.url);
                 }
             } catch (IOException e) {
-                logger.error("[!] Exception while loading album " + url, e);
+                logger.log(Level.SEVERE, "[!] Exception while loading album " + url, e);
             }
         }  else if (url.getHost().endsWith("i.imgur.com") && url.toExternalForm().contains("gifv")) {
             // links to imgur gifvs
             try {
                 result.add(new URL(url.toExternalForm().replaceAll(".gifv", ".mp4")));
             } catch (IOException e) {
-                logger.info("Couldn't get gifv from " + url);
+                logger.log(Level.INFO, "Couldn't get gifv from " + url);
             }
             return result;
 
         }
         else if (url.getHost().endsWith("gfycat.com")) {
             try {
-                logger.debug("Fetching gfycat page " + url);
+                logger.log(Level.FINE, "Fetching gfycat page " + url);
                 String videoURL = GfycatRipper.getVideoURL(url);
-                logger.debug("Got gfycat URL: " + videoURL);
+                logger.log(Level.FINE, "Got gfycat URL: " + videoURL);
                 result.add(new URL(videoURL));
             } catch (IOException e) {
                 // Do nothing
-                logger.warn("Exception while retrieving gfycat page:", e);
+                logger.log(Level.WARNING, "Exception while retrieving gfycat page:", e);
             }
             return result;
         }
         else if (url.toExternalForm().contains("vidble.com/album/") || url.toExternalForm().contains("vidble.com/show/")) {
             try {
-                logger.info("Getting vidble album " + url);
+                logger.log(Level.INFO, "Getting vidble album " + url);
                 result.addAll(VidbleRipper.getURLsFromPage(url));
             } catch (IOException e) {
                 // Do nothing
-                logger.warn("Exception while retrieving vidble page:", e);
+                logger.log(Level.WARNING, "Exception while retrieving vidble page:", e);
             }
             return result;
         }
         else if (url.toExternalForm().contains("eroshare.com")) {
             try {
-                logger.info("Getting eroshare album " + url);
+                logger.log(Level.INFO, "Getting eroshare album " + url);
                 result.addAll(EroShareRipper.getURLs(url));
             } catch (IOException e) {
                 // Do nothing
-                logger.warn("Exception while retrieving eroshare page:", e);
+                logger.log(Level.WARNING, "Exception while retrieving eroshare page:", e);
             }
             return result;
         } else if (url.toExternalForm().contains("v.redd.it")) {
@@ -102,7 +103,7 @@ public class RipUtils {
 
         else if (url.toExternalForm().contains("erome.com")) {
             try {
-                logger.info("Getting eroshare album " + url);
+                logger.log(Level.INFO, "Getting eroshare album " + url);
                 EromeRipper r = new EromeRipper(url);
                 Document tempDoc = r.getFirstPage();
                 for (String u : r.getURLsFromPage(tempDoc)) {
@@ -110,7 +111,7 @@ public class RipUtils {
                 }
             } catch (IOException e) {
                 // Do nothing
-                logger.warn("Exception while retrieving eroshare page:", e);
+                logger.log(Level.WARNING, "Exception while retrieving eroshare page:", e);
             }
             return result;
         }
@@ -118,7 +119,7 @@ public class RipUtils {
         Pattern p = Pattern.compile("https?://i.reddituploads.com/([a-zA-Z0-9]+)\\?.*");
         Matcher m = p.matcher(url.toExternalForm());
         if (m.matches()) {
-            logger.info("URL: " + url.toExternalForm());
+            logger.log(Level.INFO, "URL: " + url.toExternalForm());
             String u = url.toExternalForm().replaceAll("&amp;", "&");
             try {
                 result.add(new URL(u));
@@ -133,11 +134,11 @@ public class RipUtils {
         if (m.matches()) {
             try {
                 URL singleURL = new URL(m.group(1));
-                logger.debug("Found single URL: " + singleURL);
+                logger.log(Level.FINE, "Found single URL: " + singleURL);
                 result.add(singleURL);
                 return result;
             } catch (MalformedURLException e) {
-                logger.error("[!] Not a valid URL: '" + url + "'", e);
+                logger.log(Level.SEVERE, "[!] Not a valid URL: '" + url + "'", e);
             }
         }
 
@@ -163,12 +164,12 @@ public class RipUtils {
                     }
                 }
             } catch (IOException ex) {
-                logger.error("[!] Error", ex);
+                logger.log(Level.SEVERE, "[!] Error", ex);
             }
 
         }
 
-        logger.error("[!] Unable to rip URL: " + url);
+        logger.log(Level.SEVERE, "[!] Unable to rip URL: " + url);
         return result;
     }
 

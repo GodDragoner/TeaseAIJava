@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,7 +67,7 @@ public class XvideosRipper extends AbstractSingleFileRipper {
         Elements scripts = doc.select("script");
         for (Element e : scripts) {
             if (e.html().contains("html5player.setVideoUrlHigh")) {
-                LOGGER.info("Found the right script");
+                LOGGER.log(Level.INFO, "Found the right script");
                 String[] lines = e.html().split("\n");
                 for (String line: lines) {
                     if (line.contains("html5player.setVideoUrlHigh")) {

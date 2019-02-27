@@ -8,9 +8,8 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage;
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage.STATUS;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 
 // Should this file even exist? It does the same thing as abstractHTML ripper
@@ -62,7 +61,7 @@ public abstract class AlbumRipper extends AbstractRipper {
                   || itemsCompleted.containsKey(url)
                   || itemsErrored.containsKey(url) )) {
             // Item is already downloaded/downloading, skip it.
-            LOGGER.info("[!] Skipping " + url + " -- already attempted: " + Utils.removeCWD(saveAs));
+            LOGGER.log(Level.INFO, "[!] Skipping " + url + " -- already attempted: " + Utils.removeCWD(saveAs));
             return false;
         }
         if (Utils.getConfigBoolean("urls_only.save", false)) {
@@ -89,7 +88,7 @@ public abstract class AlbumRipper extends AbstractRipper {
                 fw.write("\n");
                 itemsCompleted.put(url, new File(urlFile));
             } catch (IOException e) {
-                LOGGER.error("Error while writing to " + urlFile, e);
+                LOGGER.log(Level.SEVERE, "Error while writing to " + urlFile, e);
             }
         }
         else {
@@ -124,72 +123,6 @@ public abstract class AlbumRipper extends AbstractRipper {
         return addURLToDownload(url, "", "");
     }
 
-    @Override
-    /**
-     * Cleans up & tells user about successful download
-     */
-    public void downloadCompleted(URL url, File saveAs) {
-        if (observer == null) {
-            return;
-        }
-        try {
-            String path = Utils.removeCWD(saveAs);
-            RipStatusMessage msg = new RipStatusMessage(STATUS.DOWNLOAD_COMPLETE, path);
-            itemsPending.remove(url);
-            itemsCompleted.put(url, saveAs);
-            observer.update(this, msg);
-
-            checkIfComplete();
-        } catch (Exception e) {
-            LOGGER.error("Exception while updating observer: ", e);
-        }
-    }
-
-    @Override
-    /**
-     * Cleans up & tells user about failed download.
-     */
-    public void downloadErrored(URL url, String reason) {
-        if (observer == null) {
-            return;
-        }
-        itemsPending.remove(url);
-        itemsErrored.put(url, reason);
-        observer.update(this, new RipStatusMessage(STATUS.DOWNLOAD_ERRORED, url + " : " + reason));
-
-        checkIfComplete();
-    }
-
-    @Override
-    /**
-     * Tells user that a single file in the album they wish to download has
-     * already been downloaded in the past.
-     */
-    public void downloadExists(URL url, File file) {
-        if (observer == null) {
-            return;
-        }
-
-        itemsPending.remove(url);
-        itemsCompleted.put(url, file);
-        observer.update(this, new RipStatusMessage(STATUS.DOWNLOAD_WARN, url + " already saved as " + file.getAbsolutePath()));
-
-        checkIfComplete();
-    }
-
-    /**
-     * Notifies observers and updates state if all files have been ripped.
-     */
-    @Override
-    protected void checkIfComplete() {
-        if (observer == null) {
-            return;
-        }
-        if (itemsPending.isEmpty()) {
-            super.checkIfComplete();
-        }
-    }
-
     /**
      * Sets directory to save all ripped files to.
      * @param url
@@ -204,10 +137,10 @@ public abstract class AlbumRipper extends AbstractRipper {
         {
             this.workingDir = new File(path);
             if (!this.workingDir.exists()) {
-                LOGGER.info("[+] Creating directory: " + Utils.removeCWD(this.workingDir));
+                LOGGER.log(Level.INFO, "[+] Creating directory: " + Utils.removeCWD(this.workingDir));
                 this.workingDir.mkdirs();
             }
-            LOGGER.debug("Set working directory to: " + this.workingDir);
+            LOGGER.log(Level.FINE, "Set working directory to: " + this.workingDir);
             return;
         }
         if (!path.endsWith(File.separator)) {
@@ -219,7 +152,7 @@ public abstract class AlbumRipper extends AbstractRipper {
         } else {
             title = super.getAlbumTitle(this.url);
         }
-        LOGGER.debug("Using album title '" + title + "'");
+        LOGGER.log(Level.FINE, "Using album title '" + title + "'");
 
         title = Utils.filesystemSafe(title);
         path += title;
@@ -227,10 +160,10 @@ public abstract class AlbumRipper extends AbstractRipper {
 
         this.workingDir = new File(path);
         if (!this.workingDir.exists()) {
-            LOGGER.info("[+] Creating directory: " + Utils.removeCWD(this.workingDir));
+            LOGGER.log(Level.INFO, "[+] Creating directory: " + Utils.removeCWD(this.workingDir));
             this.workingDir.mkdirs();
         }
-        LOGGER.debug("Set working directory to: " + this.workingDir);
+        LOGGER.log(Level.FINE, "Set working directory to: " + this.workingDir);
     }
 
     /**

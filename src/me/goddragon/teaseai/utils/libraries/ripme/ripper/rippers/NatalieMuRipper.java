@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,7 +110,7 @@ public class NatalieMuRipper extends AbstractHTMLRipper {
                 imgUrl = imgUrl.replace("list_thumb_inbox","xlarge");
                 // Don't download the same URL twice
                 if (imageURLs.contains(imgUrl)) {
-                    LOGGER.debug("Already attempted: " + imgUrl);
+                    LOGGER.log(Level.FINE, "Already attempted: " + imgUrl);
                     continue;
                 }
                 imageURLs.add(imgUrl);

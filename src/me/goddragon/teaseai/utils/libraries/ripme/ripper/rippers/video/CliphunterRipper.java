@@ -3,6 +3,7 @@ package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.video;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,7 +56,7 @@ public class CliphunterRipper extends VideoRipper {
 
     @Override
     public void rip() throws IOException {
-        LOGGER.info("Retrieving " + this.url);
+        LOGGER.log(Level.INFO, "Retrieving " + this.url);
         String html = Http.url(url).get().html();
         String jsonString = html.substring(html.indexOf("var flashVars = {d: '") + 21);
         jsonString = jsonString.substring(0, jsonString.indexOf("'"));

@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
+import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.DownloadThreadPool;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
@@ -11,15 +12,15 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class E621Ripper extends AbstractHTMLRipper{
-	private static final Logger logger = Logger.getLogger(E621Ripper.class);
+	private static final TeaseLogger logger = TeaseLogger.getLogger();
 
 	private static Pattern gidPattern=null;
 	private static Pattern gidPattern2=null;
@@ -70,7 +71,7 @@ public class E621Ripper extends AbstractHTMLRipper{
                     throw new IOException();
                 }
         } catch (IOException e) {
-	        logger.error("Unable to get full sized image from " + url);
+	        logger.log(Level.SEVERE, "Unable to get full sized image from " + url);
 	        return null;
         }
     }
@@ -114,7 +115,7 @@ public class E621Ripper extends AbstractHTMLRipper{
 
 		Matcher m = gidPattern.matcher(url.toExternalForm());
 		if(m.matches()) {
-            LOGGER.info(m.group(2));
+            LOGGER.log(Level.INFO, m.group(2));
             return m.group(2);
         }
 

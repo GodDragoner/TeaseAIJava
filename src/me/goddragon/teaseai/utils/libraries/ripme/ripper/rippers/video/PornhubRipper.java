@@ -56,7 +56,7 @@ public class PornhubRipper extends VideoRipper {
 
     @Override
     public void rip() throws IOException {
-        LOGGER.info("    Retrieving " + this.url.toExternalForm());
+        LOGGER.log(Level.INFO, "    Retrieving " + this.url.toExternalForm());
         Document doc = Http.url(this.url).get();
         String html = doc.body().html();
         Pattern p = Pattern.compile("^.*flashvars_[0-9]+ = (.+});.*$", Pattern.DOTALL);
@@ -84,10 +84,10 @@ public class PornhubRipper extends VideoRipper {
                 }
                 addURLToDownload(new URL(vidUrl), HOST + "_" + getGID(this.url));
             } catch (JSONException e) {
-                LOGGER.error("Error while parsing JSON at " + url, e);
+                LOGGER.log(Level.SEVERE, "Error while parsing JSON at " + url, e);
                 throw e;
             } catch (Exception e) {
-                LOGGER.error("Error while retrieving video URL at " + url, e);
+                LOGGER.log(Level.SEVERE, "Error while retrieving video URL at " + url, e);
                 throw new IOException(e);
             }
         }

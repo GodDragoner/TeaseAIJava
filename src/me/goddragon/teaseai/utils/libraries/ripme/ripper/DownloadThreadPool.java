@@ -3,9 +3,9 @@ package me.goddragon.teaseai.utils.libraries.ripme.ripper;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
-import org.apache.log4j.Logger;
-
+import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 
 /**
@@ -13,7 +13,7 @@ import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
  */
 public class DownloadThreadPool {
 
-    private static final Logger logger = Logger.getLogger(DownloadThreadPool.class);
+    private static final TeaseLogger logger = TeaseLogger.getLogger();
     private ThreadPoolExecutor threadPool = null;
 
     public DownloadThreadPool() {
@@ -30,7 +30,7 @@ public class DownloadThreadPool {
      */
     private void initialize(String threadPoolName) {
         int threads = Utils.getConfigInteger("threads.size", 10);
-        logger.debug("Initializing " + threadPoolName + " thread pool with " + threads + " threads");
+        logger.log(Level.FINE, "Initializing " + threadPoolName + " thread pool with " + threads + " threads");
         threadPool = (ThreadPoolExecutor) Executors.newFixedThreadPool(threads);
     }
     /**
@@ -50,7 +50,7 @@ public class DownloadThreadPool {
         try {
             threadPool.awaitTermination(3600, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            logger.error("[!] Interrupted while waiting for threads to finish: ", e);
+            logger.log(Level.SEVERE, "[!] Interrupted while waiting for threads to finish: ", e);
         }
     }
 }

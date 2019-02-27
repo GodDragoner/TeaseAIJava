@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jsoup.nodes.Document;
@@ -74,11 +75,11 @@ public class ChanRipper extends AbstractHTMLRipper {
                 String subject = doc.select(".post.op > .postinfo > .subject").first().text();
                 return getHost() + "_" + getGID(url) + "_" + subject;
             } catch (NullPointerException e) {
-                LOGGER.warn("Failed to get thread title from " + url);
+                LOGGER.log(Level.WARNING, "Failed to get thread title from " + url);
             }
         } catch (Exception e) {
             // Fall back to default album naming convention
-            LOGGER.warn("Failed to get album title from " + url, e);
+            LOGGER.log(Level.WARNING, "Failed to get album title from " + url, e);
         }
         // Fall back on the GID
         return getHost() + "_" + getGID(url);
@@ -111,7 +112,7 @@ public class ChanRipper extends AbstractHTMLRipper {
 
         String u = url.toExternalForm();
         if (u.contains("/thread/") || u.contains("/res/") || u.contains("yuki.la") || u.contains("55chan.org")) {
-            LOGGER.debug("U: " + u);
+            LOGGER.log(Level.FINE, "U: " + u);
             p = Pattern.compile("^.*\\.[a-z]{1,3}/[a-zA-Z0-9]+/(thread|res)/([0-9]+)(\\.html|\\.php)?.*$");
             m = p.matcher(u);
             if (m.matches()) {
@@ -165,7 +166,7 @@ public class ChanRipper extends AbstractHTMLRipper {
     private boolean isURLBlacklisted(String url) {
         for (String blacklist_item : url_piece_blacklist) {
             if (url.contains(blacklist_item)) {
-                LOGGER.debug("Skipping link that contains '"+blacklist_item+"': " + url);
+                LOGGER.log(Level.FINE, "Skipping link that contains '"+blacklist_item+"': " + url);
                 return true;
             }
         }
@@ -206,7 +207,7 @@ public class ChanRipper extends AbstractHTMLRipper {
                     }
                     // Don't download the same URL twice
                     if (imageURLs.contains(href)) {
-                        LOGGER.debug("Already attempted: " + href);
+                        LOGGER.log(Level.FINE, "Already attempted: " + href);
                         continue;
                     }
                     imageURLs.add(href);

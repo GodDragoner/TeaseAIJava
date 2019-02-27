@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,7 +84,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
 
     @Override
     public URL sanitizeURL(URL url) throws MalformedURLException {
-        LOGGER.info(url);
+        LOGGER.log(Level.INFO, url.toString());
         String u = url.toExternalForm();
         if (u.contains("?")) {
             // strip options from URL
@@ -128,7 +129,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
     public Document getFirstPage() throws IOException {
         if (this.currAlbum == null) {
             this.albums = getAlbumMetadata(this.url.toExternalForm());
-            LOGGER.info("Detected " + albums.size() + " albums in total");
+            LOGGER.log(Level.INFO, "Detected " + albums.size() + " albums in total");
         }
         this.currAlbum = this.albums.remove(0);
         // NOTE: Why not just get media count in the metadata json?
@@ -163,13 +164,13 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
         try {
             Thread.sleep(WAIT_BEFORE_NEXT_PAGE);
         } catch (InterruptedException e) {
-            LOGGER.info("Interrupted while waiting before getting next page");
+            LOGGER.log(Level.INFO, "Interrupted while waiting before getting next page");
         }
         if (endOfAlbum){
-            LOGGER.info("Turning to next album " + albums.get(0).baseURL);
+            LOGGER.log(Level.INFO, "Turning to next album " + albums.get(0).baseURL);
             return getFirstPage();
         } else {
-            LOGGER.info("Turning to page " + currAlbum.pageIndex +
+            LOGGER.log(Level.INFO, "Turning to page " + currAlbum.pageIndex +
                     " of album " + currAlbum.baseURL);
             Connection.Response resp = Http.url(currAlbum.getCurrPageURL()).response();
             currAlbum.cookies = resp.cookies();
@@ -188,7 +189,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
     protected List<String> getURLsFromPage(Document page) {
         JSONObject collectionData = getCollectionData(page);
         if (collectionData == null) {
-            LOGGER.error("Unable to find JSON data at URL: " + page.location());
+            LOGGER.log(Level.SEVERE, "Unable to find JSON data at URL: " + page.location());
             // probably better than returning null, as the ripper will display
             // that nothing was found instead of a NullPointerException
             return new ArrayList<>();
@@ -251,7 +252,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
                 metadata.add(new AlbumMetadata(sub));
             }
         }
-        LOGGER.info("Succesfully retrieved and parsed metadata");
+        LOGGER.log(Level.INFO, "Succesfully retrieved and parsed metadata");
         return metadata;
     }
 
@@ -271,7 +272,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
         String apiURL = String.format("http://%s.photobucket.com/api/user/" +
                         "%s/album/%s/get?subAlbums=%d&json=1",
                 subdomain, user, albumTitle, ITEMS_PER_PAGE);
-        LOGGER.info("Loading " + apiURL);
+        LOGGER.log(Level.INFO, "Loading " + apiURL);
         JSONObject data = Http.url(apiURL).getJSON().getJSONObject("data");
         if (data.has("subAlbums")) {
             int count = data.getInt("subAlbumCount");
