@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,7 +77,7 @@ public class BatoRipper extends AbstractHTMLRipper {
             return getHost() + "_" + getGID(url) + "_" + getFirstPage().select("title").first().text().replaceAll(" ", "_");
         } catch (IOException e) {
             // Fall back to default album naming convention
-            LOGGER.info("Unable to find title at " + url);
+            LOGGER.log(Level.INFO, "Unable to find title at " + url);
         }
         return super.getAlbumTitle(url);
     }
@@ -113,7 +114,7 @@ public class BatoRipper extends AbstractHTMLRipper {
                 s = s.replaceAll("var prevCha = null;", "");
                 s = s.replaceAll("var nextCha = \\.*;", "");
                 String json = s.replaceAll("var images = ", "").replaceAll(";", "");
-                LOGGER.info(s);
+                LOGGER.log(Level.INFO, s);
                 JSONObject images = new JSONObject(json);
                 for (int i = 1; i < images.length() +1; i++) {
                     result.add(images.getString(Integer.toString(i)));

@@ -10,10 +10,8 @@ import java.util.logging.Level;
 
 import org.jsoup.nodes.Document;
 
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage.STATUS;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 import me.goddragon.teaseai.utils.TeaseLogger;
-import me.goddragon.teaseai.utils.libraries.ripme.ui.MainWindow;
 
 /**
  * Simplified ripper, designed for ripping from sites by parsing HTML.
@@ -83,15 +81,11 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
     public void rip() throws IOException {
         int index = 0;
         int textindex = 0;
-        LOGGER.info("Retrieving " + this.url);
-        sendUpdate(STATUS.LOADING_RESOURCE, this.url.toExternalForm());
+        LOGGER.log(Level.INFO, "Retrieving " + this.url);
         Document doc = getFirstPage();
 
         if (hasQueueSupport() && pageContainsAlbums(this.url)) {
             List<String> urls = getAlbumsToQueue(doc);
-            for (String url : urls) {
-                MainWindow.addUrlToQueue(url);
-            }
 
             // We set doc to null here so the while loop below this doesn't fire
             doc = null;
@@ -99,7 +93,6 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
 
         while (doc != null) {
             if (alreadyDownloadedUrls >= Utils.getConfigInteger("history.end_rip_after_already_seen", 1000000000) && !isThisATest()) {
-                sendUpdate(STATUS.DOWNLOAD_COMPLETE_HISTORY, "Already seen the last " + alreadyDownloadedUrls + " images ending rip");
                 break;
             }
             List<String> imageURLs = getURLsFromPage(doc);
@@ -120,7 +113,7 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
 
                 for (String imageURL : imageURLs) {
                     index += 1;
-                    LOGGER.debug("Found image url #" + index + ": " + imageURL);
+                    LOGGER.log(Level.FINE, "Found image url #" + index + ": " + imageURL);
                     downloadURL(new URL(imageURL), index);
                     if (isStopped()) {
                         break;
@@ -128,16 +121,16 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
                 }
             }
             if (hasDescriptionSupport() && Utils.getConfigBoolean("descriptions.save", false)) {
-                LOGGER.debug("Fetching description(s) from " + doc.location());
+                LOGGER.log(Level.FINE, "Fetching description(s) from " + doc.location());
                 List<String> textURLs = getDescriptionsFromPage(doc);
                 if (!textURLs.isEmpty()) {
-                    LOGGER.debug("Found description link(s) from " + doc.location());
+                    LOGGER.log(Level.FINE, "Found description link(s) from " + doc.location());
                     for (String textURL : textURLs) {
                         if (isStopped()) {
                             break;
                         }
                         textindex += 1;
-                        LOGGER.debug("Getting description from " + textURL);
+                        LOGGER.log(Level.FINE, "Getting description from " + textURL);
                         String[] tempDesc = getDescription(textURL,doc);
                         if (tempDesc != null) {
                             if (Utils.getConfigBoolean("file.overwrite", false) || !(new File(
@@ -147,11 +140,11 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
                                             + getPrefix(index)
                                             + (tempDesc.length > 1 ? tempDesc[1] : fileNameFromURL(new URL(textURL)))
                                             + ".txt").exists())) {
-                                LOGGER.debug("Got description from " + textURL);
+                                LOGGER.log(Level.FINE, "Got description from " + textURL);
                                 saveText(new URL(textURL), "", tempDesc[0], textindex, (tempDesc.length > 1 ? tempDesc[1] : fileNameFromURL(new URL(textURL))));
                                 sleep(descSleepTime());
                             } else {
-                                LOGGER.debug("Description from " + textURL + " already exists.");
+                                LOGGER.log(Level.FINE, "Description from " + textURL + " already exists.");
                             }
                         }
 
@@ -164,17 +157,16 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
             }
 
             try {
-                sendUpdate(STATUS.LOADING_RESOURCE, "next page");
                 doc = getNextPage(doc);
             } catch (IOException e) {
-                LOGGER.info("Can't get next page: " + e.getMessage());
+                LOGGER.log(Level.INFO, "Can't get next page: " + e.getMessage());
                 break;
             }
         }
         TeaseLogger.getLogger().log(Level.INFO, "debug 123");
         // If they're using a thread pool, wait for it.
         if (getThreadPool() != null) {
-            LOGGER.debug("Waiting for threadpool " + getThreadPool().getClass().getName());
+            LOGGER.log(Level.FINE, "Waiting for threadpool " + getThreadPool().getClass().getName());
             getThreadPool().waitForThreads();
         }
         waitForThreads();
@@ -239,12 +231,12 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
             out.write(text.getBytes());
             out.close();
         } catch (IOException e) {
-            LOGGER.error("[!] Error creating save file path for description '" + url + "':", e);
+            LOGGER.log(Level.SEVERE, "[!] Error creating save file path for description '" + url + "':", e);
             return false;
         }
-        LOGGER.debug("Downloading " + url + "'s description to " + saveFileAs);
+        LOGGER.log(Level.FINE, "Downloading " + url + "'s description to " + saveFileAs);
         if (!saveFileAs.getParentFile().exists()) {
-            LOGGER.info("[+] Creating directory: " + Utils.removeCWD(saveFileAs.getParent()));
+            LOGGER.log(Level.INFO, "[+] Creating directory: " + Utils.removeCWD(saveFileAs.getParent()));
             saveFileAs.getParentFile().mkdirs();
         }
         return true;

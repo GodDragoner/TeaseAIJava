@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,7 +49,7 @@ public class XhamsterRipper extends AbstractHTMLRipper {
         URLToReturn = URLToReturn.replaceAll("m.xhamster.com", "xhamster.com");
         URLToReturn = URLToReturn.replaceAll("\\w\\w.xhamster.com", "xhamster.com");
         URL san_url = new URL(URLToReturn.replaceAll("xhamster.com", "m.xhamster.com"));
-        LOGGER.info("sanitized URL is " + san_url.toExternalForm());
+        LOGGER.log(Level.INFO, "sanitized URL is " + san_url.toExternalForm());
         if (isVideoUrl(url)) {
             return url;
         }
@@ -82,11 +83,11 @@ public class XhamsterRipper extends AbstractHTMLRipper {
     @Override
     public List<String> getAlbumsToQueue(Document doc) {
         List<String> urlsToAddToQueue = new ArrayList<>();
-        LOGGER.info("getting albums");
+        LOGGER.log(Level.INFO, "getting albums");
         for (Element elem : doc.select("div.item-container > a.item")) {
             urlsToAddToQueue.add(elem.attr("href"));
         }
-        LOGGER.info(doc.html());
+        LOGGER.log(Level.INFO, doc.html());
         return urlsToAddToQueue;
     }
 
@@ -99,8 +100,8 @@ public class XhamsterRipper extends AbstractHTMLRipper {
     public boolean pageContainsAlbums(URL url) {
         Pattern p = Pattern.compile("^https?://[\\w\\w.]*xhamster\\.com/users/([a-zA-Z0-9_-]+)/photos");
         Matcher m = p.matcher(url.toExternalForm());
-        LOGGER.info("Checking if page has albums");
-        LOGGER.info(m.matches());
+        LOGGER.log(Level.INFO, "Checking if page has albums");
+        LOGGER.log(Level.INFO, m.matches() + "");
         return m.matches();
     }
 
@@ -150,7 +151,7 @@ public class XhamsterRipper extends AbstractHTMLRipper {
 
     @Override
     public List<String> getURLsFromPage(Document doc) {
-        LOGGER.debug("Checking for urls");
+        LOGGER.log(Level.FINE, "Checking for urls");
         List<String> result = new ArrayList<>();
         if (!isVideoUrl(url)) {
           for (Element page : doc.select("div.items > div.item-container > a.item")) {
@@ -159,7 +160,7 @@ public class XhamsterRipper extends AbstractHTMLRipper {
                   String image = Http.url(new URL(pageWithImageUrl)).get().select("div.picture_container > a > img").attr("src");
                   downloadFile(image);
               } catch (IOException e) {
-                  LOGGER.error("Was unable to load page " + pageWithImageUrl);
+                  LOGGER.log(Level.SEVERE, "Was unable to load page " + pageWithImageUrl);
               }
           }
         } else {
@@ -179,7 +180,7 @@ public class XhamsterRipper extends AbstractHTMLRipper {
             addURLToDownload(new URL(url), getPrefix(index));
             index = index + 1;
         } catch (MalformedURLException e) {
-            LOGGER.error("The url \"" + url + "\" is malformed");
+            LOGGER.log(Level.SEVERE, "The url \"" + url + "\" is malformed");
         }
     }
     

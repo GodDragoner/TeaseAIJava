@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,7 +44,7 @@ public class ImagefapRipper extends AbstractHTMLRipper {
             newURL += "p";
         }
         newURL += "gid=" + gid + "&view=2";
-        LOGGER.debug("Changed URL from " + url + " to " + newURL);
+        LOGGER.log(Level.FINE, "Changed URL from " + url + " to " + newURL);
         return new URL(newURL);
     }
 

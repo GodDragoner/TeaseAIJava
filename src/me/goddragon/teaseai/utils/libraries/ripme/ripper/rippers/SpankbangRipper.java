@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,7 +39,7 @@ public class SpankbangRipper extends AbstractSingleFileRipper {
         List<String> result = new ArrayList<>();
         Elements videos = doc.select(".video-js > source");
         if (videos.isEmpty()) {
-            LOGGER.error("Could not find Embed code at " + url);
+            LOGGER.log(Level.SEVERE, "Could not find Embed code at " + url);
             return null;
         }
         result.add(videos.attr("src"));

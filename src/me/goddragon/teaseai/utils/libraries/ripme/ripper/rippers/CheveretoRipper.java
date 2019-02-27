@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,7 +60,7 @@ public class CheveretoRipper extends AbstractHTMLRipper {
             return getHost() + "_" + title.trim();
         } catch (IOException e) {
             // Fall back to default album naming convention
-            LOGGER.info("Unable to find title at " + url);
+            LOGGER.log(Level.INFO, "Unable to find title at " + url);
         }
         return super.getAlbumTitle(url);
     }

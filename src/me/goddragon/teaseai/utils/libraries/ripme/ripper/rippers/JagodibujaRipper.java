@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,16 +61,16 @@ public class JagodibujaRipper extends AbstractHTMLRipper {
                 sleep(500);
                 Document comicPage = Http.url(comicPageUrl.attr("href")).get();
                 Element elem = comicPage.select("span.full-size-link > a").first();
-                LOGGER.info("Got link " + elem.attr("href"));
+                LOGGER.log(Level.INFO, "Got link " + elem.attr("href"));
                 try {
                     addURLToDownload(new URL(elem.attr("href")), "");
                 } catch (MalformedURLException e) {
-                    LOGGER.warn("Malformed URL");
+                    LOGGER.log(Level.WARNING, "Malformed URL");
                     e.printStackTrace();
                 }
                 result.add(elem.attr("href"));
             } catch (IOException e) {
-                LOGGER.info("Error loading " + comicPageUrl);
+                LOGGER.log(Level.INFO, "Error loading " + comicPageUrl);
             }
         }
         return result;

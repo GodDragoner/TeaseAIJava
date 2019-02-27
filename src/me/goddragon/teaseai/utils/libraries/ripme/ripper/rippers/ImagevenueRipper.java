@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -102,7 +103,7 @@ public class ImagevenueRipper extends AbstractHTMLRipper {
                 // Find image
                 Elements images = doc.select("a > img");
                 if (images.isEmpty()) {
-                    LOGGER.warn("Image not found at " + this.url);
+                    LOGGER.log(Level.WARNING, "Image not found at " + this.url);
                     return;
                 }
                 Element image = images.first();
@@ -115,7 +116,7 @@ public class ImagevenueRipper extends AbstractHTMLRipper {
                 }
                 addURLToDownload(new URL(imgsrc), prefix);
             } catch (IOException e) {
-                LOGGER.error("[!] Exception while loading/parsing " + this.url, e);
+                LOGGER.log(Level.SEVERE, "[!] Exception while loading/parsing " + this.url, e);
             }
         }
     }

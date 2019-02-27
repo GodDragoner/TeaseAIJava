@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +17,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractJSONRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage.STATUS;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 
 /**
@@ -153,7 +153,7 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
 
     /** Convert username to UserID. */
     private String getUserID(String username) throws IOException {
-        LOGGER.info("Fetching user ID for " + username);
+        LOGGER.log(Level.INFO, "Fetching user ID for " + username);
         JSONObject json = new Http("https://api.500px.com/v1/" +
                     "users/show" +
                     "?username=" + username +
@@ -165,7 +165,7 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
     @Override
     public JSONObject getFirstPage() throws IOException {
         URL apiURL = new URL(baseURL + "&consumer_key=" + CONSUMER_KEY);
-        LOGGER.debug("apiURL: " + apiURL);
+        LOGGER.log(Level.FINE, "apiURL: " + apiURL);
         JSONObject json = Http.url(apiURL).getJSON();
 
         if (baseURL.contains("/galleries?")) {
@@ -185,8 +185,7 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
                      + "?rpp=100"
                      + "&image_size=5"
                      + "&consumer_key=" + CONSUMER_KEY;
-                LOGGER.info("Loading " + blogURL);
-                sendUpdate(STATUS.LOADING_RESOURCE, "Gallery ID " + galleryID + " for userID " + userID);
+                LOGGER.log(Level.INFO, "Loading " + blogURL);
                 JSONObject thisJSON = Http.url(blogURL).getJSON();
                 JSONArray thisPhotos = thisJSON.getJSONArray("photos");
                 // Iterate over every image in this story
@@ -216,8 +215,7 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
                      + "&rpp=100"
                      + "&image_size=5"
                      + "&consumer_key=" + CONSUMER_KEY;
-                LOGGER.info("Loading " + blogURL);
-                sendUpdate(STATUS.LOADING_RESOURCE, "Story ID " + blogid + " for user " + username);
+                LOGGER.log(Level.INFO, "Loading " + blogURL);
                 JSONObject thisJSON = Http.url(blogURL).getJSON();
                 JSONArray thisPhotos = thisJSON.getJSONArray("photos");
                 // Iterate over every image in this story
@@ -268,20 +266,19 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
             Document doc;
             Elements images = new Elements();
             try {
-                LOGGER.debug("Loading " + rawUrl);
-                super.retrievingSource(rawUrl);
+                LOGGER.log(Level.FINE, "Loading " + rawUrl);
                 doc = Http.url(rawUrl).get();
                 images = doc.select("div#preload img");
             }
             catch (IOException e) {
-                LOGGER.error("Error fetching full-size image from " + rawUrl, e);
+                LOGGER.log(Level.SEVERE, "Error fetching full-size image from " + rawUrl, e);
             }
             if (!images.isEmpty()) {
                 imageURL = images.first().attr("src");
-                LOGGER.debug("Found full-size non-watermarked image: " + imageURL);
+                LOGGER.log(Level.FINE, "Found full-size non-watermarked image: " + imageURL);
             }
             else {
-                LOGGER.debug("Falling back to image_url from API response");
+                LOGGER.log(Level.FINE, "Falling back to image_url from API response");
                 imageURL = photo.getString("image_url");
                 imageURL = imageURL.replaceAll("/4\\.", "/5.");
                 // See if there's larger images
@@ -289,14 +286,14 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
                     String fsURL = imageURL.replaceAll("/5\\.", "/" + imageSize + ".");
                     sleep(10);
                     if (urlExists(fsURL)) {
-                        LOGGER.info("Found larger image at " + fsURL);
+                        LOGGER.log(Level.INFO, "Found larger image at " + fsURL);
                         imageURL = fsURL;
                         break;
                     }
                 }
             }
             if (imageURL == null) {
-                LOGGER.error("Failed to find image for photo " + photo.toString());
+                LOGGER.log(Level.SEVERE, "Failed to find image for photo " + photo.toString());
             }
             else {
                 imageURLs.add(imageURL);

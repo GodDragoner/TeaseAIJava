@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,7 +57,7 @@ public class TapasticRipper extends AbstractHTMLRipper {
         List<String> urls = new ArrayList<>();
         String html = page.data();
         if (!html.contains("episodeList : ")) {
-            LOGGER.error("No 'episodeList' found at " + this.url);
+            LOGGER.log(Level.SEVERE, "No 'episodeList' found at " + this.url);
             return urls;
         }
         String jsonString = Utils.between(html, "episodeList : ", ",\n").get(0);
@@ -93,7 +94,7 @@ public class TapasticRipper extends AbstractHTMLRipper {
                 }
             }
         } catch (IOException e) {
-            LOGGER.error("[!] Exception while downloading " + url, e);
+            LOGGER.log(Level.SEVERE, "[!] Exception while downloading " + url, e);
         }
 
     }

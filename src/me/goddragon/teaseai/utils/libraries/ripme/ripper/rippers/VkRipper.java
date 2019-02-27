@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,7 +72,7 @@ public class VkRipper extends AlbumRipper {
         String[] jsonStrings = doc.toString().split("<!>");
         JSONObject json = new JSONObject(jsonStrings[jsonStrings.length - 1]);
         JSONArray videos = json.getJSONArray("all");
-        LOGGER.info("Found " + videos.length() + " videos");
+        LOGGER.log(Level.INFO, "Found " + videos.length() + " videos");
         for (int i = 0; i < videos.length(); i++) {
             JSONArray jsonVideo = videos.getJSONArray(i);
             int vidid = jsonVideo.getInt(1);
@@ -85,7 +86,7 @@ public class VkRipper extends AlbumRipper {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                LOGGER.error("Interrupted while waiting to fetch next video URL", e);
+                LOGGER.log(Level.SEVERE, "Interrupted while waiting to fetch next video URL", e);
                 break;
             }
         }
@@ -96,7 +97,7 @@ public class VkRipper extends AlbumRipper {
         Map<String,String> photoIDsToURLs = new HashMap<>();
         int offset = 0;
         while (true) {
-            LOGGER.info("    Retrieving " + this.url);
+            LOGGER.log(Level.INFO, "    Retrieving " + this.url);
 
             // al=1&offset=80&part=1
             Map<String,String> postData = new HashMap<>();
@@ -119,7 +120,7 @@ public class VkRipper extends AlbumRipper {
             Set<String> photoIDsToGet = new HashSet<>();
             for (Element a : elements) {
                 if (!a.attr("onclick").contains("showPhoto('")) {
-                    LOGGER.error("a: " + a);
+                    LOGGER.log(Level.SEVERE, "a: " + a);
                     continue;
                 }
                 String photoID = a.attr("onclick");
@@ -134,12 +135,12 @@ public class VkRipper extends AlbumRipper {
                     try {
                         photoIDsToURLs.putAll(getPhotoIDsToURLs(photoID));
                     } catch (IOException e) {
-                        LOGGER.error("Exception while retrieving photo id " + photoID, e);
+                        LOGGER.log(Level.SEVERE, "Exception while retrieving photo id " + photoID, e);
                         continue;
                     }
                 }
                 if (!photoIDsToURLs.containsKey(photoID)) {
-                    LOGGER.error("Could not find URL for photo ID: " + photoID);
+                    LOGGER.log(Level.SEVERE, "Could not find URL for photo ID: " + photoID);
                     continue;
                 }
                 String url = photoIDsToURLs.get(photoID);

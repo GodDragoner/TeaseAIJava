@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,7 +57,7 @@ public class HitomiRipper extends AbstractHTMLRipper {
     public List<String> getURLsFromPage(Document doc) {
         List<String> result = new ArrayList<>();
         String json = doc.text().replaceAll("var galleryinfo =", "");
-        LOGGER.info(json);
+        LOGGER.log(Level.INFO, json);
         JSONArray json_data = new JSONArray(json);
         for (int i = 0; i < json_data.length(); i++) {
             result.add("https://ba.hitomi.la/galleries/" + galleryId + "/" + json_data.getJSONObject(i).getString("name"));
@@ -73,7 +74,7 @@ public class HitomiRipper extends AbstractHTMLRipper {
             return getHost() + "_" + getGID(url) + "_" +
                     doc.select("title").text().replaceAll(" - Read Online - hentai artistcg \\| Hitomi.la", "");
         } catch (IOException e) {
-            LOGGER.info("Falling back");
+            LOGGER.log(Level.INFO, "Falling back");
         }
         return super.getAlbumTitle(url);
     }

@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +17,6 @@ import org.json.JSONObject;
 import org.jsoup.HttpStatusException;
 
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AlbumRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage.STATUS;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 import org.jsoup.Jsoup;
@@ -61,11 +61,11 @@ public class TumblrRipper extends AlbumRipper {
         }
 
         if (useDefaultApiKey || Utils.getConfigString(TUMBLR_AUTH_CONFIG_KEY, "JFNLu3CbINQjRdUvZibXW9VpSEVYYtiPJ86o8YmvgLZIoKyuNX").equals("JFNLu3CbINQjRdUvZibXW9VpSEVYYtiPJ86o8YmvgLZIoKyuNX")) {
-            LOGGER.info("Using api key: " + API_KEY);
+            LOGGER.log(Level.INFO, "Using api key: " + API_KEY);
             return API_KEY;
         } else {
             String userDefinedAPIKey = Utils.getConfigString(TUMBLR_AUTH_CONFIG_KEY, "JFNLu3CbINQjRdUvZibXW9VpSEVYYtiPJ86o8YmvgLZIoKyuNX");
-            LOGGER.info("Using user tumblr.auth api key: " + userDefinedAPIKey);
+            LOGGER.log(Level.INFO, "Using user tumblr.auth api key: " + userDefinedAPIKey);
             return userDefinedAPIKey;
         }
 
@@ -76,7 +76,7 @@ public class TumblrRipper extends AlbumRipper {
                 "FQrwZMCxVnzonv90rgNUJcAk4FpnoS0mYuSuGYqIpM2cFgp9L4",
                 "qpdkY6nMknksfvYAhf2xIHp0iNRLkMlcWShxqzXyFJRxIsZ1Zz");
         int genNum = new Random().nextInt(APIKEYS.size());
-        LOGGER.info(genNum);
+        LOGGER.log(Level.INFO, genNum + "");
         final String API_KEY = APIKEYS.get(genNum); // Select random API key from APIKEYS
         return API_KEY;
     }
@@ -106,10 +106,10 @@ public class TumblrRipper extends AlbumRipper {
         if (StringUtils.countMatches(u, ".") > 2) {
             url = new URL(u.replace(".tumblr.com", ""));
             if (isTumblrURL(url)) {
-                LOGGER.info("Detected tumblr site: " + url);
+                LOGGER.log(Level.INFO, "Detected tumblr site: " + url);
             }
             else {
-                LOGGER.info("Not a tumblr site: " + url);
+                LOGGER.log(Level.INFO, "Not a tumblr site: " + url);
             }
         }
         return url;
@@ -125,7 +125,7 @@ public class TumblrRipper extends AlbumRipper {
             int status = json.getJSONObject("meta").getInt("status");
             return status == 200;
         } catch (IOException e) {
-            LOGGER.error("Error while checking possible tumblr domain: " + url.getHost(), e);
+            LOGGER.log(Level.SEVERE, "Error while checking possible tumblr domain: " + url.getHost(), e);
         }
         return false;
     }
@@ -161,8 +161,7 @@ public class TumblrRipper extends AlbumRipper {
 
 
                 String apiURL = getTumblrApiURL(mediaType, offset);
-                LOGGER.info("Retrieving " + apiURL);
-                sendUpdate(STATUS.LOADING_RESOURCE, apiURL);
+                LOGGER.log(Level.INFO, "Retrieving " + apiURL);
 
                 JSONObject json = null;
                 boolean retry = false;
@@ -176,13 +175,11 @@ public class TumblrRipper extends AlbumRipper {
                         if (status.getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !useDefaultApiKey) {
                             retry = true;
                         } else if (status.getStatusCode() == 404) {
-                            LOGGER.error("No user or album found!");
-                            sendUpdate(STATUS.NO_ALBUM_OR_USER, "Album or user doesn't exist!");
+                            LOGGER.log(Level.SEVERE, "No user or album found!");
                             shouldStopRipping = true;
                             break;
                         } else if (status.getStatusCode() == 429) {
-                            LOGGER.error("Tumblr rate limit has been exceeded");
-                            sendUpdate(STATUS.DOWNLOAD_ERRORED,"Tumblr rate limit has been exceeded");
+                            LOGGER.log(Level.SEVERE, "Tumblr rate limit has been exceeded");
                             shouldStopRipping = true;
                             break;
                         }
@@ -194,16 +191,14 @@ public class TumblrRipper extends AlbumRipper {
                     String apiKey = getApiKey();
 
                     String message = "401 Unauthorized. Will retry with default Tumblr API key: " + apiKey;
-                    LOGGER.info(message);
-                    sendUpdate(STATUS.DOWNLOAD_WARN, message);
+                    LOGGER.log(Level.INFO, message);
 
                     Utils.setConfigString(TUMBLR_AUTH_CONFIG_KEY, apiKey); // save the default key to the config
 
                     // retry loading the JSON
 
                     apiURL = getTumblrApiURL(mediaType, offset);
-                    LOGGER.info("Retrieving " + apiURL);
-                    sendUpdate(STATUS.LOADING_RESOURCE, apiURL);
+                    LOGGER.log(Level.INFO, "Retrieving " + apiURL);
 
                     json = Http.url(apiURL).getJSON();
                 }
@@ -211,7 +206,7 @@ public class TumblrRipper extends AlbumRipper {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    LOGGER.error("[!] Interrupted while waiting to load next album:", e);
+                    LOGGER.log(Level.SEVERE, "[!] Interrupted while waiting to load next album:", e);
                     break;
                 }
 
@@ -244,7 +239,7 @@ public class TumblrRipper extends AlbumRipper {
             posts = json.getJSONObject("response").getJSONArray("posts");
         }
         if (posts.length() == 0) {
-            LOGGER.info("   Zero posts returned.");
+            LOGGER.log(Level.INFO, "   Zero posts returned.");
             return false;
         }
 
@@ -266,7 +261,7 @@ public class TumblrRipper extends AlbumRipper {
                             downloadURL(redirectedURL, date);
                         }
                     } catch (Exception e) {
-                        LOGGER.error("[!] Error while parsing photo in " + photo, e);
+                        LOGGER.log(Level.SEVERE, "[!] Error while parsing photo in " + photo, e);
                     }
                 }
             } else if (post.has("video_url")) {
@@ -274,7 +269,7 @@ public class TumblrRipper extends AlbumRipper {
                     fileURL = new URL(post.getString("video_url").replaceAll("http:", "https:"));
                     downloadURL(fileURL, date);
                 } catch (Exception e) {
-                    LOGGER.error("[!] Error while parsing video in " + post, e);
+                    LOGGER.log(Level.SEVERE, "[!] Error while parsing video in " + post, e);
                     return true;
                 }
             } else if (post.has("body")) {
@@ -283,7 +278,7 @@ public class TumblrRipper extends AlbumRipper {
                     try {
                         downloadURL(new URL(d.select("img").attr("src")), date);
                     } catch (MalformedURLException e) {
-                        LOGGER.error("[!] Error while getting embedded image at " + post, e);
+                        LOGGER.log(Level.SEVERE, "[!] Error while getting embedded image at " + post, e);
                         return true;
                     }
                 }
@@ -401,7 +396,7 @@ public class TumblrRipper extends AlbumRipper {
     }
 
     public void downloadURL(URL url, String date) {
-        LOGGER.info(albumType);
+        LOGGER.log(Level.INFO, albumType.toString());
         if (albumType == ALBUM_TYPE.TAG) {
             addURLToDownload(url, date + " ");
         }

@@ -1,11 +1,9 @@
 package me.goddragon.teaseai.utils.libraries.ripme.utils;
 
+import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractRipper;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -29,6 +27,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Level;
 
 
 /**
@@ -39,7 +38,7 @@ public class Utils {
     private static final String RIP_DIRECTORY = "rips";
     private static final String CONFIG_FILE = "rip.properties";
     private static final String OS = System.getProperty("os.name").toLowerCase();
-    private static final Logger LOGGER = Logger.getLogger(Utils.class);
+    private static final TeaseLogger LOGGER = TeaseLogger.getLogger();
     private static final int SHORTENED_PATH_LENGTH = 12;
 
     private static PropertiesConfiguration config;
@@ -84,7 +83,7 @@ public class Utils {
                 config = new PropertiesConfiguration(configPath);
             }
             
-            LOGGER.info("Loaded " + config.getPath());
+            LOGGER.log(Level.INFO, "Loaded " + config.getPath());
 
             if (file.exists()) {
                 // Config was loaded from file
@@ -95,14 +94,14 @@ public class Utils {
                     // Config is missing key fields
                     // Need to reload the default config
                     // See https://github.com/4pr0n/ripme/issues/158
-                    LOGGER.warn("Config does not contain key fields, deleting old config");
+                    LOGGER.log(Level.WARNING, "Config does not contain key fields, deleting old config");
                     file.delete();
                     config = new PropertiesConfiguration(CONFIG_FILE);
-                    LOGGER.info("Loaded " + config.getPath());
+                    LOGGER.log(Level.INFO, "Loaded " + config.getPath());
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("[!] Failed to load properties file from " + CONFIG_FILE, e);
+            LOGGER.log(Level.SEVERE, "[!] Failed to load properties file from " + CONFIG_FILE, e);
         }
     }
 
@@ -116,7 +115,7 @@ public class Utils {
         try {
             currentDir = new File(".").getCanonicalPath() + File.separator + RIP_DIRECTORY + File.separator;
         } catch (IOException e) {
-            LOGGER.error("Error while finding working dir: ", e);
+            LOGGER.log(Level.SEVERE, "Error while finding working dir: ", e);
         }
 
         if (config != null) {
@@ -193,9 +192,9 @@ public class Utils {
     public static void saveConfig() {
         try {
             config.save(getConfigFilePath());
-            LOGGER.info("Saved configuration to " + getConfigFilePath());
+            LOGGER.log(Level.INFO, "Saved configuration to " + getConfigFilePath());
         } catch (ConfigurationException e) {
-            LOGGER.error("Error while saving configuration: ", e);
+            LOGGER.log(Level.SEVERE, "Error while saving configuration: ", e);
         }
     }
 
@@ -316,7 +315,7 @@ public class Utils {
             String cwd = new File(".").getCanonicalPath() + File.separator;
             prettySaveAs = prettySaveAs.replace(cwd, "." + File.separator);
         } catch (Exception e) {
-            LOGGER.error("Exception: ", e);
+            LOGGER.log(Level.SEVERE, "Exception: ", e);
         }
         return prettySaveAs;
     }
@@ -422,7 +421,7 @@ public class Utils {
                         try {
                             classes.add(Class.forName(className));
                         } catch (ClassNotFoundException e) {
-                            LOGGER.error("ClassNotFoundException loading " + className);
+                            LOGGER.log(Level.SEVERE, "ClassNotFoundException loading " + className);
                             jarFile.close(); // Resource leak fix?
                             throw new RuntimeException("ClassNotFoundException loading " + className);
                         }
@@ -430,7 +429,7 @@ public class Utils {
                 }
                 jarFile.close(); // Eclipse said not closing it would have a resource leak
             } catch (IOException e) {
-                LOGGER.error("Error while loading jar file:", e);
+                LOGGER.log(Level.SEVERE, "Error while loading jar file:", e);
                 throw new RuntimeException(pkgname + " (" + directory + ") does not appear to be a valid package", e);
             }
         }
@@ -578,30 +577,10 @@ public class Utils {
             clip.open(AudioSystem.getAudioInputStream(resource));
             clip.start();
         } catch (Exception e) {
-            LOGGER.error("Failed to play sound " + filename, e);
+            LOGGER.log(Level.SEVERE, "Failed to play sound " + filename, e);
         }
     }
 
-    /**
-     * Configures root logger, either for FILE output or just console.
-     */
-    public static void configureLogger() {
-        LogManager.shutdown();
-        String logFile = getConfigBoolean("log.save", false) ? "log4j.file.properties" : "log4j.properties";
-
-        try (InputStream stream = Utils.class.getClassLoader().getResourceAsStream(logFile)) {
-            if (stream == null) {
-                PropertyConfigurator.configure("src/main/resources/" + logFile);
-            } else {
-                PropertyConfigurator.configure(stream);
-            }
-
-            LOGGER.info("Loaded " + logFile);
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-
-    }
 
     /**
      * Gets list of strings between two strings.
@@ -724,19 +703,19 @@ public class Utils {
         if (langSelect == null) {
             if (!getConfigString("lang", "").equals("")) {
                 String[] langCode = getConfigString("lang", "").split("_");
-                LOGGER.info("Setting locale to " + getConfigString("lang", ""));
+                LOGGER.log(Level.INFO, "Setting locale to " + getConfigString("lang", ""));
                 return ResourceBundle.getBundle("LabelsBundle", new Locale(langCode[0], langCode[1]), new UTF8Control());
             }
         } else {
             String[] langCode = langSelect.split("_");
-            LOGGER.info("Setting locale to " + langSelect);
+            LOGGER.log(Level.INFO, "Setting locale to " + langSelect);
             return ResourceBundle.getBundle("LabelsBundle", new Locale(langCode[0], langCode[1]), new UTF8Control());
         }
         try {
-            LOGGER.info("Setting locale to default");
+            LOGGER.log(Level.INFO, "Setting locale to default");
             return ResourceBundle.getBundle("LabelsBundle", Locale.getDefault(), new UTF8Control());
         } catch (MissingResourceException e) {
-            LOGGER.info("Setting locale to root");
+            LOGGER.log(Level.INFO, "Setting locale to root");
             return ResourceBundle.getBundle("LabelsBundle", Locale.ROOT);
         }
     }
@@ -759,7 +738,7 @@ public class Utils {
 
     public static String getEXTFromMagic(ByteBuffer magic) {
         if (magicHash.isEmpty()) {
-            LOGGER.debug("initialising map");
+            LOGGER.log(Level.FINE, "initialising map");
             initialiseMagicHashMap();
         }
         return magicHash.get(magic);
@@ -803,15 +782,15 @@ public class Utils {
     public static File shortenSaveAsWindows(String ripsDirPath, String fileName) throws FileNotFoundException {
 //        int ripDirLength = ripsDirPath.length();
 //        int maxFileNameLength = 260 - ripDirLength;
-//        LOGGER.info(maxFileNameLength);
-        LOGGER.error("The filename " + fileName + " is to long to be saved on this file system.");
-        LOGGER.info("Shortening filename");
+//        LOGGER.log(Level.INFO, maxFileNameLength);
+        LOGGER.log(Level.SEVERE, "The filename " + fileName + " is to long to be saved on this file system.");
+        LOGGER.log(Level.INFO, "Shortening filename");
         String fullPath = ripsDirPath + File.separator + fileName;
         // How long the path without the file name is
         int pathLength = ripsDirPath.length();
         int fileNameLength = fileName.length();
-        LOGGER.info(pathLength);
-        LOGGER.info(fileNameLength);
+        LOGGER.log(Level.INFO, pathLength + "");
+        LOGGER.log(Level.INFO, fileNameLength + "");
         if (pathLength == 260) {
             // We've reached the max length, there's nothing more we can do
             throw new FileNotFoundException("File path is too long for this OS");
@@ -820,10 +799,10 @@ public class Utils {
         // Get the file extension so when we shorten the file name we don't cut off the file extension
         String fileExt = saveAsSplit[saveAsSplit.length - 1];
         // The max limit for paths on Windows is 260 chars
-        LOGGER.info(fullPath.substring(0, 260 - pathLength - fileExt.length() + 1) + "." + fileExt);
+        LOGGER.log(Level.INFO, fullPath.substring(0, 260 - pathLength - fileExt.length() + 1) + "." + fileExt);
         fullPath = fullPath.substring(0, 260 - pathLength - fileExt.length() + 1) + "." + fileExt;
-        LOGGER.info(fullPath);
-        LOGGER.info(fullPath.length());
+        LOGGER.log(Level.INFO, fullPath);
+        LOGGER.log(Level.INFO, fullPath.length() + "");
         return new File(fullPath);
     }
 

@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jsoup.nodes.Document;
@@ -99,16 +100,16 @@ public class ImagebamRipper extends AbstractHTMLRipper {
             // Attempt to use album title as GID
             Elements elems = getFirstPage().select("legend");
             String title = elems.first().text();
-            LOGGER.info("Title text: '" + title + "'");
+            LOGGER.log(Level.INFO, "Title text: '" + title + "'");
             Pattern p = Pattern.compile("^(.*)\\s\\d* image.*$");
             Matcher m = p.matcher(title);
             if (m.matches()) {
                 return getHost() + "_" + getGID(url) + " (" + m.group(1).trim() + ")";
             }
-            LOGGER.info("Doesn't match " + p.pattern());
+            LOGGER.log(Level.INFO, "Doesn't match " + p.pattern());
         } catch (Exception e) {
             // Fall back to default album naming convention
-            LOGGER.warn("Failed to get album title from " + url, e);
+            LOGGER.log(Level.WARNING, "Failed to get album title from " + url, e);
         }
         return super.getAlbumTitle(url);
     }
@@ -148,14 +149,14 @@ public class ImagebamRipper extends AbstractHTMLRipper {
                     //the direct link to the image seems to always be linked in the <meta> part of the html.
                     if (metaTag.attr("property").equals("og:image")) {
                         imgsrc = metaTag.attr("content");
-                        LOGGER.info("Found URL " + imgsrc);
+                        LOGGER.log(Level.INFO, "Found URL " + imgsrc);
                         break;//only one (useful) image possible for an "image page".
                     }
                 }
                
                 //for debug, or something goes wrong.
                 if (imgsrc.isEmpty()) {
-                    LOGGER.warn("Image not found at " + this.url);
+                    LOGGER.log(Level.WARNING, "Image not found at " + this.url);
                     return;
                 }
                
@@ -167,7 +168,7 @@ public class ImagebamRipper extends AbstractHTMLRipper {
                 
                 addURLToDownload(new URL(imgsrc), prefix);
             } catch (IOException e) {
-                LOGGER.error("[!] Exception while loading/parsing " + this.url, e);
+                LOGGER.log(Level.SEVERE, "[!] Exception while loading/parsing " + this.url, e);
             }
         }
     }
