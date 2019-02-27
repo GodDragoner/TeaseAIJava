@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,7 +51,7 @@ public class SinfestRipper extends AbstractHTMLRipper {
     @Override
     public Document getNextPage(Document doc) throws IOException {
         Element elem = doc.select("td.style5 > a > img").last();
-        LOGGER.info(elem.parent().attr("href"));
+        LOGGER.log(Level.INFO, elem.parent().attr("href"));
         if (elem == null || elem.parent().attr("href").equals("view.php?date=")) {
             throw new IOException("No more pages");
         }

@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -138,14 +139,14 @@ public class DeviantartRipper extends AbstractJSONRipper {
             String[] d = doc.select("img").attr("srcset").split(",");
 
             String s = d[d.length -1].split(" ")[0];
-            LOGGER.info("2:" + s);
+            LOGGER.log(Level.INFO, "2:" + s);
 
             if (s == null || s.equals("")) {
-                LOGGER.error("Could not find full sized image at " + pageURL);
+                LOGGER.log(Level.SEVERE, "Could not find full sized image at " + pageURL);
             }
             return s;
         } catch (IOException e) {
-            LOGGER.error("Could not find full sized image at " + pageURL);
+            LOGGER.log(Level.SEVERE, "Could not find full sized image at " + pageURL);
             return null;
         }
     }
@@ -168,7 +169,7 @@ public class DeviantartRipper extends AbstractJSONRipper {
 
         cookies = getDACookies();
             if (cookies.isEmpty()) {
-                LOGGER.warn("Failed to get login cookies");
+                LOGGER.log(Level.WARNING, "Failed to get login cookies");
                 cookies.put("agegate_state","1"); // Bypasses the age gate
             }
         cookies.put("agegate_state", "1");
@@ -189,10 +190,10 @@ public class DeviantartRipper extends AbstractJSONRipper {
     }
 
     private JSONObject requestPage(int offset, String galleryID, String username, String requestID, String csfr, Map<String, String> c) {
-        LOGGER.debug("offset: " + Integer.toString(offset));
-        LOGGER.debug("galleryID: " + galleryID);
-        LOGGER.debug("username: " + username);
-        LOGGER.debug("requestID: " + requestID);
+        LOGGER.log(Level.FINE, "offset: " + Integer.toString(offset));
+        LOGGER.log(Level.FINE, "galleryID: " + galleryID);
+        LOGGER.log(Level.FINE, "username: " + username);
+        LOGGER.log(Level.FINE, "requestID: " + requestID);
         String url = baseApiUrl + galleryID + "?iid=" + requestID;
         try {
             Document doc = Http.url(url).cookies(c).data("username", username).data("offset", Integer.toString(offset))
@@ -200,7 +201,7 @@ public class DeviantartRipper extends AbstractJSONRipper {
                     .ignoreContentType().post();
             return new JSONObject(doc.body().text());
         } catch (IOException e) {
-            LOGGER.error("Got error trying to get page: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Got error trying to get page: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -213,7 +214,7 @@ public class DeviantartRipper extends AbstractJSONRipper {
             if (js.html().contains("requestid")) {
                 String json = js.html().replaceAll("window.__initial_body_data=", "").replaceAll("\\);", "")
                         .replaceAll(";__wake\\(.+", "");
-                LOGGER.info("json: " + json);
+                LOGGER.log(Level.INFO, "json: " + json);
                 JSONObject j = new JSONObject(json);
                 return j;
             }
@@ -240,7 +241,7 @@ public class DeviantartRipper extends AbstractJSONRipper {
                 continue;
             }
         }
-        LOGGER.error("Could not find gallery ID");
+        LOGGER.log(Level.SEVERE, "Could not find gallery ID");
         return null;
     }
 
@@ -253,12 +254,12 @@ public class DeviantartRipper extends AbstractJSONRipper {
     @Override
     public List<String> getURLsFromJSON(JSONObject json) {
         List<String> imageURLs = new ArrayList<>();
-        LOGGER.info(json);
+        LOGGER.log(Level.INFO, json.toString());
         JSONArray results = json.getJSONObject("content").getJSONArray("results");
         for (int i = 0; i < results.length(); i++) {
             Document doc = Jsoup.parseBodyFragment(results.getJSONObject(i).getString("html"));
             if (doc.html().contains("ismature")) {
-                LOGGER.info("Downloading nsfw image");
+                LOGGER.log(Level.INFO, "Downloading nsfw image");
                 String nsfwImage = getFullsizedNSFWImage(doc.select("span").attr("href"));
                 if (nsfwImage != null && nsfwImage.startsWith("http")) {
                     imageURLs.add(nsfwImage);
@@ -270,7 +271,7 @@ public class DeviantartRipper extends AbstractJSONRipper {
                     imageURLs.add(imageURL);
                 }
             } catch (NullPointerException e) {
-               LOGGER.info(i + " does not contain any images");
+               LOGGER.log(Level.INFO, i + " does not contain any images");
             }
 
         }
@@ -351,7 +352,7 @@ public class DeviantartRipper extends AbstractJSONRipper {
             if (!els.isEmpty()) {
                 // Large image
                 fsimage = els.get(0).attr("src");
-                LOGGER.info("Found large-scale: " + fsimage);
+                LOGGER.log(Level.INFO, "Found large-scale: " + fsimage);
                 if (fsimage.contains("//orig")) {
                     return fsimage;
                 }
@@ -361,7 +362,7 @@ public class DeviantartRipper extends AbstractJSONRipper {
             if (!els.isEmpty()) {
                 // Full-size image
                 String downloadLink = els.get(0).attr("href");
-                LOGGER.info("Found download button link: " + downloadLink);
+                LOGGER.log(Level.INFO, "Found download button link: " + downloadLink);
                 HttpURLConnection con = (HttpURLConnection) new URL(downloadLink).openConnection();
                 con.setRequestProperty("Referer",this.url.toString());
                 String cookieString = "";
@@ -378,7 +379,7 @@ public class DeviantartRipper extends AbstractJSONRipper {
                 con.disconnect();
                 if (location.contains("//orig")) {
                     fsimage = location;
-                    LOGGER.info("Found image download: " + location);
+                    LOGGER.log(Level.INFO, "Found image download: " + location);
                 }
             }
             if (fsimage != null) {
@@ -387,9 +388,9 @@ public class DeviantartRipper extends AbstractJSONRipper {
             throw new IOException("No download page found");
         } catch (IOException ioe) {
             try {
-                LOGGER.info("Failed to get full size download image at " + page + " : '" + ioe.getMessage() + "'");
+                LOGGER.log(Level.INFO, "Failed to get full size download image at " + page + " : '" + ioe.getMessage() + "'");
                 String lessThanFull = thumbToFull(thumb, false);
-                LOGGER.info("Falling back to less-than-full-size image " + lessThanFull);
+                LOGGER.log(Level.INFO, "Falling back to less-than-full-size image " + lessThanFull);
                 return lessThanFull;
             } catch (Exception e) {
                 return null;

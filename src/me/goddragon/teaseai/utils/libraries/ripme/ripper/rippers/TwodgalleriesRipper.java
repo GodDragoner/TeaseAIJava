@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,7 +67,7 @@ public class TwodgalleriesRipper extends AbstractHTMLRipper {
         try {
             login();
         } catch (IOException e) {
-            LOGGER.error("Failed to login", e);
+            LOGGER.log(Level.SEVERE, "Failed to login", e);
         }
         String url = getURL(getGID(this.url), offset);
         return Http.url(url)

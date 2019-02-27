@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,24 +25,24 @@ public class HqpornerRipper extends AbstractSingleFileRipper {
         private String getVideoFromMyDaddycc(String url) {
             Pattern p = Pattern.compile("(//[a-zA-Z0-9\\.]+/pub/cid/[a-z0-9]+/1080.mp4)");
             try {
-                logger.info("Downloading " + url);
+                logger.log(Level.INFO, "Downloading " + url);
                 Document page = Http.url(url).referrer(url).get();
                 Matcher m = p.matcher(page.html());
-                logger.info(page.html());
+                logger.log(Level.INFO, page.html());
                 if (m.find()) {
                     return m.group(0);
                 }
 
 
             } catch (IOException e) {
-                logger.error("Unable to get page with video");
+                logger.log(Level.SEVERE, "Unable to get page with video");
             }
             return null;
         }
 
         private String getVideoFromFlyFlv(String url) {
             try {
-                logger.info("Downloading " + url);
+                logger.log(Level.INFO, "Downloading " + url);
                 Document page = Http.url(url).referrer(url).get();
                 String[] videoSizes = { "1080p","720p","360p"};
                 for (String videoSize : videoSizes) {
@@ -54,7 +55,7 @@ public class HqpornerRipper extends AbstractSingleFileRipper {
 
 
             } catch (IOException e) {
-                logger.error("Unable to get page with video");
+                logger.log(Level.SEVERE, "Unable to get page with video");
             }
             return null;
         }

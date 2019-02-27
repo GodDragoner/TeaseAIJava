@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -89,7 +90,7 @@ public class GfycatRipper extends AbstractSingleFileRipper {
      * @throws IOException
      */
     public static String getVideoURL(URL url) throws IOException {
-        LOGGER.info("Retrieving " + url.toExternalForm());
+        LOGGER.log(Level.INFO, "Retrieving " + url.toExternalForm());
 
         //Sanitize the URL first
         url = new URL(url.toExternalForm().replace("/gifs/detail", ""));

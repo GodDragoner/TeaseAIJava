@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
+import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
@@ -13,15 +14,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class PahealRipper extends AbstractHTMLRipper {
-    private static final Logger logger = Logger.getLogger(PahealRipper.class);
+    private static final TeaseLogger logger = TeaseLogger.getLogger();
 
     private static Map<String, String> cookies = null;
     private static Pattern gidPattern = null;
@@ -94,7 +95,7 @@ public class PahealRipper extends AbstractHTMLRipper {
                 + ext);
             addURLToDownload(url, outFile);
         } catch (IOException | URISyntaxException ex) {
-            logger.error("Error while downloading URL " + url, ex);
+            logger.log(Level.SEVERE, "Error while downloading URL " + url.toString());
         }
     }
 
@@ -116,7 +117,7 @@ public class PahealRipper extends AbstractHTMLRipper {
         try {
             return Utils.filesystemSafe(new URI(getTerm(url)).getPath());
         } catch (URISyntaxException ex) {
-            logger.error(ex);
+            logger.log(Level.SEVERE, ex.getMessage());
         }
 
         throw new MalformedURLException("Expected paheal.net URL format: rule34.paheal.net/post/list/searchterm - got " + url + " instead");

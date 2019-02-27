@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.RipUtils;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 import org.json.JSONArray;
@@ -34,9 +34,9 @@ public class TsuminoRipper extends AbstractHTMLRipper {
 
     public List<String> getTags(Document doc) {
         List<String> tags = new ArrayList<>();
-        LOGGER.info("Getting tags");
+        LOGGER.log(Level.INFO, "Getting tags");
         for (Element tag : doc.select("div#Tag > a")) {
-            LOGGER.info("Found tag " + tag.text());
+            LOGGER.log(Level.INFO, "Found tag " + tag.text());
             tags.add(tag.text().toLowerCase());
         }
         return tags;
@@ -53,9 +53,7 @@ public class TsuminoRipper extends AbstractHTMLRipper {
             JSONObject json = new JSONObject(jsonInfo);
             return json.getJSONArray("reader_page_urls");
         } catch (IOException e) {
-            LOGGER.info(e);
-            sendUpdate(RipStatusMessage.STATUS.DOWNLOAD_ERRORED, "Unable to download album, please compete the captcha at http://www.tsumino.com/Read/Auth/"
-                    + getAlbumID() + " and try again");
+            LOGGER.log(Level.INFO, e.getMessage());
             return null;
         }
     }
@@ -102,8 +100,6 @@ public class TsuminoRipper extends AbstractHTMLRipper {
         Document doc =  resp.parse();
         String blacklistedTag = RipUtils.checkTags(Utils.getConfigStringArray("tsumino.blacklist.tags"), getTags(doc));
         if (blacklistedTag != null) {
-            sendUpdate(RipStatusMessage.STATUS.DOWNLOAD_WARN, "Skipping " + url.toExternalForm() + " as it " +
-                    "contains the blacklisted tag \"" + blacklistedTag + "\"");
             return null;
         }
         return doc;

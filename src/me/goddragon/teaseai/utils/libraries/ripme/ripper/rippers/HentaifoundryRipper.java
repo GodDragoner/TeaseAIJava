@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -98,7 +99,7 @@ public class HentaifoundryRipper extends AbstractHTMLRipper {
             cookies.putAll(resp.cookies());
         }
         else {
-            LOGGER.info("unable to find csrf_token and set filter");
+            LOGGER.log(Level.INFO, "unable to find csrf_token and set filter");
         }
 
         resp = Http.url(url)
@@ -146,19 +147,19 @@ public class HentaifoundryRipper extends AbstractHTMLRipper {
             }
             Matcher imgMatcher = imgRegex.matcher(thumb.attr("href"));
             if (!imgMatcher.matches()) {
-                LOGGER.info("Couldn't find user & image ID in " + thumb.attr("href"));
+                LOGGER.log(Level.INFO, "Couldn't find user & image ID in " + thumb.attr("href"));
                 continue;
             }
             Document imagePage;
             try {
 
-                LOGGER.info("grabbing " + "http://www.hentai-foundry.com" + thumb.attr("href"));
+                LOGGER.log(Level.INFO, "grabbing " + "http://www.hentai-foundry.com" + thumb.attr("href"));
                 imagePage = Http.url("http://www.hentai-foundry.com" + thumb.attr("href")).cookies(cookies).get();
             }
 
             catch (IOException e) {
-                LOGGER.debug(e.getMessage());
-                LOGGER.debug("Warning: imagePage is null!");
+                LOGGER.log(Level.FINE, e.getMessage());
+                LOGGER.log(Level.FINE, "Warning: imagePage is null!");
                 imagePage = null;
             }
             // This is here for when the image is resized to a thumbnail because ripme doesn't report a screensize

@@ -8,12 +8,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import org.apache.log4j.Logger;
-
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage.STATUS;
+import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 
 /**
@@ -22,7 +21,7 @@ import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
  */
 class DownloadVideoThread extends Thread {
 
-    private static final Logger logger = Logger.getLogger(DownloadVideoThread.class);
+    private static final TeaseLogger logger = TeaseLogger.getLogger();
 
     private URL url;
     private File saveAs;
@@ -47,16 +46,14 @@ class DownloadVideoThread extends Thread {
         try {
             observer.stopCheck();
         } catch (IOException e) {
-            observer.downloadErrored(url, "Download interrupted");
             return;
         }
         if (saveAs.exists()) {
             if (Utils.getConfigBoolean("file.overwrite", false)) {
-                logger.info("[!] Deleting existing file" + prettySaveAs);
+                logger.log(Level.INFO, "[!] Deleting existing file" + prettySaveAs);
                 saveAs.delete();
             } else {
-                logger.info("[!] Skipping " + url + " -- file already exists: " + prettySaveAs);
-                observer.downloadExists(url, saveAs);
+                logger.log(Level.INFO, "[!] Skipping " + url + " -- file already exists: " + prettySaveAs);
                 return;
             }
         }
@@ -65,13 +62,11 @@ class DownloadVideoThread extends Thread {
         try {
             bytesTotal = getTotalBytes(this.url);
         } catch (IOException e) {
-            logger.error("Failed to get file size at " + this.url, e);
-            observer.downloadErrored(this.url, "Failed to get file size of " + this.url);
+            logger.log(Level.SEVERE, "Failed to get file size at " + this.url, e);
             return;
         }
         observer.setBytesTotal(bytesTotal);
-        observer.sendUpdate(STATUS.TOTAL_BYTES, bytesTotal);
-        logger.debug("Size of file at " + this.url + " = " + bytesTotal + "b");
+        logger.log(Level.FINE, "Size of file at " + this.url + " = " + bytesTotal + "b");
 
         int tries = 0; // Number of attempts to download
         do {
@@ -79,8 +74,7 @@ class DownloadVideoThread extends Thread {
             byte[] data = new byte[1024 * 256];
             int bytesRead;
             try {
-                logger.info("    Downloading file: " + url + (tries > 0 ? " Retry #" + tries : ""));
-                observer.sendUpdate(STATUS.DOWNLOAD_STARTED, url.toExternalForm());
+                logger.log(Level.INFO, "    Downloading file: " + url + (tries > 0 ? " Retry #" + tries : ""));
 
                 // Setup HTTP request
                 HttpURLConnection huc;
@@ -96,7 +90,7 @@ class DownloadVideoThread extends Thread {
                 huc.setRequestProperty("Referer", this.url.toExternalForm()); // Sic
                 huc.setRequestProperty("User-agent", AbstractRipper.USER_AGENT);
                 tries += 1;
-                logger.debug("Request properties: " + huc.getRequestProperties().toString());
+                logger.log(Level.FINE, "Request properties: " + huc.getRequestProperties().toString());
                 huc.connect();
                 // Check status code
                 bis = new BufferedInputStream(huc.getInputStream());
@@ -105,19 +99,18 @@ class DownloadVideoThread extends Thread {
                     try {
                         observer.stopCheck();
                     } catch (IOException e) {
-                        observer.downloadErrored(url, "Download interrupted");
+
                         return;
                     }
                     fos.write(data, 0, bytesRead);
                     bytesDownloaded += bytesRead;
                     observer.setBytesCompleted(bytesDownloaded);
-                    observer.sendUpdate(STATUS.COMPLETED_BYTES, bytesDownloaded);
                 }
                 bis.close();
                 fos.close();
                 break; // Download successful: break out of infinite loop
             } catch (IOException e) {
-                logger.error("[!] Exception while downloading file: " + url + " - " + e.getMessage(), e);
+                logger.log(Level.SEVERE, "[!] Exception while downloading file: " + url + " - " + e.getMessage(), e);
             } finally {
                 // Close any open streams
                 try {
@@ -128,13 +121,11 @@ class DownloadVideoThread extends Thread {
                 } catch (IOException e) { }
             }
             if (tries > this.retries) {
-                logger.error("[!] Exceeded maximum retries (" + this.retries + ") for URL " + url);
-                observer.downloadErrored(url, "Failed to download " + url.toExternalForm());
+                logger.log(Level.SEVERE, "[!] Exceeded maximum retries (" + this.retries + ") for URL " + url);
                 return;
             }
         } while (true);
-        observer.downloadCompleted(url, saveAs);
-        logger.info("[+] Saved " + url + " as " + this.prettySaveAs);
+        logger.log(Level.INFO, "[+] Saved " + url + " as " + this.prettySaveAs);
     }
 
     /**

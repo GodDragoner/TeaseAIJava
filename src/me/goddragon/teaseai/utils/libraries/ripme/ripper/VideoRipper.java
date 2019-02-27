@@ -1,7 +1,5 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper;
 
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage;
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage.STATUS;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 
 import java.io.File;
@@ -10,6 +8,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import java.util.logging.Level;
 
 
 public abstract class VideoRipper extends AbstractRipper {
@@ -52,17 +51,15 @@ public abstract class VideoRipper extends AbstractRipper {
                 fw.write(url.toExternalForm());
                 fw.write("\n");
 
-                RipStatusMessage msg = new RipStatusMessage(STATUS.DOWNLOAD_COMPLETE, urlFile);
-                observer.update(this, msg);
             } catch (IOException e) {
-                LOGGER.error("Error while writing to " + urlFile, e);
+                LOGGER.log(Level.SEVERE, "Error while writing to " + urlFile, e);
                 return false;
             }
         } else {
             if (isThisATest()) {
                 // Tests shouldn't download the whole video
                 // Just change this.url to the download URL so the test knows we found it.
-                LOGGER.debug("Test rip, found URL: " + url);
+                LOGGER.log(Level.FINE, "Test rip, found URL: " + url);
                 this.url = url;
                 return true;
             }
@@ -93,11 +90,11 @@ public abstract class VideoRipper extends AbstractRipper {
         workingDir = new File(path);
 
         if (!workingDir.exists()) {
-            LOGGER.info("[+] Creating directory: " + Utils.removeCWD(workingDir));
+            LOGGER.log(Level.INFO, "[+] Creating directory: " + Utils.removeCWD(workingDir));
             workingDir.mkdirs();
         }
 
-        LOGGER.debug("Set working directory to: " + workingDir);
+        LOGGER.log(Level.FINE, "Set working directory to: " + workingDir);
     }
 
     /**
@@ -106,61 +103,6 @@ public abstract class VideoRipper extends AbstractRipper {
     @Override
     public int getCompletionPercentage() {
         return (int) (100 * (bytesCompleted / (float) bytesTotal));
-    }
-
-    /**
-     * Runs if download successfully completed.
-     *
-     * @param url    Target URL
-     * @param saveAs Path to file, including filename.
-     */
-    @Override
-    public void downloadCompleted(URL url, File saveAs) {
-        if (observer == null) {
-            return;
-        }
-
-        try {
-            String path = Utils.removeCWD(saveAs);
-            RipStatusMessage msg = new RipStatusMessage(STATUS.DOWNLOAD_COMPLETE, path);
-            observer.update(this, msg);
-
-            checkIfComplete();
-        } catch (Exception e) {
-            LOGGER.error("Exception while updating observer: ", e);
-        }
-    }
-
-    /**
-     * Runs if the download errored somewhere.
-     *
-     * @param url    Target URL
-     * @param reason Reason why the download failed.
-     */
-    @Override
-    public void downloadErrored(URL url, String reason) {
-        if (observer == null) {
-            return;
-        }
-
-        observer.update(this, new RipStatusMessage(STATUS.DOWNLOAD_ERRORED, url + " : " + reason));
-        checkIfComplete();
-    }
-
-    /**
-     * Runs if user tries to redownload an already existing File.
-     *
-     * @param url  Target URL
-     * @param file Existing file
-     */
-    @Override
-    public void downloadExists(URL url, File file) {
-        if (observer == null) {
-            return;
-        }
-
-        observer.update(this, new RipStatusMessage(STATUS.DOWNLOAD_WARN, url + " already saved as " + file));
-        checkIfComplete();
     }
 
     /**
@@ -186,18 +128,5 @@ public abstract class VideoRipper extends AbstractRipper {
         return url;
     }
 
-    /**
-     * Notifies observers and updates state if all files have been ripped.
-     */
-    @Override
-    protected void checkIfComplete() {
-        if (observer == null) {
-            return;
-        }
-
-        if (bytesCompleted >= bytesTotal) {
-            super.checkIfComplete();
-        }
-    }
 
 }

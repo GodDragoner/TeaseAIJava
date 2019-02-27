@@ -2,7 +2,6 @@ package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.DownloadThreadPool;
-import me.goddragon.teaseai.utils.libraries.ripme.ui.RipStatusMessage;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.RipUtils;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
@@ -15,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,7 +87,7 @@ public class NhentaiRipper extends AbstractHTMLRipper {
         List<String> tags = new ArrayList<>();
         for (Element tag : doc.select("a.tag")) {
             String tagString = tag.attr("href").replaceAll("/tag/", "").replaceAll("/", "");
-            LOGGER.info("Found tag: " + tagString);
+            LOGGER.log(Level.INFO, "Found tag: " + tagString);
             tags.add(tagString);
         }
         return tags;
@@ -114,8 +114,6 @@ public class NhentaiRipper extends AbstractHTMLRipper {
 
         String blacklistedTag = RipUtils.checkTags(Utils.getConfigStringArray("nhentai.blacklist.tags"), getTags(firstPage));
         if (blacklistedTag != null) {
-            sendUpdate(RipStatusMessage.STATUS.DOWNLOAD_WARN, "Skipping " + url.toExternalForm() + " as it " +
-                    "contains the blacklisted tag \"" + blacklistedTag + "\"");
             return null;
         }
         return firstPage;

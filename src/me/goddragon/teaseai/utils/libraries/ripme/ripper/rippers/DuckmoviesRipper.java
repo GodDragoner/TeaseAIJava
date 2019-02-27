@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -96,9 +97,9 @@ public class DuckmoviesRipper extends AbstractSingleFileRipper {
             videoURL = videoURL.replaceAll(" ", "%20");
             results.add(videoURL);
         } catch (MalformedURLException e) {
-            LOGGER.error(duckMoviesUrl + " is not a valid url");
+            LOGGER.log(Level.SEVERE, duckMoviesUrl + " is not a valid url");
         } catch (IOException e) {
-            LOGGER.error("Unable to load page " + duckMoviesUrl);
+            LOGGER.log(Level.SEVERE, "Unable to load page " + duckMoviesUrl);
             e.printStackTrace();
         }
         return results;
