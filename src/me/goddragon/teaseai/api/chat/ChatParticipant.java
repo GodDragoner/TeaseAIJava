@@ -40,6 +40,8 @@ public class ChatParticipant {
 
     private PictureSet pictureSet;
 
+    private Color nameColor = Color.BLACK;
+
     public ChatParticipant(SenderType type, Contact contact) {
         this(latestId + 1, type, contact);
     }
@@ -81,7 +83,7 @@ public class ChatParticipant {
     public void sendInteract(String type) {
         Text nameText = new Text(name + " ");
         nameText.setFont(Font.font(null, FontWeight.BOLD, TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 2));
-        nameText.setFill(ChatHandler.getHandler().getParticipantColors()[id]);
+        nameText.setFill(this.nameColor);
 
         Text messageText = new Text(type + " the chat room.");
         messageText.setFill(Color.AQUA);
@@ -151,7 +153,7 @@ public class ChatParticipant {
         dateText.setFont(Font.font(null, FontWeight.MEDIUM,  TeaseAI.application.CHAT_TEXT_SIZE.getDouble()));
         Text text = new Text(name + ": ");
 
-        text.setFill(ChatHandler.getHandler().getParticipantColors()[id]);
+        text.setFill(this.nameColor);
 
         text.setFont(Font.font(null, FontWeight.BOLD,  TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 1));
         //Check whether we can find a response fitting right now
@@ -335,6 +337,16 @@ public class ChatParticipant {
 
     public void setPictureSet(PictureSet pictureSet) {
         this.pictureSet = pictureSet;
+    }
+
+
+    public ChatParticipant setNameColor(Color nameColor) {
+        this.nameColor = nameColor;
+        return this;
+    }
+
+    public Color getNameColor() {
+        return nameColor;
     }
 
     @Override

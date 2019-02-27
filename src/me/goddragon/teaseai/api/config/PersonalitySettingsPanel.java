@@ -1,23 +1,19 @@
 package me.goddragon.teaseai.api.config;
 
-import java.util.ArrayList;
-
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class PersonalitySettingsPanel
-{
+import java.util.ArrayList;
+
+public class PersonalitySettingsPanel {
     private String name;
     private AnchorPane basePane;
     private final int rowHeight = 30;
@@ -26,17 +22,15 @@ public class PersonalitySettingsPanel
     private int gridPaneRows = 0;
     private ScrollPane scrollPane;
 
-    public PersonalitySettingsPanel(String panelName)
-    {
+    public PersonalitySettingsPanel(String panelName) {
         this.name = panelName;
-        basePane = new AnchorPane();
-        
+        this.basePane = new AnchorPane();
+        this.components = new ArrayList<>();
+
         setUp();
-        components = new ArrayList<GUIComponent>();
     }
-    
-    public void setUp()
-    {
+
+    public void setUp() {
         basePane.getChildren().clear();
         GridPane baseGridPane = new GridPane();
         ColumnConstraints column1 = new ColumnConstraints();
@@ -53,13 +47,13 @@ public class PersonalitySettingsPanel
         GridPane.setHalignment(label, HPos.CENTER);
         label.setAlignment(Pos.CENTER);
         label.setFont(new Font(15.0));
-        
+
         gridPane = new GridPane();
         scrollPane = new ScrollPane(gridPane);
         scrollPane.setFitToWidth(true);
-        
+
         baseGridPane.add(scrollPane, 0, 1);
-        
+
         ColumnConstraints column2 = new ColumnConstraints();
         ColumnConstraints column3 = new ColumnConstraints();
         ColumnConstraints column4 = new ColumnConstraints();
@@ -77,61 +71,44 @@ public class PersonalitySettingsPanel
         gridPane.getColumnConstraints().addAll(column2, column3, column4, column5, column6, column7, column8);
     }
 
-    public void addGuiComponents()
-    {
+    public void addGuiComponents() {
         setUp();
         ArrayList<GUIComponent> firstColumn = new ArrayList<GUIComponent>();
         ArrayList<GUIComponent> seoondColumn = new ArrayList<GUIComponent>();
         ArrayList<GUIComponent> flexible = new ArrayList<GUIComponent>();
-        for (int i = 0; i < components.size(); i++)
-        {
+        for (int i = 0; i < components.size(); i++) {
             int id = components.get(i).getColumnID();
-            if (id == 1)
-            {
+            if (id == 1) {
                 firstColumn.add(components.get(i));
-            }
-            else if (id == 2)
-            {
+            } else if (id == 2) {
                 seoondColumn.add(components.get(i));
-            }
-            else
-            {
+            } else {
                 flexible.add(components.get(i));
             }
-                
+
         }
-        
+
         int halfCapacity = components.size() / 2 + ((components.size() % 2 == 0) ? 0 : 1);
-        if (firstColumn.size() >= halfCapacity)
-        {
+        if (firstColumn.size() >= halfCapacity) {
             seoondColumn.addAll(flexible);
-        }
-        else if (seoondColumn.size() > halfCapacity)
-        {
+        } else if (seoondColumn.size() > halfCapacity) {
             firstColumn.addAll(flexible);
-        }
-        else 
-        {
-            for (int i = 0; i < flexible.size(); i++)
-            {
-                if (firstColumn.size() < halfCapacity)
-                {
+        } else {
+            for (int i = 0; i < flexible.size(); i++) {
+                if (firstColumn.size() < halfCapacity) {
                     firstColumn.add(flexible.get(i));
-                }
-                else 
-                {
+                } else {
                     seoondColumn.add(flexible.get(i));
                 }
             }
         }
-        
-        for (int i = 0; i < firstColumn.size(); i++)
-        {
+
+        for (int i = 0; i < firstColumn.size(); i++) {
             //HBox testHbox = new HBox(30);
             gridPane.getRowConstraints()
                     .add(new RowConstraints(rowHeight, rowHeight, rowHeight));
             gridPaneRows++;
-            
+
             Label label = firstColumn.get(i).getLabel();
             //label.setText("    " + label.getText());
             label.setAlignment(Pos.CENTER_LEFT);
@@ -142,17 +119,15 @@ public class PersonalitySettingsPanel
             gridPane.add(componentNode, 2, i);
             GridPane.setHalignment(label, HPos.LEFT);
         }
-        
-        for (int i = 0; i < seoondColumn.size(); i++)
-        {
+
+        for (int i = 0; i < seoondColumn.size(); i++) {
             //HBox testHbox = new HBox(30);
-            if (i >= gridPaneRows)
-            {
+            if (i >= gridPaneRows) {
                 gridPane.getRowConstraints()
-                .add(new RowConstraints(rowHeight, rowHeight, rowHeight));
+                        .add(new RowConstraints(rowHeight, rowHeight, rowHeight));
                 gridPaneRows++;
             }
-            
+
             Label label = seoondColumn.get(i).getLabel();
             //label.setText("    " + label.getText());
             label.setAlignment(Pos.CENTER_LEFT);
@@ -165,38 +140,35 @@ public class PersonalitySettingsPanel
         }
     }
 
-    public void addCheckBox(PersonalityVariable variable)
-    {
+    public void addCheckBox(PersonalityVariable variable) {
         components.add(new CheckBoxComponent(variable, variable.getCustomName()));
     }
 
-    public void addTextBox(PersonalityVariable variable)
-    {
+    public void addTextBox(PersonalityVariable variable) {
         components.add(new TextBoxComponent(variable, variable.getCustomName()));
     }
-    
-    public void addOptionsList(PersonalityVariable variable, ArrayList<String> options)
-    {
+
+    public void addOptionsList(PersonalityVariable variable, ArrayList<String> options) {
         components.add(new OptionsListComponent(variable, variable.getCustomName(), options));
     }
-    
-    public void addSpinner(PersonalityVariable variable, int min, int max)
-    {
-        components.add(new SpinnerComponent(variable, variable.getCustomName(), min, max));
+
+    public void addIntegerSpinner(PersonalityVariable variable, int min, int max) {
+        components.add(new IntegerSpinnerComponent(variable, variable.getCustomName(), min, max));
     }
 
-    public AnchorPane getAnchorPane()
-    {
+    public void addDoubleSpinner(PersonalityVariable variable, double min, double max) {
+        components.add(new DoubleSpinnerComponent(variable, variable.getCustomName(), min, max));
+    }
+
+    public AnchorPane getAnchorPane() {
         return basePane;
     }
-    
-    public ScrollPane getScrollPane()
-    {
+
+    public ScrollPane getScrollPane() {
         return scrollPane;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 }

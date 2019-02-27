@@ -21,15 +21,12 @@ public class ChatHandler {
     public static final int MAIN_DOM_SENDER_ID = 1;
 
     private static ChatHandler handler = new ChatHandler();
-    
-    private TypeSpeed typeSpeed = TypeSpeed.valueOf(TeaseAI.application.DEFAULT_TYPE_SPEED.getValue());
-    
-    private Color defaultChatColor = Color.BLACK;
-    
-    private Color dateColor;
-    
-    private Color[] participantColors;
 
+    private TypeSpeed typeSpeed = TypeSpeed.valueOf(TeaseAI.application.DEFAULT_TYPE_SPEED.getValue());
+
+    private Color defaultChatColor = Color.BLACK;
+
+    private Color dateColor;
     /**
      * Millis waited after each message by default
      */
@@ -57,8 +54,8 @@ public class ChatHandler {
     private ChatParticipant currentDom = null;
 
     public ChatHandler() {
-        dateColor = Color.DARKGRAY;
-        participantColors = new Color[] {Color.DARKCYAN, Color.RED, Color.ORANGE, Color.LIGHTGREEN, Color.MEDIUMVIOLETRED};
+        this.dateColor = Color.DARKGRAY;
+
         TextFlow textFlow = TeaseAI.application.getController().getChatWindow();
         ScrollPane textContainer = TeaseAI.application.getController().getChatScrollPane();
         textFlow.getChildren().addListener(
@@ -74,12 +71,12 @@ public class ChatHandler {
     }
 
     public void load() {
-        registerSender(new ChatParticipant(0, SenderType.SUB, new Contact("sub", "Sub Name")));
-        Contact dommeContact =  new Contact("dom", "Dom Name");
-        registerSender(new ChatParticipant(1, SenderType.DOM, dommeContact));
-        registerSender(new ChatParticipant(2, SenderType.DOM, new Contact("dommeFriend1", "Emma")));
-        registerSender(new ChatParticipant(3, SenderType.DOM, new Contact("dommeFriend2", "Staicy")));
-        registerSender(new ChatParticipant(4, SenderType.DOM, new Contact("dommeFriend3", "Amara")));
+        registerSender(new ChatParticipant(0, SenderType.SUB, new Contact("sub", "Sub Name")).setNameColor(Color.DARKCYAN));
+        Contact dommeContact = new Contact("dom", "Dom Name");
+        registerSender(new ChatParticipant(1, SenderType.DOM, dommeContact).setNameColor(Color.RED));
+        registerSender(new ChatParticipant(2, SenderType.DOM, new Contact("dommeFriend1", "Emma")).setNameColor(Color.ORANGE));
+        registerSender(new ChatParticipant(3, SenderType.DOM, new Contact("dommeFriend2", "Staicy")).setNameColor(Color.LIGHTGREEN));
+        registerSender(new ChatParticipant(4, SenderType.DOM, new Contact("dommeFriend3", "Amara")).setNameColor(Color.MEDIUMVIOLETRED));
     }
 
     public void registerSender(ChatParticipant chatSender) {
@@ -114,7 +111,7 @@ public class ChatHandler {
     }
 
     public ChatParticipant getSelectedSender() {
-        return currentDom != null? currentDom : getMainDomParticipant();
+        return currentDom != null ? currentDom : getMainDomParticipant();
     }
 
     public void addText(String message) {
@@ -131,14 +128,14 @@ public class ChatHandler {
         TeaseAI.application.runOnUIThread(new Runnable() {
             @Override
             public void run() {
-                if(!textFlow.getChildren().contains(text)) {
-                    if(!temporary) {
+                if (!textFlow.getChildren().contains(text)) {
+                    if (!temporary) {
                         removeAllTemporaryMessages();
                     }
 
                     textFlow.getChildren().add(text);
 
-                    if(!temporary) {
+                    if (!temporary) {
                         addAllTemporaryMessages();
                     }
                 } else {
@@ -147,7 +144,7 @@ public class ChatHandler {
             }
         });
 
-        if(!temporary) {
+        if (!temporary) {
             TeaseLogger.getLogger().log(Level.FINE, text.getText());
         }
     }
@@ -167,7 +164,7 @@ public class ChatHandler {
         });
 
         String resultingText = "";
-        for(Text textPiece : text) {
+        for (Text textPiece : text) {
             resultingText += textPiece.getText();
         }
 
@@ -184,7 +181,7 @@ public class ChatHandler {
         TeaseAI.application.runOnUIThread(new Runnable() {
             @Override
             public void run() {
-                if(!textFlow.getChildren().contains(text)) {
+                if (!textFlow.getChildren().contains(text)) {
                     removeAllTemporaryMessages();
                     textFlow.getChildren().add(text);
                     nextRow();
@@ -217,7 +214,7 @@ public class ChatHandler {
         });
 
         String resultingText = "";
-        for(Text textPiece : text) {
+        for (Text textPiece : text) {
             resultingText += textPiece.getText();
         }
 
@@ -372,31 +369,22 @@ public class ChatHandler {
         return senders;
     }
 
-    public Color getDefaultChatColor()
-    {
+    public Color getDefaultChatColor() {
         return defaultChatColor;
     }
-    
-    public Color getDateColor()
-    {
+
+    public Color getDateColor() {
         return dateColor;
     }
-    
-    public void setDateColor(Color newColor)
-    {
-        dateColor = newColor;
+
+    public void setDateColor(Color newColor) {
+        this.dateColor = newColor;
     }
-    
-    public void setDefaultChatColor(Color newColor)
-    {
-        defaultChatColor = newColor;
+
+    public void setDefaultChatColor(Color newColor) {
+        this.defaultChatColor = newColor;
     }
-    
-    public Color[] getParticipantColors()
-    {
-        return participantColors;
-    }
-    
+
     public static void setHandler(ChatHandler handler) {
         ChatHandler.handler = handler;
     }

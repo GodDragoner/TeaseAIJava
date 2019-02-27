@@ -37,6 +37,7 @@ public class ConfigHandler {
                     try {
                         config.createNewFile();
                     } catch (IOException e) {
+                        e.printStackTrace();
                         TeaseLogger.getLogger().log(Level.SEVERE, "Failed to load config.", e);
                     }
                 }

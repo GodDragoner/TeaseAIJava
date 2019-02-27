@@ -8,13 +8,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.MediaView;
@@ -24,45 +22,41 @@ import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import me.goddragon.teaseai.Main;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.chat.ChatParticipant;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
-import me.goddragon.teaseai.gui.settings.AppearanceSettings;
 import me.goddragon.teaseai.gui.settings.SettingsController;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.media.ImageUtils;
 
 import java.io.File;
 
-import com.sun.tools.classfile.Opcode.Set;
-
 public class MainGuiController {
 
     private static MainGuiController thisController;
     private final Stage stage;
     private LazySubController lazySubController;
-    
+
     @FXML
     public AnchorPane baseAnchorPane;
-    
+
     @FXML
     public AnchorPane chatBackground;
-    
+
     @FXML
     public StackPane chatPane;
-    
+
     @FXML
     public SplitPane chatSplitPane;
-    
+
     @FXML
     public AnchorPane leftWidgetBar;
-    
+
     @FXML
     public AnchorPane rightWidgetBar;
-    
+
     @FXML
     private MediaView mediaView;
 
@@ -112,30 +106,30 @@ public class MainGuiController {
     //Run Script Menu Item
     @FXML
     private MenuItem runScriptMenuItem;
-    
+
     @FXML
     private Region draggableRegion;
-    
+
     @FXML
     private Button minimize;
-    
+
     @FXML
     private Button expand;
-    
+
     @FXML
     private Button close;
-    
+
     private double initialX;
-    
+
     private double initialY;
-    
+
     private static final Rectangle2D SCREEN_BOUNDS = Screen.getPrimary()
             .getVisualBounds();
-    
+
     private static double prefWidth;
-    
+
     private static double prefHeight;
-    
+
     private boolean isMaximized = false;
 
     public MainGuiController(Stage stage) {
@@ -144,28 +138,29 @@ public class MainGuiController {
         this.stage.initStyle(StageStyle.UNDECORATED);
         this.stage.getIcons().add(new Image(MainGuiController.class.getResourceAsStream("/TAJSYSLOGO.png")));
     }
-    
+
 
     public void initiate() {
         prefWidth = this.stage.getWidth();
         prefHeight = this.stage.getHeight();
         draggableRegion.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override public void handle(MouseEvent mouseEvent) {
-              // record a delta distance for the drag and drop operation.
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                // record a delta distance for the drag and drop operation.
                 initialX = stage.getX() - mouseEvent.getScreenX();
                 initialY = stage.getY() - mouseEvent.getScreenY();
             }
-          });
+        });
         draggableRegion.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override public void handle(MouseEvent mouseEvent) {
-                if (!isMaximized)
-                {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (!isMaximized) {
                     stage.setX(mouseEvent.getScreenX() + initialX);
                     stage.setY(mouseEvent.getScreenY() + initialY);
                 }
             }
-          });
-        
+        });
+
         close.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -174,21 +169,18 @@ public class MainGuiController {
             }
         });
         minimize.setOnAction(e -> {
-            ((Stage)((Button)e.getSource()).getScene().getWindow()).setIconified(true);
+            ((Stage) ((Button) e.getSource()).getScene().getWindow()).setIconified(true);
         });
-        
+
         expand.setOnAction(e -> {
-            if (isMaximized)
-            {
-                stage.setX((SCREEN_BOUNDS.getMaxX() - prefWidth)/2);
-                stage.setY((SCREEN_BOUNDS.getMaxY() - prefHeight)/2);
+            if (isMaximized) {
+                stage.setX((SCREEN_BOUNDS.getMaxX() - prefWidth) / 2);
+                stage.setY((SCREEN_BOUNDS.getMaxY() - prefHeight) / 2);
                 stage.setWidth(prefWidth);
                 stage.setHeight(prefHeight);
                 expand.setText("⛶");
                 isMaximized = false;
-            }
-            else
-            {
+            } else {
                 stage.setX(SCREEN_BOUNDS.getMinX());
                 stage.setY(SCREEN_BOUNDS.getMinY());
                 stage.setWidth(SCREEN_BOUNDS.getWidth());
@@ -197,7 +189,7 @@ public class MainGuiController {
                 isMaximized = true;
             }
         });
-        
+
         personalityChoiceBox.setTooltip(new Tooltip("Select the personality"));
 
         mediaView.setPreserveRatio(true);
@@ -317,8 +309,6 @@ public class MainGuiController {
 
         lazySubController = new LazySubController(lazySubPane);
         lazySubController.createDefaults();
-        
-        AppearanceSettings.loadSelectedTheme();
     }
 
     public void loadDomInfo() {
@@ -454,14 +444,12 @@ public class MainGuiController {
     public LazySubController getLazySubController() {
         return lazySubController;
     }
-    
-    public static MainGuiController getController()
-    {
+
+    public static MainGuiController getController() {
         return thisController;
     }
-    
-    public TextField getDomNameTextField()
-    {
+
+    public TextField getDomNameTextField() {
         return domNameTextField;
     }
 }
