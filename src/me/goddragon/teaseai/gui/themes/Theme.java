@@ -125,7 +125,7 @@ public class Theme {
                 for (PersonalitySettingsHandler p : PersonalitiesSettingsHandler.getHandler().getSettingsHandlers()) {
                     for (PersonalitySettingsPanel panel : p.getSettingsPanels()) {
                         if (panel.getSettingsPanel() != null) {
-                            panel.getSettingsPanel().getScrollPane().setStyle("-fx-background: " + this.color.toString().replace("0x", "#"));
+                            panel.getSettingsPanel().getScrollPane().setStyle("-fx-background: " + getCSSColorString());
                         }
                     }
                 }
