@@ -1,6 +1,7 @@
 package me.goddragon.teaseai.gui.themes;
 
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -12,31 +13,34 @@ import me.goddragon.teaseai.api.config.PersonalitySettingsHandler;
 import me.goddragon.teaseai.api.config.PersonalitySettingsPanel;
 import me.goddragon.teaseai.gui.main.MainGuiController;
 import me.goddragon.teaseai.gui.settings.SettingsController;
+import me.goddragon.teaseai.utils.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Theme {
-
-
     public String name;
     private ConfigHandler configHandler;
 
+    private File cssFile;
     public final ArrayList<ThemeSetting> settings = new ArrayList<>();
 
 
     public Theme(String name) {
         this.name = name;
-        this.configHandler = new ConfigHandler(ThemeHandler.THEME_FOLDER_NAME + File.separator + name + ".theme");
+        this.configHandler = new ConfigHandler(getConfigFilePath());
 
         loadSettings();
 
         this.configHandler.loadConfig();
 
         //Load config values AFTER we initially loaded the config
-        for(ThemeSetting setting : settings) {
+        for (ThemeSetting setting : settings) {
             setting.fetchFromConfig();
         }
+
+        this.cssFile = new File(getCSSFilePath());
     }
 
     public void saveToConfig() {
@@ -47,15 +51,53 @@ public class Theme {
         return configHandler;
     }
 
+    public String getStylesheetURI() {
+        return new File(getCSSFilePath()).toURI().toString();
+    }
+
+    public String getCSSFilePath() {
+        return ThemeHandler.THEME_FOLDER_NAME + File.separator + name + ".css";
+    }
+
+    public String getConfigFilePath() {
+        return ThemeHandler.THEME_FOLDER_NAME + File.separator + name + ".tajth";
+    }
+
     public void selectTheme() {
-        //TODO: Save selected theme name to config
+        boolean cssFileExist = cssFile.exists();
+
+        for (Scene scene : MainGuiController.getController().getMainScenes()) {
+            scene.getStylesheets().clear();
+
+            if (cssFileExist) {
+                scene.getStylesheets().add(getStylesheetURI());
+            }
+        }
+
         for (ThemeSetting setting : this.settings) {
             setting.applyToGui();
         }
     }
 
+    public void setName(String name) {
+        this.name = name;
+        this.configHandler.changeConfigName(getConfigFilePath());
+    }
+
+    public boolean delete() {
+        try {
+            FileUtils.delete(this.configHandler.getConfigFile());
+            ThemeHandler.getHandler().getThemes().remove(this);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     public void setChatWindowColor(Color color) {
-        ((ThemeColor)this.settings.get(1)).setColor(color);
+        ((ThemeColor) this.settings.get(1)).setColor(color);
     }
 
     private void loadSettings() {
@@ -64,12 +106,13 @@ public class Theme {
 
         settings.add(new ThemeColor("Primary Color", this) {
             @Override
-            void applyToGui() {
+            public void applyToGui() {
                 mainGuiController.baseAnchorPane.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
+                mainGuiController.baseGridPane.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
                 mainGuiController.leftWidgetBar.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
                 mainGuiController.rightWidgetBar.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
 
-                if(settingsController != null) {
+                if (settingsController != null) {
                     settingsController.SettingsPanes.setStyle("-fx-background-color: " + getCSSColorString());
                     settingsController.SettingsBackground.setStyle("-fx-background-color: " + getCSSColorString());
                     settingsController.GeneralTab.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -81,7 +124,9 @@ public class Theme {
 
                 for (PersonalitySettingsHandler p : PersonalitiesSettingsHandler.getHandler().getSettingsHandlers()) {
                     for (PersonalitySettingsPanel panel : p.getSettingsPanels()) {
-                        panel.getScrollPane().setStyle("-fx-background: " + this.color.toString().replace("0x", "#"));
+                        if (panel.getSettingsPanel() != null) {
+                            panel.getSettingsPanel().getScrollPane().setStyle("-fx-background: " + this.color.toString().replace("0x", "#"));
+                        }
                     }
                 }
             }
@@ -89,69 +134,79 @@ public class Theme {
 
         settings.add(new ThemeColor("Chat Window Color", this) {
             @Override
-            void applyToGui() {
+            public void applyToGui() {
                 mainGuiController.chatPane.setStyle("-fx-background-color: " + getCSSColorString() + ";-fx-border-color: " + getCSSColorString() + "; -fx-background-radius:10 10 10 10; -fx-border-radius:10 10 10 10");
             }
         });
 
         settings.add(new ThemeColor("Chat Background Color", this) {
             @Override
-            void applyToGui() {
+            public void applyToGui() {
                 mainGuiController.chatBackground.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
             }
         });
 
         settings.add(new ThemeColor("Date Color", this) {
             @Override
-            void applyToGui() {
+            public void applyToGui() {
                 ChatHandler.getHandler().setDateColor(this.color);
             }
         });
 
         settings.add(new ThemeColor("Chat Color", this) {
             @Override
-            void applyToGui() {
+            public void applyToGui() {
                 ChatHandler.getHandler().setDefaultChatColor(this.color);
             }
         });
 
         settings.add(new ThemeColor("Sub Name Color", this) {
             @Override
-            void applyToGui() {
+            public void applyToGui() {
                 ChatHandler.getHandler().getParticipantById(0).setNameColor(this.color);
             }
         });
 
         settings.add(new ThemeColor("Dom Name Color", this) {
             @Override
-            void applyToGui() {
+            public void applyToGui() {
                 ChatHandler.getHandler().getParticipantById(1).setNameColor(this.color);
             }
         });
 
         settings.add(new ThemeColor("Friend 1 Name Color", this) {
             @Override
-            void applyToGui() {
+            public void applyToGui() {
                 ChatHandler.getHandler().getParticipantById(2).setNameColor(this.color);
             }
         });
 
         settings.add(new ThemeColor("Friend 2 Name Color", this) {
             @Override
-            void applyToGui() {
+            public void applyToGui() {
                 ChatHandler.getHandler().getParticipantById(3).setNameColor(this.color);
             }
         });
 
         settings.add(new ThemeColor("Friend 3 Name Color", this) {
             @Override
-            void applyToGui() {
+            public void applyToGui() {
                 ChatHandler.getHandler().getParticipantById(4).setNameColor(this.color);
             }
         });
     }
 
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public ArrayList<ThemeSetting> getSettings() {
         return settings;
     }
+
 }

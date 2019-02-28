@@ -140,7 +140,10 @@ public class TeaseAI extends Application {
         Parent root = loader.load();
         primaryStage.setTitle("Tease-AI " + VERSION);
         mainScene = new Scene(root, 1480, 720);
-        mainScene.getStylesheets().add(getClass().getResource("/textFormat.css").toExternalForm());
+
+        //So we can apply our themes to all relevant GUIs at once
+        controller.addMainScene(mainScene);
+
         primaryStage.setScene(mainScene);
         primaryStage.show();
         controller.initiate();

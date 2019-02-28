@@ -76,6 +76,10 @@ public class ConfigHandler {
         }
     }
 
+    public File getConfigFile() {
+        return new File(configName);
+    }
+
 
     public void saveConfig() {
         if(!isConfig()) {
@@ -96,6 +100,11 @@ public class ConfigHandler {
         for(ConfigValue configValue : configValues) {
             configValue.reloadValue();
         }
+    }
+
+    public void changeConfigName(String configName) {
+        getConfigFile().renameTo(new File(configName));
+        this.configName = configName;
     }
 
     public boolean isURL() {

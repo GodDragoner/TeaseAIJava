@@ -8,6 +8,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,6 +34,8 @@ import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.media.ImageUtils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainGuiController {
 
@@ -41,6 +45,9 @@ public class MainGuiController {
 
     @FXML
     public AnchorPane baseAnchorPane;
+
+    @FXML
+    public GridPane baseGridPane;
 
     @FXML
     public AnchorPane chatBackground;
@@ -123,14 +130,15 @@ public class MainGuiController {
 
     private double initialY;
 
-    private static final Rectangle2D SCREEN_BOUNDS = Screen.getPrimary()
-            .getVisualBounds();
+    private static final Rectangle2D SCREEN_BOUNDS = Screen.getPrimary().getVisualBounds();
 
     private static double prefWidth;
 
     private static double prefHeight;
 
     private boolean isMaximized = false;
+
+    private List<Scene> mainScenes = new ArrayList<>();
 
     public MainGuiController(Stage stage) {
         thisController = this;
@@ -451,5 +459,25 @@ public class MainGuiController {
 
     public TextField getDomNameTextField() {
         return domNameTextField;
+    }
+
+    public void addMainScene(Scene scene) {
+        mainScenes.add(scene);
+
+        handleNodeStyle(scene.getRoot());
+    }
+
+    private void handleNodeStyle(Node node) {
+        if(node instanceof Pane) {
+            for(Node subNode : ((Pane) node).getChildren()) {
+                handleNodeStyle(subNode);
+            }
+
+            node.getStyleClass().add("root");
+        }
+    }
+
+    public List<Scene> getMainScenes() {
+        return mainScenes;
     }
 }

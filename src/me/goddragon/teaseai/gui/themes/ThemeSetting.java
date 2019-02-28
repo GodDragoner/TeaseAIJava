@@ -22,7 +22,7 @@ public abstract class ThemeSetting {
 
     public abstract void fetchFromConfig();
 
-    abstract void applyToGui();
+    public abstract void applyToGui();
 
     public String getName() {
         return name;
@@ -42,5 +42,9 @@ public abstract class ThemeSetting {
 
     public Theme getTheme() {
         return theme;
+    }
+
+    public boolean overruleCSS() {
+        return true;
     }
 }

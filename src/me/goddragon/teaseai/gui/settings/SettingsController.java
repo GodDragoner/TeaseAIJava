@@ -167,39 +167,6 @@ public class SettingsController {
     public TabPane PersonalitiesPane;
 
     @FXML
-    public ComboBox<String> ThemesList;
-
-    @FXML
-    public ColorPicker PrimaryColor;
-
-    @FXML
-    public ColorPicker ChatWindowColor;
-
-    @FXML
-    public ColorPicker ChatColor;
-
-    @FXML
-    public ColorPicker ChatBackground;
-
-    @FXML
-    public ColorPicker DateColor;
-
-    @FXML
-    public ColorPicker SubColor;
-
-    @FXML
-    public ColorPicker DomColor;
-
-    @FXML
-    public ColorPicker Friend1Color;
-
-    @FXML
-    public ColorPicker Friend2Color;
-
-    @FXML
-    public ColorPicker Friend3Color;
-
-    @FXML
     public TabPane SettingsPanes;
 
     @FXML
@@ -220,14 +187,38 @@ public class SettingsController {
     @FXML
     public AnchorPane ContactsTab;
 
+    //Appearance
+    @FXML
+    public ComboBox selectedThemeComboBox;
+
+    @FXML
+    public GridPane appearanceMainGridPane;
+
+    @FXML
+    public Button saveThemeButton;
+
+    @FXML
+    public Button setThemeNameButton;
+
+    @FXML
+    public Button newThemeButton;
+
+    @FXML
+    public Button deleteThemeButton;
+
+    @FXML
+    public Button updateGUIButton;
+
     public void initiate() {
         mediaSettings.initiate();
         contactSettings.initiate();
         generalSettings.initiate();
         debugSettings.initiate();
+
         for (Tab tab : PersonalitiesSettingsHandler.getHandler().getTabsToAdd()) {
             PersonalitiesPane.getTabs().add(0, tab);
         }
+
         appearanceSettings.initiate();
     }
 
@@ -248,7 +239,10 @@ public class SettingsController {
             controller.stage = new Stage();
             controller.stage.setTitle("Tease-AI Settings");
             Scene newScene = new Scene(root, 1280, 650);
-            newScene.getStylesheets().add(SettingsController.class.getResource("/textFormat.css").toExternalForm());
+
+            //So we can apply our themes to all relevant GUIs at once
+            MainGuiController.getController().addMainScene(newScene);
+
             controller.stage.setScene(newScene);
             controller.stage.show();
 

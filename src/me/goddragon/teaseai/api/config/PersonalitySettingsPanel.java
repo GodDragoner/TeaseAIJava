@@ -2,14 +2,13 @@ package me.goddragon.teaseai.api.config;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
+import me.goddragon.teaseai.gui.settings.MultiColumnSettingsPannel;
 
 import java.util.ArrayList;
 
@@ -17,20 +16,16 @@ public class PersonalitySettingsPanel {
     private String name;
     private AnchorPane basePane;
     private final int rowHeight = 30;
-    private ArrayList<GUIComponent> components;
-    private GridPane gridPane;
-    private int gridPaneRows = 0;
-    private ScrollPane scrollPane;
+    private ArrayList<GUISettingComponent> components;
+    private MultiColumnSettingsPannel settingsPannel;
 
     public PersonalitySettingsPanel(String panelName) {
         this.name = panelName;
         this.basePane = new AnchorPane();
         this.components = new ArrayList<>();
-
-        setUp();
     }
 
-    public void setUp() {
+    private void setUp() {
         basePane.getChildren().clear();
         GridPane baseGridPane = new GridPane();
         ColumnConstraints column1 = new ColumnConstraints();
@@ -48,96 +43,13 @@ public class PersonalitySettingsPanel {
         label.setAlignment(Pos.CENTER);
         label.setFont(new Font(15.0));
 
-        gridPane = new GridPane();
-        scrollPane = new ScrollPane(gridPane);
-        scrollPane.setFitToWidth(true);
+        this.settingsPannel = new MultiColumnSettingsPannel(basePane, components);
 
-        baseGridPane.add(scrollPane, 0, 1);
-
-        ColumnConstraints column2 = new ColumnConstraints();
-        ColumnConstraints column3 = new ColumnConstraints();
-        ColumnConstraints column4 = new ColumnConstraints();
-        ColumnConstraints column5 = new ColumnConstraints();
-        ColumnConstraints column6 = new ColumnConstraints();
-        ColumnConstraints column7 = new ColumnConstraints();
-        ColumnConstraints column8 = new ColumnConstraints();
-        column2.setPercentWidth(2.5);
-        column3.setPercentWidth(22.5);
-        column4.setPercentWidth(22.5);
-        column5.setPercentWidth(5);
-        column6.setPercentWidth(22.5);
-        column7.setPercentWidth(22.5);
-        column8.setPercentWidth(2.5);
-        gridPane.getColumnConstraints().addAll(column2, column3, column4, column5, column6, column7, column8);
+        baseGridPane.add(this.settingsPannel.getScrollPane(), 0, 1);
     }
 
     public void addGuiComponents() {
         setUp();
-        ArrayList<GUIComponent> firstColumn = new ArrayList<GUIComponent>();
-        ArrayList<GUIComponent> seoondColumn = new ArrayList<GUIComponent>();
-        ArrayList<GUIComponent> flexible = new ArrayList<GUIComponent>();
-        for (int i = 0; i < components.size(); i++) {
-            int id = components.get(i).getColumnID();
-            if (id == 1) {
-                firstColumn.add(components.get(i));
-            } else if (id == 2) {
-                seoondColumn.add(components.get(i));
-            } else {
-                flexible.add(components.get(i));
-            }
-
-        }
-
-        int halfCapacity = components.size() / 2 + ((components.size() % 2 == 0) ? 0 : 1);
-        if (firstColumn.size() >= halfCapacity) {
-            seoondColumn.addAll(flexible);
-        } else if (seoondColumn.size() > halfCapacity) {
-            firstColumn.addAll(flexible);
-        } else {
-            for (int i = 0; i < flexible.size(); i++) {
-                if (firstColumn.size() < halfCapacity) {
-                    firstColumn.add(flexible.get(i));
-                } else {
-                    seoondColumn.add(flexible.get(i));
-                }
-            }
-        }
-
-        for (int i = 0; i < firstColumn.size(); i++) {
-            //HBox testHbox = new HBox(30);
-            gridPane.getRowConstraints()
-                    .add(new RowConstraints(rowHeight, rowHeight, rowHeight));
-            gridPaneRows++;
-
-            Label label = firstColumn.get(i).getLabel();
-            //label.setText("    " + label.getText());
-            label.setAlignment(Pos.CENTER_LEFT);
-
-            Node componentNode = firstColumn.get(i).getSetting();
-            gridPane.add(label, 1, i);
-            //testHbox.getChildren().addAll(label, componentNode);
-            gridPane.add(componentNode, 2, i);
-            GridPane.setHalignment(label, HPos.LEFT);
-        }
-
-        for (int i = 0; i < seoondColumn.size(); i++) {
-            //HBox testHbox = new HBox(30);
-            if (i >= gridPaneRows) {
-                gridPane.getRowConstraints()
-                        .add(new RowConstraints(rowHeight, rowHeight, rowHeight));
-                gridPaneRows++;
-            }
-
-            Label label = seoondColumn.get(i).getLabel();
-            //label.setText("    " + label.getText());
-            label.setAlignment(Pos.CENTER_LEFT);
-
-            Node componentNode = seoondColumn.get(i).getSetting();
-            gridPane.add(label, 4, i);
-            //testHbox.getChildren().addAll(label, componentNode);
-            gridPane.add(componentNode, 5, i);
-            GridPane.setHalignment(label, HPos.LEFT);
-        }
     }
 
     public void addCheckBox(PersonalityVariable variable) {
@@ -164,11 +76,11 @@ public class PersonalitySettingsPanel {
         return basePane;
     }
 
-    public ScrollPane getScrollPane() {
-        return scrollPane;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public MultiColumnSettingsPannel getSettingsPanel() {
+        return settingsPannel;
     }
 }

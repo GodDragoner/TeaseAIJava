@@ -1,4 +1,4 @@
-/*.root{
+.root{
     -fx-base: rgb(0, 145, 0);
 }
 .button{
@@ -21,4 +21,4 @@
 }
 .check-box{
      -fx-text-fill: rgb(0, 0, 200);   
-}*/
+}

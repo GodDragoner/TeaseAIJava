@@ -5,6 +5,7 @@ import me.goddragon.teaseai.utils.ZipUtils;
 
 import javax.swing.*;
 import java.io.*;
+import java.lang.management.ManagementFactory;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -16,7 +17,7 @@ public class Main {
     public static String OPERATING_SYSTEM = System.getProperty("os.name").toLowerCase();
 
     public static void main(String[] args) {
-        if (args.length == 0 && JAVA_VERSION > 10) {
+        if (ManagementFactory.getRuntimeMXBean().getInputArguments().size() == 0 && JAVA_VERSION > 10) {
             try {
                 //Re-launch the app itself with VM option passed
                 File currentDir = Paths.get(System.getProperty("user.dir")).toFile();
@@ -104,7 +105,7 @@ public class Main {
                     //newUpdateZipFile.delete();
                 }
 
-                Process process = Runtime.getRuntime().exec(new String[]{"java", "--module-path=" + getLibFolder().getPath() + "", "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar", "test"});
+                Process process = Runtime.getRuntime().exec(new String[]{"java", "--module-path=" + getLibFolder().getPath(), "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar", "test"});
                 BufferedReader input = new BufferedReader(new InputStreamReader(process.getErrorStream()));
                 String line;
                 while ((line = input.readLine()) != null) {

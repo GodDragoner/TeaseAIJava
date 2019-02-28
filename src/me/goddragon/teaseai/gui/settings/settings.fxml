@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -18,7 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="SettingsBackground" prefHeight="472.0" prefWidth="704.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="SettingsBackground" prefHeight="472.0" prefWidth="704.0" style="-fx-background-color: lightgrey;" styleClass="root" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
         <TabPane fx:id="SettingsPanes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="554.0" prefWidth="809.0" styleClass="floating" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
@@ -59,53 +58,36 @@
                <content>
                   <AnchorPane fx:id="AppearanceTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <GridPane layoutX="14.0" prefHeight="354.0" prefWidth="552.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="9.0" prefWidth="9.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.0" minWidth="10.0" prefWidth="115.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="2.0" prefWidth="130.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="210.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="96.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints maxHeight="-Infinity" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints vgrow="SOMETIMES" />
-                           </rowConstraints>
+                        <GridPane fx:id="appearanceMainGridPane" layoutX="-1.0" layoutY="-2.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="446.0" prefWidth="704.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="-Infinity" minHeight="9.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="356.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
                            <children>
-                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" scaleY="0.9" text="Theme" GridPane.columnIndex="1" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" scaleY="0.9" text="Primary Color" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" scaleY="0.9" text="Chat Window" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <ColorPicker fx:id="PrimaryColor" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                              <ColorPicker fx:id="ChatWindowColor" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                              <ComboBox fx:id="ThemesList" prefWidth="150.0" GridPane.columnIndex="3" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" scaleY="0.9" text="Chat Background" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <ColorPicker fx:id="ChatBackground" layoutX="139.0" layoutY="60.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="88.0" prefHeight="22.0" prefWidth="207.0" text="Chat Color" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <ColorPicker fx:id="ChatColor" layoutX="140.0" layoutY="87.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="114.0" prefHeight="22.0" prefWidth="207.0" text="Date Color" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <ColorPicker fx:id="DateColor" layoutX="140.0" layoutY="112.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="140.0" prefHeight="22.0" prefWidth="207.0" text="Sub Name Color" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="165.0" prefHeight="22.0" prefWidth="207.0" text="Dom Name Color" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="191.0" prefHeight="22.0" prefWidth="207.0" text="Friend 1 Color" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="216.0" prefHeight="22.0" prefWidth="207.0" text="Friend 2 Color" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="242.0" prefHeight="22.0" prefWidth="207.0" text="Friend 3 Color" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                              <ColorPicker fx:id="Friend2Color" layoutX="140.0" layoutY="138.0" GridPane.columnIndex="3" GridPane.rowIndex="9" />
-                              <ColorPicker fx:id="Friend1Color" layoutX="10.0" layoutY="10.0" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-                              <ColorPicker fx:id="DomColor" layoutX="10.0" layoutY="10.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-                              <ColorPicker fx:id="SubColor" layoutX="10.0" layoutY="10.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-                              <ColorPicker fx:id="Friend3Color" layoutX="140.0" layoutY="240.0" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+                              <GridPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="22.0" prefWidth="352.0" text="Theme Selection:" />
+                                    <ComboBox fx:id="selectedThemeComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="181.0" GridPane.columnIndex="1" />
+                                    <Button fx:id="saveThemeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="Save Theme" GridPane.columnIndex="3" />
+                                    <Button fx:id="setThemeNameButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="178.0" text="Set Name" GridPane.rowIndex="1" />
+                                    <Button fx:id="newThemeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="192.0" text="New Theme" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Button fx:id="deleteThemeButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="186.0" text="Delete Theme" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <Button fx:id="updateGUIButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="226.0" text="Update GUI" GridPane.columnIndex="2" />
+                                 </children>
+                              </GridPane>
                            </children>
                         </GridPane>
                      </children>
