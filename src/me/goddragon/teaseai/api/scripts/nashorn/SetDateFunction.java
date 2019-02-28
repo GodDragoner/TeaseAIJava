@@ -29,24 +29,21 @@ public class SetDateFunction extends CustomFunction {
         super.call(object, args);
 
         Personality personality;
-        if (TeaseAI.application.getSession() == null)
-        {
+        if (TeaseAI.application.getSession() == null) {
             personality = PersonalityManager.getManager().getLoadingPersonality();
-        }
-        else
-        {
+        } else {
             personality = PersonalityManager.getManager().getActivePersonality();
         }
-        
-        switch(args.length) {
+
+        switch (args.length) {
             case 1:
-                if(args[0] instanceof String) {
+                if (args[0] instanceof String) {
                     return personality.getVariableHandler().setVariable((String) args[0], new TeaseDate(Calendar.getInstance().getTime()));
                 }
 
                 break;
             case 2:
-                if(args[0] instanceof String && args[1] instanceof TeaseDate) {
+                if (args[0] instanceof String && args[1] instanceof TeaseDate) {
                     return personality.getVariableHandler().setVariable((String) args[0], args[1]);
                 }
 

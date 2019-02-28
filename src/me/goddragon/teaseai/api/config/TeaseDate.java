@@ -153,4 +153,15 @@ public class TeaseDate {
     public TeaseDate clone() {
         return new TeaseDate(calendar.getTime());
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof TeaseDate) {
+           if(((TeaseDate) obj).getCalendar().equals(getCalendar())) {
+               return true;
+           }
+        }
+
+        return false;
+    }
 }
