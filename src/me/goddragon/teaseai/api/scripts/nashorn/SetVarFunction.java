@@ -27,18 +27,15 @@ public class SetVarFunction extends CustomFunction {
         super.call(object, args);
 
         Personality personality;
-        if (TeaseAI.application.getSession() == null)
-        {
+        if (TeaseAI.application.getSession() == null) {
             personality = PersonalityManager.getManager().getLoadingPersonality();
-        }
-        else
-        {
+        } else {
             personality = PersonalityManager.getManager().getActivePersonality();
         }
-        
-        switch(args.length) {
+
+        switch (args.length) {
             case 2:
-                if(args[0] instanceof String) {
+                if (args[0] instanceof String) {
                     return personality.getVariableHandler().setVariable((String) args[0], args[1]);
                 }
 

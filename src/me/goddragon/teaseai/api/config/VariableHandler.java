@@ -152,7 +152,7 @@ public class VariableHandler {
             personalityVariable = getVariable(name);
 
             //Skip setting the variable because we have the same value already stored
-            if ((getVariable(name).getValue().equals(value) || getVariable(name).getValue() == value)) {
+            if ((getVariable(name).getValue().equals(value)) && !(value instanceof TeaseDate)) {
                 return value;
             }
 
@@ -177,7 +177,7 @@ public class VariableHandler {
             personalityVariable.setTemporary(true);
             return value;
         }
-
+        System.out.println("Here 4!");
         File variableFile = getVariableFile(name);
 
         if (variableFile != null) {
@@ -192,7 +192,9 @@ public class VariableHandler {
                 for (String string : strings) {
                     lines.add(string);
                 }
+
                 lines.add(personalityVariable.isSupportedByPersonality() + "");
+
                 if (personalityVariable.isSupportedByPersonality()) {
                     lines.add(personalityVariable.getCustomName());
                     lines.add(personalityVariable.getDescription());
@@ -206,6 +208,7 @@ public class VariableHandler {
             }
 
             try {
+                System.out.println("Here 5!");
                 Files.write(Paths.get(variableFile.toURI()), lines, Charset.forName("UTF-8"));
             } catch (IOException e) {
                 TeaseLogger.getLogger().log(Level.SEVERE, "Failed to write variable '" + name + "'.", e);
