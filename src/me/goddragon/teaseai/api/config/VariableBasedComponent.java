@@ -4,7 +4,7 @@ import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.logging.Level;
 
-public abstract class VariableBasedComponent extends GUIComponent {
+public abstract class VariableBasedComponent extends GUISettingComponent {
 
     protected final PersonalityVariable variable;
 

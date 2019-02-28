@@ -1,6 +1,8 @@
 package me.goddragon.teaseai.gui.themes;
 
 import javafx.scene.paint.Color;
+import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.config.ConfigValue;
 import me.goddragon.teaseai.utils.FileUtils;
 
 import java.io.File;
@@ -32,28 +34,66 @@ public class ThemeHandler {
     private final ArrayList<Theme> themes = new ArrayList<>();
 
 
+    private ConfigValue selectedTheme;
+
     public ThemeHandler() {
         //Create theme folder
         File themesFolder = new File(THEME_FOLDER_NAME);
         themesFolder.mkdirs();
 
         loadThemes();
-        this.themes.add(TWILIGHT_THEME);
+
+        if(getTheme("Twilight") == null) {
+            this.themes.add(TWILIGHT_THEME);
+        }
+
+        this.selectedTheme = new ConfigValue("selectedTheme", "Twilight", TeaseAI.getApplication().getConfigHandler());
+    }
+
+
+    public ThemeNameChangeResult checkThemeName(String name) {
+        if(name == null) {
+            return ThemeNameChangeResult.NULL;
+        }
+
+        if(getTheme(name) != null) {
+            return ThemeNameChangeResult.ALREADY_EXISTS;
+        }
+
+        return ThemeNameChangeResult.OKAY;
     }
 
     public void loadThemes() {
         this.themes.clear();
 
         for(File file : getThemesFolder().listFiles()) {
-            if(file.isFile() && FileUtils.getExtension(file).equalsIgnoreCase("theme")) {
-                this.themes.add(new Theme(FileUtils.stripExtension(file.getName())));
+            if(file.isFile() && FileUtils.getExtension(file).equalsIgnoreCase("tajth")) {
+               addTheme(new Theme(FileUtils.stripExtension(file.getName())));
             }
         }
     }
 
-    public Theme getActiveTheme() {
-        //TODO: Default!!! Change
-        return themes.get(0);
+    public void addTheme(Theme theme) {
+        this.themes.add(theme);
+    }
+
+    public Theme getTheme(String name) {
+        for(Theme theme : themes) {
+            if(theme.getName().equalsIgnoreCase(name)) {
+                return theme;
+            }
+        }
+
+        //TeaseLogger.getLogger().log(Level.SEVERE, "Theme '" + name + "' does not exist!");
+        return null;
+    }
+
+    public void setSelectedTheme(Theme theme) {
+        this.selectedTheme.setValue(theme.getName()).save();
+    }
+
+    public Theme getSelectedTheme() {
+        return getTheme(this.selectedTheme.getValue());
     }
 
     public ArrayList<Theme> getThemes() {
@@ -72,5 +112,9 @@ public class ThemeHandler {
     public static File getThemesFolder() {
         File themesFolder = new File(THEME_FOLDER_NAME);
         return themesFolder;
+    }
+
+    public enum ThemeNameChangeResult {
+        ALREADY_EXISTS, INVALID_CHARACTERS, OKAY, NULL
     }
 }

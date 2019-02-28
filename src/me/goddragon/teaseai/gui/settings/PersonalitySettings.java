@@ -34,7 +34,7 @@ public class PersonalitySettings {
         settingsController.onlySupportedVariablesCheckbox.setSelected(true);
 
         updateVariableList();
-        
+
         addPersonalityGUIs();
 
         settingsController.variableListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<PersonalityVariable>() {
@@ -53,10 +53,9 @@ public class PersonalitySettings {
 
         settingsController.variableListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         settingsController.variableListView.getSelectionModel().selectFirst();
-        
+
         settingsController.variableValueTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (variableHandler == null)
-            {
+            if (variableHandler == null) {
                 return;
             }
             PersonalityVariable personalityVariable = getSelectedVariable();
@@ -64,7 +63,7 @@ public class PersonalitySettings {
                 return;
             }
             variableHandler.setVariable(personalityVariable.getConfigName(), variableHandler.getObjectFromString(newValue));
-            
+
         });
 
         settingsController.onlySupportedVariablesCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -75,57 +74,44 @@ public class PersonalitySettings {
         });
     }
 
-    public void addPersonalityGUIs()
-    {
-        for (Personality personality: PersonalityManager.getManager().getPersonalities())
-        {
+    public void addPersonalityGUIs() {
+        for (Personality personality : PersonalityManager.getManager().getPersonalities()) {
             VariableHandler variableHandler = personality.getVariableHandler();
             PersonalitySettingsPanel panel = personality.getSettingsHandler().getPanel("General Settings");
             boolean needToAdd = true;
-            for (Tab tab:PersonalitiesSettingsHandler.getHandler().getTabsToAdd())
-            {
-                if (tab.getText().equals(personality.getName().getValue()))
-                {
+            for (Tab tab : PersonalitiesSettingsHandler.getHandler().getTabsToAdd()) {
+                if (tab.getText().equals(personality.getName().getValue())) {
                     needToAdd = false;
                 }
             }
-            for (PersonalityVariable thisVar: variableHandler.getVariables().values())
-            {
-                if (!PersonalitiesSettingsHandler.getHandler().hasComponent(thisVar))
-                {
-                    
-                    if (thisVar.isSupportedByPersonality())
-                    {
-                        if (needToAdd)
-                        {
-                            if (personality.getSettingsHandler().getPanel("General Settings") == null)
-                            {
+            for (PersonalityVariable thisVar : variableHandler.getVariables().values()) {
+                if (!PersonalitiesSettingsHandler.getHandler().hasComponent(thisVar)) {
+
+                    if (thisVar.isSupportedByPersonality()) {
+                        if (needToAdd) {
+                            if (personality.getSettingsHandler().getPanel("General Settings") == null) {
                                 personality.getSettingsHandler().addPanel("General Settings");
                                 panel = personality.getSettingsHandler().getPanel("General Settings");
                             }
                             needToAdd = false;
                         }
-                        if (thisVar.getValue() == Boolean.FALSE || thisVar.getValue() == Boolean.TRUE)
-                        {
+                        if (thisVar.getValue() == Boolean.FALSE || thisVar.getValue() == Boolean.TRUE) {
                             PersonalitiesSettingsHandler.getHandler().addGuiComponent(thisVar);
                             panel.addCheckBox(thisVar);
-                        }
-                        else if (thisVar.getValue() instanceof String)
-                        {
+                        } else if (thisVar.getValue() instanceof String) {
                             PersonalitiesSettingsHandler.getHandler().addGuiComponent(thisVar);
                             panel.addTextBox(thisVar);
                         }
                     }
                 }
             }
-            
-            for (PersonalitySettingsPanel panel2: personality.getSettingsHandler().getSettingsPanels())
-            {
+
+            for (PersonalitySettingsPanel panel2 : personality.getSettingsHandler().getSettingsPanels()) {
                 panel2.addGuiComponents();
             }
         }
     }
-    
+
     public void updateVariableList() {
         if (variableHandler != null) {
             settingsController.variableListView.getSelectionModel().clearSelection();
