@@ -34,17 +34,23 @@ public class SendInputFunction extends CustomFunction {
                 Answer answer;
                 int offset = 1;
                 if (args[1] instanceof Integer) {
-                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Integer) args[1]);
-                    offset += 1;
-                } else if (args[1] instanceof Answer) {
-                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Answer) args[1]);
-                    offset += 1;
-                } else {
-                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
-                }
+                    for (int x = offset + 1; x < args.length; x++) {
+                        Answer.addOption(args[x].toString(), args[x].toString());
+                    }
 
-                for (int x = offset; x < args.length; x++) {
-                    answer.addOption(args[x].toString(), args[x].toString());
+                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Integer) args[1]);
+                } else if (args[1] instanceof Answer) {
+                    for (int x = offset + 1; x < args.length; x++) {
+                        Answer.addOption(args[x].toString(), args[x].toString());
+                    }
+
+                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Answer) args[1]);
+                } else {
+                    for (int x = offset; x < args.length; x++) {
+                        Answer.addOption(args[x].toString(), args[x].toString());
+                    }
+
+                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
                 }
 
                 return answer;

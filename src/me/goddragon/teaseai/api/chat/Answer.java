@@ -25,7 +25,7 @@ public class Answer {
         addOption(optionMessage, optionMessage);
     }
 
-    public void addOption(String optionName, String optionMessage) {
+    public static void addOption(String optionName, String optionMessage) {
         TeaseAI.application.runOnUIThread(new Runnable() {
             @Override
             public void run() {
