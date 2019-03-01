@@ -107,19 +107,19 @@ public class Theme {
         settings.add(new ThemeColor("Primary Color", this) {
             @Override
             public void applyToGui() {
-                mainGuiController.baseAnchorPane.setStyle("-fx-background-color: " + getCSSColorString());
-                mainGuiController.baseGridPane.setStyle("-fx-background-color: " + getCSSColorString());
-                mainGuiController.leftWidgetBar.setStyle("-fx-background-color: " + getCSSColorString());
-                mainGuiController.rightWidgetBar.setStyle("-fx-background-color: " + getCSSColorString());
+                mainGuiController.baseAnchorPane.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
+                mainGuiController.baseGridPane.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
+                mainGuiController.leftWidgetBar.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
+                mainGuiController.rightWidgetBar.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
 
                 if (settingsController != null) {
                     settingsController.SettingsPanes.setStyle("-fx-background-color: " + getCSSColorString());
                     settingsController.SettingsBackground.setStyle("-fx-background-color: " + getCSSColorString());
-                    settingsController.GeneralTab.setStyle("-fx-background-color: " + getCSSColorString());
-                    settingsController.MediaTab.setStyle("-fx-background-color: " + getCSSColorString());
-                    settingsController.AppearanceTab.setStyle("-fx-background-color: " + getCSSColorString());
-                    settingsController.PersonalityTab.setStyle("-fx-background-color: " + getCSSColorString());
-                    settingsController.ContactsTab.setStyle("-fx-background-color: " + getCSSColorString());
+                    settingsController.GeneralTab.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
+                    settingsController.MediaTab.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
+                    settingsController.AppearanceTab.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
+                    settingsController.PersonalityTab.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
+                    settingsController.ContactsTab.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
                 }
 
                 for (PersonalitySettingsHandler p : PersonalitiesSettingsHandler.getHandler().getSettingsHandlers()) {
@@ -142,7 +142,7 @@ public class Theme {
         settings.add(new ThemeColor("Chat Background Color", this) {
             @Override
             public void applyToGui() {
-                mainGuiController.chatBackground.setStyle("-fx-background-color: " + getCSSColorString());
+                mainGuiController.chatBackground.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
             }
         });
 
