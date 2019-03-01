@@ -177,7 +177,7 @@ public class VariableHandler {
             personalityVariable.setTemporary(true);
             return value;
         }
-        System.out.println("Here 4!");
+
         File variableFile = getVariableFile(name);
 
         if (variableFile != null) {
@@ -208,7 +208,6 @@ public class VariableHandler {
             }
 
             try {
-                System.out.println("Here 5!");
                 Files.write(Paths.get(variableFile.toURI()), lines, Charset.forName("UTF-8"));
             } catch (IOException e) {
                 TeaseLogger.getLogger().log(Level.SEVERE, "Failed to write variable '" + name + "'.", e);
