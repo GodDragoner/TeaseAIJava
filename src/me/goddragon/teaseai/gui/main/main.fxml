@@ -21,9 +21,9 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="baseAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="945.0" prefWidth="1473.0" style="-fx-background-color: lightgrey;" styleClass="anchor-pane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="baseAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="945.0" prefWidth="1473.0" style="-fx-background-color: lightgrey;" styleClass="anchor-pane" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane fx:id="baseGridPane" styleClass="root" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <GridPane fx:id="baseGridPane" style="-fx-background-color: transparent;" styleClass="root" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -34,7 +34,7 @@
             <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <GridPane styleClass="root" GridPane.rowIndex="3">
+            <GridPane style="-fx-background-color: transparerent;" styleClass="root" GridPane.rowIndex="3">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="5.0" minWidth="5.0" prefWidth="5.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="150.0" prefWidth="150.0" />
@@ -47,9 +47,9 @@
                 <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="998.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <AnchorPane fx:id="leftWidgetBar" prefHeight="200.0" prefWidth="0.0" style="-fx-background-color: lightgrey;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <AnchorPane fx:id="leftWidgetBar" prefHeight="200.0" prefWidth="0.0" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <GridPane layoutX="6.0" layoutY="389.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <GridPane layoutX="6.0" layoutY="389.0" style="-fx-background-color: gridpane;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
@@ -59,7 +59,7 @@
                             <RowConstraints maxHeight="300.0" minHeight="80.0" prefHeight="130.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <GridPane fx:id="contactImageGrid" GridPane.rowIndex="2">
+                              <GridPane fx:id="contactImageGrid" style="-fx-background-color: transparent;" GridPane.rowIndex="2">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 </columnConstraints>
@@ -71,14 +71,14 @@
                                  <children>
                                     <TextField fx:id="domNameTextField" promptText=" Dom Name" scaleX="0.95" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7;" styleClass="domNameTextField" GridPane.rowIndex="2" />
                                     <TextField fx:id="subNameTextField" prefHeight="25.0" prefWidth="184.0" promptText=" Sub Name" scaleX="0.95" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7;" styleClass="subNameTextField" />
-                                    <StackPane fx:id="domImageViewStackPane" scaleX="0.95" GridPane.rowIndex="1">
+                                    <StackPane fx:id="domImageViewStackPane" scaleX="0.95" style="-fx-background-color: transparent;" GridPane.rowIndex="1">
                                        <children>
                                           <ImageView fx:id="domImageView" fitHeight="151.0" fitWidth="174.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                     </StackPane>
                                  </children>
                               </GridPane>
-                              <FlowPane fx:id="lazySubPane" prefHeight="200.0" prefWidth="200.0" styleClass="root" />
+                              <FlowPane fx:id="lazySubPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" styleClass="root" />
                            </children>
                         </GridPane>
                      </children>
@@ -137,7 +137,7 @@
                         </AnchorPane>
                     </items>
                   </SplitPane>
-                  <GridPane GridPane.columnIndex="3">
+                  <GridPane style="-fx-background-color: transparent;" GridPane.columnIndex="3">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="5.0" minWidth="5.0" prefWidth="5.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="345.2000732421875" minWidth="70.0" prefWidth="92.0" />
@@ -172,7 +172,7 @@
                   </Menu>
                </menus>
             </MenuBar>
-            <HBox alignment="CENTER_RIGHT" maxHeight="15.0" maxWidth="85.0" minHeight="15.0" minWidth="85.0" prefHeight="15.0" prefWidth="85.0" spacing="4.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+            <HBox alignment="CENTER_RIGHT" maxHeight="15.0" maxWidth="85.0" minHeight="15.0" minWidth="85.0" prefHeight="15.0" prefWidth="85.0" spacing="4.0" style="-fx-background-color: transparent;" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <children>
                   <Button fx:id="minimize" maxHeight="22.0" maxWidth="27.0" minHeight="22.0" minWidth="27.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="27.0" style="-fx-background-radius: 5 5 5 5; -fx-border-radius: 5 5 5 5;" text="–">
                      <padding>
