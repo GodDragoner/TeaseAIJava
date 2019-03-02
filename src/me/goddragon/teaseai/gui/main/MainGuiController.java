@@ -143,13 +143,13 @@ public class MainGuiController {
     public MainGuiController(Stage stage) {
         thisController = this;
         this.stage = stage;
-        this.stage.initStyle(StageStyle.UNDECORATED);
+        //this.stage.initStyle(StageStyle.UNDECORATED);
         this.stage.getIcons().add(new Image(MainGuiController.class.getResourceAsStream("/TAJSYSLOGO.png")));
     }
 
 
     public void initiate() {
-        prefWidth = this.stage.getWidth();
+        /*prefWidth = this.stage.getWidth();
         prefHeight = this.stage.getHeight();
         draggableRegion.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -196,7 +196,7 @@ public class MainGuiController {
                 expand.setText("\u2317");
                 isMaximized = true;
             }
-        });
+        });*/
 
         personalityChoiceBox.setTooltip(new Tooltip("Select the personality"));
 

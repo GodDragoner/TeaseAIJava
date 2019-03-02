@@ -172,7 +172,7 @@
                   </Menu>
                </menus>
             </MenuBar>
-            <HBox id="main-window-controls" alignment="CENTER_RIGHT" maxHeight="15.0" maxWidth="85.0" minHeight="15.0" minWidth="85.0" prefHeight="15.0" prefWidth="85.0" spacing="4.0" style="-fx-background-color: transparent;" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+            <HBox id="main-window-controls" alignment="CENTER_RIGHT" maxHeight="15.0" maxWidth="85.0" minHeight="15.0" minWidth="85.0" prefHeight="15.0" prefWidth="85.0" spacing="4.0" style="-fx-background-color: transparent;" visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <children>
                   <Button fx:id="minimize" maxHeight="22.0" maxWidth="27.0" minHeight="22.0" minWidth="27.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="27.0" style="-fx-background-radius: 5 5 5 5; -fx-border-radius: 5 5 5 5;" text="–">
                      <padding>
