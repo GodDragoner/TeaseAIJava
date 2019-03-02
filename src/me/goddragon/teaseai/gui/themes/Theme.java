@@ -102,16 +102,15 @@ public class Theme {
 
     private void loadSettings() {
         MainGuiController mainGuiController = MainGuiController.getController();
-        SettingsController settingsController = SettingsController.getController();
 
         settings.add(new ThemeColor("Primary Color", this) {
             @Override
             public void applyToGui() {
                 mainGuiController.baseAnchorPane.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
-                mainGuiController.baseGridPane.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
                 mainGuiController.leftWidgetBar.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
                 mainGuiController.rightWidgetBar.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
 
+                SettingsController settingsController = SettingsController.getController();
                 if (settingsController != null) {
                     settingsController.SettingsPanes.setStyle("-fx-background-color: " + getCSSColorString());
                     settingsController.SettingsBackground.setStyle("-fx-background-color: " + getCSSColorString());
