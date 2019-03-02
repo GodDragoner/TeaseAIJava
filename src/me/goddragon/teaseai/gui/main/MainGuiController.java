@@ -23,7 +23,6 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.chat.ChatParticipant;
@@ -143,7 +142,7 @@ public class MainGuiController {
     public MainGuiController(Stage stage) {
         thisController = this;
         this.stage = stage;
-        this.stage.initStyle(StageStyle.UNDECORATED);
+        //this.stage.initStyle(StageStyle.UNIFIED);
         this.stage.getIcons().add(new Image(MainGuiController.class.getResourceAsStream("/TAJSYSLOGO.png")));
     }
 
@@ -472,8 +471,6 @@ public class MainGuiController {
             for(Node subNode : ((Pane) node).getChildren()) {
                 handleNodeStyle(subNode);
             }
-
-            node.getStyleClass().add("root");
         }
     }
 

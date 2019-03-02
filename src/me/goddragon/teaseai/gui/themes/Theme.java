@@ -1,18 +1,16 @@
 package me.goddragon.teaseai.gui.themes;
 
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.config.ConfigHandler;
-import me.goddragon.teaseai.api.config.PersonalitiesSettingsHandler;
-import me.goddragon.teaseai.api.config.PersonalitySettingsHandler;
-import me.goddragon.teaseai.api.config.PersonalitySettingsPanel;
 import me.goddragon.teaseai.gui.main.MainGuiController;
-import me.goddragon.teaseai.gui.settings.SettingsController;
 import me.goddragon.teaseai.utils.FileUtils;
 
 import java.io.File;
@@ -67,6 +65,8 @@ public class Theme {
         boolean cssFileExist = cssFile.exists();
 
         for (Scene scene : MainGuiController.getController().getMainScenes()) {
+            //handleNodeStyle(scene.getRoot(), cssFileExist);
+
             scene.getStylesheets().clear();
 
             if (cssFileExist) {
@@ -74,8 +74,21 @@ public class Theme {
             }
         }
 
-        for (ThemeSetting setting : this.settings) {
+        /*for (ThemeSetting setting : this.settings) {
             setting.applyToGui();
+        }*/
+    }
+
+    private void handleNodeStyle(Node node, boolean css) {
+        if(node instanceof Pane) {
+            for(Node subNode : ((Pane) node).getChildren()) {
+                handleNodeStyle(subNode, css);
+            }
+
+            ((Pane)node).getStylesheets().clear();
+            if(css) {
+                ((Pane)node).getStylesheets().add(getStylesheetURI());
+            }
         }
     }
 
@@ -106,7 +119,7 @@ public class Theme {
         settings.add(new ThemeColor("Primary Color", this) {
             @Override
             public void applyToGui() {
-                mainGuiController.baseAnchorPane.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
+                /*mainGuiController.baseAnchorPane.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
                 mainGuiController.leftWidgetBar.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
                 mainGuiController.rightWidgetBar.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
 
@@ -127,7 +140,7 @@ public class Theme {
                             panel.getSettingsPanel().getScrollPane().setStyle("-fx-background: " + getCSSColorString());
                         }
                     }
-                }
+                }*/
             }
         });
 
