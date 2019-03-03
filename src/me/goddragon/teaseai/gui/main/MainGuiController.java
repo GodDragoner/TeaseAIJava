@@ -1,6 +1,5 @@
 package me.goddragon.teaseai.gui.main;
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -148,7 +147,7 @@ public class MainGuiController {
 
 
     public void initiate() {
-        prefWidth = this.stage.getWidth();
+        /*prefWidth = this.stage.getWidth();
         prefHeight = this.stage.getHeight();
         draggableRegion.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -195,7 +194,7 @@ public class MainGuiController {
                 expand.setText("\u2317");
                 isMaximized = true;
             }
-        });
+        });*/
 
         personalityChoiceBox.setTooltip(new Tooltip("Select the personality"));
 
