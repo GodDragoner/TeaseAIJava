@@ -7,8 +7,9 @@ import me.goddragon.teaseai.api.config.ConfigValue;
 
 public abstract class ThemeColor extends ThemeSetting {
 
-    private ColorPicker colorPicker = new ColorPicker();
+    protected ColorPicker colorPicker = new ColorPicker();
     protected Color color;
+
 
     public ThemeColor(String name, Theme theme) {
         this(name, Color.WHITE, theme);
@@ -23,6 +24,8 @@ public abstract class ThemeColor extends ThemeSetting {
         this.colorPicker.setOnAction(e -> {
             updateColor();
             applyToGui();
+
+            theme.applyCSSFile();
         });
     }
 
@@ -40,8 +43,7 @@ public abstract class ThemeColor extends ThemeSetting {
         return color;
     }
 
-
-    private void updateColor() {
+    protected void updateColor() {
         this.color = colorPicker.getValue();
         this.configValue.setValue(this.color.toString());
     }
@@ -50,6 +52,7 @@ public abstract class ThemeColor extends ThemeSetting {
         this.colorPicker.setValue(color);
         updateColor();
     }
+
 
     public String getCSSColorString() {
         return this.color.toString().replace("0x", "#");

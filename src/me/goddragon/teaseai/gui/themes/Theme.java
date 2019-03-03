@@ -1,21 +1,19 @@
 package me.goddragon.teaseai.gui.themes;
 
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.gui.main.MainGuiController;
 import me.goddragon.teaseai.utils.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Theme {
     public String name;
@@ -33,12 +31,13 @@ public class Theme {
 
         this.configHandler.loadConfig();
 
+
+        this.cssFile = new File(getCSSFilePath());
+
         //Load config values AFTER we initially loaded the config
         for (ThemeSetting setting : settings) {
             setting.fetchFromConfig();
         }
-
-        this.cssFile = new File(getCSSFilePath());
     }
 
     public void saveToConfig() {
@@ -62,11 +61,17 @@ public class Theme {
     }
 
     public void selectTheme() {
+        for (ThemeSetting setting : this.settings) {
+            setting.applyToGui();
+        }
+
+        applyCSSFile();
+    }
+
+    public void applyCSSFile() {
         boolean cssFileExist = cssFile.exists();
 
         for (Scene scene : MainGuiController.getController().getMainScenes()) {
-            //handleNodeStyle(scene.getRoot(), cssFileExist);
-
             scene.getStylesheets().clear();
 
             if (cssFileExist) {
@@ -74,20 +79,154 @@ public class Theme {
             }
         }
 
-        /*for (ThemeSetting setting : this.settings) {
-            setting.applyToGui();
-        }*/
+        TeaseAI.application.getController().getLazySubController().getFlowPane().getStylesheets().clear();
+        TeaseAI.application.getController().getLazySubController().getFlowPane().getStylesheets().add(getStylesheetURI());
+    }
+
+    public String readFromCSSFile(String key, String value) {
+        if (!cssFile.exists()) {
+            try {
+                cssFile.createNewFile();
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            FileInputStream fstream = new FileInputStream(cssFile);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            String strLine;
+
+            int lineIndexFound = -1;
+            int endBlock = -1;
+            List<String> lines = new ArrayList<>();
+
+            while ((strLine = br.readLine()) != null) {
+                if (strLine.contains(key)) {
+                    lineIndexFound = lines.size();
+                }
+
+                //We found an end to our block and can skip reading th rest
+                if (strLine.equalsIgnoreCase("}") && lineIndexFound > -1 && endBlock == -1) {
+                   break;
+                }
+
+                //Only if we are within the boundaries of our block
+                if(lineIndexFound > -1) {
+                    lines.add(strLine);
+                }
+            }
+
+            //Close the input stream
+            br.close();
+
+            for(String line : lines) {
+                if(line.contains(value)) {
+                    return line.split(":")[1].replace(";", "").trim();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public void writeToCSSFile(String key, String... values) {
+        if (!cssFile.exists()) {
+            try {
+                cssFile.createNewFile();
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            FileInputStream fstream = new FileInputStream(cssFile);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            String strLine;
+
+            int lineIndexFound = -1;
+            int endBlock = -1;
+            List<String> lines = new ArrayList<>();
+
+            while ((strLine = br.readLine()) != null) {
+                if (strLine.contains(key)) {
+                    lineIndexFound = lines.size();
+                }
+
+                if (strLine.equalsIgnoreCase("}") && lineIndexFound > -1 && endBlock == -1) {
+                    endBlock = lines.size();
+                }
+
+                lines.add(strLine);
+            }
+
+            //Close the input stream
+            br.close();
+
+            boolean change = false;
+
+            if (lineIndexFound > -1 && endBlock > -1) {
+                for (String value : values) {
+                    String keyValue = value.split(":")[0];
+
+                    for (int index = lineIndexFound; index <= endBlock; index++) {
+                        String line = lines.get(index);
+
+                        if (line.contains(keyValue) && !line.contains(value)) {
+                            change = true;
+                            lines.set(index, "    " + value);
+                        }
+                    }
+                }
+            } else {
+                change = true;
+
+                lines.add(key + " {");
+
+                for (String value : values) {
+                    lines.add("    " + value);
+                }
+
+                lines.add("}");
+            }
+
+            if (!change) {
+                return;
+            }
+
+            StringBuffer inputBuffer = new StringBuffer();
+
+            for (String line : lines) {
+                inputBuffer.append(line);
+                inputBuffer.append('\n');
+            }
+
+            FileOutputStream fileOut = new FileOutputStream(cssFile);
+            fileOut.write(inputBuffer.toString().getBytes());
+            fileOut.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void handleNodeStyle(Node node, boolean css) {
-        if(node instanceof Pane) {
-            for(Node subNode : ((Pane) node).getChildren()) {
+        if (node instanceof Pane) {
+            for (Node subNode : ((Pane) node).getChildren()) {
                 handleNodeStyle(subNode, css);
             }
 
-            ((Pane)node).getStylesheets().clear();
-            if(css) {
-                ((Pane)node).getStylesheets().add(getStylesheetURI());
+            ((Pane) node).getStylesheets().clear();
+            if (css) {
+                ((Pane) node).getStylesheets().add(getStylesheetURI());
             }
         }
     }
@@ -116,9 +255,17 @@ public class Theme {
     private void loadSettings() {
         MainGuiController mainGuiController = MainGuiController.getController();
 
-        settings.add(new ThemeColor("Primary Color", this) {
+        settings.add(new CSSThemeColor("Primary Color", this, ".primary-color", "fx-background-color") {
             @Override
             public void applyToGui() {
+                writeToCSSFile(this.cssKey, "-fx-base: " + getCSSColorString() + ";", "-fx-background-color: " + getCSSColorString() + ";");
+
+                for(Node node : TeaseAI.getApplication().getController().getLazySubController().getFlowPane().getChildren()) {
+                    if(node instanceof Button) {
+                        /*String newStyle = TeaseAI.getApplication().getController().getStartChatButton().getStyle() +  " -fx-background-color: " + getCSSColorString() + ";";
+                        node.setStyle(newStyle);*/
+                    }
+                }
                 /*mainGuiController.baseAnchorPane.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
                 mainGuiController.leftWidgetBar.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
                 mainGuiController.rightWidgetBar.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -144,17 +291,17 @@ public class Theme {
             }
         });
 
-        settings.add(new ThemeColor("Chat Window Color", this) {
+        settings.add(new CSSThemeColor("Chat Window Color", this, ".main-chat-background", "fx-background-color") {
             @Override
             public void applyToGui() {
-                mainGuiController.chatPane.setStyle("-fx-background-color: " + getCSSColorString() + ";-fx-border-color: " + getCSSColorString() + "; -fx-background-radius:10 10 10 10; -fx-border-radius:10 10 10 10");
+                writeToCSSFile(this.cssKey, "-fx-base: " + getCSSColorString() + ";", "-fx-background-color: " + getCSSColorString() + ";");
             }
         });
 
-        settings.add(new ThemeColor("Chat Background Color", this) {
+        settings.add(new CSSThemeColor("Chat Background Color", this, "#main-chat-window", "fx-background-color") {
             @Override
             public void applyToGui() {
-                mainGuiController.chatBackground.setBackground(new Background(new BackgroundFill(this.color, CornerRadii.EMPTY, Insets.EMPTY)));
+                writeToCSSFile(this.cssKey, "-fx-base: " + getCSSColorString() + ";", "-fx-background-color: " + getCSSColorString() + ";");
             }
         });
 
