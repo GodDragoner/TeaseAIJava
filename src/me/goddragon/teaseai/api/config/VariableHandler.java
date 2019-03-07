@@ -73,8 +73,8 @@ public class VariableHandler {
                         needsUpdatedToNewSystem = true;
                     }
 
-                    if (lines.size() > 1) {
-                        value = lines.toArray(new String[]{});
+                    if (lines.size() > 1 && lines.get(lines.size() - 1).equalsIgnoreCase("ArrayList")) {
+                        value = lines.subList(0, lines.size() - 1);
                     } else {
                         //We only need the first line
                         String strLine = lines.get(0);
@@ -152,7 +152,7 @@ public class VariableHandler {
             personalityVariable = getVariable(name);
 
             //Skip setting the variable because we have the same value already stored
-            if ((getVariable(name).getValue().equals(value)) && !(value instanceof TeaseDate)) {
+            if ((getVariable(name).getValue().equals(value)) && !(value instanceof TeaseDate) && !(value instanceof Collection)) {
                 return value;
             }
 
@@ -184,15 +184,23 @@ public class VariableHandler {
             List<String> lines;
 
             //Support arrays
-            if (value instanceof ScriptObjectMirror && ((ScriptObjectMirror) value).isArray()) {
-                String[] strings = ((ScriptObjectMirror) value).to(String[].class);
-
+            if (value instanceof ScriptObjectMirror && ((ScriptObjectMirror) value).isArray() || value instanceof Collection) {
                 lines = new ArrayList<>();
 
-                for (String string : strings) {
-                    lines.add(string);
+                if(value instanceof ScriptObjectMirror) {
+                    String[] strings = ((ScriptObjectMirror) value).to(String[].class);
+
+
+                    for (String string : strings) {
+                        lines.add(string);
+                    }
+                } else {
+                    for(Object object : (Collection) value) {
+                        lines.add(object.toString());
+                    }
                 }
 
+                lines.add("ArrayList");
                 lines.add(personalityVariable.isSupportedByPersonality() + "");
 
                 if (personalityVariable.isSupportedByPersonality()) {
