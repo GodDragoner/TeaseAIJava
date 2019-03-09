@@ -196,7 +196,7 @@ public class ChatParticipant {
             Session session = TeaseAI.application.getSession();
             TaggedPicture taggedPicture = session.getActivePersonality().getPictureSelector().getPicture(session, this);
             if (taggedPicture != null) {
-                MediaHandler.getHandler().showPicture(session.getActivePersonality().getPictureSelector().getPicture(session, this).getFile());
+                MediaHandler.getHandler().showPicture(taggedPicture.getFile());
             }
         }
 
