@@ -69,8 +69,8 @@
                                   <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <TextField id="main-dom-name" fx:id="domNameTextField" promptText=" Dom Name" scaleX="0.95" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7;" styleClass="main-text-field" GridPane.rowIndex="2" />
-                                    <TextField id="main-sub-name" fx:id="subNameTextField" prefHeight="25.0" prefWidth="184.0" promptText=" Sub Name" scaleX="0.95" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7;" styleClass="main-text-field" />
+                                    <TextField id="main-dom-name" fx:id="domNameTextField" promptText=" Dom Name" scaleX="0.95" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7;" styleClass="button-color" GridPane.rowIndex="2" />
+                                    <TextField id="main-sub-name" fx:id="subNameTextField" prefHeight="25.0" prefWidth="184.0" promptText=" Sub Name" scaleX="0.95" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7;" styleClass="button-color" />
                                     <StackPane fx:id="domImageViewStackPane" scaleX="0.95" style="-fx-background-color: transparent;" GridPane.rowIndex="1">
                                        <children>
                                           <ImageView fx:id="domImageView" fitHeight="151.0" fitWidth="174.0" pickOnBounds="true" preserveRatio="true" />
@@ -128,7 +128,7 @@
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <TextField fx:id="chatTextField" prefHeight="43.0" prefWidth="687.0" promptText=" Type a message here" style="-fx-background-radius: 5 5 5 5; -fx-border-radius: 5 5 5 5;" styleClass="main-text-field" GridPane.columnIndex="1" />
+                                          <TextField fx:id="chatTextField" prefHeight="43.0" prefWidth="687.0" promptText=" Type a message here" style="-fx-background-radius: 5 5 5 5; -fx-border-radius: 5 5 5 5;" styleClass="button-color" GridPane.columnIndex="1" />
                                        </children>
                                     </GridPane>
                                  </children>
