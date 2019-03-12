@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="settings-base-anchor-pane" fx:id="SettingsBackground" prefHeight="472.0" prefWidth="704.0" styleClass="primary-color" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="settings-base-anchor-pane" fx:id="SettingsBackground" prefHeight="472.0" prefWidth="704.0" styleClass="primary-color" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
         <TabPane fx:id="SettingsPanes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="554.0" prefWidth="809.0" style="-fx-background-color: transparent;" styleClass="floating" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
@@ -79,13 +79,13 @@
                                   <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="22.0" prefWidth="352.0" text="Theme Selection:" />
-                                    <ComboBox fx:id="selectedThemeComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="181.0" GridPane.columnIndex="1" />
-                                    <Button fx:id="saveThemeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="Save Theme" GridPane.columnIndex="3" />
-                                    <Button fx:id="setThemeNameButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="178.0" text="Set Name" GridPane.rowIndex="1" />
-                                    <Button fx:id="newThemeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="192.0" text="New Theme" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Button fx:id="deleteThemeButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="186.0" text="Delete Theme" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                    <Button fx:id="updateGUIButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="226.0" text="Update GUI" GridPane.columnIndex="2" />
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="22.0" prefWidth="352.0" scaleX="0.9" scaleY="0.9" text="Theme Selection:" />
+                                    <ComboBox fx:id="selectedThemeComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="181.0" scaleX="0.9" scaleY="0.9" GridPane.columnIndex="1" />
+                                    <Button fx:id="saveThemeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" scaleX="0.9" scaleY="0.9" text="Save Theme" GridPane.columnIndex="3" />
+                                    <Button fx:id="setThemeNameButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="178.0" scaleX="0.9" scaleY="0.9" text="Set Name" GridPane.rowIndex="1" />
+                                    <Button fx:id="newThemeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="192.0" scaleX="0.9" scaleY="0.9" text="New Theme" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Button fx:id="deleteThemeButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="186.0" scaleX="0.9" scaleY="0.9" text="Delete Theme" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <Button fx:id="updateGUIButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="226.0" scaleX="0.9" scaleY="0.9" text="Update GUI" GridPane.columnIndex="2" />
                                  </children>
                               </GridPane>
                            </children>
@@ -198,9 +198,9 @@
                                                                                     </rowConstraints>
                                                                                     <children>
                                                                                         <CheckBox fx:id="useURLForTease" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Use URL(s) for tease" />
-                                                                                        <TextField fx:id="addURLTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="140.0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-                                                                                        <Button fx:id="addURLButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="Add URL" GridPane.columnIndex="2" />
-                                                                                        <Button fx:id="deleteURLButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="56.0" prefWidth="140.0" text="Delete URL(s)" GridPane.columnIndex="1" />
+                                                                                        <TextField fx:id="addURLTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="140.0" scaleY="0.9" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                                                                                        <Button fx:id="addURLButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" scaleX="0.9" scaleY="0.9" text="Add URL" GridPane.columnIndex="2" />
+                                                                                        <Button fx:id="deleteURLButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="56.0" prefWidth="140.0" scaleX="0.9" scaleY="0.9" text="Delete URL(s)" GridPane.columnIndex="1" />
                                                                                         <Label fx:id="urlProgressLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="98.0" text="0 files found" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                                                     </children>
                                                                                 </GridPane>
@@ -285,8 +285,8 @@
                                                                                 <RowConstraints maxHeight="28" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
                                                                             </rowConstraints>
                                                                             <children>
-                                                                                <Button fx:id="assignMediaURLButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="28.0" text="&gt;&gt;&gt;" GridPane.rowIndex="1" />
-                                                                                <Button fx:id="removeMediaURLButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="28.0" text="&lt;&lt;&lt;" GridPane.rowIndex="2" />
+                                                                                <Button fx:id="assignMediaURLButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="28.0" scaleX="0.9" scaleY="0.9" text="&gt;&gt;&gt;" GridPane.rowIndex="1" />
+                                                                                <Button fx:id="removeMediaURLButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="28.0" scaleX="0.9" scaleY="0.9" text="&lt;&lt;&lt;" GridPane.rowIndex="2" />
                                                                             </children>
                                                                         </GridPane>
                                                                     </children>
@@ -339,9 +339,9 @@
                                                                                                 <RowConstraints />
                                                                                             </rowConstraints>
                                                                                             <children>
-                                                                                                <Button fx:id="addImagePathButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Add" GridPane.columnIndex="2" />
+                                                                                                <Button fx:id="addImagePathButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" scaleX="0.9" scaleY="0.9" text="Add" GridPane.columnIndex="2" />
                                                                                                 <TextField fx:id="addImagePathTextBox" />
-                                                                                                <Button fx:id="addImagePathFileChooserButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="58.0" text="..." GridPane.columnIndex="1" />
+                                                                                                <Button fx:id="addImagePathFileChooserButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="58.0" scaleX="0.9" scaleY="0.9" text="..." GridPane.columnIndex="1" />
                                                                                             </children>
                                                                                         </GridPane>
                                                                                         <ListView fx:id="imagePathListView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
@@ -368,9 +368,9 @@
                                                                                                 <RowConstraints />
                                                                                             </rowConstraints>
                                                                                             <children>
-                                                                                                <Button fx:id="addVideoPathButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Add" GridPane.columnIndex="2" />
+                                                                                                <Button fx:id="addVideoPathButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" scaleX="0.9" scaleY="0.9" text="Add" GridPane.columnIndex="2" />
                                                                                                 <TextField fx:id="addVideoPathTextBox" />
-                                                                                                <Button fx:id="addVideoPathFileChooserButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="159.0" text="..." GridPane.columnIndex="1" />
+                                                                                                <Button fx:id="addVideoPathFileChooserButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="159.0" scaleX="0.9" scaleY="0.9" text="..." GridPane.columnIndex="1" />
                                                                                             </children>
                                                                                         </GridPane>
                                                                                         <ListView fx:id="videoPathListView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
@@ -406,7 +406,10 @@
                                                                                 <Insets />
                                                                             </GridPane.margin>
                                                                         </TextField>
-                                                                        <Button fx:id="taggingFolderButton" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="26.0" prefWidth="58.0" text="..." translateX="70.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                                                                        <Button fx:id="taggingFolderButton" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="26.0" prefWidth="58.0" text="..." translateX="70.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin></Button>
                                                                     </children>
                                                                 </GridPane>
                                                             </children>
@@ -477,7 +480,7 @@
                                                     </columnConstraints>
                                                     <children>
                                                         <TextField fx:id="domContactImageSetPathText" prefHeight="25.0" prefWidth="186.0" promptText="Image Set Path" />
-                                                        <Button fx:id="domContactImageSetPathButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" text="..." GridPane.columnIndex="1" />
+                                                        <Button fx:id="domContactImageSetPathButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" scaleX="0.9" text="..." GridPane.columnIndex="1" />
                                                     </children>
                                                     <rowConstraints>
                                                         <RowConstraints />

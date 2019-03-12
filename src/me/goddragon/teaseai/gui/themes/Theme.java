@@ -353,6 +353,14 @@ public class Theme {
                 ChatHandler.getHandler().getParticipantById(4).setNameColor(this.color);
             }
         });
+        
+        settings.add(new CSSThemeColor("Button Color", this, ".button-color", "fx-background-color") {
+            @Override
+            public void applyToGui() {
+                String colorString = getCSSColorString();
+                writeToCSSFile(this.cssKey, "-fx-background-color: #D3D3D3, #D3D3D3," + colorString + "," + colorString + ";");
+            }
+        });
     }
 
     public String getName() {
