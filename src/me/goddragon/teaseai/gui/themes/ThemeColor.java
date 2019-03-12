@@ -19,7 +19,7 @@ public abstract class ThemeColor extends ThemeSetting {
         super(name, theme);
         this.color = color;
         this.colorPicker.setValue(color);
-        this.configValue = new ConfigValue(this.configName, this.color, theme.getConfigHandler());
+        this.configValue = new ConfigValue(this.configName, this.color.toString(), theme.getConfigHandler());
 
         this.colorPicker.setOnAction(e -> {
             updateColor();
