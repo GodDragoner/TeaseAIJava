@@ -68,6 +68,7 @@ public class PersonalitySettingsHandler {
     private void setupPersonalityTab() {
         personalityGridPane = new GridPane();
         PersonalityTab.setContent(personalityGridPane);
+        PersonalityTab.getStyleClass().add("button-color");
         ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(100);
         personalityGridPane.getColumnConstraints().add(column);

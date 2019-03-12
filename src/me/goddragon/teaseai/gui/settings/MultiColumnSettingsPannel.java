@@ -107,6 +107,7 @@ public class MultiColumnSettingsPannel {
             label.setAlignment(Pos.CENTER_LEFT);
 
             Node componentNode = component.getSetting();
+            componentNode.getStyleClass().add("button-color");
             gridPane.add(label, columnId, i);
             gridPane.add(componentNode, columnId + 1, i);
             GridPane.setHalignment(label, HPos.LEFT);
