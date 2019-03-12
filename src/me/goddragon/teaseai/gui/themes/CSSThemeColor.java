@@ -33,6 +33,11 @@ public abstract class CSSThemeColor extends ThemeColor {
         String value = this.theme.readFromCSSFile(this.cssKey, this.cssSecondaryKey);
 
         if (value != null) {
+            if (value.contains(","))
+            {
+                String values[] = value.split(",");
+                value = values[values.length - 1];
+            }
             this.setColor(Color.valueOf(value));
         } else {
             TeaseLogger.getLogger().log(Level.SEVERE, "CSS Theme color " + this.name + " was unable to read from css file.");
