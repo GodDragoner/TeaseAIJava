@@ -1,8 +1,11 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
 import me.goddragon.teaseai.api.chat.ChatHandler;
+import me.goddragon.teaseai.api.media.MediaHandler;
+import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Level;
 
@@ -32,8 +35,19 @@ public class SendMessageFunction extends CustomFunction {
                 if(args[1] instanceof Integer) {
                     ChatHandler.getHandler().getSelectedSender().sendMessage(args[0].toString(), (Integer) args[1]);
                     return null;
+                } else if(args[1] instanceof String) {
+                    ChatHandler.getHandler().getSelectedSender().sendMessage(args[0].toString(), 0);
+
+                    //TODO: Support for urls, video etc.
+                    File file = FileUtils.getRandomMatchingFile((String) args[1]);
+
+                    if(file != null) {
+                        MediaHandler.getHandler().showPicture(file, (int) (ChatHandler.getHandler().getMillisToPause(args[0].toString())/1000));
+                    }
+
+                    return null;
                 } else {
-                    TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage only supports an integer as a second parameter. Args given:" + Arrays.asList(args).toString());
+                    TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage only supports an integer or a string to a picture file as a second parameter. Args given:" + Arrays.asList(args).toString());
                     return null;
                 }
             case 0:
