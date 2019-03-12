@@ -124,38 +124,31 @@ public class ChatParticipant {
 
     public void sendMessage(String rawMessage, long millisToWait, List<Text> messages) {
         DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
-        if (messages.size() == 1 && messages.get(0).getFill().equals(Color.BLACK))
-        {
+        if (messages.size() == 1 && messages.get(0).getFill().equals(Color.BLACK)) {
             messages.get(0).setFill(ChatHandler.getHandler().getDefaultChatColor());
-        }
-        else
-        {
+        } else {
             boolean allBlack = true;
-            for (Text text: messages)
-            {
-                if (!text.getFill().equals(Color.BLACK))
-                {
+            for (Text text : messages) {
+                if (!text.getFill().equals(Color.BLACK)) {
                     allBlack = false;
                     break;
                 }
             }
-            if (allBlack)
-            {
-                for (Text text: messages)
-                {
+            if (allBlack) {
+                for (Text text : messages) {
                     text.setFill(ChatHandler.getHandler().getDefaultChatColor());
                 }
             }
         }
-                
+
         Text dateText = new Text(dateFormat.format(new Date()) + " ");
         dateText.setFill(ChatHandler.getHandler().getDateColor());
-        dateText.setFont(Font.font(null, FontWeight.MEDIUM,  TeaseAI.application.CHAT_TEXT_SIZE.getDouble()));
+        dateText.setFont(Font.font(null, FontWeight.MEDIUM, TeaseAI.application.CHAT_TEXT_SIZE.getDouble()));
         Text text = new Text(name + ": ");
 
         text.setFill(this.nameColor);
 
-        text.setFont(Font.font(null, FontWeight.BOLD,  TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 1));
+        text.setFont(Font.font(null, FontWeight.BOLD, TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 1));
         //Check whether we can find a response fitting right now
         if (type == SenderType.SUB) {
             Response response = ResponseHandler.getHandler().checkMessageForResponse(rawMessage);
@@ -196,7 +189,7 @@ public class ChatParticipant {
             Session session = TeaseAI.application.getSession();
             TaggedPicture taggedPicture = session.getActivePersonality().getPictureSelector().getPicture(session, this);
             if (taggedPicture != null) {
-                MediaHandler.getHandler().showPicture(session.getActivePersonality().getPictureSelector().getPicture(session, this).getFile());
+                MediaHandler.getHandler().showPicture(taggedPicture.getFile());
             }
         }
 
@@ -244,7 +237,7 @@ public class ChatParticipant {
         if (millisToWait > 0) {
             Text text = new Text(name + " is typing...");
             text.setFill(Color.AQUA);
-            text.setFont(Font.font(null, FontWeight.BOLD,  TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 2));
+            text.setFont(Font.font(null, FontWeight.BOLD, TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 2));
             ChatHandler.getHandler().addTemporaryMessage(text);
 
             TeaseAI.application.sleepPossibleScripThread(millisToWait, true);
@@ -298,7 +291,7 @@ public class ChatParticipant {
     }
 
     public void choosePictureSet() {
-        File imageFolder = contact == null? null : contact.getImageFolder();
+        File imageFolder = contact == null ? null : contact.getImageFolder();
         if (imageFolder == null || !imageFolder.exists()) {
             return;
         }
@@ -308,7 +301,7 @@ public class ChatParticipant {
             PictureSet pictureSet = new PictureSet(file);
 
             //No pictures => ignore the set
-            if(pictureSet.getTaggedPictures().isEmpty() && pictureSet.getPicturesInFolder().length == 0) {
+            if (pictureSet.getTaggedPictures().isEmpty() && pictureSet.getPicturesInFolder().length == 0) {
                 continue;
             }
 
