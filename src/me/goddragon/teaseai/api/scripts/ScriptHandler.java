@@ -15,7 +15,6 @@ import javax.script.ScriptException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 
 /**
@@ -88,6 +87,8 @@ public class ScriptHandler {
         registerFunction(new RunOnGuiThreadFunction());
         registerFunction(new WakeScriptThreadFunction());
         registerFunction(new RunFunction());
+        registerFunction(new ShowCategoryVideo());
+        registerFunction(new GetStrokingBPMFunction());
         //engine.put("run", (Consumer<String>) this::evalScript);
     }
 
