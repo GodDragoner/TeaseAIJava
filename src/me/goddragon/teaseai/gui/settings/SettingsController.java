@@ -196,9 +196,6 @@ public class SettingsController {
     public GridPane appearanceMainGridPane;
 
     @FXML
-    public Button saveThemeButton;
-
-    @FXML
     public Button setThemeNameButton;
 
     @FXML
@@ -206,9 +203,6 @@ public class SettingsController {
 
     @FXML
     public Button deleteThemeButton;
-
-    @FXML
-    public Button updateGUIButton;
 
     public void initiate() {
         mediaSettings.initiate();
