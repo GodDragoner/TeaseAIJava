@@ -76,6 +76,10 @@ public class AppearanceSettings {
 
         settingsController.selectedThemeComboBox.getSelectionModel().select(selectedTheme);
 
+        settingsController.saveThemeButton.setOnAction(e -> {
+            ThemeHandler.getHandler().getSelectedTheme().saveToConfig();
+        });
+
         settingsController.setThemeNameButton.setOnAction(e -> {
             Theme currentTheme = ThemeHandler.getHandler().getSelectedTheme();
             TextInputDialog dialog = new TextInputDialog(currentTheme.name);
@@ -152,6 +156,9 @@ public class AppearanceSettings {
             }
         });
 
+        settingsController.updateGUIButton.setOnAction(e -> {
+            ThemeHandler.getHandler().getSelectedTheme().selectTheme();
+        });
     }
 
     public void updateSelectedTheme() {
