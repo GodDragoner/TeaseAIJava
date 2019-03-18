@@ -72,7 +72,6 @@
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 </columnConstraints>
                                 <rowConstraints>
                                     <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -81,11 +80,9 @@
                                  <children>
                                     <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="22.0" prefWidth="352.0" scaleX="0.9" scaleY="0.9" text="Theme Selection:" />
                                     <ComboBox fx:id="selectedThemeComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="181.0" scaleX="0.9" scaleY="0.9" styleClass="button-color" GridPane.columnIndex="1" />
-                                    <Button fx:id="saveThemeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" scaleX="0.9" scaleY="0.9" styleClass="button-color" text="Save Theme" GridPane.columnIndex="3" />
                                     <Button fx:id="setThemeNameButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="178.0" scaleX="0.9" scaleY="0.9" styleClass="button-color" text="Set Name" GridPane.rowIndex="1" />
                                     <Button fx:id="newThemeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="192.0" scaleX="0.9" scaleY="0.9" styleClass="button-color" text="New Theme" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Button fx:id="deleteThemeButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="186.0" scaleX="0.9" scaleY="0.9" styleClass="button-color" text="Delete Theme" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                    <Button fx:id="updateGUIButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="226.0" scaleX="0.9" scaleY="0.9" styleClass="button-color" text="Update GUI" GridPane.columnIndex="2" />
+                                    <Button fx:id="deleteThemeButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="186.0" scaleX="0.9" scaleY="0.9" styleClass="button-color" text="Delete Theme" GridPane.columnIndex="2" />
                                  </children>
                               </GridPane>
                            </children>
