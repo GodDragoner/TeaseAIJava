@@ -55,7 +55,7 @@ public class PlayVideoFunction extends CustomFunction {
                             return null;
                         }
 
-                        return MediaHandler.getHandler().playVideo(file);
+                        return MediaHandler.getHandler().playVideo(file, (Boolean) args[1]);
                     }
                 }
 
