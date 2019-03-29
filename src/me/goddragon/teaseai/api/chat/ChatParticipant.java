@@ -167,15 +167,22 @@ public class ChatParticipant {
                 throw new IllegalStateException("Dom can only send messages on the script thread");
             }
 
+
+            if(TeaseAI.getApplication().checkForNewResponses()) {
+                //If this returns true the trigger was successful and we won't send the current message that was supposed to be sent
+                return;
+            }
+
+            /*
             Response queuedResponse = ResponseHandler.getHandler().getLatestQueuedResponse();
             if (queuedResponse != null) {
                 ResponseHandler.getHandler().removeQueuedResponse(queuedResponse);
 
-                //If this returns true the trigger was successful and we won't send the current message that was supposed to be sent
+
                 if (queuedResponse.trigger()) {
                     return;
                 }
-            }
+            }*/
         }
 
         List<Text> lineMessages = new ArrayList<>();

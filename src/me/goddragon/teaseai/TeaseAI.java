@@ -178,10 +178,19 @@ public class TeaseAI extends Application {
             throw new IllegalStateException("Can only check for new responses on the script thread");
         }
 
-        Response queuedResponse = ResponseHandler.getHandler().getLatestQueuedResponse();
-        if (queuedResponse != null) {
-            ResponseHandler.getHandler().removeQueuedResponse(queuedResponse);
-            return queuedResponse.trigger();
+        //Repeat for all queued responses
+        while(true) {
+            Response queuedResponse = ResponseHandler.getHandler().getLatestQueuedResponse();
+
+            if (queuedResponse != null) {
+                ResponseHandler.getHandler().removeQueuedResponse(queuedResponse);
+
+                if(queuedResponse.trigger()) {
+                    return true;
+                }
+            } else {
+                break;
+            }
         }
 
         return false;
