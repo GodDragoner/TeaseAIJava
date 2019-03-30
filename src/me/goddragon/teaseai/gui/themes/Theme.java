@@ -227,6 +227,7 @@ public class Theme {
             ((Pane) node).getStylesheets().clear();
             if (css) {
                 ((Pane) node).getStylesheets().add(getStylesheetURI());
+                
             }
         }
     }
