@@ -123,7 +123,7 @@ public class ResponseHandler {
         List<Response> responses = new ArrayList<>();
 
         synchronized (responses) {
-            for (Response response : responses) {
+            for (Response response : this.responses) {
                 if (response.containsLike(message) && !response.isDisabled()) {
                     responses.add(response);
                 }
