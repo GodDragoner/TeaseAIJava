@@ -119,16 +119,18 @@ public class ResponseHandler {
         return null;
     }
 
-    public Response checkMessageForResponse(String message) {
+    public Collection<Response> checkMessageForResponse(String message) {
+        List<Response> responses = new ArrayList<>();
+
         synchronized (responses) {
             for (Response response : responses) {
                 if (response.containsLike(message) && !response.isDisabled()) {
-                    return response;
+                    responses.add(response);
                 }
             }
         }
 
-        return null;
+        return responses;
     }
 
     public Response getCurrentLoadingResponse() {
