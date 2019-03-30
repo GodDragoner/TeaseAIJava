@@ -149,6 +149,7 @@ public class ChatParticipant {
         //Check whether we can find a response fitting right now
         if (type == SenderType.SUB) {
             Collection<Response> responses = ResponseHandler.getHandler().checkMessageForResponse(rawMessage);
+
             if (!responses.isEmpty()) {
                 for(Response response : responses) {
                     //Set the message of the response so we know what triggered it later on

@@ -2,6 +2,7 @@ package me.goddragon.teaseai.utils;
 
 import me.goddragon.teaseai.TeaseAI;
 
+import javax.net.ssl.*;
 import java.io.*;
 import java.nio.file.*;
 import java.security.KeyManagementException;
@@ -9,14 +10,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.security.cert.X509Certificate;
 
 /**
  * Created by GodDragon on 05.04.2018.
@@ -26,7 +19,13 @@ public class FileUtils {
     public static List<File> getMatchingFiles(String pathString) {
         pathString = pathString.replace("/", File.separator).replace("\\", File.separator);
 
+
         List<File> files = new ArrayList<>();
+
+        if(pathString.lastIndexOf(File.separator) < 0) {
+            files.add(new File(pathString));
+            return files;
+        }
 
         String dirPath = pathString.substring(0, pathString.lastIndexOf(File.separator));
         String fileWildcard = pathString.substring(pathString.lastIndexOf(File.separator) + 1);
