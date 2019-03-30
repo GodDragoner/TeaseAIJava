@@ -184,8 +184,9 @@ public class TeaseAI extends Application {
 
             if (queuedResponse != null) {
                 ResponseHandler.getHandler().removeQueuedResponse(queuedResponse);
-
+                System.out.println("Here2!");
                 if(queuedResponse.trigger()) {
+                    System.out.println("Here3!");
                     return true;
                 }
             } else {

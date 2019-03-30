@@ -18,10 +18,7 @@ import me.goddragon.teaseai.utils.TeaseLogger;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -151,13 +148,15 @@ public class ChatParticipant {
         text.setFont(Font.font(null, FontWeight.BOLD, TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 1));
         //Check whether we can find a response fitting right now
         if (type == SenderType.SUB) {
-            Response response = ResponseHandler.getHandler().checkMessageForResponse(rawMessage);
-            if (response != null) {
-                //Set the message of the response so we know what triggered it later on
-                response.setMessage(rawMessage);
+            Collection<Response> responses = ResponseHandler.getHandler().checkMessageForResponse(rawMessage);
+            if (!responses.isEmpty()) {
+                for(Response response : responses) {
+                    //Set the message of the response so we know what triggered it later on
+                    response.setMessage(rawMessage);
 
-                //Queue the response so we can call it later
-                ResponseHandler.getHandler().addQueuedResponse(response);
+                    //Queue the response so we can call it later
+                    ResponseHandler.getHandler().addQueuedResponse(response);
+                }
             }
         } else {
             //If the dom sends a message we will check for queued responses that need to be handle before continuing

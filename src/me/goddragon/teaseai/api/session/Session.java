@@ -10,7 +10,6 @@ import me.goddragon.teaseai.api.runnable.TeaseRunnableHandler;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
-import me.goddragon.teaseai.gui.settings.AppearanceSettings;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
@@ -130,6 +129,9 @@ public class Session {
 
                 //Initialize a new session instance
                 TeaseAI.application.initializeNewSession();
+
+                //Unlock Images
+                MediaHandler.getHandler().setImagesLocked(false);
             }
         });
 
