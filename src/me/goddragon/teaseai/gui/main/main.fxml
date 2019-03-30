@@ -83,7 +83,7 @@
                         </GridPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane id="main-right-hotbar" fx:id="rightWidgetBar" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgrey;" styleClass="primary-color" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <AnchorPane id="main-right-hotbar" fx:id="rightWidgetBar" prefHeight="200.0" prefWidth="200.0" styleClass="primary-color" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                   <SplitPane fx:id="chatSplitPane" dividerPositions="0.5888888888888889" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" style="-fx-border-color: transparent; -fx-background-color: transparent; -fx-border-width: 0;" translateY="1.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                     <items>
                       <AnchorPane id="main-media-view" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -111,9 +111,9 @@
                                  <children>
                                     <StackPane fx:id="chatPane" prefHeight="150.0" prefWidth="200.0" scaleY="0.99" styleClass="main-chat-background" translateY="1.0">
                                        <children>
-                                          <ScrollPane fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="304.0" prefWidth="1043.0" scaleX="0.99" styleClass="main-chat-background" translateX="1.0" StackPane.alignment="CENTER_RIGHT">
+                                          <ScrollPane fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="304.0" prefWidth="1043.0" scaleX="0.99" style="-fx-border-color: transparent;" styleClass="main-chat-background" translateX="1.0" StackPane.alignment="CENTER_RIGHT">
                                              <content>
-                                                <TextFlow id="main-chat-window" fx:id="chatWindow" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="193.0" prefWidth="1039.0" scaleY="0.98" translateY="0.5" />
+                                                <TextFlow id="main-chat-window" fx:id="chatWindow" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="193.0" prefWidth="1039.0" scaleY="0.98" style="-fx-border-color: transparent;" translateY="0.5" />
                                              </content>
                                           </ScrollPane>
                                        </children>
