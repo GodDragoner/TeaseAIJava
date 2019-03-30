@@ -234,6 +234,7 @@ public class Theme {
     public void setName(String name) {
         this.name = name;
         this.configHandler.changeConfigName(getConfigFilePath());
+        this.cssFile = new File(getCSSFilePath());
     }
 
     public boolean delete() {
