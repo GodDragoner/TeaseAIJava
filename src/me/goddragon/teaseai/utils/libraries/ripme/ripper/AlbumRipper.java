@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
+import me.goddragon.teaseai.gui.settings.UrlProgress;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 
 // Should this file even exist? It does the same thing as abstractHTML ripper
@@ -87,6 +88,8 @@ public abstract class AlbumRipper extends AbstractRipper {
                 fw.write(url.toExternalForm());
                 fw.write("\n");
                 itemsCompleted.put(url, new File(urlFile));
+                UrlProgress.completed = itemsCompleted.size();
+                
             } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "Error while writing to " + urlFile, e);
             }
