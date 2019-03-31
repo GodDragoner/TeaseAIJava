@@ -73,7 +73,7 @@ public class VariableHandler {
                         needsUpdatedToNewSystem = true;
                     }
 
-                    if (lines.size() > 1 && lines.get(lines.size() - 1).equalsIgnoreCase("ArrayList")) {
+                    if (lines.size() > 0 && lines.get(lines.size() - 1).equalsIgnoreCase("ArrayList")) {
                         value = lines.subList(0, lines.size() - 1);
                     } else {
                         //We only need the first line
