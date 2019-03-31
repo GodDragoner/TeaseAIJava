@@ -1,17 +1,15 @@
 package me.goddragon.teaseai.utils.libraries.ripme;
 
+import me.goddragon.teaseai.utils.TeaseLogger;
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractRipper;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
-
-
-
-import me.goddragon.teaseai.utils.TeaseLogger;
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 
 /**
  * Entry point to application.
@@ -26,8 +24,7 @@ public class App {
     public static String stringToAppendToFoldername = null;
 
 
-    public static File mediaUrlRip(String url, String directory, boolean useForTease) throws Exception
-    {
+    public static File mediaUrlRip(String url, String directory, boolean useForTease) throws Exception {
         Utils.setConfigBoolean("urls_only.save", true);
         Utils.setConfigBoolean("errors.skip404", true);
         Utils.setConfigBoolean("download.save_order", false);
@@ -38,6 +35,7 @@ public class App {
         Utils.setConfigBoolean("use_for_tease", useForTease);
         Utils.setConfigInteger("history.end_rip_after_already_seen", 2000);
         ripURL(url, true);
+
         return new File(Utils.getConfigString("url_file", null));
     }
     
