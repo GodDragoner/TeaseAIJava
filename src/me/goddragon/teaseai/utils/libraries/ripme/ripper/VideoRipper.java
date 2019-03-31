@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper;
 
+import me.goddragon.teaseai.gui.settings.UrlProgress;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 
 import java.io.File;
@@ -51,6 +52,7 @@ public abstract class VideoRipper extends AbstractRipper {
                 fw.write(url.toExternalForm());
                 fw.write("\n");
 
+                UrlProgress.incrementCompleted();
             } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "Error while writing to " + urlFile, e);
                 return false;

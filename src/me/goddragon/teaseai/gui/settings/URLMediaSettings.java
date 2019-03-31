@@ -71,6 +71,7 @@ public class URLMediaSettings {
                             try
                             {
                                 UrlProgress.inProgress = true;
+                                UrlProgress.completed = 0;
                                 mediaFile = App.mediaUrlRip(url, MediaURL.URL_FILE_PATH, false);
                             }
                             catch (Exception e)
