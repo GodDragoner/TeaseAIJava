@@ -1,22 +1,17 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper;
 
-import java.awt.Desktop;
+import me.goddragon.teaseai.utils.TeaseLogger;
+import me.goddragon.teaseai.utils.libraries.ripme.App;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
+import org.jsoup.HttpStatusException;
+
+import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-
-import me.goddragon.teaseai.utils.TeaseLogger;
-import me.goddragon.teaseai.utils.libraries.ripme.App;
-import org.jsoup.HttpStatusException;
-
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
-
-import java.util.Scanner;
 import java.util.logging.Level;
 
 public abstract class AbstractRipper
@@ -285,6 +280,7 @@ public abstract class AbstractRipper
             LOGGER.log(Level.INFO, "[+] Creating directory: " + Utils.removeCWD(saveFileAs.getParent()));
             saveFileAs.getParentFile().mkdirs();
         }
+
         if (Utils.getConfigBoolean("remember.url_history", true) && !isThisATest()) {
             try {
                 writeDownloadedURL(url.toExternalForm() + "\n");
@@ -292,6 +288,7 @@ public abstract class AbstractRipper
                 LOGGER.log(Level.FINE, "Unable to write URL history file");
             }
         }
+
         return addURLToDownload(url, saveFileAs, referrer, cookies, getFileExtFromMIME);
     }
 
