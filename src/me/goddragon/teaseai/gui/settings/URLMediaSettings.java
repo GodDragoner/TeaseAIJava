@@ -70,12 +70,15 @@ public class URLMediaSettings {
                             File mediaFile;
                             try
                             {
+                                UrlProgress.inProgress = true;
                                 mediaFile = App.mediaUrlRip(url, MediaURL.URL_FILE_PATH, false);
                             }
                             catch (Exception e)
                             {
+                                UrlProgress.inProgress = false;
                                 return;
                             }
+                            UrlProgress.inProgress = false;
                             MediaURL mediaURL = new MediaURL(MediaType.IMAGE, mediaFile);
                             TeaseAI.application.getMediaCollection().addMediaHolder(null, mediaURL);
     
