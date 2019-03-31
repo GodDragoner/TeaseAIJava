@@ -142,6 +142,7 @@ public class MediaHandler {
                     currentAnimation = new AnimatedGif(file.toURI().toString());
                     currentAnimation.setCycleCount(Integer.MAX_VALUE);
                     currentAnimation.play(imageView);
+
                 } else {
                     ImageUtils.setImageInView(file, imageView);
                 }

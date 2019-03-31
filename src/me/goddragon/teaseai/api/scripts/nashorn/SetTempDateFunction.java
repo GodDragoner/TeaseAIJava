@@ -29,15 +29,12 @@ public class SetTempDateFunction extends CustomFunction {
         super.call(object, args);
 
         Personality personality;
-        if (TeaseAI.application.getSession() == null)
-        {
+        if (TeaseAI.application.getSession() == null) {
             personality = PersonalityManager.getManager().getLoadingPersonality();
-        }
-        else
-        {
+        } else {
             personality = PersonalityManager.getManager().getActivePersonality();
         }
-        
+
         switch (args.length) {
             case 1:
                 if (args[0] instanceof String) {
