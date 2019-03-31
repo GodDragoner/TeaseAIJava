@@ -76,6 +76,15 @@ public class URLMediaSettings {
                             catch (Exception e)
                             {
                                 UrlProgress.inProgress = false;
+                                TeaseAI.application.runOnUIThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        updateURLList();
+                                        settingsController.addURLButton.setDisable(false);
+                                        settingsController.addURLTextField.setDisable(false);
+                                        //settingsController.refreshURLButton.setDisable(false);
+                                    }
+                                });
                                 return;
                             }
                             UrlProgress.inProgress = false;
