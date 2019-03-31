@@ -1,5 +1,8 @@
 package me.goddragon.teaseai.gui.settings;
 
+import java.io.File;
+import java.net.URL;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -13,9 +16,7 @@ import me.goddragon.teaseai.api.media.MediaHolder;
 import me.goddragon.teaseai.api.media.MediaType;
 import me.goddragon.teaseai.api.media.MediaURL;
 import me.goddragon.teaseai.utils.libraries.ripme.App;
-
-import java.io.File;
-import java.net.URL;
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractRipper;
 
 /**
  * Created by GodDragon on 28.03.2018.
@@ -39,12 +40,16 @@ public class URLMediaSettings {
             public void handle(MouseEvent event) {
                 String url = settingsController.addURLTextField.getText().toLowerCase();
                 //Ski23 testing
-
-                if (url != null && !url.trim().equals("")) {
-                    try {
+                
+                if (url != null && !url.trim().equals(""))
+                {
+                    try
+                    {
                         URL testUrl = new URL(url);
                         //AbstractRipper.getRipper(testUrl);
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Invalid URL");
                         alert.setHeaderText(null);
@@ -56,33 +61,27 @@ public class URLMediaSettings {
                     settingsController.addURLButton.setDisable(true);
                     settingsController.addURLTextField.setDisable(true);
                     //settingsController.refreshURLButton.setDisable(true);
-
+    
                     settingsController.addURLTextField.setText(url);
-
+                    
                     new Thread() {
                         @Override
                         public void run() {
                             File mediaFile;
-                            try {
+                            try
+                            {
+                                UrlProgress.inProgress = true;
                                 mediaFile = App.mediaUrlRip(url, MediaURL.URL_FILE_PATH, false);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Error URL");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Failed to fetch data from url.");
-
-                                alert.showAndWait();
-
-                                settingsController.addURLButton.setDisable(false);
-                                settingsController.addURLTextField.setDisable(false);
+                            }
+                            catch (Exception e)
+                            {
+                                UrlProgress.inProgress = false;
                                 return;
                             }
-
+                            UrlProgress.inProgress = false;
                             MediaURL mediaURL = new MediaURL(MediaType.IMAGE, mediaFile);
                             TeaseAI.application.getMediaCollection().addMediaHolder(null, mediaURL);
-
+    
                             TeaseAI.application.runOnUIThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -94,7 +93,8 @@ public class URLMediaSettings {
                             });
                         }
                     }.start();
-                } else {
+                }
+                else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Invalid URL");
                     alert.setHeaderText(null);
@@ -216,7 +216,7 @@ public class URLMediaSettings {
                         @Override
                         public void run() {
                             //No media found
-                            if (((MediaURL) settingsController.urlFilesList.getSelectionModel().getSelectedItem()).getMediaURLs().isEmpty()) {
+                            if(((MediaURL) settingsController.urlFilesList.getSelectionModel().getSelectedItem()).getMediaURLs().isEmpty()) {
                                 settingsController.urlFileImagePreview.setImage(null);
                                 return;
                             }
