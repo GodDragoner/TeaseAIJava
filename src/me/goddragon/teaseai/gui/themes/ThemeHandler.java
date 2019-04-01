@@ -36,6 +36,7 @@ public class ThemeHandler {
 
 
     private ConfigValue selectedTheme;
+    
 
     public ThemeHandler() {
         //Create theme folder
