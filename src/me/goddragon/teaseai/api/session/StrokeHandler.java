@@ -18,7 +18,6 @@ public class StrokeHandler {
             StrokeHandler.getHandler().setEdging(false);
             StrokeHandler.getHandler().setOnEdge(true);
             ResponseHandler.getHandler().unregisterResponse(this);
-            System.out.println("HereEdge!");
             return true;
         }
     };
