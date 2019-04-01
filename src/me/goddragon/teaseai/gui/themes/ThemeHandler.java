@@ -18,14 +18,14 @@ public class ThemeHandler {
         ((ThemeColor)TWILIGHT_THEME.settings.get(0)).setColor(Color.LIGHTGREY);
         ((ThemeColor)TWILIGHT_THEME.settings.get(1)).setColor(Color.LIGHTGREY);
         ((ThemeColor)TWILIGHT_THEME.settings.get(2)).setColor(Color.LIGHTGREY);
-        ((ThemeColor)TWILIGHT_THEME.settings.get(3)).setColor(Color.BLACK);
-        ((ThemeColor)TWILIGHT_THEME.settings.get(4)).setColor(Color.GRAY);
+        ((ThemeColor)TWILIGHT_THEME.settings.get(3)).setColor(Color.valueOf("#666666"));
+        ((ThemeColor)TWILIGHT_THEME.settings.get(4)).setColor(Color.BLACK);
         ((ThemeColor)TWILIGHT_THEME.settings.get(5)).setColor(Color.DARKCYAN);
         ((ThemeColor)TWILIGHT_THEME.settings.get(6)).setColor(Color.RED);
         ((ThemeColor)TWILIGHT_THEME.settings.get(7)).setColor(Color.ORANGE);
         ((ThemeColor)TWILIGHT_THEME.settings.get(8)).setColor(Color.LIGHTGREEN);
         ((ThemeColor)TWILIGHT_THEME.settings.get(9)).setColor(Color.MEDIUMVIOLETRED);
-        ((ThemeColor)TWILIGHT_THEME.settings.get(10)).setColor(Color.RED);
+        ((ThemeColor)TWILIGHT_THEME.settings.get(10)).setColor(Color.valueOf("#f2f2f2"));
 
         TWILIGHT_THEME.saveToConfig();
     }
