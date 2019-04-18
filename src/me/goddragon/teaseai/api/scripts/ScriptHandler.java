@@ -89,6 +89,7 @@ public class ScriptHandler {
         registerFunction(new RunFunction());
         registerFunction(new ShowCategoryVideo());
         registerFunction(new GetStrokingBPMFunction());
+        registerFunction(new SetTextToSpeechFunction());
         //engine.put("run", (Consumer<String>) this::evalScript);
     }
 
