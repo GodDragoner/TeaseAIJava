@@ -38,6 +38,7 @@
                                         <RowConstraints maxHeight="-Infinity" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
                                         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="255.0" vgrow="SOMETIMES" />
                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
@@ -48,6 +49,8 @@
                                         <ComboBox fx:id="fontSizeComboBox" prefWidth="150.0" scaleY="0.9" styleClass="button-color" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                         <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" scaleY="0.9" text="Default Type Speed:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                         <ComboBox fx:id="defaultTypeSpeedComboBox" prefWidth="150.0" scaleY="0.9" styleClass="button-color" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                              <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="63.0" prefHeight="22.0" prefWidth="207.0" text="Text To Speech:" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <ComboBox fx:id="textToSpeechComboBox" layoutX="232.0" layoutY="61.0" prefWidth="150.0" styleClass="button-color" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                                     </children>
                                 </GridPane>
                             </children>

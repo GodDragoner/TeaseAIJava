@@ -92,6 +92,7 @@
                                  <children>
                                     <MediaView id="mediaView" fx:id="mediaView" fitHeight="334.0" fitWidth="1157.0" />
                                     <ImageView fx:id="imageView" fitHeight="511.0" fitWidth="1157.0" pickOnBounds="true" preserveRatio="true" />
+                                    <TextFlow id="main-chat-window" fx:id="chatWindow" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: transparent;" />
                                  </children>
                               </StackPane>
                            </children>
@@ -109,13 +110,9 @@
                                     <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <StackPane fx:id="chatPane" prefHeight="150.0" prefWidth="200.0" scaleY="0.99" styleClass="main-chat-background" translateY="1.0">
+                                    <StackPane fx:id="chatPane" prefHeight="150.0" prefWidth="200.0" styleClass="main-chat-background" translateY="1.0">
                                        <children>
-                                          <ScrollPane fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="304.0" prefWidth="1043.0" scaleX="0.99" style="-fx-border-color: transparent;" styleClass="main-chat-background" translateX="1.0" StackPane.alignment="CENTER_RIGHT">
-                                             <content>
-                                                <TextFlow id="main-chat-window" fx:id="chatWindow" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="193.0" prefWidth="1039.0" scaleY="0.98" style="-fx-border-color: transparent;" translateY="0.5" />
-                                             </content>
-                                          </ScrollPane>
+                                          <ScrollPane fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="304.0" prefWidth="1043.0" scaleX="0.99" style="-fx-border-color: transparent;" styleClass="main-chat-background" translateX="1.0" StackPane.alignment="CENTER_RIGHT" />
                                        </children>
                                     </StackPane>
                                     <GridPane id="chatInput" prefHeight="49.0" prefWidth="604.0" styleClass="main-chat-background" GridPane.rowIndex="2">
