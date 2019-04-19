@@ -36,97 +36,85 @@ public class GeneralSettings {
         settingsController.preferredTeaseLengthField.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), 0, integerFilter));
 
         settingsController.preferredTeaseLengthField.setText(TeaseAI.application.PREFERRED_SESSION_DURATION.getValue());
-        
+
         settingsController.preferredTeaseLengthField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+
                 TeaseAI.application.PREFERRED_SESSION_DURATION.setValue(settingsController.preferredTeaseLengthField.getText()).save();
             }
         });
-        
-        settingsController.fontSizeComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Double>()
-        {
+
+        settingsController.fontSizeComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Double>() {
 
             @Override
             public void changed(ObservableValue<? extends Double> observable,
-                    Double oldValue, Double newValue)
-            {
+                                Double oldValue, Double newValue) {
                 TeaseAI.application.CHAT_TEXT_SIZE.setValue(settingsController.fontSizeComboBox.getSelectionModel().getSelectedItem().toString()).save();
             }
         });
-        
-        settingsController.defaultTypeSpeedComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TypeSpeed>()
-        {
+
+        settingsController.defaultTypeSpeedComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TypeSpeed>() {
 
             @Override
             public void changed(ObservableValue<? extends TypeSpeed> observable,
-                    TypeSpeed oldValue, TypeSpeed newValue)
-            {
+                                TypeSpeed oldValue, TypeSpeed newValue) {
                 TeaseAI.application.DEFAULT_TYPE_SPEED.setValue(settingsController.defaultTypeSpeedComboBox.getSelectionModel().getSelectedItem().toString()).save();
                 //if the session hasn't started yet we can adjust the type speed
-                if(!TeaseAI.application.getSession().isStarted()) {
-                    for(ChatParticipant chatParticipant : ChatHandler.getHandler().getParticipants()) {
+                if (!TeaseAI.application.getSession().isStarted()) {
+                    for (ChatParticipant chatParticipant : ChatHandler.getHandler().getParticipants()) {
                         chatParticipant.setTypeSpeed(TypeSpeed.valueOf(TeaseAI.application.DEFAULT_TYPE_SPEED.getValue()));
                     }
                 }
-                   
+
             }
         });
-        
-        settingsController.textToSpeechComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>()
-        {
+
+        settingsController.textToSpeechComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 
             @Override
             public void changed(ObservableValue<? extends String> observable,
-                    String oldValue, String newValue)
-            {
-                switch (newValue)
-                {
-                case "Enabled":
-                    TeaseAI.application.TEXT_TO_SPEECH.setValue("1").save();
-                    TeaseAI.application.setTTS(true);
-                    
-                    break;
-                case "Disabled":
-                    TeaseAI.application.TEXT_TO_SPEECH.setValue("0").save();
-                    TeaseAI.application.setTTS(false);
-                    
-                    break;
-                case "Personality Decides (Reccomended)":
-                    TeaseAI.application.TEXT_TO_SPEECH.setValue("2").save();
-                    TeaseAI.application.setTTS(false);
-                    break;
+                                String oldValue, String newValue) {
+                switch (newValue) {
+                    case "Enabled":
+                        TeaseAI.application.TEXT_TO_SPEECH.setValue("1").save();
+                        TeaseAI.application.setTTS(true);
 
-                default:
-                    break;
+                        break;
+                    case "Disabled":
+                        TeaseAI.application.TEXT_TO_SPEECH.setValue("0").save();
+                        TeaseAI.application.setTTS(false);
+
+                        break;
+                    case "Personality Decides (Recommended)":
+                        TeaseAI.application.TEXT_TO_SPEECH.setValue("2").save();
+                        TeaseAI.application.setTTS(false);
+                        break;
+
+                    default:
+                        break;
                 }
             }
         });
 
         settingsController.textToSpeechComboBox.getItems().addAll("Personality Decides (Reccomended)", "Enabled", "Disabled");
         int varvalue = TeaseAI.application.TEXT_TO_SPEECH.getInt();
-        
-        if (varvalue == 0)
-        {
+
+        if (varvalue == 0) {
             settingsController.textToSpeechComboBox.getSelectionModel().select("Disabled");
-        }
-        else if (varvalue == 1)
-        {
-            settingsController.textToSpeechComboBox.getSelectionModel().select("Enabled"); 
-        }
-        else
-        {
+        } else if (varvalue == 1) {
+            settingsController.textToSpeechComboBox.getSelectionModel().select("Enabled");
+        } else {
             settingsController.textToSpeechComboBox.getSelectionModel().select("Personality Decides (Reccomended)");
         }
-        
-        for(double x = 10; x <= 60; x+= .5) {
+
+        for (double x = 10; x <= 60; x += .5) {
             settingsController.fontSizeComboBox.getItems().add(x);
         }
 
         settingsController.fontSizeComboBox.getSelectionModel().select(TeaseAI.application.CHAT_TEXT_SIZE.getDouble());
 
-        for(TypeSpeed typeSpeed : TypeSpeed.values()) {
+        for (TypeSpeed typeSpeed : TypeSpeed.values()) {
             settingsController.defaultTypeSpeedComboBox.getItems().add(typeSpeed);
         }
 
