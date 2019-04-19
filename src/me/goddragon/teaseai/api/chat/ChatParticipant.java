@@ -249,7 +249,7 @@ public class ChatParticipant {
         return answer;
     }
 
-    private void startTyping(String message) {
+    public void startTyping(String message) {
         if (type == SenderType.SUB) {
             return;
         }
