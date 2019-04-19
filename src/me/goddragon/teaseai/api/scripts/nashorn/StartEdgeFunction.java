@@ -25,7 +25,6 @@ public class StartEdgeFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         switch (args.length) {
             case 0:
-                System.out.println("Here5");
                 StrokeHandler.getHandler().setEdging(true);
                 StrokeHandler.getHandler().setOnEdge(false);
                 ResponseHandler.getHandler().registerResponse(StrokeHandler.EDGE_RESPONSE);
