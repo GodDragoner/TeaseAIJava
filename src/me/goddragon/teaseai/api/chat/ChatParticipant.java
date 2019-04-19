@@ -155,7 +155,7 @@ public class ChatParticipant {
             Collection<Response> responses = ResponseHandler.getHandler().checkMessageForResponse(rawMessage);
 
             if (!responses.isEmpty()) {
-                for(Response response : responses) {
+                for (Response response : responses) {
                     //Set the message of the response so we know what triggered it later on
                     response.setMessage(rawMessage);
 
@@ -172,7 +172,7 @@ public class ChatParticipant {
             }
 
 
-            if(TeaseAI.getApplication().checkForNewResponses()) {
+            if (TeaseAI.getApplication().checkForNewResponses()) {
                 //If this returns true the trigger was successful and we won't send the current message that was supposed to be sent
                 return;
             }
@@ -192,17 +192,15 @@ public class ChatParticipant {
         List<Text> lineMessages = new ArrayList<>();
         lineMessages.add(dateText);
         lineMessages.add(text);
-       
-        if (TeaseAI.application.TextToSpeechEnabled && id != 0)
-        {
+
+        if (TeaseAI.application.TextToSpeechEnabled && id != 0) {
             String toSpeak = "";
-            for (Text text2: messages)
-            {
+            for (Text text2 : messages) {
                 toSpeak += text2.getText();
             }
             textToSpeech.speak(toSpeak, 1.0f, true, false);
         }
-        
+
         lineMessages.addAll(messages);
         ChatHandler.getHandler().addLine(lineMessages);
 
