@@ -6,7 +6,6 @@ import me.goddragon.teaseai.api.media.MediaHandler;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.StringUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
-import sun.security.provider.JavaKeyStore.CaseExactJKS;
 
 import java.io.File;
 import java.util.Arrays;
@@ -29,38 +28,35 @@ public class SendMessageFunction extends CustomFunction {
     @Override
     public Object call(Object object, Object... args) {
         super.call(object, args);
-        switch(args.length) {
+        switch (args.length) {
             case 1:
-                if (args[0] instanceof String)
-                {
-                    args[0] = VocabularyHandler.getHandler().replaceAllVocabularies((String)args[0]);
-                    ChatHandler.getHandler().getSelectedSender().startTyping((String)args[0]);
+                if (args[0] instanceof String) {
+                    args[0] = VocabularyHandler.getHandler().replaceAllVocabularies((String) args[0]);
+                    ChatHandler.getHandler().getSelectedSender().startTyping((String) args[0]);
                     ChatHandler.getHandler().getSelectedSender().sendMessage((String) args[0], ChatHandler.getHandler().getMillisToPause((String) args[0]), StringUtils.processString((String) args[0]));
-                }
-                else {
+                } else {
                     TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage must have a String for the first argument");
                 }
                 return null;
             case 2:
-                if (!(args[0] instanceof String))
-                {
+                if (!(args[0] instanceof String)) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage must have a String for the first argument");
                     return null;
                 }
-                args[0] = VocabularyHandler.getHandler().replaceAllVocabularies((String)args[0]);
-                if(args[1] instanceof Integer) {
-                    ChatHandler.getHandler().getSelectedSender().startTyping((String)args[0]);
-                    ChatHandler.getHandler().getSelectedSender().sendMessage((String) args[0], (int)args[1] * 1000, StringUtils.processString((String) args[0]));
+                args[0] = VocabularyHandler.getHandler().replaceAllVocabularies((String) args[0]);
+                if (args[1] instanceof Integer) {
+                    ChatHandler.getHandler().getSelectedSender().startTyping((String) args[0]);
+                    ChatHandler.getHandler().getSelectedSender().sendMessage((String) args[0], (int) args[1] * 1000, StringUtils.processString((String) args[0]));
                     return null;
-                } else if(args[1] instanceof String) {
-                    ChatHandler.getHandler().getSelectedSender().startTyping((String)args[0]);
+                } else if (args[1] instanceof String) {
+                    ChatHandler.getHandler().getSelectedSender().startTyping((String) args[0]);
                     ChatHandler.getHandler().getSelectedSender().sendMessage((String) args[0], 0, StringUtils.processString((String) args[0]));
 
                     //TODO: Support for urls, video etc.
                     File file = FileUtils.getRandomMatchingFile((String) args[1]);
 
-                    if(file != null) {
-                        MediaHandler.getHandler().showPicture(file, (int) (ChatHandler.getHandler().getMillisToPause(args[0].toString())/1000));
+                    if (file != null) {
+                        MediaHandler.getHandler().showPicture(file, (int) (ChatHandler.getHandler().getMillisToPause(args[0].toString()) / 1000));
                     }
 
                     return null;
@@ -69,33 +65,27 @@ public class SendMessageFunction extends CustomFunction {
                     return null;
                 }
             case 3:
-                if (!(args[0] instanceof String))
-                {
+                if (!(args[0] instanceof String)) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage must have a String for the first argument");
                     return null;
                 }
-                args[0] = VocabularyHandler.getHandler().replaceAllVocabularies((String)args[0]);
-                if (!(args[1] instanceof Integer))
-                {
+                args[0] = VocabularyHandler.getHandler().replaceAllVocabularies((String) args[0]);
+                if (!(args[1] instanceof Integer)) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage must have a integer for the second argument");
                     return null;
                 }
-                if (!(args[2] instanceof Integer))
-                {
+                if (!(args[2] instanceof Integer)) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage must have a boolean for the third argument");
                     return null;
                 }
-                if ((boolean)args[2])
-                {
-                    ChatHandler.getHandler().getSelectedSender().startTyping((String)args[0]);
+                if ((boolean) args[2]) {
+                    ChatHandler.getHandler().getSelectedSender().startTyping((String) args[0]);
                 }
-                
-                int delay = (int)args[1];
-                if (delay == -1)
-                {
+
+                int delay = (int) args[1];
+                if (delay == -1) {
                     ChatHandler.getHandler().getSelectedSender().sendMessage((String) args[0], ChatHandler.getHandler().getMillisToPause((String) args[0]), StringUtils.processString((String) args[0]));
-                }
-                else {
+                } else {
                     ChatHandler.getHandler().getSelectedSender().sendMessage((String) args[0], delay, StringUtils.processString((String) args[0]));
                 }
                 break;
