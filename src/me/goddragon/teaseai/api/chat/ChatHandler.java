@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.texttospeech.TextToSpeech;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.*;
@@ -52,6 +53,7 @@ public class ChatHandler {
     private Answer currentCallback = null;
 
     private ChatParticipant currentDom = null;
+    private TextToSpeech textToSpeech;
 
     public ChatHandler() {
         this.dateColor = Color.DARKGRAY;
@@ -68,6 +70,8 @@ public class ChatHandler {
 
         //Initial space in chat
         addText(new Text(" "));
+        textToSpeech = new TextToSpeech();
+        textToSpeech.setVoice("dfki-prudence-hsmm");
     }
 
     public void load() {
@@ -182,6 +186,7 @@ public class ChatHandler {
             @Override
             public void run() {
                 if (!textFlow.getChildren().contains(text)) {
+                    textToSpeech.speak(text.getText(), 1.0f, false, true);
                     removeAllTemporaryMessages();
                     textFlow.getChildren().add(text);
                     nextRow();
@@ -205,7 +210,13 @@ public class ChatHandler {
             @Override
             public void run() {
                 removeAllTemporaryMessages();
-
+                /*for (Text t: text)
+                {
+                    if (t.getText() != null)
+                    {
+                        textToSpeech.speak(t.getText(), 1.0f, false, false);
+                    }
+                }*/
                 textFlow.getChildren().addAll(text);
                 nextRow();
 

@@ -12,6 +12,7 @@ import me.goddragon.teaseai.api.media.MediaHandler;
 import me.goddragon.teaseai.api.picture.PictureSet;
 import me.goddragon.teaseai.api.picture.TaggedPicture;
 import me.goddragon.teaseai.api.session.Session;
+import me.goddragon.teaseai.api.texttospeech.TextToSpeech;
 import me.goddragon.teaseai.utils.RandomUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -38,6 +39,7 @@ public class ChatParticipant {
     private PictureSet pictureSet;
 
     private Color nameColor = Color.BLACK;
+    private TextToSpeech textToSpeech;
 
     public ChatParticipant(SenderType type, Contact contact) {
         this(latestId + 1, type, contact);
@@ -67,6 +69,8 @@ public class ChatParticipant {
         }
 
         choosePictureSet();
+        textToSpeech = new TextToSpeech();
+        textToSpeech.setVoice("dfki-prudence-hsmm");
     }
 
     public void sendJoin() {
@@ -188,6 +192,17 @@ public class ChatParticipant {
         List<Text> lineMessages = new ArrayList<>();
         lineMessages.add(dateText);
         lineMessages.add(text);
+       
+        if (TeaseAI.application.TextToSpeechEnabled && id != 0)
+        {
+            String toSpeak = "";
+            for (Text text2: messages)
+            {
+                toSpeak += text2.getText();
+            }
+            textToSpeech.speak(toSpeak, 1.0f, true, false);
+        }
+        
         lineMessages.addAll(messages);
         ChatHandler.getHandler().addLine(lineMessages);
 
