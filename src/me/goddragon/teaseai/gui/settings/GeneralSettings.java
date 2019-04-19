@@ -73,8 +73,53 @@ public class GeneralSettings {
                    
             }
         });
+        
+        settingsController.textToSpeechComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>()
+        {
 
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                    String oldValue, String newValue)
+            {
+                switch (newValue)
+                {
+                case "Enabled":
+                    TeaseAI.application.TEXT_TO_SPEECH.setValue("1").save();
+                    TeaseAI.application.setTTS(true);
+                    
+                    break;
+                case "Disabled":
+                    TeaseAI.application.TEXT_TO_SPEECH.setValue("0").save();
+                    TeaseAI.application.setTTS(false);
+                    
+                    break;
+                case "Personality Decides (Reccomended)":
+                    TeaseAI.application.TEXT_TO_SPEECH.setValue("2").save();
+                    TeaseAI.application.setTTS(false);
+                    break;
 
+                default:
+                    break;
+                }
+            }
+        });
+
+        settingsController.textToSpeechComboBox.getItems().addAll("Personality Decides (Reccomended)", "Enabled", "Disabled");
+        int varvalue = TeaseAI.application.TEXT_TO_SPEECH.getInt();
+        
+        if (varvalue == 0)
+        {
+            settingsController.textToSpeechComboBox.getSelectionModel().select("Disabled");
+        }
+        else if (varvalue == 1)
+        {
+            settingsController.textToSpeechComboBox.getSelectionModel().select("Enabled"); 
+        }
+        else
+        {
+            settingsController.textToSpeechComboBox.getSelectionModel().select("Personality Decides (Reccomended)");
+        }
+        
         for(double x = 10; x <= 60; x+= .5) {
             settingsController.fontSizeComboBox.getItems().add(x);
         }

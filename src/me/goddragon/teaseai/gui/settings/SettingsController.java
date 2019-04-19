@@ -209,6 +209,9 @@ public class SettingsController {
 
     @FXML
     public Button updateGUIButton;
+    
+    @FXML
+    public ComboBox<String> textToSpeechComboBox;
 
     public void initiate() {
         mediaSettings.initiate();
