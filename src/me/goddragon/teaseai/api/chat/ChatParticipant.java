@@ -14,6 +14,7 @@ import me.goddragon.teaseai.api.picture.TaggedPicture;
 import me.goddragon.teaseai.api.session.Session;
 import me.goddragon.teaseai.api.texttospeech.TextToSpeech;
 import me.goddragon.teaseai.utils.RandomUtils;
+import me.goddragon.teaseai.utils.StringUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
@@ -91,6 +92,20 @@ public class ChatParticipant {
         messageText.setFont(Font.font(null, FontWeight.BOLD, TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 2));
 
         ChatHandler.getHandler().addLine(nameText, messageText);
+    }
+    
+    public void customMessage(String message, long delay, boolean showTyping)
+    {
+        if (delay == -1)
+        {
+            delay = ChatHandler.getHandler().getMillisToPause(message);
+        }
+        message = VocabularyHandler.getHandler().replaceAllVocabularies(message);
+        if (showTyping)
+        {
+            startTyping(message);
+        }
+        sendMessage(message, delay, StringUtils.processString(message));
     }
 
     public void sendMessage(String message) {
@@ -247,7 +262,7 @@ public class ChatParticipant {
         return answer;
     }
 
-    public void startTyping(String message) {
+    private void startTyping(String message) {
         if (type == SenderType.SUB) {
             return;
         }

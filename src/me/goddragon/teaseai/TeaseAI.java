@@ -60,6 +60,7 @@ public class TeaseAI extends Application {
     public final ConfigValue LAST_SELECTED_PERSONALITY = new ConfigValue("lastSelectedPersonality", "null", configHandler);
     public final ConfigValue TEASE_AI_PROPERTIES_LINK = new ConfigValue("teaseAIPropertiesLink", "https://gist.githubusercontent.com/GodDragoner/6c7193903cb0695ff891e8468ad279cd/raw/TeaseAI.properties", configHandler);
     public final ConfigValue TEXT_TO_SPEECH = new ConfigValue("texttospeech", 2, configHandler);
+    public final ConfigValue DEBUG_MODE = new ConfigValue("debugmode", false, configHandler);
 
     private Session session;
     public boolean TextToSpeechEnabled = false; 
