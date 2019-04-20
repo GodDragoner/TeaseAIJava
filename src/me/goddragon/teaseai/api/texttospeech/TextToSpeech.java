@@ -1,23 +1,19 @@
 package me.goddragon.teaseai.api.texttospeech;
 
-import java.io.IOException;
+import marytts.LocalMaryInterface;
+import marytts.MaryInterface;
+import marytts.exceptions.MaryConfigurationException;
+import marytts.modules.synthesis.Voice;
+import marytts.signalproc.effects.AudioEffect;
+import marytts.signalproc.effects.AudioEffects;
+
+import javax.sound.sampled.AudioInputStream;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import javax.sound.sampled.AudioInputStream;
-
-import javafx.scene.layout.AnchorPane;
-import marytts.LocalMaryInterface;
-import marytts.MaryInterface;
-import marytts.exceptions.MaryConfigurationException;
-import marytts.exceptions.SynthesisException;
-import marytts.modules.synthesis.Voice;
-import marytts.signalproc.effects.AudioEffect;
-import marytts.signalproc.effects.AudioEffects;
 
 /**
  * @author GOXR3PLUS

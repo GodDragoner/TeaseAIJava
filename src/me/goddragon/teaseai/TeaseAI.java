@@ -63,8 +63,8 @@ public class TeaseAI extends Application {
     public final ConfigValue DEBUG_MODE = new ConfigValue("debugmode", false, configHandler);
 
     private Session session;
-    public boolean TextToSpeechEnabled = false; 
-    
+    public boolean TextToSpeechEnabled = false;
+    public boolean responsesEnabled = true;
 
     @Override
     public void start(Stage primaryStage) throws Exception {

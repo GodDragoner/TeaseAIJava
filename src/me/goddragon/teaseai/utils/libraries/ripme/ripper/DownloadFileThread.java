@@ -1,24 +1,18 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper;
 
+import me.goddragon.teaseai.utils.TeaseLogger;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
+import org.jsoup.HttpStatusException;
+
+import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
-
-import javax.net.ssl.HttpsURLConnection;
-
-import me.goddragon.teaseai.utils.TeaseLogger;
-import org.jsoup.HttpStatusException;
-
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
-import static java.lang.Math.toIntExact;
 
 /**
  * Thread for downloading files.

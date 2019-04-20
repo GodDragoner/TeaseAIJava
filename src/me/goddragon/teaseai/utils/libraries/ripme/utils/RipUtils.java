@@ -1,5 +1,13 @@
 package me.goddragon.teaseai.utils.libraries.ripme.utils;
 
+import me.goddragon.teaseai.utils.TeaseLogger;
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractRipper;
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.*;
+import org.apache.commons.lang.math.NumberUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -7,18 +15,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import me.goddragon.teaseai.utils.TeaseLogger;
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.EroShareRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.EromeRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.ImgurRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.VidbleRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.GfycatRipper;
-import org.apache.commons.lang.math.NumberUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 
 public class RipUtils {

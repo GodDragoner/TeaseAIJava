@@ -5,7 +5,6 @@ import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractSingleFileRippe
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
