@@ -18,8 +18,6 @@ import me.goddragon.teaseai.gui.main.MainGuiController;
 
 import java.io.IOException;
 
-import com.sun.tools.javac.comp.Check;
-
 
 /**
  * Created by GodDragon on 27.03.2018.
