@@ -94,18 +94,18 @@ public class ChatParticipant {
 
         ChatHandler.getHandler().addLine(nameText, messageText);
     }
-    
-    public void customMessage(String message, long delay, boolean showTyping)
-    {
-        if (delay == -1)
-        {
+
+    public void customMessage(String message, long delay, boolean showTyping) {
+        if (delay == -1) {
             delay = ChatHandler.getHandler().getMillisToPause(message);
         }
+
         message = VocabularyHandler.getHandler().replaceAllVocabularies(message);
-        if (showTyping)
-        {
+
+        if (showTyping) {
             startTyping(message);
         }
+
         sendMessage(message, delay, StringUtils.processString(message));
     }
 
