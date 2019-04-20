@@ -1,5 +1,12 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractJSONRipper;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -10,14 +17,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractJSONRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 
 /**
  * https://github.com/500px/api-documentation

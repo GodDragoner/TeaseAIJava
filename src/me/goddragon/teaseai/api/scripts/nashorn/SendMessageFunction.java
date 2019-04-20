@@ -1,18 +1,13 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
 import me.goddragon.teaseai.api.chat.ChatHandler;
-import me.goddragon.teaseai.api.chat.vocabulary.VocabularyHandler;
 import me.goddragon.teaseai.api.media.MediaHandler;
 import me.goddragon.teaseai.utils.FileUtils;
-import me.goddragon.teaseai.utils.StringUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
-import sun.security.provider.JavaKeyStore.CaseExactJKS;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Level;
-
-import org.codehaus.groovy.classgen.Verifier.DefaultArgsAction;
 
 /**
  * Created by GodDragon on 25.03.2018.

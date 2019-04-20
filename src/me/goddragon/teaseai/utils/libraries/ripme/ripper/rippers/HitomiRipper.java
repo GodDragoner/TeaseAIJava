@@ -1,5 +1,10 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
+import org.json.JSONArray;
+import org.jsoup.nodes.Document;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,13 +13,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.json.JSONArray;
-import org.jsoup.nodes.Document;
-
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
-import org.jsoup.nodes.Element;
 
 public class HitomiRipper extends AbstractHTMLRipper {
 

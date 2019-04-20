@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
+import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.Answer;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.utils.TeaseLogger;
@@ -29,6 +30,10 @@ public class SendInputFunction extends CustomFunction {
                 TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
                 return null;
             case 1:
+                TeaseAI.application.responsesEnabled = false;
+                return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
+            case 2:
+                TeaseAI.application.responsesEnabled = (Boolean) args[1];
                 return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
             default:
                 Answer answer;

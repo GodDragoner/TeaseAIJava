@@ -1,13 +1,13 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper;
 
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
-
-import org.json.JSONObject;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 
 /**
  * Simplified ripper, designed for ripping from sites by parsing JSON.

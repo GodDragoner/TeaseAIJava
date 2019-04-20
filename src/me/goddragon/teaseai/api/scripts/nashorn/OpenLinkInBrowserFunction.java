@@ -2,14 +2,14 @@ package me.goddragon.teaseai.api.scripts.nashorn;
 
 import me.goddragon.teaseai.utils.TeaseLogger;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.logging.Level;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.logging.Level;
 
 /**
  * Created by Go-mei-sa on 01.06.2018.

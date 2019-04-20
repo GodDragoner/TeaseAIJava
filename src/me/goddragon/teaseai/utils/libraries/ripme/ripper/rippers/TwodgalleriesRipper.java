@@ -1,5 +1,13 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Base64;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
+import org.jsoup.Connection.Method;
+import org.jsoup.Connection.Response;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -10,15 +18,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.jsoup.Connection.Method;
-import org.jsoup.Connection.Response;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Base64;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 
 public class TwodgalleriesRipper extends AbstractHTMLRipper {
 

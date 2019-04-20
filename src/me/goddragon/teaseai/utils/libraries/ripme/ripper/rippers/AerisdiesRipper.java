@@ -1,22 +1,21 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
-import java.util.HashMap;
 
 public class AerisdiesRipper extends AbstractHTMLRipper {
 

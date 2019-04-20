@@ -1,10 +1,13 @@
 package me.goddragon.teaseai.utils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.*;
+import java.util.logging.Level;
 
 /**
  * Created by GodDragon on 24.03.2018.
