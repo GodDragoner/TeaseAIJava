@@ -71,6 +71,7 @@ public class ChatHandler {
         //Initial space in chat
         addText(new Text(" "));
         textToSpeech = new TextToSpeech();
+
         textToSpeech.setVoice("dfki-prudence-hsmm");
     }
 

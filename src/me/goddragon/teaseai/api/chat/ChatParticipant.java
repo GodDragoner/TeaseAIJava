@@ -70,6 +70,7 @@ public class ChatParticipant {
 
         choosePictureSet();
         textToSpeech = new TextToSpeech();
+
         textToSpeech.setVoice("dfki-prudence-hsmm");
     }
 
@@ -198,6 +199,7 @@ public class ChatParticipant {
             for (Text text2 : messages) {
                 toSpeak += text2.getText();
             }
+
             textToSpeech.speak(toSpeak, 1.0f, true, false);
         }
 
