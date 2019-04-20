@@ -29,55 +29,45 @@ public class DebugMessageFunction extends CustomFunction {
     @Override
     public Object call(Object object, Object... args) {
         super.call(object, args);
-        if (!TeaseAI.application.DEBUG_MODE.getBoolean() && args.length != 0)
-        {
+        if (!TeaseAI.application.DEBUG_MODE.getBoolean() && args.length != 0) {
             TeaseLogger.getLogger().log(Level.INFO, "[Info]:" + args[0].toString());
             return null;
         }
-        switch(args.length) {
+        switch (args.length) {
             case 1:
-                if (args[0] instanceof String)
-                {
-                    ChatHandler.getHandler().addLine(StringUtils.processString("<c=lightgreen b fs=16>Info: <><c=darkslategrey b>" + (String)args[0]));
-                }
-                else {
+                if (args[0] instanceof String) {
+                    ChatHandler.getHandler().addLine(StringUtils.processString("<c=lightgreen b fs=16>Info: <><c=darkslategrey b>" + args[0]));
+                } else {
                     TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage must have a String for the first argument");
                 }
                 return null;
             case 2:
-                if (!(args[0] instanceof String))
-                {
+                if (!(args[0] instanceof String)) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage must have a String for the first argument");
                     return null;
                 }
-                if(args[1] instanceof Integer) {
-                    ChatHandler.getHandler().addLine(StringUtils.processString("<c=lightgreen b fs=16>Info: <><c=darkslategrey b>" + (String)args[0]));
-                    if ((int)args[1] != 0)
-                    {
-                        long delay = (int)args[1];
-                        if (delay == -1)
-                        {
+                if (args[1] instanceof Integer) {
+                    ChatHandler.getHandler().addLine(StringUtils.processString("<c=lightgreen b fs=16>Info: <><c=darkslategrey b>" + args[0]));
+                    if ((int) args[1] != 0) {
+                        long delay = (int) args[1];
+                        if (delay == -1) {
                             delay = ChatHandler.getHandler().getMillisToPause(args[0].toString());
                         }
-                        try
-                        {
+                        try {
                             Thread.sleep(delay);
-                        }
-                        catch (InterruptedException e)
-                        {
-                            // TODO Auto-generated catch block
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
                     return null;
-                } else if(args[1] instanceof String) {
-                    ChatHandler.getHandler().addLine(StringUtils.processString("<c=lightgreen b fs=16>Info: <><c=darkslategrey b>" + (String)args[0]));
+                } else if (args[1] instanceof String) {
+                    ChatHandler.getHandler().addLine(StringUtils.processString("<c=lightgreen b fs=16>Info: <><c=darkslategrey b>" + args[0]));
 
                     //TODO: Support for urls, video etc.
                     File file = FileUtils.getRandomMatchingFile((String) args[1]);
 
-                    if(file != null) {
-                        MediaHandler.getHandler().showPicture(file, (int) (ChatHandler.getHandler().getMillisToPause(args[0].toString())/1000));
+                    if (file != null) {
+                        MediaHandler.getHandler().showPicture(file, (int) (ChatHandler.getHandler().getMillisToPause(args[0].toString()) / 1000));
                     }
 
                     return null;
