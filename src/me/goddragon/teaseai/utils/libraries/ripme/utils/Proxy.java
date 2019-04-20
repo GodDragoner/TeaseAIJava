@@ -2,8 +2,8 @@ package me.goddragon.teaseai.utils.libraries.ripme.utils;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Proxy/Socks setter

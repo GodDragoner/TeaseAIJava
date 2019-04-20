@@ -29,6 +29,7 @@ import me.goddragon.teaseai.gui.StartupProgressPane;
 import me.goddragon.teaseai.gui.main.MainGuiController;
 import me.goddragon.teaseai.gui.settings.AppearanceSettings;
 import me.goddragon.teaseai.utils.TeaseLogger;
+import me.goddragon.teaseai.utils.update.UpdateHandler;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -63,15 +64,15 @@ public class TeaseAI extends Application {
 
     private Session session;
     public boolean TextToSpeechEnabled = false;
-
+    public boolean responsesEnabled = true;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        if (Main.JAVA_VERSION < 10) {
+        if(Main.JAVA_VERSION < 10) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Old Java Version Detected");
             alert.setHeaderText(null);
-            alert.setContentText("You are using java version " + Main.JAVA_VERSION + " which is not supported. Please use Java 10 or higher. This program will close now.");
+            alert.setContentText("You are using java version "  + Main.JAVA_VERSION + " which is not supported. Please use Java 10 or higher. This program will close now.");
             alert.showAndWait();
             return;
         }
@@ -90,10 +91,10 @@ public class TeaseAI extends Application {
         configHandler.loadConfig();
 
         ProgressForm progressForm = new ProgressForm("Checking for TAJ update...");
-        Task<Void> task = new Task<>() {
+        Task<Void> task = new Task<Void>() {
             @Override
             public Void call() throws InterruptedException {
-                //UpdateHandler.getHandler().checkForUpdate();
+                UpdateHandler.getHandler().checkForUpdate();
 
                 progressForm.setNameSync("Checking personalities...");
                 PersonalityManager.getManager().setProgressUpdate((workDone, totalWork) ->
@@ -127,9 +128,8 @@ public class TeaseAI extends Application {
 
         Thread thread = new Thread(task);
         thread.start();
-
-
-        if (TEXT_TO_SPEECH.getInt() == 1) {
+        if (TEXT_TO_SPEECH.getInt() == 1)
+        {
             setTTS(true);
         }
     }
@@ -186,12 +186,12 @@ public class TeaseAI extends Application {
         }
 
         //Repeat for all queued responses
-        while (true) {
+        while(true) {
             Response queuedResponse = ResponseHandler.getHandler().getLatestQueuedResponse();
 
             if (queuedResponse != null) {
                 ResponseHandler.getHandler().removeQueuedResponse(queuedResponse);
-                if (queuedResponse.trigger()) {
+                if(queuedResponse.trigger()) {
                     return true;
                 }
             } else {
@@ -216,7 +216,7 @@ public class TeaseAI extends Application {
         waitThread(timeoutMillis);
 
         //Let's check whether we are supposed to force the session to end
-        if (Thread.currentThread() == scriptThread) {
+        if(Thread.currentThread() == scriptThread) {
             session.checkForForcedEnd();
         }
     }
@@ -226,18 +226,18 @@ public class TeaseAI extends Application {
     }
 
     public void sleepPossibleScripThread(long sleepMillis, boolean runnablesOnly) {
-        if (Thread.currentThread() != scriptThread) {
+        if(Thread.currentThread() != scriptThread) {
             sleepThread(sleepMillis);
         } else {
             long startedAt = System.currentTimeMillis();
             long millisPerInterval = 100;
-            while (startedAt + sleepMillis > System.currentTimeMillis()) {
+            while(startedAt + sleepMillis > System.currentTimeMillis()) {
                 sleepThread(millisPerInterval);
 
                 //Check for new stuff
-                if (!runnablesOnly) {
+                if(!runnablesOnly) {
                     //Only check if the session already started
-                    if (session.isStarted()) {
+                    if(session.isStarted()) {
                         session.checkForInteraction();
                     }
                 } else {
@@ -248,7 +248,7 @@ public class TeaseAI extends Application {
     }
 
     public void sleepScripThread(long sleepMillis) {
-        if (Thread.currentThread() != scriptThread) {
+        if(Thread.currentThread() != scriptThread) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Tried to sleep script thread from other thread.");
             return;
         }
@@ -257,7 +257,7 @@ public class TeaseAI extends Application {
     }
 
     public void waitScriptThread(long timeoutMillis) {
-        if (Thread.currentThread() != scriptThread) {
+        if(Thread.currentThread() != scriptThread) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Tried to wait script thread from other thread.");
             return;
         }
@@ -310,8 +310,9 @@ public class TeaseAI extends Application {
         session.getActivePersonality().getVariableHandler().clearTemporaryVariables();
         AppearanceSettings.loadSelectedTheme();
     }
-
-    public void setTTS(boolean value) {
+    
+    public void setTTS(boolean value)
+    {
         TextToSpeechEnabled = value;
     }
 
@@ -334,12 +335,13 @@ public class TeaseAI extends Application {
     public Session getSession() {
         return session;
     }
-
+    
     public Scene getScene() {
         return mainScene;
     }
-
-    public static TeaseAI getApplication() {
+    
+    public static TeaseAI getApplication()
+    {
         return application;
     }
 }

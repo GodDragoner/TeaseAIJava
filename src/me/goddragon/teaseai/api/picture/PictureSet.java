@@ -3,7 +3,8 @@ package me.goddragon.teaseai.api.picture;
 import me.goddragon.teaseai.utils.RandomUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
-import java.io.*;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;

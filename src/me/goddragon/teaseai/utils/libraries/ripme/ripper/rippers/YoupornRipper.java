@@ -1,5 +1,11 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractSingleFileRipper;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -7,14 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractSingleFileRipper;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.VideoRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 
 public class YoupornRipper extends AbstractSingleFileRipper {
 

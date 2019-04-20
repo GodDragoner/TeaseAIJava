@@ -1,8 +1,5 @@
 package me.goddragon.teaseai.gui.settings;
 
-import java.io.File;
-import java.net.URL;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -16,7 +13,9 @@ import me.goddragon.teaseai.api.media.MediaHolder;
 import me.goddragon.teaseai.api.media.MediaType;
 import me.goddragon.teaseai.api.media.MediaURL;
 import me.goddragon.teaseai.utils.libraries.ripme.App;
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractRipper;
+
+import java.io.File;
+import java.net.URL;
 
 /**
  * Created by GodDragon on 28.03.2018.

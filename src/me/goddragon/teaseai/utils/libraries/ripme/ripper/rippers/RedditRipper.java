@@ -1,5 +1,13 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AlbumRipper;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.RipUtils;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -8,19 +16,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.AlbumRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.RipUtils;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
-import org.jsoup.Jsoup;
-
-import javax.swing.text.Document;
-import javax.swing.text.Element;
 
 public class RedditRipper extends AlbumRipper {
 

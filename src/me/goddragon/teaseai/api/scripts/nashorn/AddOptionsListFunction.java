@@ -1,8 +1,5 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.PersonalitiesSettingsHandler;
 import me.goddragon.teaseai.api.config.PersonalitySettingsPanel;
@@ -10,6 +7,9 @@ import me.goddragon.teaseai.api.config.PersonalityVariable;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.utils.TeaseLogger;
+
+import java.util.ArrayList;
+import java.util.logging.Level;
 
 public class AddOptionsListFunction extends CustomFunction
 {
