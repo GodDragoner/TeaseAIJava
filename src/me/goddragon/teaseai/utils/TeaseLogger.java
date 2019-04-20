@@ -1,10 +1,15 @@
 package me.goddragon.teaseai.utils;
 
-import java.io.*;
+import org.apache.commons.io.output.TeeOutputStream;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.*;
+import java.util.logging.Level;
 
 /**
  * Created by GodDragon on 24.03.2018.
@@ -35,7 +40,7 @@ public class TeaseLogger {
             Date date = new Date();
 
             //Set the system error output to the log file
-            outStream = new PrintStream(new FileOutputStream("Logs" + File.separator + "log-" + dateFormat.format(date) + ".txt"));
+            outStream = new PrintStream(new TeeOutputStream(System.out, new FileOutputStream("Logs" + File.separator + "log-" + dateFormat.format(date) + ".txt")));
             System.setOut(outStream);
             System.setErr(outStream);
 
