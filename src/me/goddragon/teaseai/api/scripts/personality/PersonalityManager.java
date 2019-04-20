@@ -33,7 +33,7 @@ public class PersonalityManager {
             progressUpdate.accept(x + 1, folders.size());
 
             Personality personality = new Personality(folders.get(x).getName());
-            personality.checkForUpdate();
+            //personality.checkForUpdate();
             addPersonality(personality);
             TeaseLogger.getLogger().log(Level.INFO, "Personality '" + personality.getName() + "' version " + personality.getVersion() + " loaded.");
         }
