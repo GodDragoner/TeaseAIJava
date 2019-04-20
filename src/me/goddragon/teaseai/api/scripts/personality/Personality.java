@@ -7,7 +7,6 @@ import javafx.scene.control.ButtonType;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
-import me.goddragon.teaseai.api.config.PersonalitiesSettingsHandler;
 import me.goddragon.teaseai.api.config.PersonalitySettingsHandler;
 import me.goddragon.teaseai.api.config.VariableHandler;
 import me.goddragon.teaseai.api.picture.PictureSelector;

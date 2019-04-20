@@ -296,8 +296,7 @@ public class ChatHandler {
     public void onSubMessage(String message) {
         if (currentCallback != null && currentCallback.getAnswer() == null) {
             currentCallback.setAnswer(message);
-
-
+            TeaseAI.application.responsesEnabled = true;
             //Wake the script thread, the user might want some response
             synchronized (TeaseAI.application.getScriptThread()) {
                 TeaseAI.application.getScriptThread().notify();

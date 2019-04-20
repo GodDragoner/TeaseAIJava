@@ -34,7 +34,7 @@ public class PersonalitiesSettingsHandler {
 
     public void addGuiComponent(PersonalityVariable comp) {
         if (addedComponents.contains(comp)) {
-            throw new IllegalArgumentException("Gui component added that has already been added. Check if it has been added first!");
+            throw new IllegalCallerException("Gui component added that has already been added. Check if it has been added first!");
         } else {
             addedComponents.add(comp);
         }

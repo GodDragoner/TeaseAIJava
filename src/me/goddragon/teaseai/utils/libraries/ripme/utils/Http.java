@@ -1,11 +1,7 @@
 package me.goddragon.teaseai.utils.libraries.ripme.utils;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-
+import me.goddragon.teaseai.utils.TeaseLogger;
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractRipper;
 import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
@@ -13,8 +9,11 @@ import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import me.goddragon.teaseai.utils.TeaseLogger;
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractRipper;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * Wrapper around the Jsoup connection methods.
