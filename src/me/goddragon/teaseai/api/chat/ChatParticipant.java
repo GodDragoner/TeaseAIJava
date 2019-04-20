@@ -71,6 +71,7 @@ public class ChatParticipant {
 
         choosePictureSet();
         textToSpeech = new TextToSpeech();
+
         textToSpeech.setVoice("dfki-prudence-hsmm");
     }
 
@@ -93,18 +94,18 @@ public class ChatParticipant {
 
         ChatHandler.getHandler().addLine(nameText, messageText);
     }
-    
-    public void customMessage(String message, long delay, boolean showTyping)
-    {
-        if (delay == -1)
-        {
+
+    public void customMessage(String message, long delay, boolean showTyping) {
+        if (delay == -1) {
             delay = ChatHandler.getHandler().getMillisToPause(message);
         }
+
         message = VocabularyHandler.getHandler().replaceAllVocabularies(message);
-        if (showTyping)
-        {
+
+        if (showTyping) {
             startTyping(message);
         }
+
         sendMessage(message, delay, StringUtils.processString(message));
     }
 
@@ -218,6 +219,7 @@ public class ChatParticipant {
             for (Text text2 : messages) {
                 toSpeak += text2.getText();
             }
+
             textToSpeech.speak(toSpeak, 1.0f, true, false);
         }
 
