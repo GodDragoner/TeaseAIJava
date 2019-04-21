@@ -33,8 +33,12 @@ public class SendInputFunction extends CustomFunction {
                 TeaseAI.application.responsesEnabled = false;
                 return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
             case 2:
-                TeaseAI.application.responsesEnabled = (Boolean) args[1];
-                return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
+                if (args[1] instanceof Integer) {
+                    return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Integer) args[1]);
+                } else if(args[1] instanceof Boolean) {
+                    TeaseAI.application.responsesEnabled = (Boolean) args[1];
+                    return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
+                }
             default:
                 Answer answer;
                 int offset = 1;
