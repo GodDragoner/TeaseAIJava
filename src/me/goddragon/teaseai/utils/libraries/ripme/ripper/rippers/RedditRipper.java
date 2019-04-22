@@ -23,7 +23,7 @@ public class RedditRipper extends AlbumRipper {
         super(url);
     }
 
-    private static final String HOST   = "reddit";
+    private static final String HOST = "reddit";
     private static final String DOMAIN = "reddit.com";
 
     private static final String REDDIT_USER_AGENT = "RipMe:github.com/RipMeApp/ripme:1.0.15 (by /u/metaprime and /u/ineedmorealts)";
@@ -76,7 +76,6 @@ public class RedditRipper extends AlbumRipper {
     }
 
 
-
     private URL getAndParseAndReturnNext(URL url) throws IOException {
         JSONArray jsonArray = getJsonArrayFromURL(url), children;
         JSONObject json, data;
@@ -98,8 +97,7 @@ public class RedditRipper extends AlbumRipper {
                 String nextURLString = Utils.stripURLParameter(url.toExternalForm(), "after");
                 if (nextURLString.contains("?")) {
                     nextURLString = nextURLString.concat("&after=" + data.getString("after"));
-                }
-                else {
+                } else {
                     nextURLString = nextURLString.concat("?after=" + data.getString("after"));
                 }
                 nextURL = new URL(nextURLString);
@@ -129,10 +127,10 @@ public class RedditRipper extends AlbumRipper {
         lastRequestTime = System.currentTimeMillis();
 
         String jsonString = Http.url(url)
-                                .ignoreContentType()
-                                .userAgent(REDDIT_USER_AGENT)
-                                .response()
-                                .body();
+                .ignoreContentType()
+                .userAgent(REDDIT_USER_AGENT)
+                .response()
+                .body();
 
         Object jsonObj = new JSONTokener(jsonString).nextValue();
         JSONArray jsonArray = new JSONArray();
@@ -152,8 +150,7 @@ public class RedditRipper extends AlbumRipper {
         if (kind.equals("t1")) {
             // Comment
             handleBody(data.getString("body"), data.getString("id"), "");
-        }
-        else if (kind.equals("t3")) {
+        } else if (kind.equals("t3")) {
             // post
             if (data.getBoolean("is_self")) {
                 // TODO Parse self text
@@ -164,8 +161,8 @@ public class RedditRipper extends AlbumRipper {
             }
             if (data.has("replies") && data.get("replies") instanceof JSONObject) {
                 JSONArray replies = data.getJSONObject("replies")
-                                        .getJSONObject("data")
-                                        .getJSONArray("children");
+                        .getJSONObject("data")
+                        .getJSONArray("children");
                 for (int i = 0; i < replies.length(); i++) {
                     parseJsonChild(replies.getJSONObject(i));
                 }
@@ -246,8 +243,7 @@ public class RedditRipper extends AlbumRipper {
                 if (urlToDownload != null) {
                     addURLToDownload(urlToDownload, new File(savePath));
                 }
-            }
-            else {
+            } else {
                 addURLToDownload(urls.get(0), id + title, "", theUrl, null);
             }
         } else if (urls.size() > 1) {

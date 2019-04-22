@@ -63,7 +63,7 @@ public class URLGenreSettings {
                     }
                 }
 
-                if(!urls.isEmpty()) {
+                if (!urls.isEmpty()) {
                     saveImageMediaURLs();
                 }
 
@@ -96,7 +96,7 @@ public class URLGenreSettings {
                         changed = true;
                     }
 
-                    if(changed) {
+                    if (changed) {
                         saveImageMediaURLs();
                     }
                 }
@@ -111,7 +111,7 @@ public class URLGenreSettings {
         settingsController.urlFetishTypeList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MediaFetishType>() {
             @Override
             public void changed(ObservableValue<? extends MediaFetishType> observable, MediaFetishType oldValue, MediaFetishType newValue) {
-                if(newValue != null) {
+                if (newValue != null) {
                     updateAssignedURLList();
                 }
             }
@@ -121,7 +121,7 @@ public class URLGenreSettings {
         settingsController.removeMediaURLButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(settingsController.assignedURLFileList.getSelectionModel().getSelectedItems().isEmpty()) {
+                if (settingsController.assignedURLFileList.getSelectionModel().getSelectedItems().isEmpty()) {
                     return;
                 }
 
@@ -129,7 +129,7 @@ public class URLGenreSettings {
 
                 boolean changed = false;
                 for (Object object : settingsController.assignedURLFileList.getSelectionModel().getSelectedItems()) {
-                    if(!settingsController.assignedURLFileList.getItems().contains(object)) {
+                    if (!settingsController.assignedURLFileList.getItems().contains(object)) {
                         continue;
                     }
 
@@ -142,7 +142,7 @@ public class URLGenreSettings {
                     changed = true;
                 }
 
-                if(changed) {
+                if (changed) {
                     saveImageMediaURLs();
                 }
             }
@@ -163,7 +163,7 @@ public class URLGenreSettings {
                     }
                 }
 
-                if(!settingsController.urlFileDragDropList.getSelectionModel().getSelectedItems().isEmpty()) {
+                if (!settingsController.urlFileDragDropList.getSelectionModel().getSelectedItems().isEmpty()) {
                     saveImageMediaURLs();
                 }
             }

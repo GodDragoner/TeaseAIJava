@@ -69,7 +69,7 @@ public class PornhubRipper extends VideoRipper {
                 title = title.replaceAll("\\+", " ");
 
                 vidUrl = null;
-                for (String quality : new String[] {"1080", "720", "480", "240"}) {
+                for (String quality : new String[]{"1080", "720", "480", "240"}) {
                     Pattern pv = Pattern.compile("\"format\":\"(mp4|upshell)\",\"quality\":\"" + quality + "\",\"videoUrl\":\"(.*?)\"");
                     Matcher mv = pv.matcher(html);
                     if (mv.find()) {
@@ -88,8 +88,7 @@ public class PornhubRipper extends VideoRipper {
                 LOGGER.log(Level.SEVERE, "Error while retrieving video URL at " + url, e);
                 throw new IOException(e);
             }
-        }
-        else {
+        } else {
             throw new IOException("Failed to download " + this.url + " : could not find 'flashvars'");
         }
         waitForThreads();

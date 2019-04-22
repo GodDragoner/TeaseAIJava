@@ -96,14 +96,14 @@ public class GeneralSettings {
                 }
             }
         });
-        
+
         settingsController.debugCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 TeaseAI.application.DEBUG_MODE.setValue(newValue.toString());
             }
         });
-        
+
         settingsController.debugCheckbox.selectedProperty().set(TeaseAI.application.DEBUG_MODE.getBoolean());
 
         settingsController.textToSpeechComboBox.getItems().addAll("Personality Decides (Reccomended)", "Enabled", "Disabled");

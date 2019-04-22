@@ -466,8 +466,8 @@ public class MainGuiController {
     }
 
     private void handleNodeStyle(Node node) {
-        if(node instanceof Pane) {
-            for(Node subNode : ((Pane) node).getChildren()) {
+        if (node instanceof Pane) {
+            for (Node subNode : ((Pane) node).getChildren()) {
                 handleNodeStyle(subNode);
             }
         }

@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class XcartxRipper extends AbstractHTMLRipper {
-    private Map<String,String> cookies = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
 
 
     public XcartxRipper(URL url) throws IOException {
@@ -28,6 +28,7 @@ public class XcartxRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "xcartx";
     }
+
     @Override
     public String getDomain() {
         return "xcartx.com";

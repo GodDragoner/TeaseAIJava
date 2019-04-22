@@ -20,7 +20,7 @@ public class AddResponseIndicatorFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        for(Object arg : args) {
+        for (Object arg : args) {
             ResponseHandler.getHandler().getCurrentLoadingResponse().addIndicator(arg.toString());
         }
 

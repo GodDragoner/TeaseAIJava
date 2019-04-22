@@ -152,7 +152,7 @@ public class MediaTagging {
 
                     directory = selectedDirectory;
 
-                    if(initiateNewStage()) {
+                    if (initiateNewStage()) {
                         imageTaggingWindow.show();
                     }
                 }
@@ -217,7 +217,7 @@ public class MediaTagging {
 
     public void addTagsToButton(MenuButton button, TagType tagType) {
         PictureTag[] viewTags = PictureTag.getPictureTagsByType(tagType);
-        if(button.getItems().isEmpty()) {
+        if (button.getItems().isEmpty()) {
             for (int i = 0; i < viewTags.length; i++) {
                 CheckBox thisCheckBox = new CheckBox(viewTags[i].getTagName().replace("Tag", ""));
                 checkBoxes.put(viewTags[i], thisCheckBox);
@@ -240,8 +240,8 @@ public class MediaTagging {
             }
         }
 
-        for(PictureTag pictureTag : viewTags) {
-            if(currentImageTags.contains(pictureTag)) {
+        for (PictureTag pictureTag : viewTags) {
+            if (currentImageTags.contains(pictureTag)) {
                 checkBoxes.get(pictureTag).setSelected(true);
             } else {
                 checkBoxes.get(pictureTag).setSelected(false);
@@ -276,7 +276,7 @@ public class MediaTagging {
             }
         }
 
-        if(taggedList.isEmpty()) {
+        if (taggedList.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("No images found");
             alert.setHeaderText(null);
@@ -286,7 +286,7 @@ public class MediaTagging {
             return false;
         }
 
-        files = taggedList.toArray(new TaggedPicture[] {});
+        files = taggedList.toArray(new TaggedPicture[]{});
 
         fileLabel.setText("File " + (currentFile + 1) + " of " + files.length + " in " + directory.getPath());
 

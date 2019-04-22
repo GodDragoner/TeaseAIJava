@@ -98,7 +98,7 @@ public class ScriptHandler {
     }
 
     public void registerFunction(CustomFunction function) {
-        for(String functionName : function.getFunctionNames()) {
+        for (String functionName : function.getFunctionNames()) {
             engine.put(functionName, function);
         }
     }
@@ -106,7 +106,7 @@ public class ScriptHandler {
     public void startPersonality(Personality personality) {
         File mainScript = new File(personality.getFolder().getAbsolutePath() + File.separator + "main.js");
 
-        if(!mainScript.isFile() || !mainScript.exists()) {
+        if (!mainScript.isFile() || !mainScript.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Personality '" + currentPersonality.getName() + "' is missing the main.js script");
         } else {
             startPersonality(personality, mainScript);
@@ -138,18 +138,17 @@ public class ScriptHandler {
     }
 
     public void evalScript(String scriptName) {
-        if(!scriptName.toLowerCase().endsWith(".js")) {
+        if (!scriptName.toLowerCase().endsWith(".js")) {
             scriptName += ".js";
         }
 
         Personality personality = currentPersonality;
-        if (personality == null)
-        {
+        if (personality == null) {
             personality = PersonalityManager.getManager().getLoadingPersonality();
         }
         File script = FileUtils.getRandomMatchingFile(personality.getFolder().getAbsolutePath() + File.separator + scriptName);
 
-        if(script == null || !script.exists()) {
+        if (script == null || !script.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Script " + scriptName + " does not exist.");
             return;
         }
@@ -166,7 +165,7 @@ public class ScriptHandler {
             this.currentFile = script;
 
             boolean resetEngine = false;
-            if(engine == null) {
+            if (engine == null) {
                 //Create a instance for the current purpose
                 this.engine = new ScriptEngineManager().getEngineByName("nashorn");
                 ScriptHandler.getHandler().load();
@@ -176,7 +175,7 @@ public class ScriptHandler {
             engine.eval(new FileReader(script));
 
             //Reset the engine again because we only created it temporarily
-            if(resetEngine) {
+            if (resetEngine) {
                 this.engine = null;
             }
         } catch (ScriptException e) {
@@ -185,16 +184,16 @@ public class ScriptHandler {
             e.printStackTrace();
         }
     }
-    
-    public File getPersonalityFile(String fileName) {
-    	File file = FileUtils.getRandomMatchingFile(currentPersonality.getFolder().getAbsolutePath() + File.separator + fileName);
 
-    	if (file == null || !file.exists()) {
+    public File getPersonalityFile(String fileName) {
+        File file = FileUtils.getRandomMatchingFile(currentPersonality.getFolder().getAbsolutePath() + File.separator + fileName);
+
+        if (file == null || !file.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "File " + fileName + " does not exist.");
             return null;
-    	}
-    	
-    	return file;
+        }
+
+        return file;
     }
 
     public File getCurrentFile() {

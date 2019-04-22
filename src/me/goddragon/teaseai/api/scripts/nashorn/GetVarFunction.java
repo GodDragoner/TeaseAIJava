@@ -26,20 +26,17 @@ public class GetVarFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
         Personality personality;
-        if (TeaseAI.application.getSession() == null)
-        {
+        if (TeaseAI.application.getSession() == null) {
             personality = PersonalityManager.getManager().getLoadingPersonality();
-        }
-        else
-        {
+        } else {
             personality = PersonalityManager.getManager().getActivePersonality();
         }
-        
+
         switch (args.length) {
             case 1:
                 return personality.getVariableHandler().getVariableValue(args[0].toString());
             case 2:
-                if(personality.getVariableHandler().variableExist(args[0].toString())) {
+                if (personality.getVariableHandler().variableExist(args[0].toString())) {
                     return personality.getVariableHandler().getVariableValue(args[0].toString());
                 } else {
                     //Return default

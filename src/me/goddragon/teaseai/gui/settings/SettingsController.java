@@ -19,7 +19,6 @@ import me.goddragon.teaseai.gui.main.MainGuiController;
 import java.io.IOException;
 
 
-
 /**
  * Created by GodDragon on 27.03.2018.
  */
@@ -210,10 +209,10 @@ public class SettingsController {
 
     @FXML
     public Button updateGUIButton;
-    
+
     @FXML
     public ComboBox<String> textToSpeechComboBox;
-    
+
     @FXML
     public CheckBox debugCheckbox;
 

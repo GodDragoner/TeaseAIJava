@@ -32,12 +32,12 @@ public class AddSpinnerFunction extends CustomFunction {
             int spinnerType = SpinnerComponent.INTEGER_TYPE;
 
             //Please use format type in the future for performance boost (won't have to check for your type manually)
-            if(args.length == 5) {
-                if(args[4].toString().equalsIgnoreCase("double")) {
+            if (args.length == 5) {
+                if (args[4].toString().equalsIgnoreCase("double")) {
                     spinnerType = SpinnerComponent.DOUBLE_TYPE;
                 }
                 //Integer is already assigned as default so we can check whether the provided type is NOT an integer and then we can log the warning
-                else if(!args[4].toString().equalsIgnoreCase("integer")) {
+                else if (!args[4].toString().equalsIgnoreCase("integer")) {
                     TeaseLogger.getLogger().log(Level.WARNING, "Trying to add gui component '" + args[1] + "' with invalid value type '" + args[4] + "'.");
                 }
             }
@@ -65,9 +65,9 @@ public class AddSpinnerFunction extends CustomFunction {
                 } else {
                     if (!PersonalitiesSettingsHandler.getHandler().hasComponent(variable)) {
                         PersonalitiesSettingsHandler.getHandler().addGuiComponent(variable);
-                        if(args.length == 4) {
+                        if (args.length == 4) {
                             //Check for potential double when type was not given
-                            if(args[2] instanceof Double || args[3] instanceof Double || args[2].toString().contains(".") || args[3].toString().contains(".")) {
+                            if (args[2] instanceof Double || args[3] instanceof Double || args[2].toString().contains(".") || args[3].toString().contains(".")) {
                                 spinnerType = SpinnerComponent.DOUBLE_TYPE;
                             }
                         }
@@ -89,7 +89,7 @@ public class AddSpinnerFunction extends CustomFunction {
                             }
 
                             panel.addDoubleSpinner(variable, min, max);
-                        } else if(spinnerType == SpinnerComponent.INTEGER_TYPE) {
+                        } else if (spinnerType == SpinnerComponent.INTEGER_TYPE) {
                             int min = 0;
                             int max = 0;
 
@@ -111,7 +111,7 @@ public class AddSpinnerFunction extends CustomFunction {
                 }
             }
         } else {
-            if(args.length > 0) {
+            if (args.length > 0) {
                 TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());
                 return null;
             } else {

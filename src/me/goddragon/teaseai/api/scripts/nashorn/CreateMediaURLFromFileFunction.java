@@ -23,7 +23,7 @@ public class CreateMediaURLFromFileFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        if(args.length == 1) {
+        if (args.length == 1) {
             File file = FileUtils.getRandomMatchingFile(TeaseAI.application.getSession().getActivePersonality().getFolder().getAbsolutePath() + File.separator + args[0].toString());
             if (file == null || !file.exists()) {
                 TeaseLogger.getLogger().log(Level.SEVERE, "Matching url file for path " + args[0] + " does not exist.");
@@ -32,7 +32,7 @@ public class CreateMediaURLFromFileFunction extends CustomFunction {
             }
 
             return null;
-        } else if(args.length > 0) {
+        } else if (args.length > 0) {
             TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());
             return null;
         } else {

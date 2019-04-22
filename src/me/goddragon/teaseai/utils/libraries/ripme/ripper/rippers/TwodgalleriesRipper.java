@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 public class TwodgalleriesRipper extends AbstractHTMLRipper {
 
     private int offset = 0;
-    private Map<String,String> cookies = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
 
     public TwodgalleriesRipper(URL url) throws IOException {
         super(url);
@@ -32,6 +32,7 @@ public class TwodgalleriesRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "2dgalleries";
     }
+
     @Override
     public String getDomain() {
         return "2dgalleries.com";
@@ -39,7 +40,8 @@ public class TwodgalleriesRipper extends AbstractHTMLRipper {
 
     @Override
     public String getGID(URL url) throws MalformedURLException {
-        Pattern p; Matcher m;
+        Pattern p;
+        Matcher m;
 
         p = Pattern.compile("^.*2dgalleries.com/artist/([a-zA-Z0-9\\-]+).*$");
         m = p.matcher(url.toExternalForm());
@@ -54,11 +56,11 @@ public class TwodgalleriesRipper extends AbstractHTMLRipper {
 
     private String getURL(String userid, int offset) {
         return "http://en.2dgalleries.com/artist/" + userid
-                      + "?timespan=4"
-                      + "&order=1"
-                      + "&catid=2"
-                      + "&offset=" + offset
-                      + "&ajx=1&pager=1";
+                + "?timespan=4"
+                + "&order=1"
+                + "&catid=2"
+                + "&offset=" + offset
+                + "&ajx=1&pager=1";
     }
 
     @Override
@@ -70,8 +72,8 @@ public class TwodgalleriesRipper extends AbstractHTMLRipper {
         }
         String url = getURL(getGID(this.url), offset);
         return Http.url(url)
-                   .cookies(cookies)
-                   .get();
+                .cookies(cookies)
+                .get();
     }
 
     @Override
@@ -80,8 +82,8 @@ public class TwodgalleriesRipper extends AbstractHTMLRipper {
         String url = getURL(getGID(this.url), offset);
         sleep(500);
         Document nextDoc = Http.url(url)
-                               .cookies(cookies)
-                               .get();
+                .cookies(cookies)
+                .get();
         if (nextDoc.select("div.hcaption > img").isEmpty()) {
             throw new IOException("No more images to retrieve");
         }
@@ -114,18 +116,18 @@ public class TwodgalleriesRipper extends AbstractHTMLRipper {
         cookies = resp.cookies();
         String ctoken = resp.parse().select("form > input[name=ctoken]").first().attr("value");
 
-        Map<String,String> postdata = new HashMap<>();
+        Map<String, String> postdata = new HashMap<>();
         postdata.put("user[login]", new String(Base64.decode("cmlwbWU=")));
         postdata.put("user[password]", new String(Base64.decode("cmlwcGVy")));
         postdata.put("rememberme", "1");
         postdata.put("ctoken", ctoken);
 
         resp = Http.url("http://en.2dgalleries.com/account/login")
-                   .referrer("http://en.2dgalleries.com/")
-                   .cookies(cookies)
-                   .data(postdata)
-                   .method(Method.POST)
-                   .response();
+                .referrer("http://en.2dgalleries.com/")
+                .cookies(cookies)
+                .data(postdata)
+                .method(Method.POST)
+                .response();
         cookies = resp.cookies();
     }
 }

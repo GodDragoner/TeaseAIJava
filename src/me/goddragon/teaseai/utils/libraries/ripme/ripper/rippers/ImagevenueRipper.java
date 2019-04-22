@@ -21,6 +21,7 @@ public class ImagevenueRipper extends AbstractHTMLRipper {
 
     // Thread pool for finding direct image links from "image" pages (html)
     private DownloadThreadPool imagevenueThreadPool = new DownloadThreadPool("imagevenue");
+
     @Override
     public DownloadThreadPool getThreadPool() {
         return imagevenueThreadPool;
@@ -34,6 +35,7 @@ public class ImagevenueRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "imagevenue";
     }
+
     @Override
     public String getDomain() {
         return "imagevenue.com";
@@ -76,7 +78,7 @@ public class ImagevenueRipper extends AbstractHTMLRipper {
 
     /**
      * Helper class to find and download images found on "image" pages
-     *
+     * <p>
      * Handles case when site has IP-banned the user.
      */
     private class ImagevenueImageThread extends Thread {
@@ -97,8 +99,8 @@ public class ImagevenueRipper extends AbstractHTMLRipper {
         private void fetchImage() {
             try {
                 Document doc = Http.url(url)
-                                   .retries(3)
-                                   .get();
+                        .retries(3)
+                        .get();
                 // Find image
                 Elements images = doc.select("a > img");
                 if (images.isEmpty()) {

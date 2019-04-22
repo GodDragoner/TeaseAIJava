@@ -28,6 +28,7 @@ public class MangadexRipper extends AbstractJSONRipper {
     public String getHost() {
         return "mangadex";
     }
+
     @Override
     public String getDomain() {
         return "mangadex.org";

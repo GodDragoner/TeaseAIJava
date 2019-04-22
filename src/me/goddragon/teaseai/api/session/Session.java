@@ -83,8 +83,8 @@ public class Session {
     }
 
     public void checkForForcedEnd() {
-        if(TeaseAI.application.getSession().isHaltSession()) {
-            if(TeaseAI.application.scriptThread == Thread.currentThread()) {
+        if (TeaseAI.application.getSession().isHaltSession()) {
+            if (TeaseAI.application.scriptThread == Thread.currentThread()) {
                 synchronized (TeaseAI.application.scriptThread) {
                     TeaseAI.application.getSession().end();
 
@@ -118,12 +118,12 @@ public class Session {
 
                 //Clear chat
                 TeaseAI.application.getController().getChatWindow().getChildren().clear();
-                
+
                 //Clear css
                 //TeaseAI.application.getScene().getStylesheets().clear();
 
                 //Reset playing video
-                if(MediaHandler.getHandler().getCurrentVideoPlayer() != null) {
+                if (MediaHandler.getHandler().getCurrentVideoPlayer() != null) {
                     MediaHandler.getHandler().getCurrentVideoPlayer().stop();
                 }
 
@@ -136,8 +136,8 @@ public class Session {
         });
 
         //Restore default type speed
-        for(ChatParticipant participant : ChatHandler.getHandler().getSenders().values()) {
-            if(participant.getType() != SenderType.SUB) {
+        for (ChatParticipant participant : ChatHandler.getHandler().getSenders().values()) {
+            if (participant.getType() != SenderType.SUB) {
                 participant.setTypeSpeed(ChatHandler.getHandler().getTypeSpeed());
             }
         }
@@ -152,7 +152,7 @@ public class Session {
     }
 
     public void setActivePersonality(Personality activePersonality) {
-        if(this.activePersonality != null) {
+        if (this.activePersonality != null) {
             activePersonality.unload();
         }
 

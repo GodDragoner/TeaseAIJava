@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 public class InstagramRipper extends AbstractJSONRipper {
     String nextPageID = "";
     private String qHash;
-    private  boolean rippingTag = false;
+    private boolean rippingTag = false;
     private String tagName;
 
     private String userID;
@@ -45,7 +45,6 @@ public class InstagramRipper extends AbstractJSONRipper {
     private String workAroundJsonString;
 
 
-
     public InstagramRipper(URL url) throws IOException {
         super(url);
     }
@@ -54,6 +53,7 @@ public class InstagramRipper extends AbstractJSONRipper {
     public String getHost() {
         return "instagram";
     }
+
     @Override
     public String getDomain() {
         return "instagram.com";
@@ -66,8 +66,8 @@ public class InstagramRipper extends AbstractJSONRipper {
 
     @Override
     public URL sanitizeURL(URL url) throws MalformedURLException {
-       URL san_url = new URL(url.toExternalForm().replaceAll("\\?hl=\\S*", ""));
-       LOGGER.log(Level.INFO, "sanitized URL is " + san_url.toExternalForm());
+        URL san_url = new URL(url.toExternalForm().replaceAll("\\?hl=\\S*", ""));
+        LOGGER.log(Level.INFO, "sanitized URL is " + san_url.toExternalForm());
         return san_url;
     }
 
@@ -77,38 +77,39 @@ public class InstagramRipper extends AbstractJSONRipper {
         return url.replaceAll("/[A-Z0-9]{8}/", "/");
     }
 
-    @Override public boolean hasASAPRipping() {
+    @Override
+    public boolean hasASAPRipping() {
         return true;
     }
 
     private List<String> getPostsFromSinglePage(JSONObject json) {
         List<String> imageURLs = new ArrayList<>();
         JSONArray datas;
-            if (json.getJSONObject("entry_data").getJSONArray("PostPage")
+        if (json.getJSONObject("entry_data").getJSONArray("PostPage")
+                .getJSONObject(0).getJSONObject("graphql").getJSONObject("shortcode_media")
+                .has("edge_sidecar_to_children")) {
+            datas = json.getJSONObject("entry_data").getJSONArray("PostPage")
                     .getJSONObject(0).getJSONObject("graphql").getJSONObject("shortcode_media")
-                    .has("edge_sidecar_to_children")) {
-                datas = json.getJSONObject("entry_data").getJSONArray("PostPage")
-                        .getJSONObject(0).getJSONObject("graphql").getJSONObject("shortcode_media")
-                        .getJSONObject("edge_sidecar_to_children").getJSONArray("edges");
-                for (int i = 0; i < datas.length(); i++) {
-                    JSONObject data = (JSONObject) datas.get(i);
-                    data = data.getJSONObject("node");
-                    if (data.has("is_video") && data.getBoolean("is_video")) {
-                        imageURLs.add(data.getString("video_url"));
-                    } else {
-                        imageURLs.add(data.getString("display_url"));
-                    }
-                }
-            } else {
-                JSONObject data = json.getJSONObject("entry_data").getJSONArray("PostPage")
-                        .getJSONObject(0).getJSONObject("graphql").getJSONObject("shortcode_media");
-                if (data.getBoolean("is_video")) {
+                    .getJSONObject("edge_sidecar_to_children").getJSONArray("edges");
+            for (int i = 0; i < datas.length(); i++) {
+                JSONObject data = (JSONObject) datas.get(i);
+                data = data.getJSONObject("node");
+                if (data.has("is_video") && data.getBoolean("is_video")) {
                     imageURLs.add(data.getString("video_url"));
                 } else {
                     imageURLs.add(data.getString("display_url"));
                 }
             }
-            return imageURLs;
+        } else {
+            JSONObject data = json.getJSONObject("entry_data").getJSONArray("PostPage")
+                    .getJSONObject(0).getJSONObject("graphql").getJSONObject("shortcode_media");
+            if (data.getBoolean("is_video")) {
+                imageURLs.add(data.getString("video_url"));
+            } else {
+                imageURLs.add(data.getString("display_url"));
+            }
+        }
+        return imageURLs;
     }
 
     @Override
@@ -333,12 +334,12 @@ public class InstagramRipper extends AbstractJSONRipper {
             byte[] hash = md.digest(bytesOfMessage);
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < hash.length; ++i) {
-                sb.append(Integer.toHexString((hash[i] & 0xFF) | 0x100).substring(1,3));
+                sb.append(Integer.toHexString((hash[i] & 0xFF) | 0x100).substring(1, 3));
             }
             return sb.toString();
-        } catch(UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             return null;
-        } catch(NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             return null;
         }
     }
@@ -356,8 +357,8 @@ public class InstagramRipper extends AbstractJSONRipper {
                     sleep(2500);
                     String vars = "{\"tag_name\":\"" + tagName + "\",\"first\":4,\"after\":\"" + nextPageID + "\"}";
                     String ig_gis = getIGGis(vars);
-                     toreturn = getPage("https://www.instagram.com/graphql/query/?query_hash=" + qHash +
-                                     "&variables=" + vars, ig_gis);
+                    toreturn = getPage("https://www.instagram.com/graphql/query/?query_hash=" + qHash +
+                            "&variables=" + vars, ig_gis);
                     // Sleep for a while to avoid a ban
                     LOGGER.log(Level.INFO, toreturn.toString());
                     if (!pageHasImages(toreturn)) {

@@ -93,16 +93,13 @@ public class ChatParticipant {
 
         ChatHandler.getHandler().addLine(nameText, messageText);
     }
-    
-    public void customMessage(String message, long delay, boolean showTyping)
-    {
-        if (delay == -1)
-        {
+
+    public void customMessage(String message, long delay, boolean showTyping) {
+        if (delay == -1) {
             delay = ChatHandler.getHandler().getMillisToPause(message);
         }
         message = VocabularyHandler.getHandler().replaceAllVocabularies(message);
-        if (showTyping)
-        {
+        if (showTyping) {
             startTyping(message);
         }
         sendMessage(message, delay, StringUtils.processString(message));
@@ -178,12 +175,9 @@ public class ChatParticipant {
                     ResponseHandler.getHandler().addQueuedResponse(response);
                 }
             }
-        }
-        else if (TeaseAI.application.responsesDisabled)
-        {
+        } else if (TeaseAI.application.responsesDisabled) {
 
-        }
-        else {
+        } else {
             //If the dom sends a message we will check for queued responses that need to be handle before continuing
 
             //This should always run on the script thread but maybe I am stupid so we will catch this here
@@ -266,9 +260,9 @@ public class ChatParticipant {
 
         return answer;
     }
-    public Answer sendInput(String rawMessage, long millisToWait, List<Text> messages)
-    {
-        customMessage(rawMessage,millisToWait,true);
+
+    public Answer sendInput(String rawMessage, long millisToWait, List<Text> messages) {
+        customMessage(rawMessage, millisToWait, true);
         Answer answer = new Answer(0);
         ChatHandler.getHandler().setCurrentCallback(answer);
 

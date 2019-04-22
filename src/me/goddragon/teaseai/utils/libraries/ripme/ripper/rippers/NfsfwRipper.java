@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class NfsfwRipper extends AbstractHTMLRipper {
 
     private static final String DOMAIN = "nfsfw.com",
-                                HOST   = "nfsfw";
+            HOST = "nfsfw";
 
 
     private int index = 0;
@@ -60,10 +60,10 @@ public class NfsfwRipper extends AbstractHTMLRipper {
     public Document getNextPage(Document page) throws IOException {
         String nextURL = null;
         Elements a = page.select("a.next");
-        if (!a.isEmpty()){
+        if (!a.isEmpty()) {
             // Get next page of current album
             nextURL = "http://nfsfw.com" + a.first().attr("href");
-        } else if (!subalbumURLs.isEmpty()){
+        } else if (!subalbumURLs.isEmpty()) {
             // Get next sub-album
             nextURL = subalbumURLs.remove(0);
             LOGGER.log(Level.INFO, "Detected subalbum URL at:" + nextURL);
@@ -83,7 +83,7 @@ public class NfsfwRipper extends AbstractHTMLRipper {
         } catch (InterruptedException e) {
             LOGGER.log(Level.SEVERE, "Interrupted while waiting to load next page", e);
         }
-        if (nextURL == null){
+        if (nextURL == null) {
             throw new IOException("No more pages");
         } else {
             return Http.url(nextURL).get();
@@ -105,7 +105,7 @@ public class NfsfwRipper extends AbstractHTMLRipper {
     protected void downloadURL(URL url, int index) {
         // if we are now downloading a sub-album, all images in it
         // should be indexed starting from 0
-        if (!this.currentDir.equals("")){
+        if (!this.currentDir.equals("")) {
             index = ++this.index;
         }
         NfsfwImageThread t = new NfsfwImageThread(url, currentDir, index);
@@ -127,7 +127,8 @@ public class NfsfwRipper extends AbstractHTMLRipper {
 
     @Override
     public String getGID(URL url) throws MalformedURLException {
-        Pattern p; Matcher m;
+        Pattern p;
+        Matcher m;
 
         p = Pattern.compile("https?://[wm.]*nfsfw.com/gallery/v/(.*)$");
         m = p.matcher(url.toExternalForm());
@@ -169,7 +170,7 @@ public class NfsfwRipper extends AbstractHTMLRipper {
 
     // helper methods
 
-    private List<String> getImagePageURLs(Document page){
+    private List<String> getImagePageURLs(Document page) {
         // get image pages
         // NOTE: It might be possible to get the (non-thumbnail) image URL
         // without going to its page first as there seems to be a pattern
@@ -183,7 +184,7 @@ public class NfsfwRipper extends AbstractHTMLRipper {
         return imagePageURLs;
     }
 
-    private List<String> getSubalbumURLs(Document page){
+    private List<String> getSubalbumURLs(Document page) {
         // Check if sub-albums are present on this page
         List<String> subalbumURLs = new ArrayList<>();
         for (Element suba : page.select("td.IMG > a")) {
@@ -212,8 +213,8 @@ public class NfsfwRipper extends AbstractHTMLRipper {
         public void run() {
             try {
                 Document doc = Http.url(this.url)
-                                   .referrer(this.url)
-                                   .get();
+                        .referrer(this.url)
+                        .get();
                 Elements images = doc.select(".gbBlock img");
                 if (images.isEmpty()) {
                     LOGGER.log(Level.SEVERE, "Failed to find image at " + this.url);

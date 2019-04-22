@@ -24,7 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TsuminoRipper extends AbstractHTMLRipper {
-    private Map<String,String> cookies = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
 
     public TsuminoRipper(URL url) throws IOException {
         super(url);
@@ -44,9 +44,9 @@ public class TsuminoRipper extends AbstractHTMLRipper {
         String postURL = "http://www.tsumino.com/Read/Load";
         try {
             // This sessionId will expire and need to be replaced
-            cookies.put("ASP.NET_SessionId","c4rbzccf0dvy3e0cloolmlkq");
+            cookies.put("ASP.NET_SessionId", "c4rbzccf0dvy3e0cloolmlkq");
             Document doc = Jsoup.connect(postURL).data("q", getAlbumID()).userAgent(USER_AGENT).cookies(cookies).referrer("http://www.tsumino.com/Read/View/" + getAlbumID()).get();
-            String jsonInfo = doc.html().replaceAll("<html>","").replaceAll("<head></head>", "").replaceAll("<body>", "").replaceAll("</body>", "")
+            String jsonInfo = doc.html().replaceAll("<html>", "").replaceAll("<head></head>", "").replaceAll("<body>", "").replaceAll("</body>", "")
                     .replaceAll("</html>", "").replaceAll("\n", "");
             JSONObject json = new JSONObject(jsonInfo);
             return json.getJSONArray("reader_page_urls");
@@ -95,7 +95,7 @@ public class TsuminoRipper extends AbstractHTMLRipper {
     public Document getFirstPage() throws IOException {
         Connection.Response resp = Http.url(url).response();
         cookies.putAll(resp.cookies());
-        Document doc =  resp.parse();
+        Document doc = resp.parse();
         String blacklistedTag = RipUtils.checkTags(Utils.getConfigStringArray("tsumino.blacklist.tags"), getTags(doc));
         if (blacklistedTag != null) {
             return null;

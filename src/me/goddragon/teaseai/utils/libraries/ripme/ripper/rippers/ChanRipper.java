@@ -19,9 +19,9 @@ import java.util.regex.Pattern;
 
 public class ChanRipper extends AbstractHTMLRipper {
     private static List<ChanSite> explicit_domains = Arrays.asList(
-            new ChanSite("boards.4chan.org",   Arrays.asList("4cdn.org", "is.4chan.org", "is2.4chan.org", "is3.4chan.org")),
-            new ChanSite("boards.4channel.org",   Arrays.asList("4cdn.org", "is.4chan.org", "is2.4chan.org", "is3.4chan.org")),
-            new ChanSite("4archive.org",  "imgur.com"),
+            new ChanSite("boards.4chan.org", Arrays.asList("4cdn.org", "is.4chan.org", "is2.4chan.org", "is3.4chan.org")),
+            new ChanSite("boards.4channel.org", Arrays.asList("4cdn.org", "is.4chan.org", "is2.4chan.org", "is3.4chan.org")),
+            new ChanSite("4archive.org", "imgur.com"),
             new ChanSite("archive.4plebs.org", "img.4plebs.org"),
             new ChanSite("yuki.la", "ii.yuki.la"),
             new ChanSite("55chan.org"),
@@ -30,14 +30,14 @@ public class ChanRipper extends AbstractHTMLRipper {
             new ChanSite("7chan.org"),
             new ChanSite("desuarchive.org", "desu-usergeneratedcontent.xyz"),
             new ChanSite("8ch.net", "media.8ch.net")
-        );
+    );
 
     private static List<String> url_piece_blacklist = Arrays.asList(
-        "=http",
-        "http://imgops.com/",
-        "iqdb.org",
-        "saucenao.com"
-        );
+            "=http",
+            "http://imgops.com/",
+            "iqdb.org",
+            "saucenao.com"
+    );
 
     private ChanSite chanSite;
     private Boolean generalChanSite = true;
@@ -103,9 +103,9 @@ public class ChanRipper extends AbstractHTMLRipper {
      * FoolFuuka uses the same (url) layout as 4chan
      *
      * @param url
-     * @return
-     *      The thread id in string form
-     * @throws java.net.MalformedURLException */
+     * @return The thread id in string form
+     * @throws java.net.MalformedURLException
+     */
     @Override
     public String getGID(URL url) throws MalformedURLException {
         Pattern p;
@@ -167,16 +167,18 @@ public class ChanRipper extends AbstractHTMLRipper {
     private boolean isURLBlacklisted(String url) {
         for (String blacklist_item : url_piece_blacklist) {
             if (url.contains(blacklist_item)) {
-                LOGGER.log(Level.FINE, "Skipping link that contains '"+blacklist_item+"': " + url);
+                LOGGER.log(Level.FINE, "Skipping link that contains '" + blacklist_item + "': " + url);
                 return true;
             }
         }
         return false;
     }
+
     @Override
     public List<String> getURLsFromPage(Document page) {
         List<String> imageURLs = new ArrayList<>();
-        Pattern p; Matcher m;
+        Pattern p;
+        Matcher m;
         for (Element link : page.select("a")) {
             if (!link.hasAttr("href")) {
                 continue;

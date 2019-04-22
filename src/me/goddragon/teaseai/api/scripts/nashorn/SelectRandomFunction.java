@@ -23,8 +23,8 @@ public class SelectRandomFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        if(args.length > 0) {
-            if(args.length == 1) {
+        if (args.length > 0) {
+            if (args.length == 1) {
                 return args[0];
             }
 

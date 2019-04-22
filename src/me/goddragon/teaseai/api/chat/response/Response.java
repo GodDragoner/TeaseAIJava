@@ -21,13 +21,13 @@ public abstract class Response {
     }
 
     public Response(String... indicators) {
-        for(String indicator : indicators) {
+        for (String indicator : indicators) {
             addIndicator(indicator);
         }
     }
 
     public Response(Pattern... patterns) {
-        for(Pattern pattern : patterns) {
+        for (Pattern pattern : patterns) {
             this.regexPatterns.add(pattern);
         }
     }
@@ -39,8 +39,8 @@ public abstract class Response {
     }
 
     public boolean checkPatterns(String message) {
-        for(Pattern pattern : regexPatterns) {
-            if(checkPattern(pattern, message)) {
+        for (Pattern pattern : regexPatterns) {
+            if (checkPattern(pattern, message)) {
                 return true;
             }
         }
@@ -50,8 +50,8 @@ public abstract class Response {
 
     public boolean containsLike(String message) {
         message = message.toLowerCase();
-        for(String indicator : lowerCaseIndicators) {
-            if(message.contains(indicator)) {
+        for (String indicator : lowerCaseIndicators) {
+            if (message.contains(indicator)) {
                 return true;
             }
         }
@@ -60,8 +60,8 @@ public abstract class Response {
     }
 
     public boolean containsEqual(String message) {
-        for(String indicator : indicators) {
-            if(message.contains(indicator)) {
+        for (String indicator : indicators) {
+            if (message.contains(indicator)) {
                 return true;
             }
         }
@@ -76,13 +76,13 @@ public abstract class Response {
     }
 
     public void addIndicators(String... indicators) {
-        for(String indicator : indicators) {
+        for (String indicator : indicators) {
             addIndicator(indicator);
         }
     }
 
     public void addRegexPatterns(String... patterns) {
-        for(String pattern : patterns) {
+        for (String pattern : patterns) {
             addRegexPatterns(Pattern.compile(pattern));
         }
     }
@@ -92,7 +92,7 @@ public abstract class Response {
     }
 
     public void addRegexPatterns(Pattern... patterns) {
-        for(Pattern pattern : patterns) {
+        for (Pattern pattern : patterns) {
             addRegexPattern(pattern);
         }
     }

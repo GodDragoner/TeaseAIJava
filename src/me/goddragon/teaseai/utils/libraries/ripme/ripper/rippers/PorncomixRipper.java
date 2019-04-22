@@ -16,51 +16,51 @@ import java.util.regex.Pattern;
 public class PorncomixRipper extends AbstractHTMLRipper {
 
     public PorncomixRipper(URL url) throws IOException {
-    super(url);
+        super(url);
     }
 
-        @Override
-        public String getHost() {
-            return "porncomix";
-        }
-
-        @Override
-        public String getDomain() {
-            return "porncomix.info";
-        }
-
-        @Override
-        public String getGID(URL url) throws MalformedURLException {
-            Pattern p = Pattern.compile("https?://www.porncomix.info/([a-zA-Z0-9_\\-]*)/?$");
-            Matcher m = p.matcher(url.toExternalForm());
-            if (m.matches()) {
-                return m.group(1);
-            }
-            throw new MalformedURLException("Expected proncomix URL format: " +
-                            "porncomix.info/comic - got " + url + " instead");
-        }
-
-        @Override
-        public Document getFirstPage() throws IOException {
-            // "url" is an instance field of the superclass
-            return Http.url(url).get();
-        }
-
-        @Override
-        public List<String> getURLsFromPage(Document doc) {
-            List<String> result = new ArrayList<>();
-                for (Element el : doc.select("div.single-post > div.gallery > dl > dt > a > img")) {
-                    String imageSource = el.attr("data-lazy-src");
-                    // We remove the .md from images so we download the full size image
-                    // not the thumbnail ones
-                        imageSource = imageSource.replaceAll("-\\d\\d\\dx\\d\\d\\d", "");
-                        result.add(imageSource);
-                    }
-                return result;
-        }
-
-        @Override
-        public void downloadURL(URL url, int index) {
-            addURLToDownload(url, getPrefix(index));
-        }
+    @Override
+    public String getHost() {
+        return "porncomix";
     }
+
+    @Override
+    public String getDomain() {
+        return "porncomix.info";
+    }
+
+    @Override
+    public String getGID(URL url) throws MalformedURLException {
+        Pattern p = Pattern.compile("https?://www.porncomix.info/([a-zA-Z0-9_\\-]*)/?$");
+        Matcher m = p.matcher(url.toExternalForm());
+        if (m.matches()) {
+            return m.group(1);
+        }
+        throw new MalformedURLException("Expected proncomix URL format: " +
+                "porncomix.info/comic - got " + url + " instead");
+    }
+
+    @Override
+    public Document getFirstPage() throws IOException {
+        // "url" is an instance field of the superclass
+        return Http.url(url).get();
+    }
+
+    @Override
+    public List<String> getURLsFromPage(Document doc) {
+        List<String> result = new ArrayList<>();
+        for (Element el : doc.select("div.single-post > div.gallery > dl > dt > a > img")) {
+            String imageSource = el.attr("data-lazy-src");
+            // We remove the .md from images so we download the full size image
+            // not the thumbnail ones
+            imageSource = imageSource.replaceAll("-\\d\\d\\dx\\d\\d\\d", "");
+            result.add(imageSource);
+        }
+        return result;
+    }
+
+    @Override
+    public void downloadURL(URL url, int index) {
+        addURLToDownload(url, getPrefix(index));
+    }
+}

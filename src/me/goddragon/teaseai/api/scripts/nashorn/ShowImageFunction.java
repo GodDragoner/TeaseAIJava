@@ -33,7 +33,7 @@ public class ShowImageFunction extends CustomFunction {
             if (args[0] instanceof String) {
                 String arg = args[0].toString();
                 String lowerCaseArg = arg.toLowerCase();
-                if(lowerCaseArg.startsWith("http://") || lowerCaseArg.startsWith("https://")) {
+                if (lowerCaseArg.startsWith("http://") || lowerCaseArg.startsWith("https://")) {
                     try {
                         file = MediaHandler.getHandler().getImageFromURL(arg);
                     } catch (IOException e) {
@@ -50,7 +50,7 @@ public class ShowImageFunction extends CustomFunction {
             } else if (args[0] instanceof File) {
                 file = (File) args[0];
             } else if (args[0] instanceof MediaURL) {
-                file = ((MediaURL)args[0]).getRandomMedia();
+                file = ((MediaURL) args[0]).getRandomMedia();
             }
 
             if (args.length == 2) {

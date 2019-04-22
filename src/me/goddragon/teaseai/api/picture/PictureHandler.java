@@ -34,9 +34,9 @@ public class PictureHandler {
     }
 
     public void setDefaultFolders() {
-        File normal = new File(FileUtils.getTAJPath() + File.separator + "Images"  + File.separator + "Normal");
-        File liked = new File(FileUtils.getTAJPath()  + File.separator +  "Images"  + File.separator + "Liked");
-        File loved = new File(FileUtils.getTAJPath()  + File.separator +  "Images"  + File.separator + "Loved");
+        File normal = new File(FileUtils.getTAJPath() + File.separator + "Images" + File.separator + "Normal");
+        File liked = new File(FileUtils.getTAJPath() + File.separator + "Images" + File.separator + "Liked");
+        File loved = new File(FileUtils.getTAJPath() + File.separator + "Images" + File.separator + "Loved");
         ArrayList<File> defFiles = new ArrayList<>();
 
         if (normal.exists()) {
@@ -130,11 +130,11 @@ public class PictureHandler {
 
             try {
                 dressState = DressState.valueOf(tag.toUpperCase());
-            } catch(IllegalArgumentException ex) {
+            } catch (IllegalArgumentException ex) {
                 try {
                     pictureTags.add(PictureTag.valueOf(tag.toUpperCase()));
                 } catch (IllegalArgumentException ex2) {
-                    TeaseLogger.getLogger().log(Level.SEVERE, "Trying to find images with tag '"  + tag + "' which is neither a dress state nor a valid tag");
+                    TeaseLogger.getLogger().log(Level.SEVERE, "Trying to find images with tag '" + tag + "' which is neither a dress state nor a valid tag");
                 }
             }
         }
@@ -166,14 +166,14 @@ public class PictureHandler {
         }
 
         //synchronized (uniquePictures) {
-            for (File thisFile : files) {
-                TaggedPicture thisImage = new TaggedPicture(thisFile);
-                if (thisImage.hasTags(imageTags)) {
-                    if (dressState == null || thisImage.getDressState().equals(dressState)) {
-                        picturesWithTags.add(thisImage);
-                    }
+        for (File thisFile : files) {
+            TaggedPicture thisImage = new TaggedPicture(thisFile);
+            if (thisImage.hasTags(imageTags)) {
+                if (dressState == null || thisImage.getDressState().equals(dressState)) {
+                    picturesWithTags.add(thisImage);
                 }
             }
+        }
         //}
 
         if (picturesWithTags.size() == 0) {

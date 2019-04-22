@@ -15,7 +15,7 @@ import java.util.logging.Level;
  * Entry point to application.
  * This is where all the fun happens, with the main method.
  * Decides to display UI or to run silently via command-line.
- *
+ * <p>
  * As the "controller" to all other classes, it parses command line parameters and loads the history.
  */
 public class App {
@@ -38,23 +38,25 @@ public class App {
 
         return new File(Utils.getConfigString("url_file", null));
     }
-    
+
     /**
      * Creates an abstract ripper and instructs it to rip.
+     *
      * @param url URL to be ripped
      * @throws Exception Nothing too specific here, just a catch-all.
-     *
      */
     private static void rip(URL url) throws Exception {
         AbstractRipper ripper = AbstractRipper.getRipper(url);
         ripper.setup();
         ripper.rip();
     }
+
     /**
      * Attempt to rip targetURL.
-     * @param targetURL URL to rip
+     *
+     * @param targetURL  URL to rip
      * @param saveConfig Whether or not you want to save the config (?)
-     * @throws Exception 
+     * @throws Exception
      */
     private static void ripURL(String targetURL, boolean saveConfig) throws Exception {
         try {
@@ -70,15 +72,13 @@ public class App {
             }
         } catch (MalformedURLException e) {
             logger.log(Level.SEVERE, "[!] Given URL is not valid. Expected URL format is http://domain.com/...");
-            if (Utils.getConfigBoolean("media_url", false))
-            {
+            if (Utils.getConfigBoolean("media_url", false)) {
                 throw e;
             }
             // System.exit(-1);
         } catch (Exception e) {
             logger.log(Level.SEVERE, "[!] Error while ripping URL " + targetURL, e);
-            if (Utils.getConfigBoolean("media_url", false))
-            {
+            if (Utils.getConfigBoolean("media_url", false)) {
                 throw e;
             }
             // System.exit(-1);
@@ -86,5 +86,4 @@ public class App {
     }
 
 
-    
 }

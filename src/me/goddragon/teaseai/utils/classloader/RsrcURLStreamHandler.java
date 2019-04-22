@@ -31,6 +31,6 @@ public class RsrcURLStreamHandler extends URLStreamHandler {
             file = spec;
         }
 
-        this.setURL(url, "rsrc", "", -1, (String)null, (String)null, file, (String)null, (String)null);
+        this.setURL(url, "rsrc", "", -1, (String) null, (String) null, file, (String) null, (String) null);
     }
 }

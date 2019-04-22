@@ -12,7 +12,7 @@ public class Vocabulary {
     private HashMap<Object, Double> synonyms = new HashMap<>();
 
     public Vocabulary(Object... synonyms) {
-        for(Object object : synonyms) {
+        for (Object object : synonyms) {
             this.synonyms.put(object, 1D);
         }
     }

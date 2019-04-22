@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class PhotobucketRipper extends AbstractHTMLRipper {
 
     private static final String DOMAIN = "photobucket.com",
-                                HOST   = "photobucket";
+            HOST = "photobucket";
     private static final int ITEMS_PER_PAGE = 24;
     private static final int WAIT_BEFORE_NEXT_PAGE = 2000;
 
@@ -40,13 +40,13 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
         private AlbumMetadata(JSONObject data) {
             this.baseURL = data.getString("url");
             this.location = data.getString("location")
-                                .replace(" ", "_");
+                    .replace(" ", "_");
             this.sortOrder = data.getInt("sortOrder");
         }
 
-        private String getCurrPageURL(){
+        private String getCurrPageURL() {
             return baseURL + String.format("?sort=%d&page=%d",
-                                       sortOrder, pageIndex);
+                    sortOrder, pageIndex);
         }
     }
 
@@ -67,7 +67,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
         );
         this.pbURLPattern = Pattern.compile(
                 "^https?://([a-zA-Z0-9]+)\\.photobucket\\.com/user/" +
-                "([a-zA-Z0-9_\\-]+)/library/([^?]*).*$"
+                        "([a-zA-Z0-9_\\-]+)/library/([^?]*).*$"
         );
     }
 
@@ -119,9 +119,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
     }
 
 
-
     // Page iteration
-
 
 
     @Override
@@ -147,7 +145,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
         JSONObject collectionData = getCollectionData(currAlbum.currPage);
         int totalNumItems = collectionData.getInt("total");
         this.currAlbum.numPages = (int) Math.ceil(
-                (double)totalNumItems / (double)ITEMS_PER_PAGE);
+                (double) totalNumItems / (double) ITEMS_PER_PAGE);
         this.index = 0;
         return currAlbum.currPage;
     }
@@ -157,7 +155,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
         this.currAlbum.pageIndex++;
         boolean endOfAlbum = currAlbum.pageIndex > currAlbum.numPages;
         boolean noMoreSubalbums = albums.isEmpty();
-        if (endOfAlbum && noMoreSubalbums){
+        if (endOfAlbum && noMoreSubalbums) {
             throw new IOException("No more pages");
         }
         try {
@@ -165,7 +163,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
         } catch (InterruptedException e) {
             LOGGER.log(Level.INFO, "Interrupted while waiting before getting next page");
         }
-        if (endOfAlbum){
+        if (endOfAlbum) {
             LOGGER.log(Level.INFO, "Turning to next album " + albums.get(0).baseURL);
             return getFirstPage();
         } else {
@@ -179,9 +177,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
     }
 
 
-
     // Media parsing
-
 
 
     @Override
@@ -197,7 +193,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
         }
     }
 
-    private JSONObject getCollectionData(Document page){
+    private JSONObject getCollectionData(Document page) {
         // Retrieve JSON from a script tag in the returned document
         for (Element script : page.select("script[type=text/javascript]")) {
             String data = script.data();
@@ -213,7 +209,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
         return null;
     }
 
-    private List<String> getImageURLs(JSONObject collectionData){
+    private List<String> getImageURLs(JSONObject collectionData) {
         List<String> results = new ArrayList<>();
         JSONObject items = collectionData.getJSONObject("items");
         JSONArray objects = items.getJSONArray("objects");
@@ -232,9 +228,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
     }
 
 
-
     // helper methods (for album metadata retrieval)
-
 
 
     private List<AlbumMetadata> getAlbumMetadata(String albumURL)
@@ -247,7 +241,7 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
             // page of a user. Ripping all sub-albums here would mean ripping
             // all albums of a user (Not supported, only rip items in a users
             // personal bucket).
-            for (JSONObject sub : getSubAlbumJSONs(data)){
+            for (JSONObject sub : getSubAlbumJSONs(data)) {
                 metadata.add(new AlbumMetadata(sub));
             }
         }
@@ -259,13 +253,13 @@ public class PhotobucketRipper extends AbstractHTMLRipper {
             throws IOException {
         String subdomain, user, albumTitle;
         Matcher m = pbURLPattern.matcher(albumURL);
-        if (!m.matches()){
+        if (!m.matches()) {
             throw new MalformedURLException("invalid URL " + albumURL);
         }
         subdomain = m.group(1);
         user = m.group(2);
         albumTitle = m.group(3);
-        if (albumTitle.endsWith("/")){
+        if (albumTitle.endsWith("/")) {
             albumTitle = albumTitle.substring(0, albumTitle.length() - 1);
         }
         String apiURL = String.format("http://%s.photobucket.com/api/user/" +

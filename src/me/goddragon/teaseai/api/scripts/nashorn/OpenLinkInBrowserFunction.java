@@ -31,7 +31,7 @@ public class OpenLinkInBrowserFunction extends CustomFunction {
             URL u;
             try {
                 u = new URL(args[0].toString());
-            } catch(MalformedURLException murle) {
+            } catch (MalformedURLException murle) {
                 TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with malformed url:" + args[0].toString());
                 return null;
             }
@@ -39,7 +39,7 @@ public class OpenLinkInBrowserFunction extends CustomFunction {
             URI uri;
             try {
                 uri = u.toURI();
-            } catch(URISyntaxException urise) {
+            } catch (URISyntaxException urise) {
                 TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid uri:" + args[0].toString());
                 return null;
             }
@@ -48,7 +48,7 @@ public class OpenLinkInBrowserFunction extends CustomFunction {
                 if (desktop.isSupported(Desktop.Action.BROWSE)) {
                     try {
                         desktop.browse(uri);
-                    } catch (IOException ioe){
+                    } catch (IOException ioe) {
                         TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " could not be opened with arg:" + args[0].toString());
                         return null;
                     }

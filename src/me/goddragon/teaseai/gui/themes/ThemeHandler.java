@@ -15,17 +15,17 @@ public class ThemeHandler {
 
     static {
         //Setup default twilight values
-        ((ThemeColor)TWILIGHT_THEME.settings.get(0)).setColor(Color.LIGHTGREY);
-        ((ThemeColor)TWILIGHT_THEME.settings.get(1)).setColor(Color.LIGHTGREY);
-        ((ThemeColor)TWILIGHT_THEME.settings.get(2)).setColor(Color.LIGHTGREY);
-        ((ThemeColor)TWILIGHT_THEME.settings.get(3)).setColor(Color.valueOf("#666666"));
-        ((ThemeColor)TWILIGHT_THEME.settings.get(4)).setColor(Color.BLACK);
-        ((ThemeColor)TWILIGHT_THEME.settings.get(5)).setColor(Color.DARKCYAN);
-        ((ThemeColor)TWILIGHT_THEME.settings.get(6)).setColor(Color.RED);
-        ((ThemeColor)TWILIGHT_THEME.settings.get(7)).setColor(Color.ORANGE);
-        ((ThemeColor)TWILIGHT_THEME.settings.get(8)).setColor(Color.LIGHTGREEN);
-        ((ThemeColor)TWILIGHT_THEME.settings.get(9)).setColor(Color.MEDIUMVIOLETRED);
-        ((ThemeColor)TWILIGHT_THEME.settings.get(10)).setColor(Color.valueOf("#f2f2f2"));
+        ((ThemeColor) TWILIGHT_THEME.settings.get(0)).setColor(Color.LIGHTGREY);
+        ((ThemeColor) TWILIGHT_THEME.settings.get(1)).setColor(Color.LIGHTGREY);
+        ((ThemeColor) TWILIGHT_THEME.settings.get(2)).setColor(Color.LIGHTGREY);
+        ((ThemeColor) TWILIGHT_THEME.settings.get(3)).setColor(Color.valueOf("#666666"));
+        ((ThemeColor) TWILIGHT_THEME.settings.get(4)).setColor(Color.BLACK);
+        ((ThemeColor) TWILIGHT_THEME.settings.get(5)).setColor(Color.DARKCYAN);
+        ((ThemeColor) TWILIGHT_THEME.settings.get(6)).setColor(Color.RED);
+        ((ThemeColor) TWILIGHT_THEME.settings.get(7)).setColor(Color.ORANGE);
+        ((ThemeColor) TWILIGHT_THEME.settings.get(8)).setColor(Color.LIGHTGREEN);
+        ((ThemeColor) TWILIGHT_THEME.settings.get(9)).setColor(Color.MEDIUMVIOLETRED);
+        ((ThemeColor) TWILIGHT_THEME.settings.get(10)).setColor(Color.valueOf("#f2f2f2"));
 
         TWILIGHT_THEME.saveToConfig();
     }
@@ -36,7 +36,7 @@ public class ThemeHandler {
 
 
     private ConfigValue selectedTheme;
-    
+
 
     public ThemeHandler() {
         //Create theme folder
@@ -45,7 +45,7 @@ public class ThemeHandler {
 
         loadThemes();
 
-        if(getTheme("Twilight") == null) {
+        if (getTheme("Twilight") == null) {
             this.themes.add(TWILIGHT_THEME);
         }
 
@@ -54,11 +54,11 @@ public class ThemeHandler {
 
 
     public ThemeNameChangeResult checkThemeName(String name) {
-        if(name == null) {
+        if (name == null) {
             return ThemeNameChangeResult.NULL;
         }
 
-        if(getTheme(name) != null) {
+        if (getTheme(name) != null) {
             return ThemeNameChangeResult.ALREADY_EXISTS;
         }
 
@@ -68,9 +68,9 @@ public class ThemeHandler {
     public void loadThemes() {
         this.themes.clear();
 
-        for(File file : getThemesFolder().listFiles()) {
-            if(file.isFile() && FileUtils.getExtension(file).equalsIgnoreCase("tajth")) {
-               addTheme(new Theme(FileUtils.stripExtension(file.getName())));
+        for (File file : getThemesFolder().listFiles()) {
+            if (file.isFile() && FileUtils.getExtension(file).equalsIgnoreCase("tajth")) {
+                addTheme(new Theme(FileUtils.stripExtension(file.getName())));
             }
         }
     }
@@ -80,8 +80,8 @@ public class ThemeHandler {
     }
 
     public Theme getTheme(String name) {
-        for(Theme theme : themes) {
-            if(theme.getName().equalsIgnoreCase(name)) {
+        for (Theme theme : themes) {
+            if (theme.getName().equalsIgnoreCase(name)) {
                 return theme;
             }
         }

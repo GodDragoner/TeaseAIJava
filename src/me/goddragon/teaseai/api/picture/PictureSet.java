@@ -106,7 +106,7 @@ public class PictureSet {
     }
 
     public File[] getPicturesInFolder() {
-        if(picturesInFolder == null) {
+        if (picturesInFolder == null) {
             picturesInFolder = getFolder().listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {

@@ -18,109 +18,110 @@ import static me.goddragon.teaseai.utils.libraries.ripme.App.logger;
 public class HqpornerRipper extends AbstractSingleFileRipper {
 
 
-        public HqpornerRipper(URL url) throws IOException {
-            super(url);
-        }
+    public HqpornerRipper(URL url) throws IOException {
+        super(url);
+    }
 
-        private String getVideoFromMyDaddycc(String url) {
-            Pattern p = Pattern.compile("(//[a-zA-Z0-9\\.]+/pub/cid/[a-z0-9]+/1080.mp4)");
-            try {
-                logger.log(Level.INFO, "Downloading " + url);
-                Document page = Http.url(url).referrer(url).get();
-                Matcher m = p.matcher(page.html());
-                logger.log(Level.INFO, page.html());
-                if (m.find()) {
-                    return m.group(0);
+    private String getVideoFromMyDaddycc(String url) {
+        Pattern p = Pattern.compile("(//[a-zA-Z0-9\\.]+/pub/cid/[a-z0-9]+/1080.mp4)");
+        try {
+            logger.log(Level.INFO, "Downloading " + url);
+            Document page = Http.url(url).referrer(url).get();
+            Matcher m = p.matcher(page.html());
+            logger.log(Level.INFO, page.html());
+            if (m.find()) {
+                return m.group(0);
+            }
+
+
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Unable to get page with video");
+        }
+        return null;
+    }
+
+    private String getVideoFromFlyFlv(String url) {
+        try {
+            logger.log(Level.INFO, "Downloading " + url);
+            Document page = Http.url(url).referrer(url).get();
+            String[] videoSizes = {"1080p", "720p", "360p"};
+            for (String videoSize : videoSizes) {
+                String urlToReturn = page.select("video > source[label=" + videoSize).attr("src");
+                if (urlToReturn != null && !urlToReturn.equals("")) {
+                    return urlToReturn;
                 }
-
-
-            } catch (IOException e) {
-                logger.log(Level.SEVERE, "Unable to get page with video");
-            }
-            return null;
-        }
-
-        private String getVideoFromFlyFlv(String url) {
-            try {
-                logger.log(Level.INFO, "Downloading " + url);
-                Document page = Http.url(url).referrer(url).get();
-                String[] videoSizes = { "1080p","720p","360p"};
-                for (String videoSize : videoSizes) {
-                    String urlToReturn = page.select("video > source[label=" + videoSize).attr("src");
-                    if (urlToReturn != null && !urlToReturn.equals("")) {
-                        return urlToReturn;
-                    }
-                }
-
-
-
-            } catch (IOException e) {
-                logger.log(Level.SEVERE, "Unable to get page with video");
-            }
-            return null;
-        }
-
-        private String getVideoName() {
-            try {
-                String filename = getGID(url);
-                return filename;
-            } catch (MalformedURLException e) {
-                return "1080";
-            }
-        }
-
-        @Override
-        public String getHost() {
-            return "hqporner";
-        }
-
-        @Override
-        public String getDomain() {
-            return "hqporner.com";
-        }
-
-        @Override
-        public String getGID(URL url) throws MalformedURLException {
-            Pattern p = Pattern.compile("https?://hqporner.com/hdporn/([a-zA-Z0-9_-]*).html/?$");
-            Matcher m = p.matcher(url.toExternalForm());
-            if (m.matches()) {
-                return m.group(1);
-            }
-            throw new MalformedURLException("Expected hqporner URL format: " +
-                    "hqporner.com/hdporn/NAME - got " + url + " instead");
-        }
-
-        @Override
-        public Document getFirstPage() throws IOException {
-            // "url" is an instance field of the superclass
-            return Http.url(url).get();
-        }
-
-        @Override
-        public List<String> getURLsFromPage(Document doc) {
-            String videoUrl = null;
-            List<String> result = new ArrayList<>();
-            String videoPageUrl = "https:" + doc.select("div.videoWrapper > iframe").attr("src");
-
-            if (videoPageUrl.contains("mydaddy")) {
-                videoUrl = getVideoFromMyDaddycc(videoPageUrl);
-            } else if (videoPageUrl.contains("flyflv")) {
-                videoUrl = getVideoFromFlyFlv(videoPageUrl);
             }
 
-            if (videoUrl != null) {
-                result.add("https:" + videoUrl);
-            }
-            return result;
+
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Unable to get page with video");
+        }
+        return null;
+    }
+
+    private String getVideoName() {
+        try {
+            String filename = getGID(url);
+            return filename;
+        } catch (MalformedURLException e) {
+            return "1080";
+        }
+    }
+
+    @Override
+    public String getHost() {
+        return "hqporner";
+    }
+
+    @Override
+    public String getDomain() {
+        return "hqporner.com";
+    }
+
+    @Override
+    public String getGID(URL url) throws MalformedURLException {
+        Pattern p = Pattern.compile("https?://hqporner.com/hdporn/([a-zA-Z0-9_-]*).html/?$");
+        Matcher m = p.matcher(url.toExternalForm());
+        if (m.matches()) {
+            return m.group(1);
+        }
+        throw new MalformedURLException("Expected hqporner URL format: " +
+                "hqporner.com/hdporn/NAME - got " + url + " instead");
+    }
+
+    @Override
+    public Document getFirstPage() throws IOException {
+        // "url" is an instance field of the superclass
+        return Http.url(url).get();
+    }
+
+    @Override
+    public List<String> getURLsFromPage(Document doc) {
+        String videoUrl = null;
+        List<String> result = new ArrayList<>();
+        String videoPageUrl = "https:" + doc.select("div.videoWrapper > iframe").attr("src");
+
+        if (videoPageUrl.contains("mydaddy")) {
+            videoUrl = getVideoFromMyDaddycc(videoPageUrl);
+        } else if (videoPageUrl.contains("flyflv")) {
+            videoUrl = getVideoFromFlyFlv(videoPageUrl);
         }
 
-        @Override
-        public boolean tryResumeDownload() {return true;}
-
-        @Override
-        public void downloadURL(URL url, int index) {
-            addURLToDownload(url, "", "", "", null, getVideoName(), "mp4");
+        if (videoUrl != null) {
+            result.add("https:" + videoUrl);
         }
+        return result;
+    }
+
+    @Override
+    public boolean tryResumeDownload() {
+        return true;
+    }
+
+    @Override
+    public void downloadURL(URL url, int index) {
+        addURLToDownload(url, "", "", "", null, getVideoName(), "mp4");
+    }
 
 
 }

@@ -26,19 +26,19 @@ public class PlayAudioFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        switch(args.length) {
+        switch (args.length) {
             case 1:
                 File file = FileUtils.getRandomMatchingFile(args[0].toString());
-                if(file == null) {
+                if (file == null) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "Matching audio file for path " + args[0] + " does not exist.");
                     return null;
                 }
 
                 return MediaHandler.getHandler().playAudio(file);
             case 2:
-                if(args[1] instanceof Boolean) {
+                if (args[1] instanceof Boolean) {
                     file = FileUtils.getRandomMatchingFile(args[0].toString());
-                    if(file == null) {
+                    if (file == null) {
                         TeaseLogger.getLogger().log(Level.SEVERE, "Matching audio file for path " + args[0] + " does not exist.");
                         return null;
                     }

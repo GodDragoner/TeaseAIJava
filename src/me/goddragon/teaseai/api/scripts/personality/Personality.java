@@ -47,7 +47,7 @@ public class Personality {
         this.variableHandler = new VariableHandler(this);
 
         this.name = new ConfigValue("name", "Default Personality", configHandler);
-        
+
         this.version = new ConfigValue("version", "1.0", configHandler);
         this.downloadLink = new ConfigValue("updateDownloadZipLink", "null", configHandler);
         this.personalityPropertiesLink = new ConfigValue("personalityPropertiesLink", "null", configHandler);
@@ -59,7 +59,7 @@ public class Personality {
         PersonalityManager.getManager().setLoadingPersonality(this);
         onProgramStart();
     }
-    
+
     public boolean checkForUpdate() {
         //No link given
         if (personalityPropertiesLink == null || personalityPropertiesLink.getValue() == null || personalityPropertiesLink.getValue().equals("null")) {
@@ -103,7 +103,7 @@ public class Personality {
                                     Personality.this.notify();
                                 }
                             });
-                        } catch(Exception ex) {
+                        } catch (Exception ex) {
                             synchronized (Personality.this) {
                                 Personality.this.notify();
                             }
@@ -119,7 +119,7 @@ public class Personality {
                     e.printStackTrace();
                 }
 
-                if(update[0]) {
+                if (update[0]) {
                     TeaseLogger.getLogger().log(Level.INFO, "Update process accepted. Fetching update from remote...");
                     fetchFromGithub(version.getValue(), downloadLink.getValue());
                 } else {
@@ -272,8 +272,7 @@ public class Personality {
         });
     }
 
-    public void onProgramStart()
-    {
+    public void onProgramStart() {
         File loadFile = new File(getFolder().getAbsolutePath() + File.separator + "programstart.js");
 
         if (loadFile.exists()) {
@@ -284,7 +283,7 @@ public class Personality {
             }
         }
     }
-    
+
     public void load() {
         File loadFile = new File(getFolder().getAbsolutePath() + File.separator + "load.js");
 
@@ -373,9 +372,8 @@ public class Personality {
     public String toString() {
         return name + " (" + version + ")";
     }
-    
-    public PersonalitySettingsHandler getSettingsHandler()
-    {
+
+    public PersonalitySettingsHandler getSettingsHandler() {
         return this.settingsHandler;
     }
 }

@@ -25,12 +25,12 @@ public class WaitFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        if(args.length <= 0) {
+        if (args.length <= 0) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
             return null;
         }
 
-        if(args[0] instanceof Integer || args[0] instanceof Double || args[0] instanceof Long) {
+        if (args[0] instanceof Integer || args[0] instanceof Double || args[0] instanceof Long) {
             if (args.length == 1) {
                 TeaseAI.application.waitPossibleScripThread(Math.round(1000L * Double.valueOf(args[0].toString())));
                 return null;

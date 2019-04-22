@@ -29,7 +29,7 @@ import static me.goddragon.teaseai.utils.libraries.ripme.utils.RipUtils.getCooki
 public class FuraffinityRipper extends AbstractHTMLRipper {
 
     private static final String urlBase = "https://www.furaffinity.net";
-    private  Map<String,String> cookies = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
 
     private void setCookies() {
         if (Utils.getConfigBoolean("furaffinity.login", true)) {
@@ -46,7 +46,7 @@ public class FuraffinityRipper extends AbstractHTMLRipper {
 
     // Thread pool for finding direct image links from "image" pages (html)
     private DownloadThreadPool furaffinityThreadPool
-            = new DownloadThreadPool( "furaffinity");
+            = new DownloadThreadPool("furaffinity");
 
     @Override
     public DownloadThreadPool getThreadPool() {
@@ -66,10 +66,12 @@ public class FuraffinityRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "furaffinity";
     }
+
     @Override
     public boolean hasDescriptionSupport() {
         return false;
     }
+
     @Override
     public Document getFirstPage() throws IOException {
         setCookies();
@@ -101,7 +103,7 @@ public class FuraffinityRipper extends AbstractHTMLRipper {
             for (Element link : links) {
                 if (link.text().equals("Download")) {
                     LOGGER.log(Level.INFO, "Found image " + link.attr("href"));
-                   return "https:" + link.attr("href");
+                    return "https:" + link.attr("href");
                 }
             }
         } catch (IOException e) {
@@ -124,6 +126,7 @@ public class FuraffinityRipper extends AbstractHTMLRipper {
         }
         return urls;
     }
+
     @Override
     public List<String> getDescriptionsFromPage(Document page) {
         List<String> urls = new ArrayList<>();
@@ -134,10 +137,12 @@ public class FuraffinityRipper extends AbstractHTMLRipper {
         }
         return urls;
     }
+
     @Override
     public int descSleepTime() {
         return 400;
     }
+
     public String getDescription(String page) {
         try {
             // Fetch the image page
@@ -167,6 +172,7 @@ public class FuraffinityRipper extends AbstractHTMLRipper {
             return null;
         }
     }
+
     @Override
     public boolean saveText(URL url, String subdirectory, String text, int index) {
         //TODO Make this better please?
@@ -180,8 +186,8 @@ public class FuraffinityRipper extends AbstractHTMLRipper {
         File saveFileAs;
         saveAs = text.split("\n")[0];
         saveAs = saveAs.replaceAll("^(\\S+)\\s+by\\s+(.*)$", "$2_$1");
-        for (int i = 1;i < text.split("\n").length; i++) {
-            newText = newText.replace("\\","").replace("/","").replace("~","") + "\n" + text.split("\n")[i];
+        for (int i = 1; i < text.split("\n").length; i++) {
+            newText = newText.replace("\\", "").replace("/", "").replace("~", "") + "\n" + text.split("\n")[i];
         }
         try {
             if (!subdirectory.equals("")) {
@@ -208,6 +214,7 @@ public class FuraffinityRipper extends AbstractHTMLRipper {
         }
         return true;
     }
+
     @Override
     public void downloadURL(URL url, int index) {
         addURLToDownload(url, getPrefix(index));

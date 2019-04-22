@@ -82,7 +82,7 @@ public class UpdateHandler {
                     e.printStackTrace();
                 }
 
-                if(update[0]) {
+                if (update[0]) {
                     TeaseLogger.getLogger().log(Level.INFO, "Update process accepted. Fetching update from remote...");
                     fetchUpdate(version.getValue(), downloadLink.getValue());
                 } else {
@@ -119,7 +119,7 @@ public class UpdateHandler {
                     new Thread() {
                         @Override
                         public void run() {
-                            while(fos.getChannel().isOpen()) {
+                            while (fos.getChannel().isOpen()) {
                                 try {
                                     updateProgress(fos.getChannel().size(), fileSize);
                                 } catch (IOException e) {

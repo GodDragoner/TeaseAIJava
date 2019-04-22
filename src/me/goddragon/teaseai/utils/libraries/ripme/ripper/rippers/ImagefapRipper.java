@@ -27,6 +27,7 @@ public class ImagefapRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "imagefap";
     }
+
     @Override
     public String getDomain() {
         return "imagefap.com";
@@ -49,7 +50,8 @@ public class ImagefapRipper extends AbstractHTMLRipper {
 
     @Override
     public String getGID(URL url) throws MalformedURLException {
-        Pattern p; Matcher m;
+        Pattern p;
+        Matcher m;
 
         p = Pattern.compile("^.*imagefap.com/gallery.php\\?pgid=([a-f0-9]+).*$");
         m = p.matcher(url.toExternalForm());

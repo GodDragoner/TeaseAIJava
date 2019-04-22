@@ -27,50 +27,42 @@ public class SystemMessageFunction extends CustomFunction {
     @Override
     public Object call(Object object, Object... args) {
         super.call(object, args);
-        switch(args.length) {
+        switch (args.length) {
             case 1:
-                if (args[0] instanceof String)
-                {
-                    ChatHandler.getHandler().addLine(StringUtils.processString((String)args[0]));
-                }
-                else {
+                if (args[0] instanceof String) {
+                    ChatHandler.getHandler().addLine(StringUtils.processString((String) args[0]));
+                } else {
                     TeaseLogger.getLogger().log(Level.SEVERE, "systemMessage must have a String for the first argument");
                 }
                 return null;
             case 2:
-                if (!(args[0] instanceof String))
-                {
+                if (!(args[0] instanceof String)) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "systemMessage must have a String for the first argument");
                     return null;
                 }
-                if(args[1] instanceof Integer) {
-                    ChatHandler.getHandler().addLine(StringUtils.processString((String)args[0]));
-                    if ((int)args[1] != 0)
-                    {
-                        long delay = (int)args[1];
-                        if (delay == -1)
-                        {
+                if (args[1] instanceof Integer) {
+                    ChatHandler.getHandler().addLine(StringUtils.processString((String) args[0]));
+                    if ((int) args[1] != 0) {
+                        long delay = (int) args[1];
+                        if (delay == -1) {
                             delay = ChatHandler.getHandler().getMillisToPause(args[0].toString());
                         }
-                        try
-                        {
+                        try {
                             Thread.sleep(delay);
-                        }
-                        catch (InterruptedException e)
-                        {
+                        } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
                     return null;
-                } else if(args[1] instanceof String) {
-                    ChatHandler.getHandler().addLine(StringUtils.processString((String)args[0]));
+                } else if (args[1] instanceof String) {
+                    ChatHandler.getHandler().addLine(StringUtils.processString((String) args[0]));
 
                     //TODO: Support for urls, video etc.
                     File file = FileUtils.getRandomMatchingFile((String) args[1]);
 
-                    if(file != null) {
-                        MediaHandler.getHandler().showPicture(file, (int) (ChatHandler.getHandler().getMillisToPause(args[0].toString())/1000));
+                    if (file != null) {
+                        MediaHandler.getHandler().showPicture(file, (int) (ChatHandler.getHandler().getMillisToPause(args[0].toString()) / 1000));
                     }
 
                     return null;
@@ -79,46 +71,35 @@ public class SystemMessageFunction extends CustomFunction {
                     return null;
                 }
             case 3:
-                if (!(args[0] instanceof String))
-                {
+                if (!(args[0] instanceof String)) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "systemMessage must have a String for the first argument");
                     return null;
                 }
-                if (!(args[1] instanceof Integer))
-                {
+                if (!(args[1] instanceof Integer)) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "systemMessage must have a Integer for the second argument");
                     return null;
                 }
-                if (!(args[2] instanceof Integer))
-                {
+                if (!(args[2] instanceof Integer)) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "systemMessage must have a Integer for the third argument");
                     return null;
                 }
-                int id = (int)args[2];
-                if (id < 0 || id > 4)
-                {
-                    ChatHandler.getHandler().addLine(StringUtils.processString((String)args[0]));
-                    if ((int)args[1] != 0)
-                    {
-                        long delay = (int)args[1];
-                        if (delay == -1)
-                        {
+                int id = (int) args[2];
+                if (id < 0 || id > 4) {
+                    ChatHandler.getHandler().addLine(StringUtils.processString((String) args[0]));
+                    if ((int) args[1] != 0) {
+                        long delay = (int) args[1];
+                        if (delay == -1) {
                             delay = ChatHandler.getHandler().getMillisToPause(args[0].toString());
                         }
-                        try
-                        {
+                        try {
                             Thread.sleep(delay);
-                        }
-                        catch (InterruptedException e)
-                        {
+                        } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
-                }
-                else
-                {
-                    ChatHandler.getHandler().getParticipantById(id).customMessage((String)args[0], (int)args[1], true);
+                } else {
+                    ChatHandler.getHandler().getParticipantById(id).customMessage((String) args[0], (int) args[1], true);
                 }
                 return null;
             case 0:

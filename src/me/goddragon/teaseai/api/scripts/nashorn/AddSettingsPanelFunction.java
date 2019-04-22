@@ -7,8 +7,7 @@ import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.logging.Level;
 
-public class AddSettingsPanelFunction extends CustomFunction
-{
+public class AddSettingsPanelFunction extends CustomFunction {
     public AddSettingsPanelFunction() {
         super("addSettingsPanel");
     }
@@ -23,21 +22,15 @@ public class AddSettingsPanelFunction extends CustomFunction
         super.call(object, args);
 
         PersonalitySettingsPanel panel = null;
-        if (args.length != 1)
-        {
+        if (args.length != 1) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
-        }
-        else
-        {
-            if (TeaseAI.application.getSession() == null)
-            {
-                panel = PersonalityManager.getManager().getLoadingPersonality().getSettingsHandler().addPanel((String)args[0]);
+        } else {
+            if (TeaseAI.application.getSession() == null) {
+                panel = PersonalityManager.getManager().getLoadingPersonality().getSettingsHandler().addPanel((String) args[0]);
+            } else {
+                panel = PersonalityManager.getManager().getActivePersonality().getSettingsHandler().addPanel((String) args[0]);
             }
-            else
-            {
-                panel = PersonalityManager.getManager().getActivePersonality().getSettingsHandler().addPanel((String)args[0]);
-            }
-            
+
         }
 
         return panel;

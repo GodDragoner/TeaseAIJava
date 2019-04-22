@@ -11,5 +11,5 @@ public interface ResampleFilter {
 
     float apply(float v);
 
-	public abstract String getName();
+    public abstract String getName();
 }

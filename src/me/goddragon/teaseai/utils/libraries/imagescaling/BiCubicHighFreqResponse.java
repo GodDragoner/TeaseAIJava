@@ -11,13 +11,13 @@ package me.goddragon.teaseai.utils.libraries.imagescaling;
  */
 final class BiCubicHighFreqResponse extends BiCubicFilter {
 
-	public BiCubicHighFreqResponse() {
-		super(-1.f);
-	}
+    public BiCubicHighFreqResponse() {
+        super(-1.f);
+    }
 
-	@Override
-	public String getName() {
-		return "BiCubicHighFreqResponse";
-	}
+    @Override
+    public String getName() {
+        return "BiCubicHighFreqResponse";
+    }
 
 }

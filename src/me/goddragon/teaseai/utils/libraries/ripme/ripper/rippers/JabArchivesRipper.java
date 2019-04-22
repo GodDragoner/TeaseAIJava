@@ -40,7 +40,7 @@ public class JabArchivesRipper extends AbstractHTMLRipper {
         }
         throw new MalformedURLException(
                 "Expected javarchives.com URL format: " +
-                "jabarchives.com/main/view/albumname - got " + url + " instead");
+                        "jabarchives.com/main/view/albumname - got " + url + " instead");
     }
 
     @Override

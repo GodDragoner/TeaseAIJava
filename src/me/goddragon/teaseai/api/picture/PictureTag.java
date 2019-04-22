@@ -11,9 +11,9 @@ import java.util.logging.Level;
  */
 public enum PictureTag {
     /*
-	 * Sorted in alphabetical order by category in the order of categories
-	 * BODYPART->BODYTYPE->CATEGORY->VIEW->PEOPLEINVOLVED->ACTION->ACCESSORIES->OTHER
-	*/
+     * Sorted in alphabetical order by category in the order of categories
+     * BODYPART->BODYTYPE->CATEGORY->VIEW->PEOPLEINVOLVED->ACTION->ACCESSORIES->OTHER
+     */
 
     //BODY PARTS
     ASS("TagAss", TagType.BODY_PART),

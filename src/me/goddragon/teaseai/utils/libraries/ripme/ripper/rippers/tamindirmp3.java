@@ -23,6 +23,7 @@ public class tamindirmp3 extends AbstractHTMLRipper {
     public String getHost() {
         return "tamindir";
     }
+
     @Override
     public String getDomain() {
         return "tamindir.com";
@@ -36,7 +37,7 @@ public class tamindirmp3 extends AbstractHTMLRipper {
             return m.group(1);
         }
         throw new MalformedURLException("Expected tamindir.com URL format: " +
-                        "tamindir.com/files/albumid - got " + url + "instead");
+                "tamindir.com/files/albumid - got " + url + "instead");
     }
 
     @Override
@@ -53,6 +54,7 @@ public class tamindirmp3 extends AbstractHTMLRipper {
         }
         return music;
     }
+
     @Override
     public void downloadURL(URL url, int index) {
         addURLToDownload(url, getPrefix(index));

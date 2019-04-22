@@ -54,9 +54,9 @@ public class RunableVocabulary extends Vocabulary {
             TeaseLogger.getLogger().log(Level.SEVERE, "Error while handling file '" + e.getFileName() + "' in line " + e.getLineNumber() + "\n" +
                     "Error: " + e.getMessage(), false);
         } catch (NoSuchMethodException e) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "Vocabulary '" + responseName + " is missing the function to trigger it. Create the function '" + getFunctionName() + "()' for this to work." , false);
-        } catch(NullPointerException ex) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "Vocabulary '" + responseName + "' returned null!" , false);
+            TeaseLogger.getLogger().log(Level.SEVERE, "Vocabulary '" + responseName + " is missing the function to trigger it. Create the function '" + getFunctionName() + "()' for this to work.", false);
+        } catch (NullPointerException ex) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Vocabulary '" + responseName + "' returned null!", false);
         }
 
         return '!' + name + '!';

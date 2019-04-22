@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class TeenplanetRipper extends AbstractHTMLRipper {
 
     private static final String DOMAIN = "teenplanet.org",
-                                HOST   = "teenplanet";
+            HOST = "teenplanet";
 
     public TeenplanetRipper(URL url) throws IOException {
         super(url);
@@ -66,7 +66,8 @@ public class TeenplanetRipper extends AbstractHTMLRipper {
 
     @Override
     public String getGID(URL url) throws MalformedURLException {
-        Pattern p; Matcher m;
+        Pattern p;
+        Matcher m;
 
         p = Pattern.compile("^.*teenplanet.org/galleries/([a-zA-Z0-9\\-]+).html$");
         m = p.matcher(url.toExternalForm());

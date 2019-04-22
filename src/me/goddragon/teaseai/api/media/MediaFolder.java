@@ -22,8 +22,8 @@ public class MediaFolder extends MediaHolder {
     }
 
     public void loadMediaFiles() {
-        for(File file : folder.listFiles()) {
-            if(file.isFile() && getMediaType().hasSupportedExtenstion(file)) {
+        for (File file : folder.listFiles()) {
+            if (file.isFile() && getMediaType().hasSupportedExtenstion(file)) {
                 mediaFiles.add(file);
             }
         }
@@ -31,7 +31,7 @@ public class MediaFolder extends MediaHolder {
 
     @Override
     public File getRandomMedia() {
-        if(mediaFiles.isEmpty()) {
+        if (mediaFiles.isEmpty()) {
             return null;
         }
 

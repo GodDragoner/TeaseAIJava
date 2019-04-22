@@ -38,8 +38,7 @@ public class RipUtils {
                 logger.log(Level.SEVERE, "[!] Exception while loading album " + url, e);
             }
             return result;
-        }
-        else if (url.getHost().endsWith("imgur.com") && url.toExternalForm().contains(",")) {
+        } else if (url.getHost().endsWith("imgur.com") && url.toExternalForm().contains(",")) {
             // Imgur image series.
             try {
                 logger.log(Level.FINE, "Fetching imgur series at " + url);
@@ -51,7 +50,7 @@ public class RipUtils {
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "[!] Exception while loading album " + url, e);
             }
-        }  else if (url.getHost().endsWith("i.imgur.com") && url.toExternalForm().contains("gifv")) {
+        } else if (url.getHost().endsWith("i.imgur.com") && url.toExternalForm().contains("gifv")) {
             // links to imgur gifvs
             try {
                 result.add(new URL(url.toExternalForm().replaceAll(".gifv", ".mp4")));
@@ -60,8 +59,7 @@ public class RipUtils {
             }
             return result;
 
-        }
-        else if (url.getHost().endsWith("gfycat.com")) {
+        } else if (url.getHost().endsWith("gfycat.com")) {
             try {
                 logger.log(Level.FINE, "Fetching gfycat page " + url);
                 String videoURL = GfycatRipper.getVideoURL(url);
@@ -72,8 +70,7 @@ public class RipUtils {
                 logger.log(Level.WARNING, "Exception while retrieving gfycat page:", e);
             }
             return result;
-        }
-        else if (url.toExternalForm().contains("vidble.com/album/") || url.toExternalForm().contains("vidble.com/show/")) {
+        } else if (url.toExternalForm().contains("vidble.com/album/") || url.toExternalForm().contains("vidble.com/show/")) {
             try {
                 logger.log(Level.INFO, "Getting vidble album " + url);
                 result.addAll(VidbleRipper.getURLsFromPage(url));
@@ -82,8 +79,7 @@ public class RipUtils {
                 logger.log(Level.WARNING, "Exception while retrieving vidble page:", e);
             }
             return result;
-        }
-        else if (url.toExternalForm().contains("eroshare.com")) {
+        } else if (url.toExternalForm().contains("eroshare.com")) {
             try {
                 logger.log(Level.INFO, "Getting eroshare album " + url);
                 result.addAll(EroShareRipper.getURLs(url));
@@ -95,9 +91,7 @@ public class RipUtils {
         } else if (url.toExternalForm().contains("v.redd.it")) {
             result.add(url);
             return result;
-        }
-
-        else if (url.toExternalForm().contains("erome.com")) {
+        } else if (url.toExternalForm().contains("erome.com")) {
             try {
                 logger.log(Level.INFO, "Getting eroshare album " + url);
                 EromeRipper r = new EromeRipper(url);
@@ -149,12 +143,10 @@ public class RipUtils {
                     if (el.attr("property").equals("og:video")) {
                         result.add(new URL(el.attr("content")));
                         return result;
-                    }
-                    else if (el.attr("name").equals("twitter:image:src")) {
+                    } else if (el.attr("name").equals("twitter:image:src")) {
                         result.add(new URL(el.attr("content")));
                         return result;
-                    }
-                    else if (el.attr("name").equals("twitter:image")) {
+                    } else if (el.attr("name").equals("twitter:image")) {
                         result.add(new URL(el.attr("content")));
                         return result;
                     }
@@ -179,9 +171,10 @@ public class RipUtils {
         if (url == null) url = urlFromImagefapDirectoryName(dir);
         if (url == null) url = urlFromDeviantartDirectoryName(dir);
         if (url == null) url = urlFromRedditDirectoryName(dir);
-        if (url == null) url = urlFromSiteDirectoryName(dir, "bfcakes",     "http://www.bcfakes.com/celebritylist/", "");
-        if (url == null) url = urlFromSiteDirectoryName(dir, "drawcrowd",   "http://drawcrowd.com/", "");
-        if (url == null) url = urlFromSiteDirectoryName(dir.replace("-", "/"), "ehentai", "http://g.e-hentai.org/g/", "");
+        if (url == null) url = urlFromSiteDirectoryName(dir, "bfcakes", "http://www.bcfakes.com/celebritylist/", "");
+        if (url == null) url = urlFromSiteDirectoryName(dir, "drawcrowd", "http://drawcrowd.com/", "");
+        if (url == null)
+            url = urlFromSiteDirectoryName(dir.replace("-", "/"), "ehentai", "http://g.e-hentai.org/g/", "");
         if (url == null) url = urlFromSiteDirectoryName(dir, "vinebox", "http://finebox.co/u/", "");
         if (url == null) url = urlFromSiteDirectoryName(dir, "imgbox", "http://imgbox.com/g/", "");
         if (url == null) url = urlFromSiteDirectoryName(dir, "modelmayhem", "http://www.modelmayhem.com/", "");
@@ -225,8 +218,7 @@ public class RipUtils {
         dir = dir.substring("imagefap_".length());
         if (NumberUtils.isDigits(dir)) {
             url = "http://www.imagefap.com/gallery.php?gid=" + dir;
-        }
-        else {
+        } else {
             url = "http://www.imagefap.com/gallery.php?pgid=" + dir;
         }
         return url;
@@ -240,8 +232,7 @@ public class RipUtils {
         String url = null;
         if (!dir.contains("_")) {
             url = "http://" + dir + ".deviantart.com/";
-        }
-        else {
+        } else {
             String[] fields = dir.split("_");
             url = "http://" + fields[0] + ".deviantart.com/gallery/" + fields[1];
         }
@@ -272,16 +263,13 @@ public class RipUtils {
             url += "imgur.com/r/" + sub + "/";
             url += fields.remove(0) + "/";
             url += fields.remove(0);
-        }
-        else if (album.contains("-")) {
+        } else if (album.contains("-")) {
             // Series of images
             url += "imgur.com/" + album.replaceAll("-", ",");
-        }
-        else if (album.length() == 5 || album.length() == 6) {
+        } else if (album.length() == 5 || album.length() == 6) {
             // Album
             url += "imgur.com/a/" + album;
-        }
-        else {
+        } else {
             // User account
             url += album + ".imgur.com/";
             if (fields.size() > 2) {
@@ -290,12 +278,14 @@ public class RipUtils {
         }
         return url;
     }
+
     /**
      * Reads a cookie string (Key1=value1;key2=value2) from the config file and turns it into a hashmap
+     *
      * @return Map of cookies containing session data.
      */
     public static Map<String, String> getCookiesFromString(String line) {
-        Map<String,String> cookies = new HashMap<>();
+        Map<String, String> cookies = new HashMap<>();
         for (String pair : line.split(";")) {
             String[] kv = pair.split("=");
             cookies.put(kv[0], kv[1]);
@@ -307,7 +297,7 @@ public class RipUtils {
      * Checks for blacklisted tags on page. If it finds one it returns it, if not it return null
      *
      * @param blackListedTags a string array of the blacklisted tags
-     * @param tagsOnPage the tags on the page
+     * @param tagsOnPage      the tags on the page
      * @return String
      */
     public static String checkTags(String[] blackListedTags, List<String> tagsOnPage) {

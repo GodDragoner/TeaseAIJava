@@ -16,7 +16,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
  * @author losipher
  */
 public class EromeRipper extends AbstractHTMLRipper {
@@ -24,18 +23,18 @@ public class EromeRipper extends AbstractHTMLRipper {
     boolean rippingProfile;
 
 
-    public EromeRipper (URL url) throws IOException {
+    public EromeRipper(URL url) throws IOException {
         super(url);
     }
 
     @Override
     public String getDomain() {
-            return "erome.com";
+        return "erome.com";
     }
 
     @Override
     public String getHost() {
-            return "erome";
+        return "erome";
     }
 
     @Override
@@ -66,19 +65,19 @@ public class EromeRipper extends AbstractHTMLRipper {
 
     @Override
     public String getAlbumTitle(URL url) throws MalformedURLException {
-            try {
-                // Attempt to use album title as GID
-                Element titleElement = getFirstPage().select("meta[property=og:title]").first();
-                String title = titleElement.attr("content");
-                title = title.substring(title.lastIndexOf('/') + 1);
-                return getHost() + "_" + getGID(url) + "_" + title.trim();
-            } catch (IOException e) {
-                // Fall back to default album naming convention
-                LOGGER.log(Level.INFO, "Unable to find title at " + url);
-            } catch (NullPointerException e) {
-                return getHost() + "_" + getGID(url);
-            }
-            return super.getAlbumTitle(url);
+        try {
+            // Attempt to use album title as GID
+            Element titleElement = getFirstPage().select("meta[property=og:title]").first();
+            String title = titleElement.attr("content");
+            title = title.substring(title.lastIndexOf('/') + 1);
+            return getHost() + "_" + getGID(url) + "_" + title.trim();
+        } catch (IOException e) {
+            // Fall back to default album naming convention
+            LOGGER.log(Level.INFO, "Unable to find title at " + url);
+        } catch (NullPointerException e) {
+            return getHost() + "_" + getGID(url);
+        }
+        return super.getAlbumTitle(url);
     }
 
     @Override
@@ -96,8 +95,8 @@ public class EromeRipper extends AbstractHTMLRipper {
     @Override
     public Document getFirstPage() throws IOException {
         Response resp = Http.url(this.url)
-                            .ignoreContentType()
-                            .response();
+                .ignoreContentType()
+                .response();
 
         return resp.parse();
     }
@@ -123,31 +122,29 @@ public class EromeRipper extends AbstractHTMLRipper {
     private List<String> getMediaFromPage(Document doc) {
         List<String> results = new ArrayList<>();
         for (Element el : doc.select("img.img-front")) {
-			if (el.hasAttr("src")) {
-				if (el.attr("src").startsWith("https:")) {
-					results.add(el.attr("src"));
-				} else {
-					results.add("https:" + el.attr("src"));
-				}
-			} else if (el.hasAttr("data-src")) {
-				//to add images that are not loaded( as all images are lasyloaded as we scroll).
-				results.add(el.attr("data-src"));
-			}
+            if (el.hasAttr("src")) {
+                if (el.attr("src").startsWith("https:")) {
+                    results.add(el.attr("src"));
+                } else {
+                    results.add("https:" + el.attr("src"));
+                }
+            } else if (el.hasAttr("data-src")) {
+                //to add images that are not loaded( as all images are lasyloaded as we scroll).
+                results.add(el.attr("data-src"));
+            }
 
-		}
+        }
         for (Element el : doc.select("source[label=HD]")) {
             if (el.attr("src").startsWith("https:")) {
                 results.add(el.attr("src"));
-            }
-            else {
+            } else {
                 results.add("https:" + el.attr("src"));
             }
         }
         for (Element el : doc.select("source[label=SD]")) {
             if (el.attr("src").startsWith("https:")) {
                 results.add(el.attr("src"));
-            }
-            else {
+            } else {
                 results.add("https:" + el.attr("src"));
             }
         }

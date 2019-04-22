@@ -40,7 +40,7 @@ public class GenreMediaSettings {
         settingsController.mediaFetishTypeList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MediaFetishType>() {
             @Override
             public void changed(ObservableValue<? extends MediaFetishType> observable, MediaFetishType oldValue, MediaFetishType newValue) {
-                if(newValue != null) {
+                if (newValue != null) {
                     updateAssignedPathsList();
                 }
             }
@@ -51,7 +51,7 @@ public class GenreMediaSettings {
             @Override
             public void handle(MouseEvent event) {
                 MediaFetishType mediaFetishType = getSelectedMediaFetish();
-                if(mediaFetishType == null) {
+                if (mediaFetishType == null) {
                     return;
                 }
 
@@ -69,7 +69,7 @@ public class GenreMediaSettings {
                 chooser.setTitle("Select Media Folder");
 
                 String dir;
-                if(settingsController.addImagePathTextBox.getText() != null && new File(settingsController.addImagePathTextBox.getText()).exists()) {
+                if (settingsController.addImagePathTextBox.getText() != null && new File(settingsController.addImagePathTextBox.getText()).exists()) {
                     dir = settingsController.addImagePathTextBox.getText();
                 } else {
                     dir = System.getProperty("user.dir");
@@ -78,7 +78,7 @@ public class GenreMediaSettings {
                 File defaultDirectory = new File(dir);
                 chooser.setInitialDirectory(defaultDirectory);
 
-                if(defaultDirectory != null) {
+                if (defaultDirectory != null) {
                     File selectedDirectory = chooser.showDialog(settingsController.stage);
                     settingsController.addImagePathTextBox.setText(selectedDirectory.getPath());
                 }
@@ -109,19 +109,19 @@ public class GenreMediaSettings {
             @Override
             public void handle(DragEvent dragEvent) {
                 List<File> files = dragEvent.getDragboard().getFiles();
-                if(files.isEmpty()) {
+                if (files.isEmpty()) {
                     return;
                 }
 
                 boolean foundFile = false;
-                for(File file : files) {
-                    if(file.isDirectory()) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
                         foundFile = true;
                         addMediaFolder(file, MediaType.IMAGE);
                     }
                 }
 
-                if(foundFile) {
+                if (foundFile) {
                     dragEvent.setDropCompleted(true);
                 }
             }
@@ -131,18 +131,18 @@ public class GenreMediaSettings {
             @Override
             public void handle(DragEvent dragEvent) {
                 List<File> files = dragEvent.getDragboard().getFiles();
-                if(files.isEmpty()) {
+                if (files.isEmpty()) {
                     return;
                 }
 
                 boolean foundFile = false;
-                for(File file : files) {
-                    if(file.isDirectory()) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
                         foundFile = true;
                     }
                 }
 
-                if(foundFile) {
+                if (foundFile) {
                     dragEvent.acceptTransferModes(TransferMode.MOVE);
                 }
             }
@@ -153,7 +153,7 @@ public class GenreMediaSettings {
             @Override
             public void handle(MouseEvent event) {
                 MediaFetishType mediaFetishType = getSelectedMediaFetish();
-                if(mediaFetishType == null) {
+                if (mediaFetishType == null) {
                     return;
                 }
 
@@ -171,7 +171,7 @@ public class GenreMediaSettings {
                 chooser.setTitle("Select Media Folder");
 
                 String dir;
-                if(settingsController.addVideoPathTextBox.getText() != null && new File(settingsController.addVideoPathTextBox.getText()).exists()) {
+                if (settingsController.addVideoPathTextBox.getText() != null && new File(settingsController.addVideoPathTextBox.getText()).exists()) {
                     dir = settingsController.addVideoPathTextBox.getText();
                 } else {
                     dir = System.getProperty("user.dir");
@@ -180,7 +180,7 @@ public class GenreMediaSettings {
                 File defaultDirectory = new File(dir);
                 chooser.setInitialDirectory(defaultDirectory);
 
-                if(defaultDirectory != null) {
+                if (defaultDirectory != null) {
                     File selectedDirectory = chooser.showDialog(settingsController.stage);
                     settingsController.addVideoPathTextBox.setText(selectedDirectory.getPath());
                 }
@@ -211,18 +211,18 @@ public class GenreMediaSettings {
             @Override
             public void handle(DragEvent dragEvent) {
                 List<File> files = dragEvent.getDragboard().getFiles();
-                if(files.isEmpty()) {
+                if (files.isEmpty()) {
                     return;
                 }
 
                 boolean foundFile = false;
-                for(File file : files) {
-                    if(file.isDirectory()) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
                         foundFile = true;
                     }
                 }
 
-                if(foundFile) {
+                if (foundFile) {
                     dragEvent.acceptTransferModes(TransferMode.MOVE);
                 }
             }
@@ -232,19 +232,19 @@ public class GenreMediaSettings {
             @Override
             public void handle(DragEvent dragEvent) {
                 List<File> files = dragEvent.getDragboard().getFiles();
-                if(files.isEmpty()) {
+                if (files.isEmpty()) {
                     return;
                 }
 
                 boolean foundFile = false;
-                for(File file : files) {
-                    if(file.isDirectory()) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
                         foundFile = true;
                         addMediaFolder(file, MediaType.VIDEO);
                     }
                 }
 
-                if(foundFile) {
+                if (foundFile) {
                     dragEvent.setDropCompleted(true);
                 }
             }
@@ -259,15 +259,15 @@ public class GenreMediaSettings {
         MediaFetishType mediaFetishType = getSelectedMediaFetish();
         String path = file.getPath();
 
-        if(path != null && file.exists() && file.isDirectory()) {
-            if(TeaseAI.application.getMediaCollection().isPathAssigned(file.getPath(), mediaFetishType, mediaType)) {
+        if (path != null && file.exists() && file.isDirectory()) {
+            if (TeaseAI.application.getMediaCollection().isPathAssigned(file.getPath(), mediaFetishType, mediaType)) {
                 return;
             }
 
             MediaFolder mediaFolder = new MediaFolder(mediaType, file);
             TeaseAI.application.getMediaCollection().addMediaHolder(mediaFetishType, mediaFolder);
 
-            if(mediaType == MediaType.IMAGE) {
+            if (mediaType == MediaType.IMAGE) {
                 settingsController.imagePathListView.getItems().add(mediaFolder);
             } else {
                 settingsController.videoPathListView.getItems().add(mediaFolder);
@@ -301,10 +301,10 @@ public class GenreMediaSettings {
         MediaFetishType mediaFetishType = getSelectedMediaFetish();
 
         if (mediaFetishType != null) {
-            for(MediaType mediaType : MediaType.values()) {
+            for (MediaType mediaType : MediaType.values()) {
                 for (MediaHolder mediaHolder : TeaseAI.application.getMediaCollection().getMediaHolders(mediaFetishType, mediaType)) {
                     if (mediaHolder instanceof MediaFolder) {
-                        switch(mediaType) {
+                        switch (mediaType) {
                             case VIDEO:
                                 settingsController.videoPathListView.getItems().add(mediaHolder);
                                 break;

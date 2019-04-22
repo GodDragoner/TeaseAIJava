@@ -23,6 +23,7 @@ public class ImgboxRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "imgbox";
     }
+
     @Override
     public String getDomain() {
         return "imgbox.com";
@@ -36,13 +37,14 @@ public class ImgboxRipper extends AbstractHTMLRipper {
             return m.group(1);
         }
         throw new MalformedURLException("Expected imgbox.com URL format: " +
-                        "imgbox.com/g/albumid - got " + url + "instead");
+                "imgbox.com/g/albumid - got " + url + "instead");
     }
 
     @Override
     public Document getFirstPage() throws IOException {
         return Http.url(url).get();
     }
+
     @Override
     public List<String> getURLsFromPage(Document doc) {
         List<String> imageURLs = new ArrayList<>();
@@ -54,6 +56,7 @@ public class ImgboxRipper extends AbstractHTMLRipper {
         }
         return imageURLs;
     }
+
     @Override
     public void downloadURL(URL url, int index) {
         addURLToDownload(url, getPrefix(index));

@@ -32,7 +32,7 @@ public class StrokeHandler {
     private int currentBPM;
 
     public void startMetronome(int bpm, int durationSeconds) {
-        if(bpm <= 0) {
+        if (bpm <= 0) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Tried to set metronome bpm to 0 or lower.");
             return;
         }
@@ -43,17 +43,18 @@ public class StrokeHandler {
 
         (metronome = new Metronome()).start(bpm);
 
-        if(durationSeconds > 0) {
+        if (durationSeconds > 0) {
             (waitingThread = new Thread() {
                 Metronome watchingMetronome = metronome;
+
                 @Override
                 public void run() {
                     synchronized (this) {
                         try {
-                            wait(durationSeconds*1000);
+                            wait(durationSeconds * 1000);
 
                             //Check if we are still dealing with the metronome that we were watching
-                            if(watchingMetronome == metronome) {
+                            if (watchingMetronome == metronome) {
                                 metronome.stop();
                                 waitingThread = null;
                             }
@@ -67,12 +68,12 @@ public class StrokeHandler {
     }
 
     public void stopMetronome() {
-        if(metronome != null) {
+        if (metronome != null) {
             metronome.stop();
             metronome = null;
 
             //Check if we are waiting for stopping the metronome
-            if(waitingThread != null) {
+            if (waitingThread != null) {
                 waitingThread.notify();
                 waitingThread = null;
             }

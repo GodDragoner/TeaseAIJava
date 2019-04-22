@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public class CliphunterRipper extends VideoRipper {
 
     private static final String HOST = "cliphunter";
-    private static final String decryptString="{'$':':','&':'.','(':'=','-':'-','_':'_','^':'&','a':'h','c':'c','b':'b','e':'v','d':'e','g':'f','f':'o','i':'d','m':'a','l':'n','n':'m','q':'t','p':'u','r':'s','w':'w','v':'p','y':'l','x':'r','z':'i','=':'/','?':'?'}";
+    private static final String decryptString = "{'$':':','&':'.','(':'=','-':'-','_':'_','^':'&','a':'h','c':'c','b':'b','e':'v','d':'e','g':'f','f':'o','i':'d','m':'a','l':'n','n':'m','q':'t','p':'u','r':'s','w':'w','v':'p','y':'l','x':'r','z':'i','=':'/','?':'?'}";
     private static final JSONObject decryptDict = new JSONObject(decryptString);
 
     public CliphunterRipper(URL url) throws IOException {
@@ -59,15 +59,14 @@ public class CliphunterRipper extends VideoRipper {
         String html = Http.url(url).get().html();
         String jsonString = html.substring(html.indexOf("var flashVars = {d: '") + 21);
         jsonString = jsonString.substring(0, jsonString.indexOf("'"));
-        JSONObject json    = new JSONObject(new String(Base64.decode(jsonString)));
+        JSONObject json = new JSONObject(new String(Base64.decode(jsonString)));
         JSONObject jsonURL = new JSONObject(new String(Base64.decode(json.getString("url"))));
         String encryptedURL = jsonURL.getJSONObject("u").getString("l");
         String vidURL = "";
         for (char c : encryptedURL.toCharArray()) {
             if (decryptDict.has(Character.toString(c))) {
                 vidURL += decryptDict.getString(Character.toString(c));
-            }
-            else {
+            } else {
                 vidURL += c;
             }
         }

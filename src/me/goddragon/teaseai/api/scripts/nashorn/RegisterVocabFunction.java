@@ -23,13 +23,13 @@ public class RegisterVocabFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
-        if(args.length > 1) {
+        if (args.length > 1) {
             Vocabulary vocabulary = new Vocabulary((String) args[0]);
 
             vocabulary.getSynonyms().clear();
 
             //Add all vocabularies
-            for(int x = 1; x < args.length; x++) {
+            for (int x = 1; x < args.length; x++) {
                 vocabulary.getSynonyms().put(args[x], 1D);
             }
 

@@ -62,7 +62,7 @@ public class DuckmoviesRipper extends AbstractSingleFileRipper {
             "freshporn.co",
             "pornvidx.fun",
             "palapaja.com"
-            );
+    );
 
     @Override
     public String getHost() {
@@ -135,5 +135,7 @@ public class DuckmoviesRipper extends AbstractSingleFileRipper {
     }
 
     @Override
-    public boolean tryResumeDownload() {return true;}
+    public boolean tryResumeDownload() {
+        return true;
+    }
 }

@@ -56,20 +56,20 @@ public class TwitchVideoRipper extends VideoRipper {
     public void rip() throws IOException {
         LOGGER.log(Level.INFO, "Retrieving " + this.url);
         Document doc = Http.url(url).get();
-        
+
         //Get user friendly filename from page title
         String title = doc.title();
-        
+
         Elements script = doc.select("script");
         if (script.isEmpty()) {
             throw new IOException("Could not find script code at " + url);
         }
         //Regex assumes highest quality source is listed first
         Pattern p = Pattern.compile("\"source\":\"(.*?)\"");
-        
+
         for (Element element : script) {
             Matcher m = p.matcher(element.data());
-            if (m.find()){
+            if (m.find()) {
                 String vidUrl = m.group(1);
                 addURLToDownload(new URL(vidUrl), HOST + "_" + title);
             }

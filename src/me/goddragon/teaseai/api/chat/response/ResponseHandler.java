@@ -52,7 +52,7 @@ public class ResponseHandler {
 
                             Object result = invocable.invokeFunction(functionName, getMessage());
 
-                            if(result instanceof Boolean) {
+                            if (result instanceof Boolean) {
                                 return (Boolean) result;
                             }
                             return false;
@@ -60,7 +60,7 @@ public class ResponseHandler {
                             TeaseLogger.getLogger().log(Level.SEVERE, "Error while handling file '" + e.getFileName() + "' in line " + e.getLineNumber() + "\n" +
                                     "Error: " + e.getMessage(), false);
                         } catch (NoSuchMethodException e) {
-                            TeaseLogger.getLogger().log(Level.SEVERE, "Response '" + responseName + " is missing the function to trigger it. Create the function '" + functionName + "(message)' for this to work." , false);
+                            TeaseLogger.getLogger().log(Level.SEVERE, "Response '" + responseName + " is missing the function to trigger it. Create the function '" + functionName + "(message)' for this to work.", false);
                         }
                         return false;
                     }
@@ -85,7 +85,7 @@ public class ResponseHandler {
 
     public void registerResponse(Response response) {
         synchronized (responses) {
-            if(!responses.contains(response)) {
+            if (!responses.contains(response)) {
                 responses.add(response);
             }
         }

@@ -97,11 +97,10 @@ public class ContactSettings {
 
             if (contact != null) {
                 contact.getContact().NAME.setValue(newValue);
-                
+
                 contact.setName(contact.getContact().NAME.getValue());
                 updateContactList();
-                if (contact.getId() == 1)
-                {
+                if (contact.getId() == 1) {
                     MainGuiController.getController().getDomNameTextField().setText(contact.getContact().NAME.getValue());
                 }
             }

@@ -22,30 +22,30 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
  * @author losipher
  */
 public class EroShareRipper extends AbstractHTMLRipper {
 
 
-    public EroShareRipper (URL url) throws IOException {
+    public EroShareRipper(URL url) throws IOException {
         super(url);
     }
 
     @Override
     public String getDomain() {
-            return "eroshare.com";
+        return "eroshare.com";
     }
 
     @Override
     public String getHost() {
-            return "eroshare";
+        return "eroshare";
     }
 
     @Override
     public void downloadURL(URL url, int index) {
         addURLToDownload(url);
     }
+
     @Override
     public boolean canRip(URL url) {
         Pattern p = Pattern.compile("^https?://eroshae.com/([a-zA-Z0-9\\-_]+)/?$");
@@ -85,12 +85,12 @@ public class EroShareRipper extends AbstractHTMLRipper {
         if (elem == null) {
             throw new IOException("No more pages");
         }
-            nextUrl = elem.attr("href");
-            if (nextUrl.equals("")) {
-                throw new IOException("No more pages");
-            }
-            return Http.url("eroshae.com" + nextUrl).get();
+        nextUrl = elem.attr("href");
+        if (nextUrl.equals("")) {
+            throw new IOException("No more pages");
         }
+        return Http.url("eroshae.com" + nextUrl).get();
+    }
 
     @Override
     public String getAlbumTitle(URL url) throws MalformedURLException {
@@ -160,8 +160,8 @@ public class EroShareRipper extends AbstractHTMLRipper {
     public Document getFirstPage() throws IOException {
         String urlToDownload = this.url.toExternalForm();
         Response resp = Http.url(urlToDownload.replace("eroshare.com", "eroshae.com"))
-                            .ignoreContentType()
-                            .response();
+                .ignoreContentType()
+                .response();
 
         return resp.parse();
     }
@@ -195,11 +195,11 @@ public class EroShareRipper extends AbstractHTMLRipper {
         throw new MalformedURLException("eroshare album not found in " + url + ", expected https://eroshare.com/album or eroshae.com/album");
     }
 
-    public static List<URL> getURLs(URL url) throws IOException{
+    public static List<URL> getURLs(URL url) throws IOException {
 
         Response resp = Http.url(url)
-                            .ignoreContentType()
-                            .response();
+                .ignoreContentType()
+                .response();
 
         Document doc = resp.parse();
 

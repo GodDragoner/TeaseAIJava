@@ -122,13 +122,11 @@ public class TaggedPicture {
         deleteTags();
         File newFile = new File(newPath);
         File tempFile = newFile;
-        if (!tempFile.getParentFile().exists())
-        {
+        if (!tempFile.getParentFile().exists()) {
             tempFile.getParentFile().mkdirs();
         }
-        
-        try
-        {
+
+        try {
             TeaseLogger.getLogger().log(Level.INFO, "Moving file to " + newPath);
             Files.move(file.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
@@ -167,7 +165,7 @@ public class TaggedPicture {
         TeaseLogger.getLogger().log(Level.INFO, "File tags after move " + this.tags.toString());
         return true;
     }
-    
+
     public void delete() {
         deleteTags();
         File folder = this.file.getParentFile();

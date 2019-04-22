@@ -56,14 +56,14 @@ public class ZipUtils {
             FileOutputStream fos = new FileOutputStream(outputFile);
             ZipOutputStream zos = new ZipOutputStream(fos);
 
-            for(String file : generateFileList(new ArrayList<>(), sourceFolder, sourceFolder)) {
+            for (String file : generateFileList(new ArrayList<>(), sourceFolder, sourceFolder)) {
                 ZipEntry ze = new ZipEntry(file);
                 zos.putNextEntry(ze);
 
                 FileInputStream in = new FileInputStream(sourceFolder.getAbsoluteFile() + File.separator + file);
 
                 int len;
-                while((len = in.read(buffer)) > 0) {
+                while ((len = in.read(buffer)) > 0) {
                     zos.write(buffer, 0, len);
                 }
 
@@ -87,7 +87,7 @@ public class ZipUtils {
 
         if (node.isDirectory()) {
             String[] subNote = node.list();
-            for (String filename: subNote) {
+            for (String filename : subNote) {
                 generateFileList(fileList, sourceFolder, new File(node, filename));
             }
         }

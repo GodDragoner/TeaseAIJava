@@ -27,10 +27,10 @@ public class LazySubController {
 
         this.flowPane.getChildren().add(setAnswers);
         addButton(createSendMessageButton("Hello", "Hello Mistress", flowPane.getWidth()));
-        addButton(createSendMessageButton("Yes", "Yes Mistress", flowPane.getWidth()/2D));
-        addButton(createSendMessageButton("No", "No Mistress", flowPane.getWidth()/2D));
-        addButton(createSendMessageButton("Edge", "I am on the edge", flowPane.getWidth()/2D));
-        addButton(createSendMessageButton("Sorry", "I am sorry Mistress", flowPane.getWidth()/2D));
+        addButton(createSendMessageButton("Yes", "Yes Mistress", flowPane.getWidth() / 2D));
+        addButton(createSendMessageButton("No", "No Mistress", flowPane.getWidth() / 2D));
+        addButton(createSendMessageButton("Edge", "I am on the edge", flowPane.getWidth() / 2D));
+        addButton(createSendMessageButton("Sorry", "I am sorry Mistress", flowPane.getWidth() / 2D));
 
         Label dynamicAnswers = new Label("Dynamic Answers");
         dynamicAnswers.setPrefWidth(flowPane.getWidth());
@@ -65,7 +65,7 @@ public class LazySubController {
             }
         });
 
-        if(width > 0) {
+        if (width > 0) {
             button.setPrefWidth(width);
         }
 

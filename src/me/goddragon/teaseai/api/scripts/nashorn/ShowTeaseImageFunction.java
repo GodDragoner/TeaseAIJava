@@ -29,14 +29,14 @@ public class ShowTeaseImageFunction extends CustomFunction {
 
         File file = TeaseAI.application.getMediaCollection().getRandomTeaseFile(MediaType.IMAGE);
 
-        if(file == null || !file.exists()) {
-           return null;
+        if (file == null || !file.exists()) {
+            return null;
         }
 
-        if(args.length >= 1 && args[0] instanceof Integer) {
+        if (args.length >= 1 && args[0] instanceof Integer) {
             MediaHandler.getHandler().showPicture(file, (Integer) args[0]);
             return file;
-        } else if(args.length == 0) {
+        } else if (args.length == 0) {
             MediaHandler.getHandler().showPicture(file);
             return file;
         }

@@ -15,7 +15,8 @@ public class Metronome implements MetaEventListener {
             openSequencer();
             Sequence seq = createSequence();
             startSequence(seq);
-        } catch (InvalidMidiDataException | MidiUnavailableException ex) {}
+        } catch (InvalidMidiDataException | MidiUnavailableException ex) {
+        }
     }
 
     public void stop() {

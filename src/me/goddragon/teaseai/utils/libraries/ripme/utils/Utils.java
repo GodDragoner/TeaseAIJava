@@ -71,12 +71,10 @@ public class Utils {
                 config.addProperty("urls_only.save", true);
                 config.addProperty("album_titles.save", false);
                 config.addProperty("lang", "en_US");
-            }
-            else
-            {
+            } else {
                 config = new PropertiesConfiguration(configPath);
             }
-            
+
             LOGGER.log(Level.INFO, "Loaded " + config.getPath());
 
             if (file.exists()) {
@@ -718,8 +716,8 @@ public class Utils {
      * Formats and reuturns the status text for rippers using the byte progress bar
      *
      * @param completionPercentage An int between 0 and 100 which repersents how close the download is to complete
-     * @param bytesCompleted How many bytes have been downloaded
-     * @param bytesTotal The total size of the file that is being downloaded
+     * @param bytesCompleted       How many bytes have been downloaded
+     * @param bytesTotal           The total size of the file that is being downloaded
      * @return Returns the formatted status text for rippers using the byte progress bar
      */
     public static String getByteStatusText(int completionPercentage, int bytesCompleted, int bytesTotal) {
@@ -761,7 +759,7 @@ public class Utils {
         for (File file : listOfFiles) {
             if (file.isFile()) {
                 String[] filename = file.getName().split("\\.(?=[^\\.]+$)"); //split filename from it's extension
-                if(filename[0].equalsIgnoreCase(fileName)) {
+                if (filename[0].equalsIgnoreCase(fileName)) {
                     return true;
                 }
             }

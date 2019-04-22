@@ -24,6 +24,7 @@ public class ImagebamRipper extends AbstractHTMLRipper {
 
     // Thread pool for finding direct image links from "image" pages (html)
     private DownloadThreadPool imagebamThreadPool = new DownloadThreadPool("imagebam");
+
     @Override
     public DownloadThreadPool getThreadPool() {
         return imagebamThreadPool;
@@ -37,6 +38,7 @@ public class ImagebamRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "imagebam";
     }
+
     @Override
     public String getDomain() {
         return "imagebam.com";
@@ -117,7 +119,7 @@ public class ImagebamRipper extends AbstractHTMLRipper {
 
     /**
      * Helper class to find and download images found on "image" pages
-     *
+     * <p>
      * Handles case when site has IP-banned the user.
      */
     private class ImagebamImageThread extends Thread {
@@ -134,7 +136,7 @@ public class ImagebamRipper extends AbstractHTMLRipper {
         public void run() {
             fetchImage();
         }
-        
+
         /**
          * Rips useful image from "image page"
          */
@@ -143,10 +145,10 @@ public class ImagebamRipper extends AbstractHTMLRipper {
                 Document doc = Http.url(url).get();
                 // Find image
                 Elements metaTags = doc.getElementsByTag("meta");
-                
+
                 String imgsrc = "";//initialize, so no NullPointerExceptions should ever happen.
-                
-                for (Element metaTag: metaTags) {
+
+                for (Element metaTag : metaTags) {
                     //the direct link to the image seems to always be linked in the <meta> part of the html.
                     if (metaTag.attr("property").equals("og:image")) {
                         imgsrc = metaTag.attr("content");
@@ -154,19 +156,19 @@ public class ImagebamRipper extends AbstractHTMLRipper {
                         break;//only one (useful) image possible for an "image page".
                     }
                 }
-               
+
                 //for debug, or something goes wrong.
                 if (imgsrc.isEmpty()) {
                     LOGGER.log(Level.WARNING, "Image not found at " + this.url);
                     return;
                 }
-               
+
                 // Provide prefix and let the AbstractRipper "guess" the filename
                 String prefix = "";
                 if (Utils.getConfigBoolean("download.save_order", true)) {
                     prefix = String.format("%03d_", index);
                 }
-                
+
                 addURLToDownload(new URL(imgsrc), prefix);
             } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "[!] Exception while loading/parsing " + this.url, e);

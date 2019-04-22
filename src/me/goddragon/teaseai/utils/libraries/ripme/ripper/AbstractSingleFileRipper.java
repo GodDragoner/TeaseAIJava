@@ -39,5 +39,7 @@ public abstract class AbstractSingleFileRipper extends AbstractHTMLRipper {
     }
 
     @Override
-    public boolean useByteProgessBar() {return true;}
+    public boolean useByteProgessBar() {
+        return true;
+    }
 }

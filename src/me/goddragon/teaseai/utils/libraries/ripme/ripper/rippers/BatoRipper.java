@@ -115,7 +115,7 @@ public class BatoRipper extends AbstractHTMLRipper {
                 String json = s.replaceAll("var images = ", "").replaceAll(";", "");
                 LOGGER.log(Level.INFO, s);
                 JSONObject images = new JSONObject(json);
-                for (int i = 1; i < images.length() +1; i++) {
+                for (int i = 1; i < images.length() + 1; i++) {
                     result.add(images.getString(Integer.toString(i)));
                 }
 

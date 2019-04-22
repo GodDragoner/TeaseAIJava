@@ -20,9 +20,10 @@ import java.util.regex.Pattern;
 class TapasticEpisode {
     int id;
     String filename;
+
     public TapasticEpisode(int index, int id, String title) {
         int index1 = index;
-        this.id    = id;
+        this.id = id;
         String title1 = title;
         this.filename = Utils.filesystemSafe(title);
     }
@@ -30,7 +31,7 @@ class TapasticEpisode {
 
 public class TapasticRipper extends AbstractHTMLRipper {
 
-    private List<TapasticEpisode> episodes= new ArrayList<>();
+    private List<TapasticEpisode> episodes = new ArrayList<>();
 
     public TapasticRipper(URL url) throws IOException {
         super(url);
@@ -77,7 +78,7 @@ public class TapasticRipper extends AbstractHTMLRipper {
             Elements images = doc.select("article.ep-contents img");
             // Find maximum # of images for optimal filename indexing
             int epiLog = (int) (Math.floor(Math.log10(episodes.size())) + 1),
-                imgLog = (int) (Math.floor(Math.log10(images.size()  )) + 1);
+                    imgLog = (int) (Math.floor(Math.log10(images.size())) + 1);
             for (int i = 0; i < images.size(); i++) {
                 String link = images.get(i).attr("src");
                 TapasticEpisode episode = episodes.get(index - 1);

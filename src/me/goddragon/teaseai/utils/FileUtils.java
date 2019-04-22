@@ -22,7 +22,7 @@ public class FileUtils {
 
         List<File> files = new ArrayList<>();
 
-        if(pathString.lastIndexOf(File.separator) < 0) {
+        if (pathString.lastIndexOf(File.separator) < 0) {
             files.add(new File(pathString));
             return files;
         }
@@ -275,30 +275,29 @@ public class FileUtils {
 
         return jarFolder + resourceName;
     }
-    
+
     public static void disableSslVerification() {
-        try
-        {
+        try {
             // Create a trust manager that does not validate certificate chains
-            TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
+            TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
                 public java.security.cert.X509Certificate[] getAcceptedIssuers() {
                     return null;
                 }
+
                 @Override
                 public void checkClientTrusted(
                         java.security.cert.X509Certificate[] arg0, String arg1)
-                        throws CertificateException
-                {
+                        throws CertificateException {
                     // TODO Auto-generated method stub
-                    
+
                 }
+
                 @Override
                 public void checkServerTrusted(
                         java.security.cert.X509Certificate[] arg0, String arg1)
-                        throws CertificateException
-                {
+                        throws CertificateException {
                     // TODO Auto-generated method stub
-                    
+
                 }
             }
             };

@@ -109,11 +109,11 @@ public class Theme {
 
                 //We found an end to our block and can skip reading th rest
                 if (strLine.equalsIgnoreCase("}") && lineIndexFound > -1 && endBlock == -1) {
-                   break;
+                    break;
                 }
 
                 //Only if we are within the boundaries of our block
-                if(lineIndexFound > -1) {
+                if (lineIndexFound > -1) {
                     lines.add(strLine);
                 }
             }
@@ -121,8 +121,8 @@ public class Theme {
             //Close the input stream
             br.close();
 
-            for(String line : lines) {
-                if(line.contains(value)) {
+            for (String line : lines) {
+                if (line.contains(value)) {
                     return line.split(":")[1].replace(";", "").trim();
                 }
             }
@@ -261,8 +261,8 @@ public class Theme {
             public void applyToGui() {
                 writeToCSSFile(this.cssKey, "-fx-base: " + getCSSColorString() + ";", "-fx-background-color: " + getCSSColorString() + ";");
 
-                for(Node node : TeaseAI.getApplication().getController().getLazySubController().getFlowPane().getChildren()) {
-                    if(node instanceof Button) {
+                for (Node node : TeaseAI.getApplication().getController().getLazySubController().getFlowPane().getChildren()) {
+                    if (node instanceof Button) {
                         /*String newStyle = TeaseAI.getApplication().getController().getStartChatButton().getStyle() +  " -fx-background-color: " + getCSSColorString() + ";";
                         node.setStyle(newStyle);*/
                     }
@@ -354,7 +354,7 @@ public class Theme {
                 ChatHandler.getHandler().getParticipantById(4).setNameColor(this.color);
             }
         });
-        
+
         settings.add(new CSSThemeColor("Button Color", this, ".button-color", "fx-background-color") {
             @Override
             public void applyToGui() {

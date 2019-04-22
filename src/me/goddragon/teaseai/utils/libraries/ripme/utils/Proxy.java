@@ -50,8 +50,8 @@ public class Proxy {
         Map<String, String> proxyServer = parseServer(fullproxy);
 
         if (proxyServer.get("user") != null && proxyServer.get("password") != null) {
-            Authenticator.setDefault(new Authenticator(){
-                protected PasswordAuthentication  getPasswordAuthentication(){
+            Authenticator.setDefault(new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
                     PasswordAuthentication p = new PasswordAuthentication(proxyServer.get("user"), proxyServer.get("password").toCharArray());
                     return p;
                 }
@@ -80,8 +80,8 @@ public class Proxy {
 
         Map<String, String> socksServer = parseServer(fullsocks);
         if (socksServer.get("user") != null && socksServer.get("password") != null) {
-            Authenticator.setDefault(new Authenticator(){
-                protected PasswordAuthentication  getPasswordAuthentication(){
+            Authenticator.setDefault(new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
                     PasswordAuthentication p = new PasswordAuthentication(socksServer.get("user"), socksServer.get("password").toCharArray());
                     return p;
                 }

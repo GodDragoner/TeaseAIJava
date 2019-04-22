@@ -256,7 +256,7 @@ public class TwitterRipper extends AlbumRipper {
             LOGGER.log(Level.FINE, "Twitter response #" + (i + 1) + " Tweets:\n" + tweets);
             if (tweets.size() == 1 &&
                     lastMaxID.equals(tweets.get(0).getString("id_str"))
-                    ) {
+            ) {
                 LOGGER.log(Level.INFO, "   No more tweet found.");
                 break;
             }
@@ -308,7 +308,7 @@ public class TwitterRipper extends AlbumRipper {
                             (c >= 'a' && c <= 'z')
                                     || (c >= 'A' && c <= 'Z')
                                     || (c >= '0' && c <= '9')
-                            ) {
+                    ) {
                         gid.append(c);
                     }
                 }

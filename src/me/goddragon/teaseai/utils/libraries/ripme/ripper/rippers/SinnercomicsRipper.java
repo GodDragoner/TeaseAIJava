@@ -15,8 +15,8 @@ import java.util.regex.Pattern;
 
 public class SinnercomicsRipper extends AbstractHTMLRipper {
 
-    private static final String HOST   = "sinnercomics",
-                                DOMAIN = "sinnercomics.com";
+    private static final String HOST = "sinnercomics",
+            DOMAIN = "sinnercomics.com";
 
     private static final int SLEEP_TIME = 500;
 
@@ -85,7 +85,7 @@ public class SinnercomicsRipper extends AbstractHTMLRipper {
         }
 
         throw new MalformedURLException("Expected sinnercomics.com URL format: " +
-                        "/pinupName or /comic/albumName or /page/number  - got " + cleanUrl + " instead");
+                "/pinupName or /comic/albumName or /page/number  - got " + cleanUrl + " instead");
     }
 
     @Override

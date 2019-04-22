@@ -31,7 +31,7 @@ public class ConfigHandler {
         InputStream input = null;
         try {
             //Do we want to fetch it from a file or url?
-            if(isConfig()) {
+            if (isConfig()) {
                 File config = new File(configName);
                 if (!config.exists()) {
                     try {
@@ -53,7 +53,7 @@ public class ConfigHandler {
             properties.clear();
             properties.load(input);
 
-            for(ConfigValue configValue : configValues) {
+            for (ConfigValue configValue : configValues) {
                 //Fetch the value from the config/create default
                 configValue.getValue();
             }
@@ -70,7 +70,7 @@ public class ConfigHandler {
         }
 
         //Only save when we are not dealing an url
-        if(isConfig()) {
+        if (isConfig()) {
             reloadAllValues();
             saveConfig();
         }
@@ -82,7 +82,7 @@ public class ConfigHandler {
 
 
     public void saveConfig() {
-        if(!isConfig()) {
+        if (!isConfig()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Can't save a config to an url. URL: '" + url.toString() + "'.");
             return;
         }
@@ -97,7 +97,7 @@ public class ConfigHandler {
     }
 
     public void reloadAllValues() {
-        for(ConfigValue configValue : configValues) {
+        for (ConfigValue configValue : configValues) {
             configValue.reloadValue();
         }
     }

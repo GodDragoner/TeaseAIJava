@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 public class ImgurRipper extends AlbumRipper {
 
     private static final String DOMAIN = "imgur.com",
-                                HOST   = "imgur";
+            HOST = "imgur";
 
     private final int SLEEP_BETWEEN_ALBUMS;
 
@@ -58,7 +58,7 @@ public class ImgurRipper extends AlbumRipper {
 
     public boolean canRip(URL url) {
         if (!url.getHost().endsWith(DOMAIN)) {
-           return false;
+            return false;
         }
         try {
             getGID(url);
@@ -125,8 +125,7 @@ public class ImgurRipper extends AlbumRipper {
                     if (elems != null) {
                         if (elems.text().contains(defaultTitle1) || elems.text().contains(defaultTitle2)) {
                             LOGGER.log(Level.FINE, "Was unable to get album title or album was untitled");
-                        }
-                        else {
+                        } else {
                             title = elems.text();
                         }
                     }
@@ -277,8 +276,8 @@ public class ImgurRipper extends AlbumRipper {
             try {
                 JSONObject json = new JSONObject(m.group(1));
                 JSONArray jsonImages = json.getJSONObject("image")
-                                       .getJSONObject("album_images")
-                                       .getJSONArray("images");
+                        .getJSONObject("album_images")
+                        .getJSONArray("images");
                 return createImgurAlbumFromJsonArray(url, jsonImages);
             } catch (JSONException e) {
                 LOGGER.log(Level.FINE, "Error while parsing JSON at " + url + ", continuing", e);
@@ -294,8 +293,8 @@ public class ImgurRipper extends AlbumRipper {
         String newUrl = url.toExternalForm() + "/noscript";
         LOGGER.log(Level.INFO, "    Retrieving " + newUrl);
         doc = Jsoup.connect(newUrl)
-                            .userAgent(USER_AGENT)
-                            .get();
+                .userAgent(USER_AGENT)
+                .get();
 
         // Fall back to parsing HTML elements
         // NOTE: This does not always get the highest-resolution images!
@@ -345,7 +344,7 @@ public class ImgurRipper extends AlbumRipper {
         if (ext.equals(".gif") && Utils.getConfigBoolean("prefer.mp4", false)) {
             ext = ".mp4";
         }
-        return  new URL(
+        return new URL(
                 "http://i.imgur.com/"
                         + json.getString("hash")
                         + ext);
@@ -353,16 +352,16 @@ public class ImgurRipper extends AlbumRipper {
 
     private static Document getDocument(String strUrl) throws IOException {
         return Jsoup.connect(strUrl)
-                                .userAgent(USER_AGENT)
-                                .timeout(10 * 1000)
-                                .maxBodySize(0)
-                                .get();
+                .userAgent(USER_AGENT)
+                .timeout(10 * 1000)
+                .maxBodySize(0)
+                .get();
     }
 
     /**
      * Rips all albums in an imgur user's account.
-     * @param url
-     *      URL to imgur user account (http://username.imgur.com)
+     *
+     * @param url URL to imgur user account (http://username.imgur.com)
      * @throws IOException
      */
     private void ripUserAccount(URL url) throws IOException {
@@ -386,7 +385,9 @@ public class ImgurRipper extends AlbumRipper {
     }
 
     private void ripUserImages(URL url) throws IOException {
-        int page = 0; int imagesFound = 0; int imagesTotal = 0;
+        int page = 0;
+        int imagesFound = 0;
+        int imagesTotal = 0;
         String jsonUrl = url.toExternalForm().replace("/all", "/ajax/images");
         if (jsonUrl.contains("#")) {
             jsonUrl = jsonUrl.substring(0, jsonUrl.indexOf("#"));
@@ -540,7 +541,7 @@ public class ImgurRipper extends AlbumRipper {
         if (m.matches()) {
             // Single imgur image
             albumType = ALBUM_TYPE.SINGLE_IMAGE;
-            return  m.group(m.groupCount());
+            return m.group(m.groupCount());
         }
         p = Pattern.compile("^https?://(i\\.|www\\.|m\\.)?imgur\\.com/([a-zA-Z0-9,]{5,}).*$");
         m = p.matcher(url.toExternalForm());
@@ -563,7 +564,7 @@ public class ImgurRipper extends AlbumRipper {
     public static class ImgurImage {
         String title = "";
         String description = "";
-        String extension   = "";
+        String extension = "";
         public URL url = null;
 
         ImgurImage(URL url) {
@@ -574,14 +575,17 @@ public class ImgurRipper extends AlbumRipper {
                 this.extension = this.extension.substring(0, this.extension.indexOf("?"));
             }
         }
+
         ImgurImage(URL url, String title) {
             this(url);
             this.title = title;
         }
+
         public ImgurImage(URL url, String title, String description) {
             this(url, title);
             this.description = description;
         }
+
         String getSaveAs() {
             String saveAs = this.title;
             String u = url.toExternalForm();
@@ -601,15 +605,18 @@ public class ImgurRipper extends AlbumRipper {
 
     public static class ImgurAlbum {
         String title = null;
-        public URL    url = null;
+        public URL url = null;
         public List<ImgurImage> images = new ArrayList<>();
+
         ImgurAlbum(URL url) {
             this.url = url;
         }
+
         public ImgurAlbum(URL url, String title) {
             this(url);
             this.title = title;
         }
+
         void addImage(ImgurImage image) {
             images.add(image);
         }

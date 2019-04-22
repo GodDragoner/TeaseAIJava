@@ -91,7 +91,7 @@ public class MessageBuilder {
 
     public String getRawText() {
         String raw = "";
-        for(Text text : texts) {
+        for (Text text : texts) {
             raw += text.getText();
         }
 

@@ -60,11 +60,11 @@ public class VkRipper extends VideoRipper {
 
     public static String getVideoURLAtPage(String url) throws IOException {
         Document doc = Http.url(url)
-                           .userAgent(USER_AGENT)
-                           .get();
+                .userAgent(USER_AGENT)
+                .get();
         String html = doc.outerHtml();
         String videoURL = null;
-        for (String quality : new String[] {"1080", "720", "480", "240"}) {
+        for (String quality : new String[]{"1080", "720", "480", "240"}) {
             quality = "url" + quality + "\\\":\\\"";
             if (html.contains(quality)) {
                 videoURL = html.substring(html.indexOf(quality) + quality.length());

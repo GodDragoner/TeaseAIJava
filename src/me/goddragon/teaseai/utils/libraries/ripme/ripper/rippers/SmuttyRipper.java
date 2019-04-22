@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class SmuttyRipper extends AbstractHTMLRipper {
 
     private static final String DOMAIN = "smutty.com",
-                                HOST   = "smutty";
+            HOST = "smutty";
 
     public SmuttyRipper(URL url) throws IOException {
         super(url);
@@ -81,8 +81,7 @@ public class SmuttyRipper extends AbstractHTMLRipper {
         // This for stops that
         if (nextPage.equals("")) {
             throw new IOException("No more pages");
-        }
-        else {
+        } else {
             return Http.url("https://smutty.com" + nextPage).get();
         }
     }

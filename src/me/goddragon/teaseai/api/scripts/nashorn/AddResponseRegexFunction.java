@@ -18,7 +18,7 @@ public class AddResponseRegexFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
-        for(Object arg : args) {
+        for (Object arg : args) {
             ResponseHandler.getHandler().getCurrentLoadingResponse().addRegexPatterns(arg.toString());
         }
 

@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public class ZizkiRipper extends AbstractHTMLRipper {
 
     private Document albumDoc = null;
-    private Map<String,String> cookies = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
 
     public ZizkiRipper(URL url) throws IOException {
         super(url);
@@ -30,6 +30,7 @@ public class ZizkiRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "zizki";
     }
+
     @Override
     public String getDomain() {
         return "zizki.com";
@@ -88,20 +89,19 @@ public class ZizkiRipper extends AbstractHTMLRipper {
             if (thumb.hasAttr("typeof")) {
                 img_type = thumb.attr("typeof");
                 if (img_type.equals("foaf:Image")) {
-                  LOGGER.log(Level.FINE, "Found image with " + img_type);
-                  if (thumb.parent() != null &&
-                      thumb.parent().parent() != null &&
-                      thumb.parent().parent().attr("class") != null &&
-                      thumb.parent().parent().attr("class").equals("aimage-center")
-                     )
-                  {
-                     src = thumb.attr("src");
-                     LOGGER.log(Level.FINE, "Found url with " + src);
-                     if (!src.contains("zizki.com")) {
-                     } else {
-                       imageURLs.add(src.replace("/styles/medium/public/","/styles/large/public/"));
-                     }
-                   }
+                    LOGGER.log(Level.FINE, "Found image with " + img_type);
+                    if (thumb.parent() != null &&
+                            thumb.parent().parent() != null &&
+                            thumb.parent().parent().attr("class") != null &&
+                            thumb.parent().parent().attr("class").equals("aimage-center")
+                    ) {
+                        src = thumb.attr("src");
+                        LOGGER.log(Level.FINE, "Found url with " + src);
+                        if (!src.contains("zizki.com")) {
+                        } else {
+                            imageURLs.add(src.replace("/styles/medium/public/", "/styles/large/public/"));
+                        }
+                    }
                 }
             }
         }

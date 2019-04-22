@@ -28,17 +28,17 @@ public class Main {
 
                     String fileName = "openJFX";
 
-                    if(!new File( fileName + ".zip").exists()) {
+                    if (!new File(fileName + ".zip").exists()) {
                         int dialogButton = JOptionPane.YES_NO_OPTION;
-                        int dialogResult = JOptionPane.showConfirmDialog (null, "No OpenJFX installation found. Would you like to download?","OpenJFX", dialogButton);
+                        int dialogResult = JOptionPane.showConfirmDialog(null, "No OpenJFX installation found. Would you like to download?", "OpenJFX", dialogButton);
 
-                        if(dialogResult != JOptionPane.YES_OPTION){
+                        if (dialogResult != JOptionPane.YES_OPTION) {
                             JOptionPane.showMessageDialog(null, "Can't run on Java 11 or higher without OpenJFX. Exiting...");
                             System.exit(0);
                             return;
                         }
 
-                        if(!System.getProperty("os.arch").contains("64")) {
+                        if (!System.getProperty("os.arch").contains("64")) {
                             JOptionPane.showMessageDialog(null, "x86 systems are currently not supported by the auto updater." +
                                     " Please fetch your own version of OpenFX from https://gluonhq.com/products/javafx/");
                             System.exit(0);
@@ -150,13 +150,14 @@ public class Main {
     }
 
     public static boolean isUnix() {
-        return (OPERATING_SYSTEM.indexOf("nix") >= 0 || OPERATING_SYSTEM.indexOf("nux") >= 0 || OPERATING_SYSTEM.indexOf("aix") > 0 );
+        return (OPERATING_SYSTEM.indexOf("nix") >= 0 || OPERATING_SYSTEM.indexOf("nux") >= 0 || OPERATING_SYSTEM.indexOf("aix") > 0);
     }
 
     public static boolean isSolaris() {
         return (OPERATING_SYSTEM.indexOf("sunos") >= 0);
     }
-    public static String getOS(){
+
+    public static String getOS() {
         if (isWindows()) {
             return "win";
         } else if (isMac()) {
