@@ -7,5 +7,5 @@
 package me.goddragon.teaseai.utils.libraries.imagescaling;
 
 public interface ProgressListener {
-	public void notifyProgress(float fraction);
+    public void notifyProgress(float fraction);
 }

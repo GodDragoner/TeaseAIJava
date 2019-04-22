@@ -26,17 +26,18 @@ public class VscoRipper extends AbstractHTMLRipper {
 
 
     private static final String DOMAIN = "vsco.co",
-                        HOST   = "vsco";
-    
-    public VscoRipper(URL url) throws IOException{
+            HOST = "vsco";
+
+    public VscoRipper(URL url) throws IOException {
         super(url);
     }
-    
+
     /**
      * Checks to see if VscoRipper can Rip specified url.
+     *
      * @param url
      * @return True if can rip.
-     *         False if cannot rip.
+     * False if cannot rip.
      */
     @Override
     public boolean canRip(URL url) {
@@ -47,14 +48,14 @@ public class VscoRipper extends AbstractHTMLRipper {
         // Allows links to user profiles and links to images.
         //@TODO: Add support for journals and collections.
         String u = url.toExternalForm();
-        return !u.contains("/store/")    ||
-               !u.contains("/feed/")     ||
-               !u.contains("/login/")    ||
-               !u.contains("/journal/")   ||
-               !u.contains("/collection/")||
-               !u.contains("/images/")    ||
-                u.contains("/media/");   
-        
+        return !u.contains("/store/") ||
+                !u.contains("/feed/") ||
+                !u.contains("/login/") ||
+                !u.contains("/journal/") ||
+                !u.contains("/collection/") ||
+                !u.contains("/images/") ||
+                u.contains("/media/");
+
     }
 
     @Override
@@ -66,20 +67,21 @@ public class VscoRipper extends AbstractHTMLRipper {
     /**
      * <p>Gets the direct URL of full-sized image through the <meta> tag.</p>
      * When expanding future functionality (e.g. support from journals), put everything into this method.
+     *
      * @param page
-     * @return 
+     * @return
      */
     @Override
-    public List<String> getURLsFromPage(Document page){
+    public List<String> getURLsFromPage(Document page) {
         List<String> toRip = new ArrayList<>();
         //If user wanted to rip single image
-        if (url.toString().contains("/media/")){
+        if (url.toString().contains("/media/")) {
             try {
                 toRip.add(vscoImageToURL(url.toExternalForm()));
             } catch (IOException ex) {
                 LOGGER.log(Level.FINE, "Failed to convert " + url.toString() + " to external form.");
             }
-            
+
         } else {
             String username = getUserName();
             String userTkn = getUserTkn(username);
@@ -104,7 +106,7 @@ public class VscoRipper extends AbstractHTMLRipper {
     private String getUserTkn(String username) {
         String userinfoPage = "https://vsco.co/content/Static/userinfo";
         String referer = "https://vsco.co/" + username + "/images/1";
-        Map<String,String> cookies = new HashMap<>();
+        Map<String, String> cookies = new HashMap<>();
         cookies.put("vs_anonymous_id", UUID.randomUUID().toString());
         try {
             Element doc = Http.url(userinfoPage).cookies(cookies).referrer(referer).ignoreContentType().get().body();
@@ -131,7 +133,7 @@ public class VscoRipper extends AbstractHTMLRipper {
     private JSONObject getProfileJSON(String tkn, String username, String page, String siteId) {
         String size = "1000";
         String purl = "https://vsco.co/ajxp/" + tkn + "/2.0/medias?site_id=" + siteId + "&page=" + page + "&size=" + size;
-        Map<String,String> cookies = new HashMap<>();
+        Map<String, String> cookies = new HashMap<>();
         cookies.put("vs", tkn);
         try {
             JSONObject j = Http.url(purl).cookies(cookies).getJSON();
@@ -143,7 +145,7 @@ public class VscoRipper extends AbstractHTMLRipper {
     }
 
     private String getSiteID(String tkn, String username) {
-        Map<String,String> cookies = new HashMap<>();
+        Map<String, String> cookies = new HashMap<>();
         cookies.put("vs", tkn);
         try {
             JSONObject j = Http.url("https://vsco.co/ajxp/" + tkn + "/2.0/sites?subdomain=" + username).cookies(cookies).getJSON();
@@ -154,34 +156,34 @@ public class VscoRipper extends AbstractHTMLRipper {
         }
     }
 
-    private String vscoImageToURL(String url) throws IOException{
+    private String vscoImageToURL(String url) throws IOException {
         Document page = Jsoup.connect(url).userAgent(USER_AGENT)
-                                          .get();
+                .get();
         //create Elements filled only with Elements with the "meta" tag.
         Elements metaTags = page.getElementsByTag("meta");
         String result = "";
 
-        for(Element metaTag : metaTags){
+        for (Element metaTag : metaTags) {
             //find URL inside meta-tag with property of "og:image"
-            if (metaTag.attr("property").equals("og:image")){
+            if (metaTag.attr("property").equals("og:image")) {
                 String givenURL = metaTag.attr("content");
                 givenURL = givenURL.replaceAll("\\?h=[0-9]+", "");//replace the "?h=xxx" tag at the end of the URL (where each x is a number)
-                
+
                 result = givenURL;
                 LOGGER.log(Level.FINE, "Found image URL: " + givenURL);
                 break;//immediately stop after getting URL (there should only be 1 image to be downloaded)
             }
         }
-        
+
         //Means website changed, things need to be fixed.
-        if (result.isEmpty()){
+        if (result.isEmpty()) {
             LOGGER.log(Level.SEVERE, "Could not find image URL at: " + url);
         }
-        
+
         return result;
-        
+
     }
-    
+
     @Override
     public String getHost() {
         return HOST;
@@ -189,29 +191,29 @@ public class VscoRipper extends AbstractHTMLRipper {
 
     @Override
     public String getGID(URL url) throws MalformedURLException {
-        
+
         //Single Image
         Pattern p = Pattern.compile("^https?://vsco\\.co/([a-zA-Z0-9-]+)/media/([a-zA-Z0-9]+)");
         Matcher m = p.matcher(url.toExternalForm());
-        
-        if (m.matches()){
+
+        if (m.matches()) {
             // Return the text contained between () in the regex
             String user = m.group(1);
             String imageNum = m.group(2).substring(0, 5);//first 5 characters should be enough to make each rip unique
             return user + "/" + imageNum;
         }
-        
+
         //Member profile (Usernames should all be different, so this should work.
         p = Pattern.compile("^https?://vsco.co/([a-zA-Z0-9-]+)/images/[0-9]+");
         m = p.matcher(url.toExternalForm());
-        
-        if (m.matches()){
+
+        if (m.matches()) {
             String user = m.group(1);
             return user;
         }
-        
+
         throw new MalformedURLException("Expected a URL to a single image or to a member profile, got " + url + " instead");
-            
+
     }
 
     @Override
@@ -228,5 +230,5 @@ public class VscoRipper extends AbstractHTMLRipper {
     public void downloadURL(URL url, int index) {
         addURLToDownload(url, getPrefix(index));
     }
-    
+
 }

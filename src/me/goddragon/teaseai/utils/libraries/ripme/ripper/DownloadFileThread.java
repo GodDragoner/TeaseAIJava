@@ -24,7 +24,7 @@ class DownloadFileThread extends Thread {
     private static final TeaseLogger logger = TeaseLogger.getLogger();
 
     private String referrer = "";
-    private Map<String,String> cookies = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
 
     private URL url;
     private File saveAs;
@@ -49,7 +49,8 @@ class DownloadFileThread extends Thread {
     public void setReferrer(String referrer) {
         this.referrer = referrer;
     }
-    public void setCookies(Map<String,String> cookies) {
+
+    public void setCookies(Map<String, String> cookies) {
         this.cookies = cookies;
     }
 
@@ -85,7 +86,8 @@ class DownloadFileThread extends Thread {
         int tries = 0; // Number of attempts to download
         do {
             tries += 1;
-            InputStream bis = null; OutputStream fos = null;
+            InputStream bis = null;
+            OutputStream fos = null;
             try {
                 logger.log(Level.INFO, "    Downloading file: " + urlToDownload + (tries > 0 ? " Retry #" + tries : ""));
 
@@ -93,8 +95,7 @@ class DownloadFileThread extends Thread {
                 HttpURLConnection huc;
                 if (this.url.toString().startsWith("https")) {
                     huc = (HttpsURLConnection) urlToDownload.openConnection();
-                }
-                else {
+                } else {
                     huc = (HttpURLConnection) urlToDownload.openConnection();
                 }
                 huc.setInstanceFollowRedirects(true);
@@ -102,7 +103,7 @@ class DownloadFileThread extends Thread {
                 // for the server to send data after connecting.
                 huc.setConnectTimeout(TIMEOUT);
                 huc.setReadTimeout(TIMEOUT);
-                huc.setRequestProperty("accept",  "*/*");
+                huc.setRequestProperty("accept", "*/*");
                 if (!referrer.equals("")) {
                     huc.setRequestProperty("Referer", referrer); // Sic
                 }
@@ -128,7 +129,7 @@ class DownloadFileThread extends Thread {
                     // TODO find a better way to handle servers that don't support resuming downloads then just erroring out
                     throw new IOException("server.doesnt.support.resuming.downloads");
                 }
-                if (statusCode  / 100 == 3) { // 3xx Redirect
+                if (statusCode / 100 == 3) { // 3xx Redirect
                     if (!redirected) {
                         // Don't increment retries on the first redirect
                         tries--;
@@ -173,7 +174,7 @@ class DownloadFileThread extends Thread {
                         logger.log(Level.SEVERE, "Was unable to get content type from stream");
                         // Try to get the file type from the magic number
                         byte[] magicBytes = new byte[8];
-                        bis.read(magicBytes,0, 5);
+                        bis.read(magicBytes, 0, 5);
                         bis.reset();
                         fileExt = Utils.getEXTFromMagic(magicBytes);
                         if (fileExt != null) {
@@ -247,11 +248,17 @@ class DownloadFileThread extends Thread {
             } finally {
                 // Close any open streams
                 try {
-                    if (bis != null) { bis.close(); }
-                } catch (IOException e) { }
+                    if (bis != null) {
+                        bis.close();
+                    }
+                } catch (IOException e) {
+                }
                 try {
-                    if (fos != null) { fos.close(); }
-                } catch (IOException e) { }
+                    if (fos != null) {
+                        fos.close();
+                    }
+                } catch (IOException e) {
+                }
             }
             if (tries > this.retries) {
                 return;

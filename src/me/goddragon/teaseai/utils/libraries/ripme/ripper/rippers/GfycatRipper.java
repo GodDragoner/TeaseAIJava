@@ -42,7 +42,7 @@ public class GfycatRipper extends AbstractSingleFileRipper {
     @Override
     public URL sanitizeURL(URL url) throws MalformedURLException {
         url = new URL(url.toExternalForm().replace("/gifs/detail", ""));
-        
+
         return url;
     }
 
@@ -84,6 +84,7 @@ public class GfycatRipper extends AbstractSingleFileRipper {
 
     /**
      * Helper method for retrieving video URLs.
+     *
      * @param url URL to gfycat page
      * @return URL to video
      * @throws IOException

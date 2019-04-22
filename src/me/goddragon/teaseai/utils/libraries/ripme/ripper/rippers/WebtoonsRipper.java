@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WebtoonsRipper extends AbstractHTMLRipper {
-    private Map<String,String> cookies = new HashMap<String,String>();
+    private Map<String, String> cookies = new HashMap<String, String>();
 
     public WebtoonsRipper(URL url) throws IOException {
         super(url);
@@ -91,10 +91,10 @@ public class WebtoonsRipper extends AbstractHTMLRipper {
         // Find next page
         String nextUrl = "";
         Element elem = doc.select("a.pg_next").first();
-            nextUrl = elem.attr("href");
-            if (nextUrl.equals("") || nextUrl.equals("#")) {
-                throw new IOException("No more pages");
-            }
-            return Http.url(nextUrl).get();
+        nextUrl = elem.attr("href");
+        if (nextUrl.equals("") || nextUrl.equals("#")) {
+            throw new IOException("No more pages");
         }
+        return Http.url(nextUrl).get();
+    }
 }

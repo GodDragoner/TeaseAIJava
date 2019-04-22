@@ -68,10 +68,10 @@ public class YuvutuRipper extends VideoRipper {
             throw new IOException("Could not find script code at " + url);
         }
         Pattern p = Pattern.compile("file: \"(.*?)\"");
-        
+
         for (Element element : script) {
             Matcher m = p.matcher(element.data());
-            if (m.find()){
+            if (m.find()) {
                 String vidUrl = m.group(1);
                 addURLToDownload(new URL(vidUrl), HOST + "_" + getGID(this.url));
             }

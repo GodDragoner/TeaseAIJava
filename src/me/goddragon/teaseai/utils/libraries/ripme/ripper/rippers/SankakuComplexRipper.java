@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 
 public class SankakuComplexRipper extends AbstractHTMLRipper {
     private Document albumDoc = null;
-    private Map<String,String> cookies = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
 
     public SankakuComplexRipper(URL url) throws IOException {
         super(url);
@@ -49,11 +49,11 @@ public class SankakuComplexRipper extends AbstractHTMLRipper {
             }
         }
         throw new MalformedURLException("Expected sankakucomplex.com URL format: " +
-                        "idol.sankakucomplex.com?...&tags=something... - got " +
-                        url + "instead");
+                "idol.sankakucomplex.com?...&tags=something... - got " +
+                url + "instead");
     }
 
-    public String getSubDomain(URL url){
+    public String getSubDomain(URL url) {
         Pattern p = Pattern.compile("^https?://([a-zA-Z0-9]+\\.)?sankakucomplex\\.com/.*tags=([^&]+).*$");
         Matcher m = p.matcher(url.toExternalForm());
         if (m.matches()) {
@@ -84,16 +84,16 @@ public class SankakuComplexRipper extends AbstractHTMLRipper {
         // path replacement, and a ?xxxxxx post ID at the end (obtainable from the href)
         for (Element thumbSpan : doc.select("div.content > div > span.thumb > a")) {
             String postLink = thumbSpan.attr("href");
-                try {
-                    String subDomain = getSubDomain(url);
-                    String siteURL = "https://" + subDomain + "sankakucomplex.com";
-                    // Get the page the full sized image is on
-                    Document subPage = Http.url(siteURL + postLink).get();
-                    LOGGER.log(Level.INFO, "Checking page " + siteURL + postLink);
-                    imageURLs.add("https:" + subPage.select("div[id=stats] > ul > li > a[id=highres]").attr("href"));
-                } catch (IOException e) {
-                    LOGGER.log(Level.WARNING, "Error while loading page " + postLink, e);
-                }
+            try {
+                String subDomain = getSubDomain(url);
+                String siteURL = "https://" + subDomain + "sankakucomplex.com";
+                // Get the page the full sized image is on
+                Document subPage = Http.url(siteURL + postLink).get();
+                LOGGER.log(Level.INFO, "Checking page " + siteURL + postLink);
+                imageURLs.add("https:" + subPage.select("div[id=stats] > ul > li > a[id=highres]").attr("href"));
+            } catch (IOException e) {
+                LOGGER.log(Level.WARNING, "Error while loading page " + postLink, e);
+            }
         }
         return imageURLs;
     }

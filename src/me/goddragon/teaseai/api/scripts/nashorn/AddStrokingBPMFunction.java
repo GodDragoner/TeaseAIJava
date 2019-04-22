@@ -27,7 +27,7 @@ public class AddStrokingBPMFunction extends CustomFunction {
         switch (args.length) {
             case 1:
                 if (args[0] instanceof Integer) {
-                    if(StrokeHandler.getHandler().isStroking()) {
+                    if (StrokeHandler.getHandler().isStroking()) {
                         StrokeHandler.getHandler().startMetronome(StrokeHandler.getHandler().getCurrentBPM() + (Integer) args[0], 0);
                     } else {
                         TeaseLogger.getLogger().log(Level.SEVERE, "Tried to add " + args[0] + " stroking bpm but sub was not stroking.");

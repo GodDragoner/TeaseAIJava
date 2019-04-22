@@ -11,8 +11,7 @@ import me.goddragon.teaseai.utils.TeaseLogger;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-public class AddOptionsListFunction extends CustomFunction
-{
+public class AddOptionsListFunction extends CustomFunction {
     public AddOptionsListFunction() {
         super("addOptionsList");
     }
@@ -26,44 +25,30 @@ public class AddOptionsListFunction extends CustomFunction
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        if (args.length < 3)
-        {
+        if (args.length < 3) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
-        }
-        else
-        {
+        } else {
             Personality personality;
-            if (TeaseAI.application.getSession() == null)
-            {
+            if (TeaseAI.application.getSession() == null) {
                 personality = PersonalityManager.getManager().getLoadingPersonality();
-            }
-            else
-            {
+            } else {
                 personality = PersonalityManager.getManager().getActivePersonality();
             }
-            PersonalitySettingsPanel panel = personality.getSettingsHandler().getPanel((String)args[0]);
-            if (panel == null)
-            {
+            PersonalitySettingsPanel panel = personality.getSettingsHandler().getPanel((String) args[0]);
+            if (panel == null) {
                 TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method with invalid panel name " + args[0]);
                 return null;
-            }
-            else
-            {
-                PersonalityVariable variable = personality.getVariableHandler().getVariable((String)args[1]);
-                if (variable == null)
-                {
+            } else {
+                PersonalityVariable variable = personality.getVariableHandler().getVariable((String) args[1]);
+                if (variable == null) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method with invalid variable name " + args[1]);
                     return null;
-                }
-                else
-                {
-                    if (!PersonalitiesSettingsHandler.getHandler().hasComponent(variable))
-                    {
+                } else {
+                    if (!PersonalitiesSettingsHandler.getHandler().hasComponent(variable)) {
                         PersonalitiesSettingsHandler.getHandler().addGuiComponent(variable);
                         ArrayList<String> options = new ArrayList<String>();
-                        for (int i = 2; i < args.length; i++)
-                        {
-                            options.add((String)args[i]);
+                        for (int i = 2; i < args.length; i++) {
+                            options.add((String) args[i]);
                         }
                         panel.addOptionsList(variable, options);
                     }

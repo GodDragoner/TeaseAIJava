@@ -28,7 +28,8 @@ public class XhamsterRipper extends AbstractHTMLRipper {
 
     private int index = 1;
 
-    @Override public boolean hasASAPRipping() {
+    @Override
+    public boolean hasASAPRipping() {
         return true;
     }
 
@@ -73,7 +74,7 @@ public class XhamsterRipper extends AbstractHTMLRipper {
             return m.group(2);
         }
 
-            throw new MalformedURLException(
+        throw new MalformedURLException(
                 "Expected xhamster.com gallery formats: "
                         + "xhamster.com/photos/gallery/xxxxx-#####"
                         + " Got: " + url);
@@ -153,15 +154,15 @@ public class XhamsterRipper extends AbstractHTMLRipper {
         LOGGER.log(Level.FINE, "Checking for urls");
         List<String> result = new ArrayList<>();
         if (!isVideoUrl(url)) {
-          for (Element page : doc.select("div.items > div.item-container > a.item")) {
-              String pageWithImageUrl = page.attr("href");
-              try {
-                  String image = Http.url(new URL(pageWithImageUrl)).get().select("div.picture_container > a > img").attr("src");
-                  downloadFile(image);
-              } catch (IOException e) {
-                  LOGGER.log(Level.SEVERE, "Was unable to load page " + pageWithImageUrl);
-              }
-          }
+            for (Element page : doc.select("div.items > div.item-container > a.item")) {
+                String pageWithImageUrl = page.attr("href");
+                try {
+                    String image = Http.url(new URL(pageWithImageUrl)).get().select("div.picture_container > a > img").attr("src");
+                    downloadFile(image);
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Was unable to load page " + pageWithImageUrl);
+                }
+            }
         } else {
             String imgUrl = doc.select("div.player-container > a").attr("href");
             downloadFile(imgUrl);
@@ -182,7 +183,7 @@ public class XhamsterRipper extends AbstractHTMLRipper {
             LOGGER.log(Level.SEVERE, "The url \"" + url + "\" is malformed");
         }
     }
-    
+
     @Override
     public String getAlbumTitle(URL url) throws MalformedURLException {
         try {

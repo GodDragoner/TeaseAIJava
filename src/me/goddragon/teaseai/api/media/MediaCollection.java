@@ -18,19 +18,19 @@ public class MediaCollection {
     private final Collection<String> registeredURLs = new HashSet<>();
 
     public MediaCollection() {
-        for(MediaFetishType mediaFetishType : MediaFetishType.values()) {
+        for (MediaFetishType mediaFetishType : MediaFetishType.values()) {
             addMediaHolders(mediaFetishType, mediaFetishType.getMediaFolders(MediaType.IMAGE));
             addMediaHolders(mediaFetishType, mediaFetishType.getMediaFolders(MediaType.VIDEO));
 
             //Handle url files for images here
             List<String> tumblrURLFileNames = mediaFetishType.getURLFileNames(MediaType.IMAGE);
 
-            for(String fileName : tumblrURLFileNames) {
+            for (String fileName : tumblrURLFileNames) {
                 if (!fileName.equals("null") && fileName.contains(".txt")) {
                     MediaURL mediaURL = new MediaURL(MediaType.IMAGE, null, fileName);
 
                     //Skip it because there was an error during initialization
-                    if(mediaURL.getUrl() == null) {
+                    if (mediaURL.getUrl() == null) {
                         continue;
                     }
 
@@ -40,13 +40,13 @@ public class MediaCollection {
         }
 
         File urlFileFolder = new File(MediaURL.URL_FILE_PATH);
-        if(urlFileFolder.exists()) {
-            for(File file : urlFileFolder.listFiles()) {
-                if(file.isFile() && file.getName().endsWith(".txt")) {
+        if (urlFileFolder.exists()) {
+            for (File file : urlFileFolder.listFiles()) {
+                if (file.isFile() && file.getName().endsWith(".txt")) {
                     //We actually pass the file name instead of the url here however that is fine because the url is loaded from the file's first line anyway
                     MediaURL mediaURL = new MediaURL(MediaType.IMAGE, null, file.getName());
                     //Now check whether we have already registered that url file
-                    if(!registeredURLs.contains(mediaURL.getUrl())) {
+                    if (!registeredURLs.contains(mediaURL.getUrl())) {
                         addMediaHolder(null, mediaURL);
                     }
                 }
@@ -55,15 +55,15 @@ public class MediaCollection {
     }
 
     public void addMediaHolders(MediaFetishType mediaFetishType, List<MediaHolder> mediaHolders) {
-        for(MediaHolder mediaHolder : mediaHolders) {
-            if(mediaHolder != null) {
+        for (MediaHolder mediaHolder : mediaHolders) {
+            if (mediaHolder != null) {
                 addMediaHolder(mediaFetishType, mediaHolder);
             }
         }
     }
 
     public void addMediaHolder(MediaFetishType mediaFetishType, MediaHolder mediaHolder) {
-        if(mediaFetishType != null) {
+        if (mediaFetishType != null) {
             if (!folders.containsKey(mediaFetishType)) {
                 folders.put(mediaFetishType, new HashMap<>());
             }
@@ -72,23 +72,23 @@ public class MediaCollection {
                 folders.get(mediaFetishType).put(mediaHolder.getMediaType(), new ArrayList<>());
             }
 
-            if(!folders.get(mediaFetishType).get(mediaHolder.getMediaType()).contains(mediaHolder)) {
+            if (!folders.get(mediaFetishType).get(mediaHolder.getMediaType()).contains(mediaHolder)) {
                 folders.get(mediaFetishType).get(mediaHolder.getMediaType()).add(mediaHolder);
             }
         }
 
         //Map all media holders here
-        if(!mediaHolders.containsKey(mediaHolder.getMediaType())) {
+        if (!mediaHolders.containsKey(mediaHolder.getMediaType())) {
             mediaHolders.put(mediaHolder.getMediaType(), new ArrayList<>());
         }
 
-        if(!mediaHolders.get(mediaHolder.getMediaType()).contains(mediaHolder)) {
+        if (!mediaHolders.get(mediaHolder.getMediaType()).contains(mediaHolder)) {
             mediaHolders.get(mediaHolder.getMediaType()).add(mediaHolder);
         }
 
         //Add all urls so we can check whether an url is already registered
-        if(mediaHolder instanceof MediaURL) {
-            if(!registeredURLs.contains(mediaHolder)) {
+        if (mediaHolder instanceof MediaURL) {
+            if (!registeredURLs.contains(mediaHolder)) {
                 registeredURLs.add(((MediaURL) mediaHolder).getUrl());
             }
         }
@@ -97,13 +97,13 @@ public class MediaCollection {
     public void removeMediaHolder(MediaHolder mediaHolder) {
         mediaHolders.get(mediaHolder.getMediaType()).remove(mediaHolder);
 
-        for(MediaFetishType mediaFetishType : MediaFetishType.values()) {
+        for (MediaFetishType mediaFetishType : MediaFetishType.values()) {
             removeMediaHolder(mediaHolder, mediaFetishType);
         }
     }
 
     public void removeMediaHolder(MediaHolder mediaHolder, MediaFetishType mediaFetishType) {
-        if(folders.containsKey(mediaFetishType) && folders.get(mediaFetishType).containsKey(mediaHolder.getMediaType())) {
+        if (folders.containsKey(mediaFetishType) && folders.get(mediaFetishType).containsKey(mediaHolder.getMediaType())) {
             folders.get(mediaFetishType).get(mediaHolder.getMediaType()).remove(mediaHolder);
         }
     }
@@ -112,8 +112,8 @@ public class MediaCollection {
         List<MediaHolder> mediaFolders = mediaHolders.get(mediaType);
         List<MediaURL> urls = new ArrayList<>();
 
-        for(MediaHolder mediaHolder : mediaFolders) {
-            if(mediaHolder instanceof MediaURL && ((MediaURL) mediaHolder).isUseForTease()) {
+        for (MediaHolder mediaHolder : mediaFolders) {
+            if (mediaHolder instanceof MediaURL && ((MediaURL) mediaHolder).isUseForTease()) {
                 urls.add((MediaURL) mediaHolder);
             }
         }
@@ -123,17 +123,17 @@ public class MediaCollection {
     }
 
     public File getRandomFile(MediaFetishType fetishType, MediaType mediaType) {
-        if(!folders.containsKey(fetishType) || !folders.get(fetishType).containsKey(mediaType)) {
+        if (!folders.containsKey(fetishType) || !folders.get(fetishType).containsKey(mediaType)) {
             return null;
         }
 
         List<MediaHolder> mediaFolders = folders.get(fetishType).get(mediaType);
-        for(int tries = 0; tries < 10; tries++) {
+        for (int tries = 0; tries < 10; tries++) {
             MediaHolder mediaHolder = mediaFolders.get(RandomUtils.randInt(0, mediaFolders.size() - 1));
             File file = mediaHolder.getRandomMedia();
 
             //We found a file
-            if(file != null) {
+            if (file != null) {
                 return file;
             }
             //No file found, the folder seems to be empty and we can remove it
@@ -147,9 +147,9 @@ public class MediaCollection {
     }
 
     public boolean isPathAssigned(String path, MediaFetishType fetishType, MediaType mediaType) {
-        for(MediaHolder mediaHolder : getMediaHolders(fetishType, mediaType)) {
-            if(mediaHolder instanceof MediaFolder) {
-                if(((MediaFolder) mediaHolder).getFile().getPath().equalsIgnoreCase(path)) {
+        for (MediaHolder mediaHolder : getMediaHolders(fetishType, mediaType)) {
+            if (mediaHolder instanceof MediaFolder) {
+                if (((MediaFolder) mediaHolder).getFile().getPath().equalsIgnoreCase(path)) {
                     return true;
                 }
             }
@@ -163,8 +163,8 @@ public class MediaCollection {
     }
 
     public MediaURL getByURL(String url) {
-        for(MediaHolder mediaHolder : mediaHolders.get(MediaType.IMAGE)) {
-            if(mediaHolder instanceof MediaURL && ((MediaURL) mediaHolder).getUrl().equals(url)) {
+        for (MediaHolder mediaHolder : mediaHolders.get(MediaType.IMAGE)) {
+            if (mediaHolder instanceof MediaURL && ((MediaURL) mediaHolder).getUrl().equals(url)) {
                 return (MediaURL) mediaHolder;
             }
         }
@@ -176,18 +176,18 @@ public class MediaCollection {
         ConfigValue configValue = mediaFetishType.getConfigValues().get(mediaType).get(holderType);
         List<MediaHolder> folders = this.folders.get(mediaFetishType).get(mediaType);
         //If the folder list is empty we can already set it to the default value
-        String newValue = folders.isEmpty()? configValue.getDefaultValue().toString() : "";
+        String newValue = folders.isEmpty() ? configValue.getDefaultValue().toString() : "";
         switch (holderType) {
             case FOLDER:
-                for(MediaHolder mediaHolder : folders) {
-                    if(mediaHolder instanceof MediaFolder) {
+                for (MediaHolder mediaHolder : folders) {
+                    if (mediaHolder instanceof MediaFolder) {
                         newValue += ((MediaFolder) mediaHolder).getFile().getPath() + ";";
                     }
                 }
                 break;
             case URL:
-                for(MediaHolder mediaHolder : folders) {
-                    if(mediaHolder instanceof MediaURL) {
+                for (MediaHolder mediaHolder : folders) {
+                    if (mediaHolder instanceof MediaURL) {
                         newValue += ((MediaURL) mediaHolder).getFile().getName() + ";";
                     }
                 }

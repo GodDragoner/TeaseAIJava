@@ -17,7 +17,7 @@ public class MyhentaicomicsRipper extends AbstractHTMLRipper {
     private static boolean isTag;
 
     public MyhentaicomicsRipper(URL url) throws IOException {
-    super(url);
+        super(url);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class MyhentaicomicsRipper extends AbstractHTMLRipper {
         }
 
         throw new MalformedURLException("Expected myhentaicomics.com URL format: " +
-                        "myhentaicomics.com/index.php/albumName - got " + url + " instead");
+                "myhentaicomics.com/index.php/albumName - got " + url + " instead");
     }
 
     @Override
@@ -96,20 +96,19 @@ public class MyhentaicomicsRipper extends AbstractHTMLRipper {
         // Find next page
         String nextUrl = "";
         Element elem = doc.select("a.ui-icon-right").first();
-            String nextPage = elem.attr("href");
-            Pattern p = Pattern.compile("/index.php/[a-zA-Z0-9_-]*\\?page=\\d");
-            Matcher m = p.matcher(nextPage);
-            if (m.matches()) {
-                nextUrl = "https://myhentaicomics.com" + m.group(0);
-                }
-            if (nextUrl.equals("")) {
-                throw new IOException("No more pages");
-            }
-            // Sleep for half a sec to avoid getting IP banned
-            sleep(500);
-            return Http.url(nextUrl).get();
+        String nextPage = elem.attr("href");
+        Pattern p = Pattern.compile("/index.php/[a-zA-Z0-9_-]*\\?page=\\d");
+        Matcher m = p.matcher(nextPage);
+        if (m.matches()) {
+            nextUrl = "https://myhentaicomics.com" + m.group(0);
         }
-
+        if (nextUrl.equals("")) {
+            throw new IOException("No more pages");
+        }
+        // Sleep for half a sec to avoid getting IP banned
+        sleep(500);
+        return Http.url(nextUrl).get();
+    }
 
 
     @Override
@@ -119,11 +118,11 @@ public class MyhentaicomicsRipper extends AbstractHTMLRipper {
             String imageSource = el.attr("src");
             // This bool is here so we don't try and download the site logo
             if (!imageSource.startsWith("http://") && !imageSource.startsWith("https://")) {
-            // We replace thumbs with resizes so we can the full sized images
-            imageSource = imageSource.replace("thumbs", "resizes");
-            result.add("https://myhentaicomics.com" + imageSource);
-                }
+                // We replace thumbs with resizes so we can the full sized images
+                imageSource = imageSource.replace("thumbs", "resizes");
+                result.add("https://myhentaicomics.com" + imageSource);
             }
+        }
         return result;
     }
 

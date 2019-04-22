@@ -23,10 +23,10 @@ import java.util.regex.Pattern;
 public class EightmusesRipper extends AbstractHTMLRipper {
 
     private Document albumDoc = null;
-    private Map<String,String> cookies = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
     // TODO put up a wiki page on using maps to store titles
     // the map for storing the title of each album when downloading sub albums
-    private Map<URL,String> urlTitles = new HashMap<>();
+    private Map<URL, String> urlTitles = new HashMap<>();
 
     private Boolean rippingSubalbums = false;
 
@@ -113,8 +113,7 @@ public class EightmusesRipper extends AbstractHTMLRipper {
                 String image = null;
                 if (thumb.hasAttr("data-cfsrc")) {
                     image = thumb.attr("data-cfsrc");
-                }
-                else {
+                } else {
                     // Deobfustace the json data
                     String rawJson = deobfuscateJSON(page.select("script#ractive-public").html()
                             .replaceAll("&gt;", ">").replaceAll("&lt;", "<").replace("&amp;", "&"));
@@ -177,7 +176,7 @@ public class EightmusesRipper extends AbstractHTMLRipper {
     private String deobfuscateJSON(String obfuscatedString) {
         StringBuilder deobfuscatedString = new StringBuilder();
         // The first char in one of 8muses obfuscated strings is always ! so we replace it
-        for (char ch : obfuscatedString.replaceFirst("!", "").toCharArray()){
+        for (char ch : obfuscatedString.replaceFirst("!", "").toCharArray()) {
             deobfuscatedString.append(deobfuscateChar(ch));
         }
         return deobfuscatedString.toString();

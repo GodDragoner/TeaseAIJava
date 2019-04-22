@@ -59,7 +59,7 @@ public class VocabularyHandler {
                             synonym = split[0];
                             try {
                                 chance = Double.parseDouble(split[1]);
-                            } catch(NumberFormatException ex) {
+                            } catch (NumberFormatException ex) {
                                 TeaseLogger.getLogger().log(Level.SEVERE, "Malformed vocabulary '" + file.getName() + "'. Found ; but didn't find valid chance in string " + strLine);
                             }
                         }
@@ -70,7 +70,7 @@ public class VocabularyHandler {
                     //Close the input stream
                     br.close();
 
-                    if(vocabulary != null) {
+                    if (vocabulary != null) {
                         //Remove .txt extension
                         registerVocabulary(file.getName().substring(0, file.getName().length() - 4), vocabulary);
                     }
@@ -78,8 +78,8 @@ public class VocabularyHandler {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else if(file.getName().endsWith(".js")) {
-                String name =  file.getName().substring(0, file.getName().length() - 3);
+            } else if (file.getName().endsWith(".js")) {
+                String name = file.getName().substring(0, file.getName().length() - 3);
                 RunableVocabulary runableVocabulary = new RunableVocabulary(name, file);
                 registerVocabulary(name, runableVocabulary);
 

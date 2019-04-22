@@ -19,17 +19,17 @@ public class PersonalityManager {
 
     private static PersonalityManager manager = new PersonalityManager();
 
-    private BiConsumer<Integer, Integer> progressUpdate ;
+    private BiConsumer<Integer, Integer> progressUpdate;
 
     private final Collection<Personality> personalities = new ArrayList<>();
-    
+
     private static Personality currentlyLoadingPersonality;
 
     public void loadPersonalities() {
         personalities.clear();
 
         List<File> folders = getPersonalityFolders();
-        for(int x = 0; x < folders.size(); x++) {
+        for (int x = 0; x < folders.size(); x++) {
             progressUpdate.accept(x + 1, folders.size());
 
             Personality personality = new Personality(folders.get(x).getName());
@@ -43,7 +43,7 @@ public class PersonalityManager {
         ChoiceBox choiceBox = TeaseAI.application.getController().getPersonalityChoiceBox();
         choiceBox.getItems().clear();
 
-        for(Personality personality : personalities) {
+        for (Personality personality : personalities) {
             choiceBox.getItems().add(personality);
         }
 
@@ -51,7 +51,7 @@ public class PersonalityManager {
 
         Personality personality = getPersonality(latestSelectedPersonality);
 
-        if(personality != null) {
+        if (personality != null) {
             choiceBox.getSelectionModel().select(personality);
         } else {
             choiceBox.getSelectionModel().selectFirst();
@@ -63,8 +63,8 @@ public class PersonalityManager {
     }
 
     public Personality getPersonality(String name) {
-        for(Personality personality : personalities) {
-            if(personality.getName().getValue().equals(name)) {
+        for (Personality personality : personalities) {
+            if (personality.getName().getValue().equals(name)) {
                 return personality;
             }
         }
@@ -83,12 +83,12 @@ public class PersonalityManager {
         File personalityFolder = new File(PERSONALITY_FOLDER_NAME);
         personalityFolder.mkdirs();
 
-        for(File file : personalityFolder.listFiles()) {
+        for (File file : personalityFolder.listFiles()) {
             //Ignore all non directories
             if (file.isDirectory()) {
                 File propertiesFile = new File(file.getAbsolutePath() + File.separator + Personality.PROPERTIES_NAME);
 
-                if(propertiesFile.exists()) {
+                if (propertiesFile.exists()) {
                     folders.add(file);
                 } else {
                     TeaseLogger.getLogger().log(Level.WARNING, "Personality '" + file.getName() + "' is missing a properties file. Skipping loading.");
@@ -100,7 +100,7 @@ public class PersonalityManager {
     }
 
     public void setProgressUpdate(BiConsumer<Integer, Integer> progressUpdate) {
-        this.progressUpdate = progressUpdate ;
+        this.progressUpdate = progressUpdate;
     }
 
     @Deprecated
@@ -120,14 +120,12 @@ public class PersonalityManager {
     public static void setManager(PersonalityManager manager) {
         PersonalityManager.manager = manager;
     }
-    
-    public void setLoadingPersonality(Personality personality)
-    {
+
+    public void setLoadingPersonality(Personality personality) {
         currentlyLoadingPersonality = personality;
     }
-    
-    public Personality getLoadingPersonality()
-    {
+
+    public Personality getLoadingPersonality() {
         return currentlyLoadingPersonality;
     }
 }

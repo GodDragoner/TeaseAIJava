@@ -39,16 +39,12 @@ public class URLMediaSettings {
             public void handle(MouseEvent event) {
                 String url = settingsController.addURLTextField.getText().toLowerCase();
                 //Ski23 testing
-                
-                if (url != null && !url.trim().equals(""))
-                {
-                    try
-                    {
+
+                if (url != null && !url.trim().equals("")) {
+                    try {
                         URL testUrl = new URL(url);
                         //AbstractRipper.getRipper(testUrl);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Invalid URL");
                         alert.setHeaderText(null);
@@ -60,21 +56,18 @@ public class URLMediaSettings {
                     settingsController.addURLButton.setDisable(true);
                     settingsController.addURLTextField.setDisable(true);
                     //settingsController.refreshURLButton.setDisable(true);
-    
+
                     settingsController.addURLTextField.setText(url);
-                    
+
                     new Thread() {
                         @Override
                         public void run() {
                             File mediaFile;
-                            try
-                            {
+                            try {
                                 UrlProgress.inProgress = true;
                                 UrlProgress.completed = 0;
                                 mediaFile = App.mediaUrlRip(url, MediaURL.URL_FILE_PATH, false);
-                            }
-                            catch (Exception e)
-                            {
+                            } catch (Exception e) {
                                 UrlProgress.inProgress = false;
                                 TeaseAI.application.runOnUIThread(new Runnable() {
                                     @Override
@@ -90,7 +83,7 @@ public class URLMediaSettings {
                             UrlProgress.inProgress = false;
                             MediaURL mediaURL = new MediaURL(MediaType.IMAGE, mediaFile);
                             TeaseAI.application.getMediaCollection().addMediaHolder(null, mediaURL);
-    
+
                             TeaseAI.application.runOnUIThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -102,8 +95,7 @@ public class URLMediaSettings {
                             });
                         }
                     }.start();
-                }
-                else {
+                } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Invalid URL");
                     alert.setHeaderText(null);
@@ -225,7 +217,7 @@ public class URLMediaSettings {
                         @Override
                         public void run() {
                             //No media found
-                            if(((MediaURL) settingsController.urlFilesList.getSelectionModel().getSelectedItem()).getMediaURLs().isEmpty()) {
+                            if (((MediaURL) settingsController.urlFilesList.getSelectionModel().getSelectedItem()).getMediaURLs().isEmpty()) {
                                 settingsController.urlFileImagePreview.setImage(null);
                                 return;
                             }

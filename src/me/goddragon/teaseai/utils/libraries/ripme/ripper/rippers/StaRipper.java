@@ -24,7 +24,7 @@ public class StaRipper extends AbstractHTMLRipper {
         super(url);
     }
 
-    private Map<String,String> cookies = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
 
     @Override
     public String getHost() {
@@ -99,10 +99,10 @@ public class StaRipper extends AbstractHTMLRipper {
             String imageURL = response.header("Location");
             LOGGER.log(Level.INFO, imageURL);
             return imageURL;
-            } catch (IOException e) {
-                LOGGER.log(Level.INFO, "Got error message " + e.getMessage() + " trying to download " + url);
-                return null;
-            }
+        } catch (IOException e) {
+            LOGGER.log(Level.INFO, "Got error message " + e.getMessage() + " trying to download " + url);
+            return null;
+        }
     }
 
     @Override

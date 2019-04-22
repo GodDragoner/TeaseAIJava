@@ -21,7 +21,8 @@ import java.util.regex.Pattern;
 
 public class HentaifoundryRipper extends AbstractHTMLRipper {
 
-    private Map<String,String> cookies = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
+
     public HentaifoundryRipper(URL url) throws IOException {
         super(url);
     }
@@ -30,6 +31,7 @@ public class HentaifoundryRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "hentai-foundry";
     }
+
     @Override
     public String getDomain() {
         return "hentai-foundry.com";
@@ -62,42 +64,41 @@ public class HentaifoundryRipper extends AbstractHTMLRipper {
 
         doc = resp.parse();
         String csrf_token = doc.select("input[name=YII_CSRF_TOKEN]")
-                               .first().attr("value");
+                .first().attr("value");
         if (csrf_token != null) {
-            Map<String,String> data = new HashMap<>();
-            data.put("YII_CSRF_TOKEN"  , csrf_token);
-            data.put("rating_nudity"   , "3");
-            data.put("rating_violence" , "3");
+            Map<String, String> data = new HashMap<>();
+            data.put("YII_CSRF_TOKEN", csrf_token);
+            data.put("rating_nudity", "3");
+            data.put("rating_violence", "3");
             data.put("rating_profanity", "3");
-            data.put("rating_racism"   , "3");
-            data.put("rating_sex"      , "3");
-            data.put("rating_spoilers" , "3");
-            data.put("rating_yaoi"     , "1");
-            data.put("rating_yuri"     , "1");
-            data.put("rating_teen"     , "1");
-            data.put("rating_guro"     , "1");
-            data.put("rating_furry"    , "1");
-            data.put("rating_beast"    , "1");
-            data.put("rating_male"     , "1");
-            data.put("rating_female"   , "1");
-            data.put("rating_futa"     , "1");
-            data.put("rating_other"    , "1");
-            data.put("rating_scat"     , "1");
-            data.put("rating_incest"   , "1");
-            data.put("rating_rape"     , "1");
-            data.put("filter_media"    , "A");
-            data.put("filter_order"    , "date_new");
-            data.put("filter_type"     , "0");
+            data.put("rating_racism", "3");
+            data.put("rating_sex", "3");
+            data.put("rating_spoilers", "3");
+            data.put("rating_yaoi", "1");
+            data.put("rating_yuri", "1");
+            data.put("rating_teen", "1");
+            data.put("rating_guro", "1");
+            data.put("rating_furry", "1");
+            data.put("rating_beast", "1");
+            data.put("rating_male", "1");
+            data.put("rating_female", "1");
+            data.put("rating_futa", "1");
+            data.put("rating_other", "1");
+            data.put("rating_scat", "1");
+            data.put("rating_incest", "1");
+            data.put("rating_rape", "1");
+            data.put("filter_media", "A");
+            data.put("filter_order", "date_new");
+            data.put("filter_type", "0");
 
             resp = Http.url("http://www.hentai-foundry.com/site/filters")
-                       .referrer("http://www.hentai-foundry.com/")
-                       .cookies(cookies)
-                       .data(data)
-                       .method(Method.POST)
-                       .response();
+                    .referrer("http://www.hentai-foundry.com/")
+                    .cookies(cookies)
+                    .data(data)
+                    .method(Method.POST)
+                    .response();
             cookies.putAll(resp.cookies());
-        }
-        else {
+        } else {
             LOGGER.log(Level.INFO, "unable to find csrf_token and set filter");
         }
 
@@ -154,9 +155,7 @@ public class HentaifoundryRipper extends AbstractHTMLRipper {
 
                 LOGGER.log(Level.INFO, "grabbing " + "http://www.hentai-foundry.com" + thumb.attr("href"));
                 imagePage = Http.url("http://www.hentai-foundry.com" + thumb.attr("href")).cookies(cookies).get();
-            }
-
-            catch (IOException e) {
+            } catch (IOException e) {
                 LOGGER.log(Level.FINE, e.getMessage());
                 LOGGER.log(Level.FINE, "Warning: imagePage is null!");
                 imagePage = null;
@@ -164,8 +163,7 @@ public class HentaifoundryRipper extends AbstractHTMLRipper {
             // This is here for when the image is resized to a thumbnail because ripme doesn't report a screensize
             if (imagePage.select("div.boxbody > img.center").attr("src").contains("thumbs.")) {
                 imageURLs.add("http:" + imagePage.select("div.boxbody > img.center").attr("onclick").replace("this.src=", "").replace("'", "").replace("; $(#resize_message).hide();", ""));
-            }
-            else {
+            } else {
                 imageURLs.add("http:" + imagePage.select("div.boxbody > img.center").attr("src"));
             }
         }

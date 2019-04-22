@@ -91,9 +91,9 @@ public class PahealRipper extends AbstractHTMLRipper {
             }
 
             File outFile = new File(workingDir.getCanonicalPath()
-                + File.separator
-                + Utils.filesystemSafe(new URI(name).getPath())
-                + ext);
+                    + File.separator
+                    + Utils.filesystemSafe(new URI(name).getPath())
+                    + ext);
             addURLToDownload(url, outFile);
         } catch (IOException | URISyntaxException ex) {
             logger.log(Level.SEVERE, "Error while downloading URL " + url.toString());

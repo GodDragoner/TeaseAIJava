@@ -25,15 +25,14 @@ import java.util.regex.Pattern;
  * http://500px.com/tsyganov/favorites
  * http://500px.com/tsyganov (photos)
  * https://api.500px.com/v1/photo
- *  ?rpp=100
- *  &feature=user
- *  &image_size=3
- *  &page=3
- *  &sort=created_at
- *  &include_states=false
- *  &user_id=1913159
- *  &consumer_key=XPm2br2zGBq6TOfd2xbDIHYoLnt3cLxr1HYryGCv
- *
+ * ?rpp=100
+ * &feature=user
+ * &image_size=3
+ * &page=3
+ * &sort=created_at
+ * &include_states=false
+ * &user_id=1913159
+ * &consumer_key=XPm2br2zGBq6TOfd2xbDIHYoLnt3cLxr1HYryGCv
  */
 public class FivehundredpxRipper extends AbstractJSONRipper {
 
@@ -49,6 +48,7 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
     public String getHost() {
         return "500px";
     }
+
     @Override
     public String getDomain() {
         return "500px.com";
@@ -56,19 +56,20 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
 
     @Override
     public String getGID(URL url) throws MalformedURLException {
-        Pattern p; Matcher m;
+        Pattern p;
+        Matcher m;
 
         // http://500px.com/tsyganov/stories/80675/galya ("blog")
         p = Pattern.compile("^.*500px.com/([a-zA-Z0-9\\-_]+)/stories/([0-9]+).*$");
         m = p.matcher(url.toExternalForm());
         if (m.matches()) {
             String username = m.group(1),
-                   blogid   = m.group(2);
+                    blogid = m.group(2);
             baseURL += "/blogs/" + blogid
-                     + "?feature=user"
-                     + "&username=" + username
-                     + "&image_size=5"
-                     + "&rpp=100";
+                    + "?feature=user"
+                    + "&username=" + username
+                    + "&image_size=5"
+                    + "&rpp=100";
             return username + "_stories_" + blogid;
         }
 
@@ -78,9 +79,9 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
         if (m.matches()) {
             String username = m.group(1);
             baseURL += "/blogs"
-                     + "?feature=user"
-                     + "&username=" + username
-                     + "&rpp=100";
+                    + "?feature=user"
+                    + "&username=" + username
+                    + "&rpp=100";
             return username + "_stories";
         }
 
@@ -90,10 +91,10 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
         if (m.matches()) {
             String username = m.group(1);
             baseURL += "/photos"
-                     + "?feature=user_favorites"
-                     + "&username=" + username
-                     + "&rpp=100"
-                     + "&image_size=5";
+                    + "?feature=user_favorites"
+                    + "&username=" + username
+                    + "&rpp=100"
+                    + "&image_size=5";
             return username + "_faves";
         }
 
@@ -109,7 +110,7 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
                 throw new MalformedURLException("Unable to get User ID from username (" + username + ")");
             }
             baseURL += "/users/" + userID + "/galleries"
-                     + "?rpp=100";
+                    + "?rpp=100";
             return username + "_galleries";
         }
 
@@ -126,8 +127,8 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
                 throw new MalformedURLException("Unable to get User ID from username (" + username + ")");
             }
             baseURL += "/users/" + userID + "/galleries/" + subgallery + "/items"
-                     + "?rpp=100"
-                     + "&image_size=5";
+                    + "?rpp=100"
+                    + "&image_size=5";
             return username + "_galleries_" + subgallery;
         }
 
@@ -137,26 +138,28 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
         if (m.matches()) {
             String username = m.group(1);
             baseURL += "/photos"
-                     + "?feature=user"
-                     + "&username=" + username
-                     + "&rpp=100"
-                     + "&image_size=5";
+                    + "?feature=user"
+                    + "&username=" + username
+                    + "&rpp=100"
+                    + "&image_size=5";
             return username;
         }
 
         throw new MalformedURLException(
                 "Expected 500px.com gallery formats: "
-                + "/stories/###  /stories  /favorites  /"
-                + " Got: " + url);
+                        + "/stories/###  /stories  /favorites  /"
+                        + " Got: " + url);
     }
 
-    /** Convert username to UserID. */
+    /**
+     * Convert username to UserID.
+     */
     private String getUserID(String username) throws IOException {
         LOGGER.log(Level.INFO, "Fetching user ID for " + username);
         JSONObject json = new Http("https://api.500px.com/v1/" +
-                    "users/show" +
-                    "?username=" + username +
-                    "&consumer_key=" + CONSUMER_KEY)
+                "users/show" +
+                "?username=" + username +
+                "&consumer_key=" + CONSUMER_KEY)
                 .getJSON();
         return Long.toString(json.getJSONObject("user").getLong("id"));
     }
@@ -181,9 +184,9 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
                 long galleryID = jsonGallery.getLong("id");
                 String userID = Long.toString(jsonGallery.getLong("user_id"));
                 String blogURL = "https://api.500px.com/v1/users/" + userID + "/galleries/" + galleryID + "/items"
-                     + "?rpp=100"
-                     + "&image_size=5"
-                     + "&consumer_key=" + CONSUMER_KEY;
+                        + "?rpp=100"
+                        + "&image_size=5"
+                        + "&consumer_key=" + CONSUMER_KEY;
                 LOGGER.log(Level.INFO, "Loading " + blogURL);
                 JSONObject thisJSON = Http.url(blogURL).getJSON();
                 JSONArray thisPhotos = thisJSON.getJSONArray("photos");
@@ -193,8 +196,7 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
                 }
             }
             return result;
-        }
-        else if (baseURL.contains("/blogs?")) {
+        } else if (baseURL.contains("/blogs?")) {
             // List of stories to return
             JSONObject result = new JSONObject();
             result.put("photos", new JSONArray());
@@ -209,11 +211,11 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
                 int blogid = jsonBlog.getInt("id");
                 String username = jsonBlog.getJSONObject("user").getString("username");
                 String blogURL = "https://api.500px.com/v1/blogs/" + blogid
-                     + "?feature=user"
-                     + "&username=" + username
-                     + "&rpp=100"
-                     + "&image_size=5"
-                     + "&consumer_key=" + CONSUMER_KEY;
+                        + "?feature=user"
+                        + "&username=" + username
+                        + "&rpp=100"
+                        + "&image_size=5"
+                        + "&consumer_key=" + CONSUMER_KEY;
                 LOGGER.log(Level.INFO, "Loading " + blogURL);
                 JSONObject thisJSON = Http.url(blogURL).getJSON();
                 JSONArray thisPhotos = thisJSON.getJSONArray("photos");
@@ -234,11 +236,11 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
         }
         // Check previous JSON to see if we hit the last page
         if (!json.has("current_page")
-         || !json.has("total_pages")) {
+                || !json.has("total_pages")) {
             throw new IOException("No more pages");
         }
         int currentPage = json.getInt("current_page"),
-            totalPages  = json.getInt("total_pages");
+                totalPages = json.getInt("total_pages");
         if (currentPage == totalPages) {
             throw new IOException("No more results");
         }
@@ -246,8 +248,8 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
         sleep(500);
         ++page;
         URL apiURL = new URL(baseURL
-                             + "&page=" + page
-                             + "&consumer_key=" + CONSUMER_KEY);
+                + "&page=" + page
+                + "&consumer_key=" + CONSUMER_KEY);
         return Http.url(apiURL).getJSON();
     }
 
@@ -268,20 +270,18 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
                 LOGGER.log(Level.FINE, "Loading " + rawUrl);
                 doc = Http.url(rawUrl).get();
                 images = doc.select("div#preload img");
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "Error fetching full-size image from " + rawUrl, e);
             }
             if (!images.isEmpty()) {
                 imageURL = images.first().attr("src");
                 LOGGER.log(Level.FINE, "Found full-size non-watermarked image: " + imageURL);
-            }
-            else {
+            } else {
                 LOGGER.log(Level.FINE, "Falling back to image_url from API response");
                 imageURL = photo.getString("image_url");
                 imageURL = imageURL.replaceAll("/4\\.", "/5.");
                 // See if there's larger images
-                for (String imageSize : new String[] { "2048" } ) {
+                for (String imageSize : new String[]{"2048"}) {
                     String fsURL = imageURL.replaceAll("/5\\.", "/" + imageSize + ".");
                     sleep(10);
                     if (urlExists(fsURL)) {
@@ -293,8 +293,7 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
             }
             if (imageURL == null) {
                 LOGGER.log(Level.SEVERE, "Failed to find image for photo " + photo.toString());
-            }
-            else {
+            } else {
                 imageURLs.add(imageURL);
                 if (isThisATest()) {
                     break;
@@ -328,7 +327,7 @@ public class FivehundredpxRipper extends AbstractJSONRipper {
         String[] fields = u.split("/");
         String prefix = getPrefix(index) + fields[fields.length - 3];
         File saveAs = new File(getWorkingDir() + File.separator + prefix + ".jpg");
-        addURLToDownload(url,  saveAs,  "", null, false);
+        addURLToDownload(url, saveAs, "", null, false);
     }
 
 }

@@ -39,19 +39,20 @@ public class NatalieMuRipper extends AbstractHTMLRipper {
         //urls like:
         // http://cdn2.natalie.mu/music/gallery/show/news_id/xxxxxx/image_id/xxxxxx
         // http://cdn2.natalie.mu/music/news/140411
-        return  url.toExternalForm().contains("natalie.mu")     // Most chans
-             && (url.toExternalForm().contains("/news_id/")
-             || url.toExternalForm().contains("/news/")); // 4chan, archive.moe
+        return url.toExternalForm().contains("natalie.mu")     // Most chans
+                && (url.toExternalForm().contains("/news_id/")
+                || url.toExternalForm().contains("/news/")); // 4chan, archive.moe
     }
 
     /**
      * For example the achrives are all known. (Check 4chan-x)
      * Should be based on the software the specific chan uses.
      * FoolFuuka uses the same (url) layout as 4chan
-     * */
+     */
     @Override
     public String getGID(URL url) throws MalformedURLException {
-        Pattern p; Matcher m;
+        Pattern p;
+        Matcher m;
 
         String u = url.toExternalForm();
         if (u.contains("/news_id/")) {
@@ -87,7 +88,8 @@ public class NatalieMuRipper extends AbstractHTMLRipper {
     @Override
     public List<String> getURLsFromPage(Document page) {
         List<String> imageURLs = new ArrayList<>();
-        Pattern p; Matcher m;
+        Pattern p;
+        Matcher m;
         //select all album thumbnails
         for (Element span : page.select(".NA_articleGallery span")) {
             if (!span.hasAttr("style")) {
@@ -106,7 +108,7 @@ public class NatalieMuRipper extends AbstractHTMLRipper {
                     imgUrl = "http://" + this.url.getHost() + imgUrl;
                 }
                 //convert thumbnail url into fullsize url
-                imgUrl = imgUrl.replace("list_thumb_inbox","xlarge");
+                imgUrl = imgUrl.replace("list_thumb_inbox", "xlarge");
                 // Don't download the same URL twice
                 if (imageURLs.contains(imgUrl)) {
                     LOGGER.log(Level.FINE, "Already attempted: " + imgUrl);

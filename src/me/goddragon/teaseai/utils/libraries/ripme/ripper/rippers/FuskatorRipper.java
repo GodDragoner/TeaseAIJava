@@ -26,6 +26,7 @@ public class FuskatorRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "fuskator";
     }
+
     @Override
     public String getDomain() {
         return "fuskator.com";

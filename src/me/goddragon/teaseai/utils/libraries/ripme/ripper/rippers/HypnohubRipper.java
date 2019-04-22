@@ -55,13 +55,13 @@ public class HypnohubRipper extends AbstractHTMLRipper {
     private String ripPost(String url) throws IOException {
         LOGGER.log(Level.INFO, url);
         Document doc = Http.url(url).get();
-        return "https:" +  doc.select("img.image").attr("src");
+        return "https:" + doc.select("img.image").attr("src");
 
     }
 
     private String ripPost(Document doc) {
         LOGGER.log(Level.INFO, url.toString());
-        return "https:" +  doc.select("img.image").attr("src");
+        return "https:" + doc.select("img.image").attr("src");
 
     }
 

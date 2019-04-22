@@ -33,17 +33,17 @@ public class WordpressComicRipper extends AbstractHTMLRipper {
     // http://shipinbottle.pepsaga.com/?p=281
 
     private static List<String> explicit_domains = Arrays.asList(
-        "www.totempole666.com",
-        "buttsmithy.com",
-        "incase.buttsmithy.com",
-        "themonsterunderthebed.net",
-        "prismblush.com",
-        "www.konradokonski.com",
-        "freeadultcomix.com",
-        "thisis.delvecomic.com",
-        "shipinbottle.pepsaga.com",
-        "8muses.download",
-        "spyingwithlana.com"
+            "www.totempole666.com",
+            "buttsmithy.com",
+            "incase.buttsmithy.com",
+            "themonsterunderthebed.net",
+            "prismblush.com",
+            "www.konradokonski.com",
+            "freeadultcomix.com",
+            "thisis.delvecomic.com",
+            "shipinbottle.pepsaga.com",
+            "8muses.download",
+            "spyingwithlana.com"
     );
 
     private static List<String> theme1 = Arrays.asList(
@@ -134,7 +134,7 @@ public class WordpressComicRipper extends AbstractHTMLRipper {
             }
 
             Pattern shipinbottlePat = Pattern.compile("https?://shipinbottle.pepsaga.com/\\?p=([0-9]*)/?$");
-            Matcher shipinbottleMat =shipinbottlePat.matcher(url.toExternalForm());
+            Matcher shipinbottleMat = shipinbottlePat.matcher(url.toExternalForm());
             if (shipinbottleMat.matches()) {
                 return true;
             }
@@ -268,7 +268,7 @@ public class WordpressComicRipper extends AbstractHTMLRipper {
         }
 
         Pattern shipinbottlePat = Pattern.compile("https?://shipinbottle.pepsaga.com/\\?p=([0-9]*)/?$");
-        Matcher shipinbottleMat =shipinbottlePat.matcher(url.toExternalForm());
+        Matcher shipinbottleMat = shipinbottlePat.matcher(url.toExternalForm());
         if (shipinbottleMat.matches()) {
             return getHost() + "_" + "Ship_in_bottle";
         }

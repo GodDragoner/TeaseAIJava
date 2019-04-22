@@ -29,25 +29,25 @@ public abstract class TeaseRunnable implements Runnable {
 
     public boolean tryRun() {
         //Check whether we are running it right now
-        if(running) {
+        if (running) {
             return false;
         }
 
         boolean willRun = false;
-        if(runs == 0) {
+        if (runs == 0) {
             if (System.currentTimeMillis() - lastCall >= delay) {
                 willRun = true;
             }
-        } else if(System.currentTimeMillis() - lastCall >= interval) {
+        } else if (System.currentTimeMillis() - lastCall >= interval) {
             willRun = true;
         }
 
-        if(willRun) {
+        if (willRun) {
             this.running = true;
             runs++;
 
             //Remove if we are supposed to only run this once
-            if(interval <= 0) {
+            if (interval <= 0) {
                 TeaseRunnableHandler.getHandler().removeRunnable(this);
             }
 

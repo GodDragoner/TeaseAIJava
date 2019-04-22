@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 
 public class AerisdiesRipper extends AbstractHTMLRipper {
 
-    private Map<String,String> cookies = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
 
 
     public AerisdiesRipper(URL url) throws IOException {
@@ -30,6 +30,7 @@ public class AerisdiesRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "aerisdies";
     }
+
     @Override
     public String getDomain() {
         return "aerisdies.com";
@@ -71,13 +72,13 @@ public class AerisdiesRipper extends AbstractHTMLRipper {
     public List<String> getURLsFromPage(Document page) {
         List<String> imageURLs = new ArrayList<>();
         Elements albumElements = page.select("div.imgbox > a > img");
-            for (Element imageBox : albumElements) {
-                String imageUrl = imageBox.attr("src");
-                imageUrl = imageUrl.replaceAll("thumbnails", "images");
-                imageUrl = imageUrl.replaceAll("../../", "");
-                imageUrl = imageUrl.replaceAll("gif", "jpg");
-                imageURLs.add("http://www.aerisdies.com/" + imageUrl);
-            }
+        for (Element imageBox : albumElements) {
+            String imageUrl = imageBox.attr("src");
+            imageUrl = imageUrl.replaceAll("thumbnails", "images");
+            imageUrl = imageUrl.replaceAll("../../", "");
+            imageUrl = imageUrl.replaceAll("gif", "jpg");
+            imageURLs.add("http://www.aerisdies.com/" + imageUrl);
+        }
         return imageURLs;
     }
 

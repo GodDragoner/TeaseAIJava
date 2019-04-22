@@ -131,7 +131,7 @@ public class DerpiRipper extends AbstractJSONRipper {
             arr = json.getJSONArray("search");
         }
         if (arr != null) {
-            for (int i = 0; i < arr.length(); i++){
+            for (int i = 0; i < arr.length(); i++) {
                 imageURLs.add(this.getImageUrlFromJson(arr.getJSONObject(i)));
             }
         } else {

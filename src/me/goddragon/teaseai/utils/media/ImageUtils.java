@@ -16,7 +16,7 @@ import java.util.logging.Level;
 public class ImageUtils {
 
     public static void setImageInView(File image, ImageView imageView) {
-        if(image == null) {
+        if (image == null) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Can't set image to null (should be handled by MediaHandler)");
         }
 
@@ -25,7 +25,7 @@ public class ImageUtils {
 
         BufferedImage bufferedImage = ImageUtils.resizeImage(image, paneWidth, paneHeight);
 
-        if(bufferedImage == null) {
+        if (bufferedImage == null) {
             //Fall back if we were unable to properly resize it
             imageView.setImage(new Image(image.toURI().toString()));
         } else {
@@ -39,7 +39,7 @@ public class ImageUtils {
         try {
             BufferedImage originalImage = ImageIO.read(image);
 
-            if(originalImage == null) {
+            if (originalImage == null) {
                 return null;
             }
 

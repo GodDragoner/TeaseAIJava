@@ -62,8 +62,7 @@ public class OglafRipper extends AbstractHTMLRipper {
         // This for stops that
         if (nextPage.equals("")) {
             throw new IOException("No more pages");
-        }
-        else {
+        } else {
             sleep(1000);
             return Http.url("http://oglaf.com" + nextPage).get();
         }
@@ -73,8 +72,8 @@ public class OglafRipper extends AbstractHTMLRipper {
     public List<String> getURLsFromPage(Document doc) {
         List<String> result = new ArrayList<>();
         for (Element el : doc.select("b > img#strip")) {
-                String imageSource = el.select("img").attr("src");
-                result.add(imageSource);
+            String imageSource = el.select("img").attr("src");
+            result.add(imageSource);
         }
         return result;
     }

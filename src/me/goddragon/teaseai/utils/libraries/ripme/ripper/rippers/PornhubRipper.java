@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 
 public class PornhubRipper extends AlbumRipper {
     // All sleep times are in milliseconds
-    private static final int IMAGE_SLEEP_TIME    = 1  * 1000;
+    private static final int IMAGE_SLEEP_TIME = 1 * 1000;
 
     private static final String DOMAIN = "pornhub.com", HOST = "Pornhub";
 
@@ -82,8 +82,8 @@ public class PornhubRipper extends AlbumRipper {
         if (albumDoc == null) {
             LOGGER.log(Level.INFO, "    Retrieving album page " + nextUrl);
             albumDoc = Http.url(nextUrl)
-                           .referrer(this.url)
-                           .get();
+                    .referrer(this.url)
+                    .get();
         }
 
         // Find thumbnails
@@ -124,7 +124,7 @@ public class PornhubRipper extends AlbumRipper {
 
     /**
      * Helper class to find and download images found on "image" pages
-     *
+     * <p>
      * Handles case when site has IP-banned the user.
      */
     private class PornhubImageThread extends Thread {
@@ -145,8 +145,8 @@ public class PornhubRipper extends AlbumRipper {
         private void fetchImage() {
             try {
                 Document doc = Http.url(this.url)
-                                   .referrer(this.url)
-                                   .get();
+                        .referrer(this.url)
+                        .get();
 
                 // Find image
                 Elements images = doc.select("#photoImageSection img");

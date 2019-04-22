@@ -27,12 +27,12 @@ public class LoadCSSFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        if(args.length == 1) {
+        if (args.length == 1) {
             File cssFile = ScriptHandler.getHandler().getPersonalityFile(args[0].toString());
             if (cssFile != null) {
-            	Scene scene = TeaseAI.application.getScene();
-            	scene.getStylesheets().clear();
-            	scene.getStylesheets().add(cssFile.toURI().toString());
+                Scene scene = TeaseAI.application.getScene();
+                scene.getStylesheets().clear();
+                scene.getStylesheets().add(cssFile.toURI().toString());
             }
             return null;
         }

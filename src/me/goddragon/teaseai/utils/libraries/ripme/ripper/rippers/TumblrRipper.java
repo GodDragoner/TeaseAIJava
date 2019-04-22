@@ -26,7 +26,7 @@ public class TumblrRipper extends AlbumRipper {
     int index = 1;
 
     private static final String DOMAIN = "tumblr.com",
-            HOST   = "tumblr",
+            HOST = "tumblr",
             IMAGE_PATTERN = "([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)";
 
     private enum ALBUM_TYPE {
@@ -35,6 +35,7 @@ public class TumblrRipper extends AlbumRipper {
         POST,
         LIKED
     }
+
     private ALBUM_TYPE albumType;
     private String subdomain, tagName, postNumber;
 
@@ -47,6 +48,7 @@ public class TumblrRipper extends AlbumRipper {
     /**
      * Gets the API key.
      * Chooses between default/included keys & user specified ones (from the config file).
+     *
      * @return Tumblr API key
      */
     public static String getApiKey() {
@@ -93,6 +95,7 @@ public class TumblrRipper extends AlbumRipper {
 
     /**
      * Sanitizes URL.
+     *
      * @param url URL to be sanitized.
      * @return Sanitized URL
      * @throws MalformedURLException
@@ -105,8 +108,7 @@ public class TumblrRipper extends AlbumRipper {
             url = new URL(u.replace(".tumblr.com", ""));
             if (isTumblrURL(url)) {
                 LOGGER.log(Level.INFO, "Detected tumblr site: " + url);
-            }
-            else {
+            } else {
                 LOGGER.log(Level.INFO, "Not a tumblr site: " + url);
             }
         }
@@ -134,9 +136,9 @@ public class TumblrRipper extends AlbumRipper {
         // If true the rip loop won't be run
         boolean shouldStopRipping = false;
         if (albumType == ALBUM_TYPE.POST) {
-            mediaTypes = new String[] { "post" };
+            mediaTypes = new String[]{"post"};
         } else {
-            mediaTypes = new String[] { "photo", "video" };
+            mediaTypes = new String[]{"photo", "video"};
         }
         int offset;
         for (String mediaType : mediaTypes) {
@@ -169,7 +171,7 @@ public class TumblrRipper extends AlbumRipper {
                 } catch (IOException e) {
                     Throwable cause = e.getCause();
                     if (cause instanceof HttpStatusException) {
-                        HttpStatusException status = (HttpStatusException)cause;
+                        HttpStatusException status = (HttpStatusException) cause;
                         if (status.getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !useDefaultApiKey) {
                             retry = true;
                         } else if (status.getStatusCode() == 404) {

@@ -22,17 +22,23 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
     }
 
     protected abstract String getDomain();
+
     public abstract String getHost();
 
     protected abstract Document getFirstPage() throws IOException;
+
     public Document getNextPage(Document doc) throws IOException {
         return null;
     }
+
     protected abstract List<String> getURLsFromPage(Document page);
+
     protected List<String> getDescriptionsFromPage(Document doc) throws IOException {
         throw new IOException("getDescriptionsFromPage not implemented"); // Do I do this or make an abstract function?
     }
+
     protected abstract void downloadURL(URL url, int index);
+
     protected DownloadThreadPool getThreadPool() {
         return null;
     }
@@ -50,6 +56,7 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
     public URL sanitizeURL(URL url) throws MalformedURLException {
         return url;
     }
+
     protected boolean hasDescriptionSupport() {
         return false;
     }
@@ -57,6 +64,7 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
     protected String[] getDescription(String url, Document page) throws IOException {
         throw new IOException("getDescription not implemented"); // Do I do this or make an abstract function?
     }
+
     protected int descSleepTime() {
         return 100;
     }
@@ -130,7 +138,7 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
                         }
                         textindex += 1;
                         LOGGER.log(Level.FINE, "Getting description from " + textURL);
-                        String[] tempDesc = getDescription(textURL,doc);
+                        String[] tempDesc = getDescription(textURL, doc);
                         if (tempDesc != null) {
                             if (Utils.getConfigBoolean("file.overwrite", false) || !(new File(
                                     workingDir.getCanonicalPath()
@@ -170,42 +178,47 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
         }
         waitForThreads();
     }
-    
+
     /**
      * Gets the file name from the URL
-     * @param url 
-     *      URL that you want to get the filename from
-     * @return 
-     *      Filename of the URL
+     *
+     * @param url URL that you want to get the filename from
+     * @return Filename of the URL
      */
     protected String fileNameFromURL(URL url) {
         String saveAs = url.toExternalForm();
-        if (saveAs.substring(saveAs.length() - 1) == "/") { saveAs = saveAs.substring(0,saveAs.length() - 1) ;}
-        saveAs = saveAs.substring(saveAs.lastIndexOf('/')+1);
-        if (saveAs.indexOf('?') >= 0) { saveAs = saveAs.substring(0, saveAs.indexOf('?')); }
-        if (saveAs.indexOf('#') >= 0) { saveAs = saveAs.substring(0, saveAs.indexOf('#')); }
-        if (saveAs.indexOf('&') >= 0) { saveAs = saveAs.substring(0, saveAs.indexOf('&')); }
-        if (saveAs.indexOf(':') >= 0) { saveAs = saveAs.substring(0, saveAs.indexOf(':')); }
+        if (saveAs.substring(saveAs.length() - 1) == "/") {
+            saveAs = saveAs.substring(0, saveAs.length() - 1);
+        }
+        saveAs = saveAs.substring(saveAs.lastIndexOf('/') + 1);
+        if (saveAs.indexOf('?') >= 0) {
+            saveAs = saveAs.substring(0, saveAs.indexOf('?'));
+        }
+        if (saveAs.indexOf('#') >= 0) {
+            saveAs = saveAs.substring(0, saveAs.indexOf('#'));
+        }
+        if (saveAs.indexOf('&') >= 0) {
+            saveAs = saveAs.substring(0, saveAs.indexOf('&'));
+        }
+        if (saveAs.indexOf(':') >= 0) {
+            saveAs = saveAs.substring(0, saveAs.indexOf(':'));
+        }
         return saveAs;
     }
+
     /**
-     * 
-     * @param url
-     *      Target URL
-     * @param subdirectory
-     *      Path to subdirectory where you want to save it
-     * @param text
-     *      Text you want to save
-     * @param index
-     *      Index in something like an album
-     * @return 
-     *      True if ripped successfully
-     *      False if failed
+     * @param url          Target URL
+     * @param subdirectory Path to subdirectory where you want to save it
+     * @param text         Text you want to save
+     * @param index        Index in something like an album
+     * @return True if ripped successfully
+     * False if failed
      */
     public boolean saveText(URL url, String subdirectory, String text, int index) {
         String saveAs = fileNameFromURL(url);
-        return saveText(url,subdirectory,text,index,saveAs);
+        return saveText(url, subdirectory, text, index, saveAs);
     }
+
     protected boolean saveText(URL url, String subdirectory, String text, int index, String fileName) {
         // Not the best for some cases, like FurAffinity. Overridden there.
         try {
@@ -220,11 +233,11 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
             }
             saveFileAs = new File(
                     workingDir.getCanonicalPath()
-                    + subdirectory
-                    + File.separator
-                    + getPrefix(index)
-                    + fileName
-                    + ".txt");
+                            + subdirectory
+                            + File.separator
+                            + getPrefix(index)
+                            + fileName
+                            + ".txt");
             // Write the file
             FileOutputStream out = (new FileOutputStream(saveFileAs));
             out.write(text.getBytes());
@@ -240,13 +253,12 @@ public abstract class AbstractHTMLRipper extends AlbumRipper {
         }
         return true;
     }
-    
+
     /**
      * Gets prefix based on where in the index it is
-     * @param index 
-     *      The index in question
-     * @return 
-     *      Returns prefix for a file. (?)
+     *
+     * @param index The index in question
+     * @return Returns prefix for a file. (?)
      */
     protected String getPrefix(int index) {
         String prefix = "";

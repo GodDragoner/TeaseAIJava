@@ -113,7 +113,7 @@ public class TagsFile {
                     for (PictureTag tag : tagsToAdd) {
                         strLine += (" " + tag.getTagName());
                     }
-                    
+
                     if (!tagsToAdd.isEmpty()) {
                         inputBuffer.append(strLine);
                         inputBuffer.append('\n');
@@ -174,7 +174,7 @@ public class TagsFile {
                     inputBuffer.append(strLine);
                     inputBuffer.append('\n');
                 }
-    
+
                 if (added) {
                     lines.set(lines.indexOf(replaceLine), newLine);
                 } else {

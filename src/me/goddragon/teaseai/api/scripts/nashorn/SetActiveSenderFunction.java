@@ -25,12 +25,12 @@ public class SetActiveSenderFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        switch(args.length) {
+        switch (args.length) {
             case 1:
-                if(args[0] instanceof Integer) {
+                if (args[0] instanceof Integer) {
                     Integer id = (Integer) args[0];
 
-                    if(id == 0) {
+                    if (id == 0) {
                         TeaseLogger.getLogger().log(Level.SEVERE, "Sub can't be set as the current sender.");
                         return null;
                     }

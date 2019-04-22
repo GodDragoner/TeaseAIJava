@@ -22,7 +22,7 @@ public class UnlockImagesFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
-        if(args.length == 0) {
+        if (args.length == 0) {
             MediaHandler.getHandler().setImagesLocked(false);
             return null;
         }

@@ -24,6 +24,7 @@ public class DrawcrowdRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "drawcrowd";
     }
+
     @Override
     public String getDomain() {
         return "drawcrowd.com";
@@ -31,7 +32,8 @@ public class DrawcrowdRipper extends AbstractHTMLRipper {
 
     @Override
     public String getGID(URL url) throws MalformedURLException {
-        Pattern p; Matcher m;
+        Pattern p;
+        Matcher m;
 
         p = Pattern.compile("^.*drawcrowd.com/projects/.*$");
         m = p.matcher(url.toExternalForm());

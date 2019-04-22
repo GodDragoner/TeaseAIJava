@@ -14,9 +14,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class YuvutuRipper extends AbstractHTMLRipper {
-    
+
     private static final String DOMAIN = "yuvutu.com",
-                                HOST   = "yuvutu";
+            HOST = "yuvutu";
 
     public YuvutuRipper(URL url) throws IOException {
         super(url);
@@ -26,6 +26,7 @@ public class YuvutuRipper extends AbstractHTMLRipper {
     public String getHost() {
         return HOST;
     }
+
     @Override
     public String getDomain() {
         return DOMAIN;
@@ -37,7 +38,7 @@ public class YuvutuRipper extends AbstractHTMLRipper {
         Matcher m = p.matcher(url.toExternalForm());
         return m.matches();
     }
-    
+
     @Override
     public String getGID(URL url) throws MalformedURLException {
         Pattern p = Pattern.compile("^http://www\\.yuvutu\\.com/modules\\.php\\?name=YuGallery&action=view&set_id=([0-9]+)$");
@@ -46,13 +47,14 @@ public class YuvutuRipper extends AbstractHTMLRipper {
             return m.group(1);
         }
         throw new MalformedURLException("Expected yuvutu.com URL format: " +
-                        "yuvutu.com/modules.php?name=YuGallery&action=view&set_id=albumid - got " + url + "instead");
+                "yuvutu.com/modules.php?name=YuGallery&action=view&set_id=albumid - got " + url + "instead");
     }
 
     @Override
     public Document getFirstPage() throws IOException {
         return Http.url(url).get();
     }
+
     @Override
     public List<String> getURLsFromPage(Document doc) {
         List<String> imageURLs = new ArrayList<>();
@@ -62,6 +64,7 @@ public class YuvutuRipper extends AbstractHTMLRipper {
         }
         return imageURLs;
     }
+
     @Override
     public void downloadURL(URL url, int index) {
         addURLToDownload(url, getPrefix(index));

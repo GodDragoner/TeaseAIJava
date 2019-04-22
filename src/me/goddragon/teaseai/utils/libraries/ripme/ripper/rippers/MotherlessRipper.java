@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class MotherlessRipper extends AlbumRipper {
 
     private static final String DOMAIN = "motherless.com",
-                                HOST   = "motherless";
+            HOST = "motherless";
 
     private DownloadThreadPool motherlessThreadPool;
 
@@ -76,8 +76,8 @@ public class MotherlessRipper extends AlbumRipper {
             }
             LOGGER.log(Level.INFO, "Retrieving " + nextURL);
             Document doc = Http.url(nextURL)
-                               .referrer("http://motherless.com")
-                               .get();
+                    .referrer("http://motherless.com")
+                    .get();
             for (Element thumb : doc.select("div.thumb a.img-container")) {
                 if (isStopped()) {
                     break;
@@ -89,8 +89,7 @@ public class MotherlessRipper extends AlbumRipper {
                 URL url;
                 if (!thumbURL.startsWith("http")) {
                     url = new URL("http://" + DOMAIN + thumbURL);
-                }
-                else {
+                } else {
                     url = new URL(thumbURL);
                 }
                 index += 1;
@@ -138,8 +137,8 @@ public class MotherlessRipper extends AlbumRipper {
                 }
                 String u = this.url.toExternalForm();
                 Document doc = Http.url(u)
-                                   .referrer(u)
-                                   .get();
+                        .referrer(u)
+                        .get();
                 Pattern p = Pattern.compile("^.*__fileurl = '([^']+)';.*$", Pattern.DOTALL);
                 Matcher m = p.matcher(doc.outerHtml());
                 if (m.matches()) {

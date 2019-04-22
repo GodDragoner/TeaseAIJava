@@ -24,8 +24,8 @@ public class RunOnGuiThreadFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        if(args.length >= 1) {
-            if(args[0] instanceof Runnable) {
+        if (args.length >= 1) {
+            if (args[0] instanceof Runnable) {
                 TeaseAI.application.runOnUIThread((Runnable) args[0]);
                 return null;
             }

@@ -27,8 +27,8 @@ public class ShowCategoryImageFunction extends CustomFunction {
     @Override
     public Object call(Object object, Object... args) {
         super.call(object, args);
-        
-        if(args.length >= 1 && args[0] instanceof String) {
+
+        if (args.length >= 1 && args[0] instanceof String) {
             String category = (String) args[0];
 
             MediaFetishType mediaFetishType;
@@ -41,7 +41,7 @@ public class ShowCategoryImageFunction extends CustomFunction {
 
             File picture = TeaseAI.application.getMediaCollection().getRandomFile(mediaFetishType, MediaType.IMAGE);
 
-            if(picture == null) {
+            if (picture == null) {
                 TeaseLogger.getLogger().log(Level.SEVERE, "'" + category + "' did not hold any valid image.");
                 return null;
             }

@@ -26,9 +26,9 @@ public class SendCustomMessageFunction extends CustomFunction {
         super.call(object, args);
 
         Text[] texts = new Text[args.length];
-        for(int x = 0; x < args.length; x++) {
+        for (int x = 0; x < args.length; x++) {
             Object arg = args[x];
-            if(arg instanceof Text) {
+            if (arg instanceof Text) {
                 texts[x] = (Text) arg;
             } else {
                 TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());
@@ -36,7 +36,7 @@ public class SendCustomMessageFunction extends CustomFunction {
             }
         }
 
-        switch(args.length) {
+        switch (args.length) {
             case 0:
                 TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
                 return null;

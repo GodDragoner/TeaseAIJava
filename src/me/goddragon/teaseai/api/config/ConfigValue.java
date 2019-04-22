@@ -25,7 +25,7 @@ public class ConfigValue {
     }
 
     public String getValue() {
-        if(value != null) {
+        if (value != null) {
             return value;
         }
 
@@ -36,7 +36,7 @@ public class ConfigValue {
 
         createDefault();
 
-        if(configHandler.isConfig()) {
+        if (configHandler.isConfig()) {
             save();
         }
 

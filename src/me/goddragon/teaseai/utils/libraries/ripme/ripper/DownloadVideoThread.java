@@ -64,7 +64,8 @@ class DownloadVideoThread extends Thread {
 
         int tries = 0; // Number of attempts to download
         do {
-            InputStream bis = null; OutputStream fos = null;
+            InputStream bis = null;
+            OutputStream fos = null;
             byte[] data = new byte[1024 * 256];
             int bytesRead;
             try {
@@ -74,13 +75,12 @@ class DownloadVideoThread extends Thread {
                 HttpURLConnection huc;
                 if (this.url.toString().startsWith("https")) {
                     huc = (HttpsURLConnection) this.url.openConnection();
-                }
-                else {
+                } else {
                     huc = (HttpURLConnection) this.url.openConnection();
                 }
                 huc.setInstanceFollowRedirects(true);
                 huc.setConnectTimeout(0); // Never timeout
-                huc.setRequestProperty("accept",  "*/*");
+                huc.setRequestProperty("accept", "*/*");
                 huc.setRequestProperty("Referer", this.url.toExternalForm()); // Sic
                 huc.setRequestProperty("User-agent", AbstractRipper.USER_AGENT);
                 tries += 1;
@@ -89,7 +89,7 @@ class DownloadVideoThread extends Thread {
                 // Check status code
                 bis = new BufferedInputStream(huc.getInputStream());
                 fos = new FileOutputStream(saveAs);
-                while ( (bytesRead = bis.read(data)) != -1) {
+                while ((bytesRead = bis.read(data)) != -1) {
                     try {
                         observer.stopCheck();
                     } catch (IOException e) {
@@ -108,11 +108,17 @@ class DownloadVideoThread extends Thread {
             } finally {
                 // Close any open streams
                 try {
-                    if (bis != null) { bis.close(); }
-                } catch (IOException e) { }
+                    if (bis != null) {
+                        bis.close();
+                    }
+                } catch (IOException e) {
+                }
                 try {
-                    if (fos != null) { fos.close(); }
-                } catch (IOException e) { }
+                    if (fos != null) {
+                        fos.close();
+                    }
+                } catch (IOException e) {
+                }
             }
             if (tries > this.retries) {
                 logger.log(Level.SEVERE, "[!] Exceeded maximum retries (" + this.retries + ") for URL " + url);
@@ -123,15 +129,13 @@ class DownloadVideoThread extends Thread {
     }
 
     /**
-     * @param url
-     *      Target URL
-     * @return 
-     *      Returns connection length
+     * @param url Target URL
+     * @return Returns connection length
      */
     private int getTotalBytes(URL url) throws IOException {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("HEAD");
-        conn.setRequestProperty("accept",  "*/*");
+        conn.setRequestProperty("accept", "*/*");
         conn.setRequestProperty("Referer", this.url.toExternalForm()); // Sic
         conn.setRequestProperty("User-agent", AbstractRipper.USER_AGENT);
         return conn.getContentLength();

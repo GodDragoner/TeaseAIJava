@@ -24,6 +24,7 @@ public class BcfakesRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "bcfakes";
     }
+
     @Override
     public String getDomain() {
         return "bcfakes.com";

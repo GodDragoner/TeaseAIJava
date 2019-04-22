@@ -24,6 +24,7 @@ public class DribbbleRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "dribbble";
     }
+
     @Override
     public String getDomain() {
         return "dribbble.com";
@@ -44,6 +45,7 @@ public class DribbbleRipper extends AbstractHTMLRipper {
     public Document getFirstPage() throws IOException {
         return Http.url(url).get();
     }
+
     @Override
     public Document getNextPage(Document doc) throws IOException {
         // Find next page
@@ -55,17 +57,19 @@ public class DribbbleRipper extends AbstractHTMLRipper {
         sleep(500);
         return Http.url(nextUrl).get();
     }
+
     @Override
     public List<String> getURLsFromPage(Document doc) {
         List<String> imageURLs = new ArrayList<>();
         for (Element thumb : doc.select("a.dribbble-link > picture > source")) {
             // nl skips thumbnails
-            if ( thumb.attr("srcset").contains("teaser")) continue;
+            if (thumb.attr("srcset").contains("teaser")) continue;
             String image = thumb.attr("srcset").replace("_1x", "");
             imageURLs.add(image);
         }
         return imageURLs;
     }
+
     @Override
     public void downloadURL(URL url, int index) {
         addURLToDownload(url, getPrefix(index));

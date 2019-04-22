@@ -24,18 +24,15 @@ public class RegisterSupportedVariableFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
-        if(args.length >= 3) {
-            
+        if (args.length >= 3) {
+
             Personality personality;
-            if (TeaseAI.application.getSession() == null)
-            {
+            if (TeaseAI.application.getSession() == null) {
                 personality = PersonalityManager.getManager().getLoadingPersonality();
-            }
-            else
-            {
+            } else {
                 personality = PersonalityManager.getManager().getActivePersonality();
             }
-            
+
             String variableName = args[0].toString();
             String customName = args[1].toString();
             String description = args[2].toString();

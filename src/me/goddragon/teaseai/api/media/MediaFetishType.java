@@ -33,7 +33,7 @@ public enum MediaFetishType {
     public List<String> getURLFileNames(MediaType mediaType) {
         String value = configValues.get(mediaType).get(MediaHolderType.URL).getValue();
 
-        if(value.isEmpty() || !value.contains(";")) {
+        if (value.isEmpty() || !value.contains(";")) {
             return Arrays.asList(value);
         }
 
@@ -47,7 +47,7 @@ public enum MediaFetishType {
         List<File> files = getFolders(mediaType);
 
         List<MediaHolder> folders = new ArrayList<>();
-        for(File file : files) {
+        for (File file : files) {
             if (!file.exists()) {
                 continue;
             }
@@ -61,14 +61,14 @@ public enum MediaFetishType {
     public List<File> getFolders(MediaType mediaType) {
         String value = configValues.get(mediaType).get(MediaHolderType.FOLDER).getValue();
 
-        if(value.isEmpty() || !value.contains(";")) {
+        if (value.isEmpty() || !value.contains(";")) {
             return Arrays.asList(new File(value));
         }
 
         String[] split = value.split(";");
         List<File> files = new ArrayList<>();
 
-        for(String folderPath : split) {
+        for (String folderPath : split) {
             files.add(new File(folderPath));
         }
 

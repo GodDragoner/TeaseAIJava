@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 
 public class CheveretoRipper extends AbstractHTMLRipper {
     private static final Map<String, String> CONSENT_COOKIE;
+
     static {
         CONSENT_COOKIE = new TreeMap<String, String>();
         CONSENT_COOKIE.put("AGREE_CONSENT", "1");
@@ -40,7 +41,7 @@ public class CheveretoRipper extends AbstractHTMLRipper {
     public boolean canRip(URL url) {
         String url_name = url.toExternalForm();
         if (explicit_domains.contains(url_name.split("/")[2])) {
-                return true;
+            return true;
         }
         return false;
     }
@@ -68,7 +69,7 @@ public class CheveretoRipper extends AbstractHTMLRipper {
             return m.group(1);
         }
         throw new MalformedURLException("Expected chevereto URL format: " +
-                        "site.domain/album/albumName or site.domain/username/albums- got " + url + " instead");
+                "site.domain/album/albumName or site.domain/username/albums- got " + url + " instead");
     }
 
     @Override
@@ -83,29 +84,29 @@ public class CheveretoRipper extends AbstractHTMLRipper {
         String nextUrl = "";
         // We use comic-nav-next to the find the next page
         Element elem = doc.select("li.pagination-next > a").first();
-            if (elem == null) {
-                throw new IOException("No more pages");
-            }
-            String nextPage = elem.attr("href");
-            // Some times this returns a empty string
-            // This for stops that
-            if (nextPage == "") {
-                return null;
-            } else {
-                return Http.url(nextPage).cookies(CONSENT_COOKIE).get();
-            }
+        if (elem == null) {
+            throw new IOException("No more pages");
         }
+        String nextPage = elem.attr("href");
+        // Some times this returns a empty string
+        // This for stops that
+        if (nextPage == "") {
+            return null;
+        } else {
+            return Http.url(nextPage).cookies(CONSENT_COOKIE).get();
+        }
+    }
 
     @Override
     public List<String> getURLsFromPage(Document doc) {
         List<String> result = new ArrayList<>();
-            for (Element el : doc.select("a.image-container > img")) {
-                String imageSource = el.attr("src");
-                // We remove the .md from images so we download the full size image
-                // not the medium ones
-                imageSource = imageSource.replace(".md", "");
-                result.add(imageSource);
-            }
+        for (Element el : doc.select("a.image-container > img")) {
+            String imageSource = el.attr("src");
+            // We remove the .md from images so we download the full size image
+            // not the medium ones
+            imageSource = imageSource.replace(".md", "");
+            result.add(imageSource);
+        }
         return result;
     }
 

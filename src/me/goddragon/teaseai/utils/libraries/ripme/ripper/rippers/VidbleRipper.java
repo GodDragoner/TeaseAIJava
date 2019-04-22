@@ -24,6 +24,7 @@ public class VidbleRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "vidble";
     }
+
     @Override
     public String getDomain() {
         return "vidble.com";
@@ -31,7 +32,8 @@ public class VidbleRipper extends AbstractHTMLRipper {
 
     @Override
     public String getGID(URL url) throws MalformedURLException {
-        Pattern p; Matcher m;
+        Pattern p;
+        Matcher m;
 
         p = Pattern.compile("^.*vidble.com/album/([a-zA-Z0-9_\\-]+).*$");
         m = p.matcher(url.toExternalForm());
@@ -67,7 +69,7 @@ public class VidbleRipper extends AbstractHTMLRipper {
             }
         }
         return imageURLs;
-   }
+    }
 
     @Override
     public void downloadURL(URL url, int index) {

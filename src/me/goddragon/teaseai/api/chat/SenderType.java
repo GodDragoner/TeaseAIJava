@@ -3,7 +3,7 @@ package me.goddragon.teaseai.api.chat;
 /**
  * Created by GodDragon on 22.03.2018.
  */
-public enum  SenderType {
+public enum SenderType {
 
     DOM, SUB
 }

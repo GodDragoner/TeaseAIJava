@@ -24,7 +24,7 @@ public class LockImagesFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        if(args.length == 0) {
+        if (args.length == 0) {
             MediaHandler.getHandler().setImagesLocked(true);
             return null;
         }

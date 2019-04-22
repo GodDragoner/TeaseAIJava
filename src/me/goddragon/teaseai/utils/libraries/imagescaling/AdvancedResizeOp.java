@@ -21,37 +21,38 @@ import java.util.List;
  * @author Morten Nobel-Joergensen
  */
 public abstract class AdvancedResizeOp implements BufferedImageOp {
-	public static enum UnsharpenMask{
-		None(0),
-		Soft(0.15f),
-		Normal(0.3f),
-		VerySharp(0.45f),
-		Oversharpened(0.60f);
-		private final float factor;
+    public static enum UnsharpenMask {
+        None(0),
+        Soft(0.15f),
+        Normal(0.3f),
+        VerySharp(0.45f),
+        Oversharpened(0.60f);
+        private final float factor;
 
-		UnsharpenMask(float factor) {
-			this.factor = factor;
-		}
-	}
-	private List<ProgressListener> listeners = new ArrayList<ProgressListener>();
+        UnsharpenMask(float factor) {
+            this.factor = factor;
+        }
+    }
+
+    private List<ProgressListener> listeners = new ArrayList<ProgressListener>();
 
     private final DimensionConstrain dimensionConstrain;
-	private UnsharpenMask unsharpenMask = UnsharpenMask.None;
+    private UnsharpenMask unsharpenMask = UnsharpenMask.None;
 
-	public AdvancedResizeOp(DimensionConstrain dimensionConstrain) {
-		this.dimensionConstrain = dimensionConstrain;
-	}
+    public AdvancedResizeOp(DimensionConstrain dimensionConstrain) {
+        this.dimensionConstrain = dimensionConstrain;
+    }
 
-	public UnsharpenMask getUnsharpenMask() {
-		return unsharpenMask;
-	}
+    public UnsharpenMask getUnsharpenMask() {
+        return unsharpenMask;
+    }
 
-	public void setUnsharpenMask(UnsharpenMask unsharpenMask) {
-		this.unsharpenMask = unsharpenMask;
-	}
+    public void setUnsharpenMask(UnsharpenMask unsharpenMask) {
+        this.unsharpenMask = unsharpenMask;
+    }
 
-	protected void fireProgressChanged(float fraction){
-        for (ProgressListener progressListener:listeners){
+    protected void fireProgressChanged(float fraction) {
+        for (ProgressListener progressListener : listeners) {
             progressListener.notifyProgress(fraction);
         }
     }
@@ -64,11 +65,11 @@ public abstract class AdvancedResizeOp implements BufferedImageOp {
         return listeners.remove(progressListener);
     }
 
-    public final BufferedImage filter(BufferedImage src, BufferedImage dest){
-		Dimension dstDimension = dimensionConstrain.getDimension(new  Dimension(src.getWidth(),src.getHeight()));
-		int dstWidth = dstDimension.width;
-		int dstHeight = dstDimension.height;
-		BufferedImage bufferedImage = doFilter(src, dest, dstWidth, dstHeight);
+    public final BufferedImage filter(BufferedImage src, BufferedImage dest) {
+        Dimension dstDimension = dimensionConstrain.getDimension(new Dimension(src.getWidth(), src.getHeight()));
+        int dstWidth = dstDimension.width;
+        int dstHeight = dstDimension.height;
+        BufferedImage bufferedImage = doFilter(src, dest, dstWidth, dstHeight);
 
 		/*if (unsharpenMask!= UnsharpenMask.None){
 			UnsharpFilter unsharpFilter= new UnsharpFilter();
@@ -78,12 +79,12 @@ public abstract class AdvancedResizeOp implements BufferedImageOp {
 			return  unsharpFilter.filter(bufferedImage, null);
 		}*/
 
-		return bufferedImage;
-	}
+        return bufferedImage;
+    }
 
-	protected abstract BufferedImage doFilter(BufferedImage src, BufferedImage dest, int dstWidth, int dstHeight);
+    protected abstract BufferedImage doFilter(BufferedImage src, BufferedImage dest, int dstWidth, int dstHeight);
 
-	/**
+    /**
      * {@inheritDoc}
      */
     public final Rectangle2D getBounds2D(BufferedImage src) {
@@ -94,14 +95,14 @@ public abstract class AdvancedResizeOp implements BufferedImageOp {
      * {@inheritDoc}
      */
     public final BufferedImage createCompatibleDestImage(BufferedImage src,
-                                                   ColorModel destCM) {
+                                                         ColorModel destCM) {
         if (destCM == null) {
             destCM = src.getColorModel();
         }
         return new BufferedImage(destCM,
-                                 destCM.createCompatibleWritableRaster(
-                                         src.getWidth(), src.getHeight()),
-                                 destCM.isAlphaPremultiplied(), null);
+                destCM.createCompatibleWritableRaster(
+                        src.getWidth(), src.getHeight()),
+                destCM.isAlphaPremultiplied(), null);
     }
 
     /**

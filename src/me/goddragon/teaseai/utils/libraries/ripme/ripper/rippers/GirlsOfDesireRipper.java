@@ -27,6 +27,7 @@ public class GirlsOfDesireRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "GirlsOfDesire";
     }
+
     @Override
     public String getDomain() {
         return "girlsofdesire.org";

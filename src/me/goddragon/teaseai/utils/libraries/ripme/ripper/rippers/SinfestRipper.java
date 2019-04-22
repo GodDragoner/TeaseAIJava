@@ -59,8 +59,7 @@ public class SinfestRipper extends AbstractHTMLRipper {
         // This for stops that
         if (nextPage.equals("")) {
             return null;
-        }
-        else {
+        } else {
             return Http.url("http://sinfest.net/" + nextPage).get();
         }
     }

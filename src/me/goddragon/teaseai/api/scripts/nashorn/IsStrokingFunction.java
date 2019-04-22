@@ -26,7 +26,7 @@ public class IsStrokingFunction extends CustomFunction {
 
         switch (args.length) {
             case 0:
-                return  StrokeHandler.getHandler().isStroking();
+                return StrokeHandler.getHandler().isStroking();
         }
 
         TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args: " + Arrays.asList(args).toString());

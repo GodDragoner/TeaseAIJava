@@ -30,10 +30,10 @@ public class DeviantartRipper extends AbstractJSONRipper {
     String csrf;
     Map<String, String> pageCookies = new HashMap<>();
 
-    private static final int PAGE_SLEEP_TIME  = 3000,
-                             IMAGE_SLEEP_TIME = 2000;
+    private static final int PAGE_SLEEP_TIME = 3000,
+            IMAGE_SLEEP_TIME = 2000;
 
-    private Map<String,String> cookies = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
     private Set<String> triedURLs = new HashSet<>();
 
     public DeviantartRipper(URL url) throws IOException {
@@ -90,8 +90,7 @@ public class DeviantartRipper extends AbstractJSONRipper {
             // Root gallery
             if (url.toExternalForm().contains("catpath=scraps")) {
                 return m.group(1) + "_scraps";
-            }
-            else {
+            } else {
                 return m.group(1);
             }
         }
@@ -131,7 +130,7 @@ public class DeviantartRipper extends AbstractJSONRipper {
             String imageToReturn = "";
             String[] d = doc.select("img").attr("srcset").split(",");
 
-            String s = d[d.length -1].split(" ")[0];
+            String s = d[d.length - 1].split(" ")[0];
             LOGGER.log(Level.INFO, "2:" + s);
 
             if (s == null || s.equals("")) {
@@ -149,27 +148,28 @@ public class DeviantartRipper extends AbstractJSONRipper {
      * Will determine if login is supplied,
      * if there is a login, then login and add that login cookies.
      * Otherwise, just bypass the age gate with an anonymous flag.
+     *
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     @Override
     public JSONObject getFirstPage() throws IOException {
-        
+
         // Base64 da login
         // username: Z3JhYnB5
         // password: ZmFrZXJz
 
 
         cookies = getDACookies();
-            if (cookies.isEmpty()) {
-                LOGGER.log(Level.WARNING, "Failed to get login cookies");
-                cookies.put("agegate_state","1"); // Bypasses the age gate
-            }
+        if (cookies.isEmpty()) {
+            LOGGER.log(Level.WARNING, "Failed to get login cookies");
+            cookies.put("agegate_state", "1"); // Bypasses the age gate
+        }
         cookies.put("agegate_state", "1");
-            
+
         Response res = Http.url(this.url)
-                   .cookies(cookies)
-                   .response();
+                .cookies(cookies)
+                .response();
         Document page = res.parse();
 
         JSONObject firstPageJSON = getFirstPageJSON(page);
@@ -242,7 +242,7 @@ public class DeviantartRipper extends AbstractJSONRipper {
         return doc.select("meta[property=og:title]").attr("content")
                 .replaceAll("'s DeviantArt gallery", "").replaceAll("'s DeviantArt Gallery", "");
     }
-    
+
 
     @Override
     public List<String> getURLsFromJSON(JSONObject json) {
@@ -264,7 +264,7 @@ public class DeviantartRipper extends AbstractJSONRipper {
                     imageURLs.add(imageURL);
                 }
             } catch (NullPointerException e) {
-               LOGGER.log(Level.INFO, i + " does not contain any images");
+                LOGGER.log(Level.INFO, i + " does not contain any images");
             }
 
         }
@@ -284,8 +284,8 @@ public class DeviantartRipper extends AbstractJSONRipper {
 
     @Override
     public boolean keepSortOrder() {
-         // Don't keep sort order (do not add prefixes).
-         // Causes file duplication, as outlined in https://github.com/4pr0n/ripme/issues/113
+        // Don't keep sort order (do not add prefixes).
+        // Causes file duplication, as outlined in https://github.com/4pr0n/ripme/issues/113
         return false;
     }
 
@@ -297,7 +297,8 @@ public class DeviantartRipper extends AbstractJSONRipper {
 
     /**
      * Tries to get full size image from thumbnail URL
-     * @param thumb Thumbnail URL
+     *
+     * @param thumb          Thumbnail URL
      * @param throwException Whether or not to throw exception when full size image isn't found
      * @return Full-size image URL
      * @throws Exception If it can't find the full-size URL
@@ -321,22 +322,22 @@ public class DeviantartRipper extends AbstractJSONRipper {
     }
 
 
-
     /**
      * If largest resolution for image at 'thumb' is found, starts downloading
      * and returns null.
      * If it finds a larger resolution on another page, returns the image URL.
+     *
      * @param thumb Thumbnail URL
-     * @param page Page the thumbnail is retrieved from
+     * @param page  Page the thumbnail is retrieved from
      * @return Highest-resolution version of the image based on thumbnail URL and the page.
      */
     private String smallToFull(String thumb, String page) {
         try {
             // Fetch the image page
             Response resp = Http.url(page)
-                                .referrer(this.url)
-                                .cookies(cookies)
-                                .response();
+                    .referrer(this.url)
+                    .cookies(cookies)
+                    .response();
             cookies.putAll(resp.cookies());
             Document doc = resp.parse();
             Elements els = doc.select("img.dev-content-full");
@@ -357,13 +358,13 @@ public class DeviantartRipper extends AbstractJSONRipper {
                 String downloadLink = els.get(0).attr("href");
                 LOGGER.log(Level.INFO, "Found download button link: " + downloadLink);
                 HttpURLConnection con = (HttpURLConnection) new URL(downloadLink).openConnection();
-                con.setRequestProperty("Referer",this.url.toString());
+                con.setRequestProperty("Referer", this.url.toString());
                 String cookieString = "";
                 for (Map.Entry<String, String> entry : cookies.entrySet()) {
                     cookieString = cookieString + entry.getKey() + "=" + entry.getValue() + "; ";
                 }
-                cookieString = cookieString.substring(0,cookieString.length() - 1);
-                con.setRequestProperty("Cookie",cookieString);
+                cookieString = cookieString.substring(0, cookieString.length() - 1);
+                con.setRequestProperty("Cookie", cookieString);
                 con.setRequestProperty("User-Agent", USER_AGENT);
                 con.setInstanceFollowRedirects(true);
                 con.connect();
@@ -393,6 +394,7 @@ public class DeviantartRipper extends AbstractJSONRipper {
 
     /**
      * Returns DA cookies.
+     *
      * @return Map of cookies containing session data.
      */
     private Map<String, String> getDACookies() {

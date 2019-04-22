@@ -156,10 +156,10 @@ public class TeaseDate {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof TeaseDate) {
-           if(((TeaseDate) obj).getCalendar().equals(getCalendar())) {
-               return true;
-           }
+        if (obj instanceof TeaseDate) {
+            if (((TeaseDate) obj).getCalendar().equals(getCalendar())) {
+                return true;
+            }
         }
 
         return false;

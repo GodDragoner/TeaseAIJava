@@ -187,7 +187,7 @@ public class VariableHandler {
             if (value instanceof ScriptObjectMirror && ((ScriptObjectMirror) value).isArray() || value instanceof Collection) {
                 lines = new ArrayList<>();
 
-                if(value instanceof ScriptObjectMirror) {
+                if (value instanceof ScriptObjectMirror) {
                     String[] strings = ((ScriptObjectMirror) value).to(String[].class);
 
 
@@ -195,7 +195,7 @@ public class VariableHandler {
                         lines.add(string);
                     }
                 } else {
-                    for(Object object : (Collection) value) {
+                    for (Object object : (Collection) value) {
                         lines.add(object.toString());
                     }
                 }

@@ -23,9 +23,9 @@ public class RegisterResponseFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
-        switch(args.length) {
+        switch (args.length) {
             case 1:
-                if(args[0] instanceof Response) {
+                if (args[0] instanceof Response) {
                     ResponseHandler.getHandler().registerResponse((Response) args[0]);
                 }
                 return null;

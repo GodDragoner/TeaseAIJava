@@ -19,7 +19,8 @@ public class Animation extends Transition {
 
     private Image[] sequence;
 
-    protected Animation() {}
+    protected Animation() {
+    }
 
     public Animation(Image[] sequence, double durationMs) {
         init(sequence, durationMs);

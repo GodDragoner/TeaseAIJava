@@ -25,13 +25,13 @@ public class SetTypeSpeedFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        switch(args.length) {
+        switch (args.length) {
             case 1:
                 String typeSpeedString = args[0].toString();
                 try {
                     TypeSpeed typeSpeed = TypeSpeed.valueOf(typeSpeedString.toUpperCase());
                     ChatHandler.getHandler().getSelectedSender().setTypeSpeed(typeSpeed);
-                } catch(IllegalArgumentException ex) {
+                } catch (IllegalArgumentException ex) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "Invalid type speed '" + typeSpeedString + "'.");
                 }
 

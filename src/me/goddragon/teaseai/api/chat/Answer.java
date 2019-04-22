@@ -15,10 +15,11 @@ public class Answer {
     private long startedAt;
     private boolean timeout = false;
 
-    public Answer() {}
+    public Answer() {
+    }
 
     public Answer(long timeoutSeconds) {
-        this.millisTimeout = timeoutSeconds*1000;
+        this.millisTimeout = timeoutSeconds * 1000;
     }
 
     public void addOption(String optionMessage) {
@@ -127,7 +128,8 @@ public class Answer {
         try {
             Integer.parseInt(answer);
             return true;
-        } catch (NumberFormatException ex) {}
+        } catch (NumberFormatException ex) {
+        }
 
         return false;
     }
@@ -136,7 +138,8 @@ public class Answer {
         try {
             Integer.parseInt(answer);
             return true;
-        } catch (NumberFormatException ex) {}
+        } catch (NumberFormatException ex) {
+        }
 
         return false;
     }
@@ -145,7 +148,8 @@ public class Answer {
         try {
             Double.parseDouble(answer);
             return true;
-        } catch (NumberFormatException ex) {}
+        } catch (NumberFormatException ex) {
+        }
 
         return false;
     }
@@ -157,7 +161,8 @@ public class Answer {
     public int getInt() {
         try {
             return Integer.parseInt(answer);
-        } catch (NumberFormatException ex) {}
+        } catch (NumberFormatException ex) {
+        }
 
         return 0;
     }
@@ -165,7 +170,8 @@ public class Answer {
     public double getDouble() {
         try {
             return Double.parseDouble(answer);
-        } catch (NumberFormatException ex) {}
+        } catch (NumberFormatException ex) {
+        }
 
         return 0;
     }
@@ -175,7 +181,7 @@ public class Answer {
     }
 
     public void setTimeoutSeconds(long timeoutSeconds) {
-        this.millisTimeout = timeoutSeconds*1000;
+        this.millisTimeout = timeoutSeconds * 1000;
     }
 
     public void setMillisTimeout(long millisTimeout) {
@@ -195,7 +201,7 @@ public class Answer {
     }
 
     public void checkTimeout() {
-        if(System.currentTimeMillis() - startedAt >= millisTimeout - 100 && millisTimeout > 0) {
+        if (System.currentTimeMillis() - startedAt >= millisTimeout - 100 && millisTimeout > 0) {
             timeout = true;
         }
     }

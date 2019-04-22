@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class LusciousRipper extends AbstractHTMLRipper {
 
     public LusciousRipper(URL url) throws IOException {
-    super(url);
+        super(url);
     }
 
     @Override
@@ -35,8 +35,8 @@ public class LusciousRipper extends AbstractHTMLRipper {
     public Document getFirstPage() throws IOException {
         // "url" is an instance field of the superclass
         Document page = Http.url(url).get();
-        URL firstUrl = new URL("https://luscious.net" +  page.select("div > div.item.thumbnail.ic_container > a").first().attr("href"));
-        LOGGER.log(Level.INFO, "First page is " + "https://luscious.net" +  page.select("div > div.album_cover_item > a").first().attr("href"));
+        URL firstUrl = new URL("https://luscious.net" + page.select("div > div.item.thumbnail.ic_container > a").first().attr("href"));
+        LOGGER.log(Level.INFO, "First page is " + "https://luscious.net" + page.select("div > div.album_cover_item > a").first().attr("href"));
         return Http.url(firstUrl).get();
     }
 
@@ -47,7 +47,7 @@ public class LusciousRipper extends AbstractHTMLRipper {
         for (Element e : urlElements) {
             urls.add(e.attr("href"));
         }
-        
+
         // This is here for pages with mp4s instead of images
         String video_image = "";
         video_image = page.select("div > video > source").attr("src");
@@ -63,7 +63,7 @@ public class LusciousRipper extends AbstractHTMLRipper {
         String nextPageUrl = "https://luscious.net" + doc.select("a.image_link[rel=next]").attr("href");
         // The more_like_this is here so we don't try to download the page that comes after the end of an album
         if (nextPageUrl == "https://luscious.net" ||
-        nextPageUrl.contains("more_like_this")) {
+                nextPageUrl.contains("more_like_this")) {
             throw new IOException("No more pages");
         }
 

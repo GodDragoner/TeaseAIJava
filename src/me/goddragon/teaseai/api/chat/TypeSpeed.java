@@ -14,6 +14,6 @@ public enum TypeSpeed {
     }
 
     public long getTypeDuration(String message) {
-        return message.trim().length()*millisPerLetter;
+        return message.trim().length() * millisPerLetter;
     }
 }

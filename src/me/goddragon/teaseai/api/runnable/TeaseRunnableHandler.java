@@ -16,7 +16,7 @@ public class TeaseRunnableHandler {
 
     public void checkRunnables() {
         //Remove all runnables that are scheduled to be removed
-        for(TeaseRunnable runnable : toRemoveRunnables) {
+        for (TeaseRunnable runnable : toRemoveRunnables) {
             runnables.remove(runnable);
         }
 

@@ -24,6 +24,7 @@ public class ImagearnRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "imagearn";
     }
+
     @Override
     public String getDomain() {
         return "imagearn.com";

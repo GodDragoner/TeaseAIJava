@@ -22,6 +22,7 @@ public class FlickrRipper extends AbstractHTMLRipper {
 
     private Document albumDoc = null;
     private final DownloadThreadPool flickrThreadPool;
+
     @Override
     public DownloadThreadPool getThreadPool() {
         return flickrThreadPool;
@@ -41,6 +42,7 @@ public class FlickrRipper extends AbstractHTMLRipper {
     public String getHost() {
         return "flickr";
     }
+
     @Override
     public String getDomain() {
         return "flickr.com";
@@ -60,6 +62,7 @@ public class FlickrRipper extends AbstractHTMLRipper {
         }
         return new URL(sUrl);
     }
+
     // FLickr is one of those sites what includes a api key in sites javascript
     // TODO let the user provide their own api key
     private String getAPIKey(Document doc) {
@@ -86,7 +89,7 @@ public class FlickrRipper extends AbstractHTMLRipper {
                 "date_upload,icon_urls_deep,isfavorite,ispro,license,media,needs_interstitial,owner_name," +
                 "owner_datecreate,path_alias,realname,rotation,safety_level,secret_k,secret_h,url_c,url_f,url_h,url_k," +
                 "url_l,url_m,url_n,url_o,url_q,url_s,url_sq,url_t,url_z,visibility,visibility_source,o_dims," +
-                "is_marketplace_printable,is_marketplace_licensable,publiceditability&per_page=100&page="+ pageNumber + "&" +
+                "is_marketplace_printable,is_marketplace_licensable,publiceditability&per_page=100&page=" + pageNumber + "&" +
                 "get_user_info=1&primary_photo_extras=url_c,%20url_h,%20url_k,%20url_l,%20url_m,%20url_n,%20url_o" +
                 ",%20url_q,%20url_s,%20url_sq,%20url_t,%20url_z,%20needs_interstitial,%20can_share&jump_to=&" +
                 "photoset_id=" + photoset + "&viewerNSID=&method=flickr.photosets.getPhotos&csrf=&" +
@@ -96,7 +99,7 @@ public class FlickrRipper extends AbstractHTMLRipper {
                 "date_upload,icon_urls_deep,isfavorite,ispro,license,media,needs_interstitial,owner_name," +
                 "owner_datecreate,path_alias,realname,rotation,safety_level,secret_k,secret_h,url_c,url_f,url_h,url_k," +
                 "url_l,url_m,url_n,url_o,url_q,url_s,url_sq,url_t,url_z,visibility,visibility_source,o_dims," +
-                "is_marketplace_printable,is_marketplace_licensable,publiceditability&per_page=100&page="+ pageNumber + "&" +
+                "is_marketplace_printable,is_marketplace_licensable,publiceditability&per_page=100&page=" + pageNumber + "&" +
                 "get_user_info=1&primary_photo_extras=url_c,%20url_h,%20url_k,%20url_l,%20url_m,%20url_n,%20url_o" +
                 ",%20url_q,%20url_s,%20url_sq,%20url_t,%20url_z,%20needs_interstitial,%20can_share&jump_to=&" +
                 "photoset_id=" + photoset + "&viewerNSID=&method=flickr.photosets.getPhotos&csrf=&" +
@@ -109,7 +112,7 @@ public class FlickrRipper extends AbstractHTMLRipper {
         try {
             apiURL = apiURLBuilder(getPhotosetID(url.toExternalForm()), page, apiKey);
             pageURL = new URL(apiURL);
-        }  catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             LOGGER.log(Level.SEVERE, "Unable to get api link " + apiURL + " is malformed");
         }
         try {
@@ -122,7 +125,8 @@ public class FlickrRipper extends AbstractHTMLRipper {
     }
 
     private String getPhotosetID(String url) {
-        Pattern p; Matcher m;
+        Pattern p;
+        Matcher m;
 
         // Root:  https://www.flickr.com/photos/115858035@N04/
         // Album: https://www.flickr.com/photos/115858035@N04/sets/72157644042355643/
@@ -161,7 +165,8 @@ public class FlickrRipper extends AbstractHTMLRipper {
 
     @Override
     public String getGID(URL url) throws MalformedURLException {
-        Pattern p; Matcher m;
+        Pattern p;
+        Matcher m;
 
         // Root:  https://www.flickr.com/photos/115858035@N04/
         // Album: https://www.flickr.com/photos/115858035@N04/sets/72157644042355643/
@@ -222,14 +227,15 @@ public class FlickrRipper extends AbstractHTMLRipper {
                     // TODO this is a total hack, we should loop over all image sizes and pick the biggest one and not
                     // just assume
                     List<String> imageSizes = Arrays.asList("k", "h", "l", "n", "c", "z", "t");
-                    for ( String imageSize : imageSizes) {
+                    for (String imageSize : imageSizes) {
                         try {
                             addURLToDownload(new URL(data.getString("url_" + imageSize)));
                             LOGGER.log(Level.INFO, "Adding picture " + data.getString("url_" + imageSize));
                             break;
                         } catch (org.json.JSONException ignore) {
-                        // TODO warn the user when we hit a Malformed url
-                        } catch (MalformedURLException e) {}
+                            // TODO warn the user when we hit a Malformed url
+                        } catch (MalformedURLException e) {
+                        }
                     }
                 }
                 if (x >= totalPages) {

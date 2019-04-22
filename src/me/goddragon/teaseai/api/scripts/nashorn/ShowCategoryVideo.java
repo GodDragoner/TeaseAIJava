@@ -25,7 +25,7 @@ public class ShowCategoryVideo extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        if(args.length >= 1 && args[0] instanceof String) {
+        if (args.length >= 1 && args[0] instanceof String) {
             String category = (String) args[0];
 
             MediaFetishType mediaFetishType;
@@ -38,7 +38,7 @@ public class ShowCategoryVideo extends CustomFunction {
 
             File video = TeaseAI.application.getMediaCollection().getRandomFile(mediaFetishType, MediaType.VIDEO);
 
-            if(video == null) {
+            if (video == null) {
                 TeaseLogger.getLogger().log(Level.SEVERE, "'" + category + "' did not hold any video image.");
                 return null;
             }

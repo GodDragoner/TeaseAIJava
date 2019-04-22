@@ -22,7 +22,7 @@ public class TeaseLogger {
     //private Logger javaLogger;
 
     public TeaseLogger() {
-        if(!fileLog) {
+        if (!fileLog) {
             return;
         }
 
@@ -114,7 +114,7 @@ public class TeaseLogger {
     public void log(Level level, String message, Exception e) {
         //javaLogger.log(level, message);
         String logMessage = formatMessage(message, level);
-        if(!logMessage.isEmpty()) {
+        if (!logMessage.isEmpty()) {
             System.out.println(logMessage);
         }
     }
@@ -122,7 +122,7 @@ public class TeaseLogger {
     public void log(Level level, String message, boolean stacktrace) {
         //javaLogger.log(level, message);
         String logMessage = formatMessage(message, level);
-        if(!logMessage.isEmpty()) {
+        if (!logMessage.isEmpty()) {
             System.out.println(logMessage);
         }
     }

@@ -24,7 +24,7 @@ public class GetTypeSpeedFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        switch(args.length) {
+        switch (args.length) {
             case 0:
                 return ChatHandler.getHandler().getSelectedSender().getTypeSpeed();
         }

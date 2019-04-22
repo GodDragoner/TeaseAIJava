@@ -24,9 +24,9 @@ public class DeleteVarFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        switch(args.length) {
+        switch (args.length) {
             case 1:
-                if(args[0] instanceof String) {
+                if (args[0] instanceof String) {
                     PersonalityManager.getManager().getActivePersonality().getVariableHandler().deleteVariable((String) args[0]);
                     return null;
                 }

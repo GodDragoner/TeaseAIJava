@@ -76,16 +76,14 @@ public class PersonalityVariable<T> {
 
     @Override
     public String toString() {
-        return customName != null? customName : configName;
+        return customName != null ? customName : configName;
     }
-    
-    public boolean equals(PersonalityVariable variable)
-    {
+
+    public boolean equals(PersonalityVariable variable) {
         return configName.equals(variable.getConfigName()) && customName.equals(variable.getCustomName()) && personalityName.equals(variable.getPersonalityString());
     }
-    
-    public String getPersonalityString()
-    {
+
+    public String getPersonalityString() {
         return personalityName;
     }
 }

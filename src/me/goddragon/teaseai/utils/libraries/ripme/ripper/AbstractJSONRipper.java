@@ -19,15 +19,20 @@ public abstract class AbstractJSONRipper extends AlbumRipper {
     }
 
     protected abstract String getDomain();
+
     @Override
     public abstract String getHost();
 
     protected abstract JSONObject getFirstPage() throws IOException;
+
     protected JSONObject getNextPage(JSONObject doc) throws IOException {
         throw new IOException("getNextPage not implemented");
     }
+
     protected abstract List<String> getURLsFromJSON(JSONObject json);
+
     protected abstract void downloadURL(URL url, int index);
+
     private DownloadThreadPool getThreadPool() {
         return null;
     }
@@ -54,11 +59,11 @@ public abstract class AbstractJSONRipper extends AlbumRipper {
 
         while (json != null) {
             List<String> imageURLs = getURLsFromJSON(json);
-            
+
             if (alreadyDownloadedUrls >= Utils.getConfigInteger("history.end_rip_after_already_seen", 1000000000) && !isThisATest()) {
-                 break;
+                break;
             }
-            
+
             // Remove all but 1 image
             if (isThisATest()) {
                 while (imageURLs.size() > 1) {
@@ -74,9 +79,9 @@ public abstract class AbstractJSONRipper extends AlbumRipper {
                 if (isStopped()) {
                     break;
                 }
-                
+
                 index += 1;
-                LOGGER.log(Level.FINE, "Found image url #" + index+ ": " + imageURL);
+                LOGGER.log(Level.FINE, "Found image url #" + index + ": " + imageURL);
                 downloadURL(new URL(imageURL), index);
             }
 

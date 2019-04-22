@@ -19,8 +19,8 @@ public enum MediaType {
     }
 
     public boolean hasSupportedExtenstion(File file) {
-        for(String supprtedExtension : supportedExtensions) {
-            if(file.getName().endsWith("." + supprtedExtension)) {
+        for (String supprtedExtension : supportedExtensions) {
+            if (file.getName().endsWith("." + supprtedExtension)) {
                 return true;
             }
         }

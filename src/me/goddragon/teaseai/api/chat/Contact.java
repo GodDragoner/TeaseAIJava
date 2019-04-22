@@ -31,7 +31,7 @@ public class Contact {
     }
 
     public File getImageFolder() {
-        if(IMAGE_SET_PATH.getValue().equalsIgnoreCase("null")) {
+        if (IMAGE_SET_PATH.getValue().equalsIgnoreCase("null")) {
             return null;
         }
 
@@ -39,7 +39,7 @@ public class Contact {
     }
 
     public File getImage() {
-        if(IMAGE_PATH.getValue().equalsIgnoreCase("null")) {
+        if (IMAGE_PATH.getValue().equalsIgnoreCase("null")) {
             return null;
         }
 

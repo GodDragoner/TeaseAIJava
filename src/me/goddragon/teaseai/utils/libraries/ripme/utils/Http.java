@@ -17,13 +17,13 @@ import java.util.logging.Level;
 
 /**
  * Wrapper around the Jsoup connection methods.
- *
+ * <p>
  * Benefit is retry logic.
  */
 public class Http {
 
-    private static final int    TIMEOUT = Utils.getConfigInteger("page.timeout", 5 * 1000);
-    private static final TeaseLogger logger  = TeaseLogger.getLogger();
+    private static final int TIMEOUT = Utils.getConfigInteger("page.timeout", 5 * 1000);
+    private static final TeaseLogger logger = TeaseLogger.getLogger();
 
     private int retries;
     private String url;
@@ -34,6 +34,7 @@ public class Http {
         this.url = url;
         defaultSettings();
     }
+
     private Http(URL url) {
         this.url = url.toExternalForm();
         defaultSettings();
@@ -42,6 +43,7 @@ public class Http {
     public static Http url(String url) {
         return new Http(url);
     }
+
     public static Http url(URL url) {
         return new Http(url);
     }
@@ -60,42 +62,52 @@ public class Http {
         connection.timeout(timeout);
         return this;
     }
+
     public Http ignoreContentType() {
         connection.ignoreContentType(true);
         return this;
     }
-    public Http referrer(String ref)  {
+
+    public Http referrer(String ref) {
         connection.referrer(ref);
         return this;
     }
+
     public Http referrer(URL ref) {
         return referrer(ref.toExternalForm());
     }
-    public Http userAgent(String ua)  {
+
+    public Http userAgent(String ua) {
         connection.userAgent(ua);
         return this;
     }
+
     public Http retries(int tries) {
         this.retries = tries;
         return this;
     }
+
     public Http header(String name, String value) {
-        connection.header(name,  value);
+        connection.header(name, value);
         return this;
     }
-    public Http cookies(Map<String,String> cookies) {
+
+    public Http cookies(Map<String, String> cookies) {
         connection.cookies(cookies);
         return this;
     }
-    public Http data(Map<String,String> data) {
+
+    public Http data(Map<String, String> data) {
         connection.data(data);
         return this;
     }
+
     public Http data(String name, String value) {
-        Map<String,String> data = new HashMap<>();
+        Map<String, String> data = new HashMap<>();
         data.put(name, value);
         return data(data);
     }
+
     public Http method(Method method) {
         connection.method(method);
         return this;
@@ -105,6 +117,7 @@ public class Http {
     public Connection connection() {
         return connection;
     }
+
     public Document get() throws IOException {
         connection.method(Method.GET);
         return response().parse();

@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 public class ModelmayhemRipper extends AbstractHTMLRipper {
 
-    private Map<String,String> cookies = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
 
     public ModelmayhemRipper(URL url) throws IOException {
         super(url);

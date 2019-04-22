@@ -23,12 +23,12 @@ public class ProgressForm {
         pb.setProgress(-1F);
         pin.setProgress(-1F);
 
-        if(task != null) {
+        if (task != null) {
             bindProgressBar(task);
         }
     }
 
-    public void bindProgressBar(Task<?> task)  {
+    public void bindProgressBar(Task<?> task) {
         pb.progressProperty().bind(task.progressProperty());
         pin.progressProperty().bind(task.progressProperty());
     }

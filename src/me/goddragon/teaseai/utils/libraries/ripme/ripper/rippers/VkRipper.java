@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public class VkRipper extends AlbumRipper {
 
     private static final String DOMAIN = "vk.com",
-                                HOST   = "vk";
+            HOST = "vk";
 
     public VkRipper(URL url) throws IOException {
         super(url);
@@ -45,8 +45,7 @@ public class VkRipper extends AlbumRipper {
     public void rip() throws IOException {
         if (this.url.toExternalForm().contains("/videos")) {
             ripVideos();
-        }
-        else {
+        } else {
             ripImages();
         }
     }
@@ -54,16 +53,16 @@ public class VkRipper extends AlbumRipper {
     private void ripVideos() throws IOException {
         String oid = getGID(this.url).replace("videos", "");
         String u = "http://vk.com/al_video.php";
-        Map<String,String> postData = new HashMap<>();
+        Map<String, String> postData = new HashMap<>();
         postData.put("al", "1");
         postData.put("act", "load_videos_silent");
         postData.put("offset", "0");
         postData.put("oid", oid);
         Document doc = Http.url(u)
-                           .referrer(this.url)
-                           .ignoreContentType()
-                           .data(postData)
-                           .post();
+                .referrer(this.url)
+                .ignoreContentType()
+                .data(postData)
+                .post();
         String[] jsonStrings = doc.toString().split("<!>");
         JSONObject json = new JSONObject(jsonStrings[jsonStrings.length - 1]);
         JSONArray videos = json.getJSONArray("all");
@@ -89,21 +88,21 @@ public class VkRipper extends AlbumRipper {
     }
 
     private void ripImages() throws IOException {
-        Map<String,String> photoIDsToURLs = new HashMap<>();
+        Map<String, String> photoIDsToURLs = new HashMap<>();
         int offset = 0;
         while (true) {
             LOGGER.log(Level.INFO, "    Retrieving " + this.url);
 
             // al=1&offset=80&part=1
-            Map<String,String> postData = new HashMap<>();
+            Map<String, String> postData = new HashMap<>();
             postData.put("al", "1");
             postData.put("offset", Integer.toString(offset));
             postData.put("part", "1");
             Document doc = Http.url(this.url)
-                               .referrer(this.url)
-                               .ignoreContentType()
-                               .data(postData)
-                               .post();
+                    .referrer(this.url)
+                    .ignoreContentType()
+                    .data(postData)
+                    .post();
 
             String body = doc.toString();
             if (!body.contains("<div")) {
@@ -153,9 +152,9 @@ public class VkRipper extends AlbumRipper {
         waitForThreads();
     }
 
-    private Map<String,String> getPhotoIDsToURLs(String photoID) throws IOException {
-        Map<String,String> photoIDsToURLs = new HashMap<>();
-        Map<String,String> postData = new HashMap<>();
+    private Map<String, String> getPhotoIDsToURLs(String photoID) throws IOException {
+        Map<String, String> photoIDsToURLs = new HashMap<>();
+        Map<String, String> postData = new HashMap<>();
         // act=show&al=1&list=album45506334_172415053&module=photos&photo=45506334_304658196
         postData.put("list", getGID(this.url));
         postData.put("act", "show");
@@ -176,7 +175,7 @@ public class VkRipper extends AlbumRipper {
         JSONArray json = new JSONArray(jsonString);
         for (int i = 0; i < json.length(); i++) {
             JSONObject jsonImage = json.getJSONObject(i);
-            for (String key : new String[] {"z_src", "y_src", "x_src"}) {
+            for (String key : new String[]{"z_src", "y_src", "x_src"}) {
                 if (!jsonImage.has(key)) {
                     continue;
                 }
