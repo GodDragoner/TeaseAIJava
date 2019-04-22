@@ -1,5 +1,9 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper;
 
+import me.goddragon.teaseai.utils.TeaseLogger;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
+import org.jsoup.nodes.Document;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,11 +11,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
-
-import org.jsoup.nodes.Document;
-
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
-import me.goddragon.teaseai.utils.TeaseLogger;
 
 /**
  * Simplified ripper, designed for ripping from sites by parsing HTML.

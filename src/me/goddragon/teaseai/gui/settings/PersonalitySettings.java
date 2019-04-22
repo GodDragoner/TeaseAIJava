@@ -2,8 +2,6 @@ package me.goddragon.teaseai.gui.settings;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
@@ -15,7 +13,6 @@ import me.goddragon.teaseai.api.config.VariableHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 
-import java.util.ArrayList;
 import java.util.TreeMap;
 
 /**

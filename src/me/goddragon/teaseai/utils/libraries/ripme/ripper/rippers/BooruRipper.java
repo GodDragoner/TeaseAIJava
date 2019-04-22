@@ -4,6 +4,9 @@ import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -14,8 +17,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 public class BooruRipper extends AbstractHTMLRipper {
     private static final TeaseLogger logger = TeaseLogger.getLogger();

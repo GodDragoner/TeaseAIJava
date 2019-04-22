@@ -1,5 +1,10 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
+import org.jsoup.nodes.Document;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -10,12 +15,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.jsoup.nodes.Document;
-
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 
 public class FuskatorRipper extends AbstractHTMLRipper {
 

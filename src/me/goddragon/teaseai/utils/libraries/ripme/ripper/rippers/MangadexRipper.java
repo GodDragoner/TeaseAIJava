@@ -2,11 +2,8 @@ package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
 import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractJSONRipper;
 import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Connection;
-import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

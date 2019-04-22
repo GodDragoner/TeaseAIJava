@@ -1,12 +1,12 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper;
 
+import me.goddragon.teaseai.utils.TeaseLogger;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-
-import me.goddragon.teaseai.utils.TeaseLogger;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 
 /**
  * Simple wrapper around a FixedThreadPool.

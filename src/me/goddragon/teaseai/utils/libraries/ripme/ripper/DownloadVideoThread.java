@@ -1,19 +1,13 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import me.goddragon.teaseai.utils.TeaseLogger;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
+
+import javax.net.ssl.HttpsURLConnection;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Level;
-
-import javax.net.ssl.HttpsURLConnection;
-
-import me.goddragon.teaseai.utils.TeaseLogger;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
 
 /**
  * Thread for downloading files.

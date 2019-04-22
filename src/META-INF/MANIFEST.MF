@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Main-Class: me.goddragon.teaseai.utils.classloader.JarRsrcLoader
+Rsrc-Class-Path: ./ commons-collections-3.2.1.jar commons-configuration-
+ 1.7.jar commons-lang-2.6.jar commons-logging-1.1.1.jar httpclient-4.3.6
+ .jar httpcore-4.3.3.jar httpmime-4.3.3.jar json-20140107.jar jsoup-1.8.
+ 1.jar marytts-builder-5.2-jar-with-dependencies.jar marytts-lang-en-5.2
+ .jar voice-dfki-prudence-hsmm-5.2.jar guava-22.0.jar
+Rsrc-Main-Class: me.goddragon.teaseai.Main
+Class-Path: .

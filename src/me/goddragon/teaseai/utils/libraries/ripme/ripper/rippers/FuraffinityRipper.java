@@ -1,5 +1,16 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.DownloadThreadPool;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
+import org.jsoup.Connection.Response;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,19 +23,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
-import org.jsoup.Connection.Response;
-import org.jsoup.HttpStatusException;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.safety.Whitelist;
-import org.jsoup.select.Elements;
-
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.AbstractHTMLRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.DownloadThreadPool;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 
 import static me.goddragon.teaseai.utils.libraries.ripme.utils.RipUtils.getCookiesFromString;
 

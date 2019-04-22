@@ -1,5 +1,15 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers;
 
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.AlbumRipper;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.jsoup.HttpStatusException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -10,18 +20,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.jsoup.HttpStatusException;
-
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.AlbumRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Utils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 public class TumblrRipper extends AlbumRipper {
 
