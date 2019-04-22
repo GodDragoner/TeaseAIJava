@@ -26,19 +26,14 @@ public class SetTextToSpeechFunction extends CustomFunction {
 
         switch (args.length) {
             case 1:
-                if (args[0] instanceof Boolean)
-                {
-                    if (TeaseAI.application.TEXT_TO_SPEECH.getInt() == 2)
-                    {
-                        TeaseAI.application.setTTS((Boolean)args[0]);
+                if (args[0] instanceof Boolean) {
+                    if (TeaseAI.application.TEXT_TO_SPEECH.getInt() == 2) {
+                        TeaseAI.application.setTTS((Boolean) args[0]);
                         return true;
-                    }
-                    else
-                    {
+                    } else {
                         return false;
                     }
-                }
-                else {
+                } else {
                     TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method with invalid parameter. A boolean must be used");
                 }
 

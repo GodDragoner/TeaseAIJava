@@ -1,7 +1,9 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
+import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.Answer;
 import me.goddragon.teaseai.api.chat.ChatHandler;
+import me.goddragon.teaseai.utils.StringUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.logging.Level;
@@ -29,7 +31,14 @@ public class SendInputFunction extends CustomFunction {
                 TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
                 return null;
             case 1:
-                return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
+                TeaseAI.application.responsesDisabled = true;
+                return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(),0, StringUtils.processString((String)args[0]));
+            case 3:
+                if (args[1] instanceof Integer && args[2] instanceof Boolean)
+                {
+                    TeaseAI.application.responsesDisabled = (boolean)args[2];
+                    return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (int)args[1]*1000, StringUtils.processString((String) args[0]));
+                }
             default:
                 Answer answer;
                 int offset = 1;
@@ -38,21 +47,21 @@ public class SendInputFunction extends CustomFunction {
                         Answer.addOption(args[x].toString(), args[x].toString());
                     }
 
-                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Integer) args[1]);
+                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Integer) args[1]*1000, StringUtils.processString((String) args[0]));
                 } else if (args[1] instanceof Answer) {
                     for (int x = offset + 1; x < args.length; x++) {
                         Answer.addOption(args[x].toString(), args[x].toString());
                     }
 
-                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Answer) args[1]);
-                } else {
+                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), -1, StringUtils.processString((String) args[0]));
+                }  else {
                     for (int x = offset; x < args.length; x++) {
                         Answer.addOption(args[x].toString(), args[x].toString());
                     }
 
-                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
+                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Integer) args[1]*1000, StringUtils.processString((String) args[0]));
                 }
-
+                TeaseAI.application.responsesDisabled = true;
                 return answer;
         }
     }

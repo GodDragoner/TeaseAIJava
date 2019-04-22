@@ -39,7 +39,7 @@ import java.util.logging.Level;
  */
 public class TeaseAI extends Application {
 
-    public static final String VERSION = "1.0.18";
+    public static final String VERSION = "1.1";
     public static final String UPDATE_FOLDER = "Updates";
 
 
@@ -59,9 +59,13 @@ public class TeaseAI extends Application {
     public final ConfigValue DEFAULT_TYPE_SPEED = new ConfigValue("defaultTypeSpeed", TypeSpeed.MEDIUM, configHandler);
     public final ConfigValue LAST_SELECTED_PERSONALITY = new ConfigValue("lastSelectedPersonality", "null", configHandler);
     public final ConfigValue TEASE_AI_PROPERTIES_LINK = new ConfigValue("teaseAIPropertiesLink", "https://gist.githubusercontent.com/GodDragoner/6c7193903cb0695ff891e8468ad279cd/raw/TeaseAI.properties", configHandler);
+    public final ConfigValue TEXT_TO_SPEECH = new ConfigValue("texttospeech", 2, configHandler);
+    public final ConfigValue DEBUG_MODE = new ConfigValue("debugmode", false, configHandler);
 
     private Session session;
-
+    public boolean TextToSpeechEnabled = false;
+    public boolean responsesDisabled = false;
+    
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -125,6 +129,10 @@ public class TeaseAI extends Application {
 
         Thread thread = new Thread(task);
         thread.start();
+        if (TEXT_TO_SPEECH.getInt() == 1)
+        {
+            setTTS(true);
+        }
     }
 
     public static void main(String[] args) {
@@ -184,9 +192,7 @@ public class TeaseAI extends Application {
 
             if (queuedResponse != null) {
                 ResponseHandler.getHandler().removeQueuedResponse(queuedResponse);
-                System.out.println("Here2!");
                 if(queuedResponse.trigger()) {
-                    System.out.println("Here3!");
                     return true;
                 }
             } else {
@@ -304,6 +310,11 @@ public class TeaseAI extends Application {
         //Reset the temporary variables
         session.getActivePersonality().getVariableHandler().clearTemporaryVariables();
         AppearanceSettings.loadSelectedTheme();
+    }
+    
+    public void setTTS(boolean value)
+    {
+        TextToSpeechEnabled = value;
     }
 
     public Thread getScriptThread() {

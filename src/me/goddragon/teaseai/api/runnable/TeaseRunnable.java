@@ -43,7 +43,6 @@ public abstract class TeaseRunnable implements Runnable {
         }
 
         if(willRun) {
-            System.out.println("Passed since last run " + (System.currentTimeMillis() - lastCall));
             this.running = true;
             runs++;
 
