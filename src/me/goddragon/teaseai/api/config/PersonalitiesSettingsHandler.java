@@ -40,7 +40,6 @@ public class PersonalitiesSettingsHandler {
         }
     }
 
-
     public boolean hasComponent(PersonalityVariable comp) {
         boolean equivalentVar = false;
         for (PersonalityVariable var : addedComponents) {

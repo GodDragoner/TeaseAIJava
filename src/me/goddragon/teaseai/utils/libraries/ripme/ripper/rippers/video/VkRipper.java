@@ -1,16 +1,15 @@
 package me.goddragon.teaseai.utils.libraries.ripme.ripper.rippers.video;
 
+import me.goddragon.teaseai.utils.libraries.ripme.ripper.VideoRipper;
+import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
+import org.jsoup.nodes.Document;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.jsoup.nodes.Document;
-
-import me.goddragon.teaseai.utils.libraries.ripme.ripper.VideoRipper;
-import me.goddragon.teaseai.utils.libraries.ripme.utils.Http;
 
 public class VkRipper extends VideoRipper {
 
