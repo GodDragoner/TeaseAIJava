@@ -31,6 +31,9 @@ public class ScriptHandler {
 
     public void load() {
         registerFunction(new SendMessageFunction());
+        registerFunction(new DebugMessageFunction());
+        registerFunction(new WarningMessageFunction());
+        registerFunction(new ErrorMessageFunction());
         registerFunction(new AddSettingsPanelFunction());
         registerFunction(new AddCheckBoxFunction());
         registerFunction(new AddTextBoxFunction());
@@ -90,6 +93,7 @@ public class ScriptHandler {
         registerFunction(new ShowCategoryVideo());
         registerFunction(new GetStrokingBPMFunction());
         registerFunction(new SetTextToSpeechFunction());
+        registerFunction(new SystemMessageFunction());
         //engine.put("run", (Consumer<String>) this::evalScript);
     }
 

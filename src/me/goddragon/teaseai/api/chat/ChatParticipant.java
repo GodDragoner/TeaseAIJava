@@ -14,6 +14,7 @@ import me.goddragon.teaseai.api.picture.TaggedPicture;
 import me.goddragon.teaseai.api.session.Session;
 import me.goddragon.teaseai.api.texttospeech.TextToSpeech;
 import me.goddragon.teaseai.utils.RandomUtils;
+import me.goddragon.teaseai.utils.StringUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
@@ -92,6 +93,20 @@ public class ChatParticipant {
 
         ChatHandler.getHandler().addLine(nameText, messageText);
     }
+    
+    public void customMessage(String message, long delay, boolean showTyping)
+    {
+        if (delay == -1)
+        {
+            delay = ChatHandler.getHandler().getMillisToPause(message);
+        }
+        message = VocabularyHandler.getHandler().replaceAllVocabularies(message);
+        if (showTyping)
+        {
+            startTyping(message);
+        }
+        sendMessage(message, delay, StringUtils.processString(message));
+    }
 
     public void sendMessage(String message) {
         sendMessage(message, ChatHandler.getHandler().getMillisToPause(message));
@@ -151,11 +166,11 @@ public class ChatParticipant {
 
         text.setFont(Font.font(null, FontWeight.BOLD, TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 1));
         //Check whether we can find a response fitting right now
-        if (type == SenderType.SUB) {
+        if (type == SenderType.SUB && !TeaseAI.application.responsesDisabled) {
             Collection<Response> responses = ResponseHandler.getHandler().checkMessageForResponse(rawMessage);
 
             if (!responses.isEmpty()) {
-                for(Response response : responses) {
+                for (Response response : responses) {
                     //Set the message of the response so we know what triggered it later on
                     response.setMessage(rawMessage);
 
@@ -163,7 +178,12 @@ public class ChatParticipant {
                     ResponseHandler.getHandler().addQueuedResponse(response);
                 }
             }
-        } else {
+        }
+        else if (TeaseAI.application.responsesDisabled)
+        {
+
+        }
+        else {
             //If the dom sends a message we will check for queued responses that need to be handle before continuing
 
             //This should always run on the script thread but maybe I am stupid so we will catch this here
@@ -172,7 +192,7 @@ public class ChatParticipant {
             }
 
 
-            if(TeaseAI.getApplication().checkForNewResponses()) {
+            if (TeaseAI.getApplication().checkForNewResponses()) {
                 //If this returns true the trigger was successful and we won't send the current message that was supposed to be sent
                 return;
             }
@@ -192,17 +212,15 @@ public class ChatParticipant {
         List<Text> lineMessages = new ArrayList<>();
         lineMessages.add(dateText);
         lineMessages.add(text);
-       
-        if (TeaseAI.application.TextToSpeechEnabled && id != 0)
-        {
+
+        if (TeaseAI.application.TextToSpeechEnabled && id != 0) {
             String toSpeak = "";
-            for (Text text2: messages)
-            {
+            for (Text text2 : messages) {
                 toSpeak += text2.getText();
             }
             textToSpeech.speak(toSpeak, 1.0f, true, false);
         }
-        
+
         lineMessages.addAll(messages);
         ChatHandler.getHandler().addLine(lineMessages);
 
@@ -233,6 +251,25 @@ public class ChatParticipant {
         //No waiting here because we will wait later on anyway
         sendMessage(message, 0);
 
+        ChatHandler.getHandler().setCurrentCallback(answer);
+
+        //Reset timeout (normally the answer is a new object, but we don't know whether they might reuse an old answer)
+        answer.setTimeout(false);
+
+        //Reset the latest answer message
+        answer.setAnswer(null);
+        answer.setStartedAt(System.currentTimeMillis());
+
+        //Wait for answer
+        TeaseAI.application.waitPossibleScripThread(answer.getMillisTimeout());
+        answer.checkTimeout();
+
+        return answer;
+    }
+    public Answer sendInput(String rawMessage, long millisToWait, List<Text> messages)
+    {
+        customMessage(rawMessage,millisToWait,true);
+        Answer answer = new Answer(0);
         ChatHandler.getHandler().setCurrentCallback(answer);
 
         //Reset timeout (normally the answer is a new object, but we don't know whether they might reuse an old answer)
