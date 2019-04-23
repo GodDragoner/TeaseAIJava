@@ -98,10 +98,13 @@ public class ChatParticipant {
         if (delay == -1) {
             delay = ChatHandler.getHandler().getMillisToPause(message);
         }
+
         message = VocabularyHandler.getHandler().replaceAllVocabularies(message);
+
         if (showTyping) {
             startTyping(message);
         }
+
         sendMessage(message, delay, StringUtils.processString(message));
     }
 
@@ -137,22 +140,6 @@ public class ChatParticipant {
 
     public void sendMessage(String rawMessage, long millisToWait, List<Text> messages) {
         DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
-        if (messages.size() == 1 && messages.get(0).getFill().equals(Color.BLACK)) {
-            messages.get(0).setFill(ChatHandler.getHandler().getDefaultChatColor());
-        } else {
-            boolean allBlack = true;
-            for (Text text : messages) {
-                if (!text.getFill().equals(Color.BLACK)) {
-                    allBlack = false;
-                    break;
-                }
-            }
-            if (allBlack) {
-                for (Text text : messages) {
-                    text.setFill(ChatHandler.getHandler().getDefaultChatColor());
-                }
-            }
-        }
 
         Text dateText = new Text(dateFormat.format(new Date()) + " ");
         dateText.setFill(ChatHandler.getHandler().getDateColor());
@@ -209,9 +196,11 @@ public class ChatParticipant {
 
         if (TeaseAI.application.TextToSpeechEnabled && id != 0) {
             String toSpeak = "";
+
             for (Text text2 : messages) {
                 toSpeak += text2.getText();
             }
+
             textToSpeech.speak(toSpeak, 1.0f, true, false);
         }
 
@@ -261,13 +250,10 @@ public class ChatParticipant {
         return answer;
     }
 
-    public Answer sendInput(String rawMessage, long millisToWait, List<Text> messages) {
-        customMessage(rawMessage, millisToWait, true);
-        Answer answer = new Answer(0);
+    public Answer sendInput(String rawMessage, long timeoutSeconds) {
+        customMessage(rawMessage, 0,true);
+        Answer answer = new Answer(timeoutSeconds);
         ChatHandler.getHandler().setCurrentCallback(answer);
-
-        //Reset timeout (normally the answer is a new object, but we don't know whether they might reuse an old answer)
-        answer.setTimeout(false);
 
         //Reset the latest answer message
         answer.setAnswer(null);

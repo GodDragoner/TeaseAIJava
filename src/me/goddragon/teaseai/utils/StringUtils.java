@@ -1,15 +1,17 @@
 package me.goddragon.teaseai.utils;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.chat.ChatHandler;
+
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by GodDragon on 11.04.2018.
@@ -63,10 +65,13 @@ public class StringUtils {
     }
 
     public static ArrayList<Text> processString(String toProcess) {
-        ArrayList<Text> toReturn = new ArrayList<Text>();
+        ArrayList<Text> toReturn = new ArrayList<>();
+
         Pattern formatter = Pattern.compile("<[\\w =,.]*>");
         Matcher matcher = formatter.matcher(toProcess);
-        ArrayList<String> formatters = new ArrayList<String>();
+
+        ArrayList<String> formatters = new ArrayList<>();
+
         while (matcher.find()) {
             formatters.add(matcher.group());
         }
@@ -83,7 +88,7 @@ public class StringUtils {
                     boolean toItalicize = false;
                     String colorToSet = null;
                     FontWeight fontWeight = null;
-                    double fontSize = -1;
+                    double fontSize = TeaseAI.application.CHAT_TEXT_SIZE.getDouble();
                     String font = null;
                     if (!thisFormatter.equals("")) {
                         String[] subFormatters = thisFormatter.split("[ ,]");
@@ -132,37 +137,48 @@ public class StringUtils {
                                 }
                             }
                         }
-                        if (font != null | fontSize != -1 | fontWeight != null | toItalicize != false) {
+                        if (font != null || fontSize != -1 || fontWeight != null || toItalicize != false) {
                             String fontToSet = font;
                             double fontSizeToSet = fontSize;
+
                             FontPosture fontPosture = FontPosture.REGULAR;
                             FontWeight fontWeightToSet = fontWeight;
+
                             if (toItalicize) {
                                 fontPosture = FontPosture.ITALIC;
                             }
+
                             if (fontToSet == null) {
                                 fontToSet = thisText.getFont().getFamily();
                             }
+
                             if (fontSizeToSet == -1) {
                                 fontSizeToSet = thisText.getFont().getSize();
                             }
+
                             if (fontWeightToSet == null) {
                                 fontWeightToSet = FontWeight.NORMAL;
                             }
+
                             thisText.setFont(Font.font(fontToSet, fontWeightToSet, fontPosture, fontSizeToSet));
                         }
+
                         if (colorToSet != null) {
                             try {
                                 Color toFill = Color.valueOf(colorToSet);
                                 thisText.setFill(toFill);
                             } catch (IllegalArgumentException e) {
-                                // TODO Auto-generated catch block
                                 TeaseLogger.getLogger().log(Level.SEVERE, "Unrecognized color! Please use a color from this list or use an rgb or hex color as shown here: https://docs.oracle.com/javase/8/javafx/api/javafx/scene/paint/Color.html :" + colorToSet);
                             }
+                        } else {
+                            thisText.setFill(ChatHandler.getHandler().getDefaultChatColor());
                         }
-
                     }
+                } else {
+                    thisText.setFont(Font.font(null, FontWeight.MEDIUM, TeaseAI.application.CHAT_TEXT_SIZE.getDouble()));
+                    thisText.setFill(ChatHandler.getHandler().getDefaultChatColor());
                 }
+
                 toReturn.add(thisText);
             }
         }
