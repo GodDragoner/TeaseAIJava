@@ -106,13 +106,13 @@ public class Main {
                 }
 
                 Process process = Runtime.getRuntime().exec(new String[]{"java", "--module-path=" + getLibFolder().getPath(), "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar", "test"});
-                BufferedReader input = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                /*BufferedReader input = new BufferedReader(new InputStreamReader(process.getErrorStream()));
                 String line;
                 while ((line = input.readLine()) != null) {
                     System.out.println(line);
                 }
 
-                input.close();
+                input.close();*/
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
