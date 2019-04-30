@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.api.texttospeech.TextToSpeech;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -75,12 +76,23 @@ public class ChatHandler {
     }
 
     public void load() {
+        PersonalityManager.getManager().getProgressUpdate().accept(0, 5);
+
         registerSender(new ChatParticipant(0, SenderType.SUB, new Contact("sub", "Sub Name")).setNameColor(Color.DARKCYAN));
+        PersonalityManager.getManager().getProgressUpdate().accept(1, 5);
+
         Contact dommeContact = new Contact("dom", "Dom Name");
         registerSender(new ChatParticipant(1, SenderType.DOM, dommeContact).setNameColor(Color.RED));
+        PersonalityManager.getManager().getProgressUpdate().accept(2, 5);
+
         registerSender(new ChatParticipant(2, SenderType.DOM, new Contact("dommeFriend1", "Emma")).setNameColor(Color.ORANGE));
+        PersonalityManager.getManager().getProgressUpdate().accept(3, 5);
+
         registerSender(new ChatParticipant(3, SenderType.DOM, new Contact("dommeFriend2", "Staicy")).setNameColor(Color.LIGHTGREEN));
+        PersonalityManager.getManager().getProgressUpdate().accept(4, 5);
+
         registerSender(new ChatParticipant(4, SenderType.DOM, new Contact("dommeFriend3", "Amara")).setNameColor(Color.MEDIUMVIOLETRED));
+        PersonalityManager.getManager().getProgressUpdate().accept(5, 5);
     }
 
     public void registerSender(ChatParticipant chatSender) {
