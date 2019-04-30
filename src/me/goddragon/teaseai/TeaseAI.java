@@ -192,6 +192,10 @@ public class TeaseAI extends Application {
 
                         //Load theme last so everything is setup
                         AppearanceSettings.loadSelectedTheme();
+
+                        //Reload lazy sub because it is somehow messed up
+                        TeaseAI.application.getController().getLazySubController().clear();
+                        TeaseAI.application.getController().getLazySubController().createDefaults();
                     }
                 });
 
