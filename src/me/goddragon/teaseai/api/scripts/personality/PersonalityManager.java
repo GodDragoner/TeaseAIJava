@@ -99,6 +99,10 @@ public class PersonalityManager {
         return folders;
     }
 
+    public BiConsumer<Integer, Integer> getProgressUpdate() {
+        return progressUpdate;
+    }
+
     public void setProgressUpdate(BiConsumer<Integer, Integer> progressUpdate) {
         this.progressUpdate = progressUpdate;
     }

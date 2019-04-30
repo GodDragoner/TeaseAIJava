@@ -103,13 +103,11 @@ public class TeaseAI extends Application {
 
                 PersonalityManager.getManager().loadPersonalities();
 
-                progressForm.setNameSync("Finishing startup...");
-
                 TeaseAI.application.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            TeaseAI.application.finishedCheckup();
+                            TeaseAI.application.finishedCheckup(progressForm);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -125,7 +123,7 @@ public class TeaseAI extends Application {
         startupProgressPane.show();
 
         new PersonalitiesSettingsHandler();
-        task.setOnSucceeded(event -> startupProgressPane.getDialogStage().close());
+        //task.setOnSucceeded(event -> startupProgressPane.getDialogStage().close());
 
         Thread thread = new Thread(task);
         thread.start();
@@ -138,8 +136,10 @@ public class TeaseAI extends Application {
         launch(args);
     }
 
-    public void finishedCheckup() throws IOException {
-        startupProgressPane.close();
+    public void finishedCheckup(ProgressForm progressForm) throws IOException {
+        //startupProgressPane.close();
+
+        progressForm.setNameSync("Setting up GUI...");
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/main/main.fxml"));
         controller = new MainGuiController(primaryStage);
@@ -152,7 +152,6 @@ public class TeaseAI extends Application {
         controller.addMainScene(mainScene);
 
         primaryStage.setScene(mainScene);
-        primaryStage.show();
         controller.initiate();
 
         primaryStage.setOnCloseRequest(event -> {
@@ -163,21 +162,48 @@ public class TeaseAI extends Application {
             }
         });
 
-        //Load values to add the config values
-        MediaFetishType.values();
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() {
+                //Load values to add the config values
+                MediaFetishType.values();
 
-        ChatHandler.getHandler().load();
+                progressForm.setNameSync("Loading picture sets...");
 
-        this.mediaCollection = new MediaCollection();
+                PersonalityManager.getManager().setProgressUpdate((workDone, totalWork) ->
+                        updateProgress(workDone, totalWork));
 
-        PersonalityManager.getManager().addPersonalitiesToGUI();
+                ChatHandler.getHandler().load();
 
-        initializeNewSession();
+                progressForm.setNameSync("Finishing startup...");
 
-        controller.loadDomInfo();
+                TeaseAI.application.runOnUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        primaryStage.show();
 
-        //Load theme last so everything is setup
-        AppearanceSettings.loadSelectedTheme();
+                        TeaseAI.this.mediaCollection = new MediaCollection();
+
+                        PersonalityManager.getManager().addPersonalitiesToGUI();
+
+                        initializeNewSession();
+
+                        controller.loadDomInfo();
+
+                        //Load theme last so everything is setup
+                        AppearanceSettings.loadSelectedTheme();
+                    }
+                });
+
+                return null;
+            }
+        };
+
+        progressForm.bindProgressBar(task);
+        task.setOnSucceeded(event -> startupProgressPane.getDialogStage().close());
+        Thread thread = new Thread(task);
+        thread.start();
+        //startupProgressPane.addProgressBar(progressForm);
     }
 
     public boolean checkForNewResponses() {
