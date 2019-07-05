@@ -20,7 +20,7 @@ public class ConfigValue {
 
     public ConfigValue setValue(String value) {
         this.value = value;
-        configHandler.getProperties().setProperty(name, value.toString());
+        configHandler.getProperties().setProperty(name, value);
         return this;
     }
 

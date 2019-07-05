@@ -23,7 +23,7 @@ public class MediaFolder extends MediaHolder {
 
     public void loadMediaFiles() {
         for (File file : folder.listFiles()) {
-            if (file.isFile() && getMediaType().hasSupportedExtenstion(file)) {
+            if (file.isFile() && getMediaType().hasSupportedExtension(file)) {
                 mediaFiles.add(file);
             }
         }

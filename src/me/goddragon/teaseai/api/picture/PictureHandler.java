@@ -150,7 +150,7 @@ public class PictureHandler {
         if (folder != null && folder.list() != null && folder.list().length != 0) {
             File[] fileArray = folder.listFiles(new FilenameFilter() {
                 public boolean accept(File dir, String name) {
-                    return name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".gif");
+                    return FileUtils.isSupportedPictureExtension(FileUtils.getExtension(name));
                 }
             });
 

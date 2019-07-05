@@ -1,185 +1,186 @@
 package me.goddragon.teaseai.utils.update;
 
-import javafx.concurrent.Task;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.Main;
 import me.goddragon.teaseai.api.config.ConfigHandler;
 import me.goddragon.teaseai.api.config.ConfigValue;
-import me.goddragon.teaseai.gui.ProgressForm;
-import me.goddragon.teaseai.utils.ComparableVersion;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
-import me.goddragon.teaseai.utils.URLUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.swing.*;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 
 /**
  * Created by GodDragon on 18.06.2018.
  */
 public class UpdateHandler {
+    public static String TEASE_AI_PROPERTIES_DEFAULT_LINK = "https://gist.githubusercontent.com/GodDragoner/6c7193903cb0695ff891e8468ad279cd/raw/TeaseAI.properties";
 
     private static UpdateHandler handler = new UpdateHandler();
 
-    public boolean checkForUpdate() {
-        ConfigValue propertiesLink = TeaseAI.application.TEASE_AI_PROPERTIES_LINK;
+    ConfigHandler urlConfig;
+    ConfigValue version;
+    ConfigValue downloadLink;
+    ConfigValue libraryList;
+
+    public boolean loadConfig() {
+        String propertiesLink = TEASE_AI_PROPERTIES_DEFAULT_LINK;
+
         //No link given
-        if (propertiesLink == null || propertiesLink.getValue() == null || propertiesLink.getValue().equals("null")) {
+        if (propertiesLink == null ||  propertiesLink.equals("null")) {
             return false;
         }
 
         try {
-            URL url = new URL(propertiesLink.getValue());
-            ConfigHandler urlConfig = new ConfigHandler(url);
-            ConfigValue version = new ConfigValue("version", "null", urlConfig);
-            ConfigValue downloadLink = new ConfigValue("downloadLink", "null", urlConfig);
+            URL url = new URL(propertiesLink);
+            this.urlConfig = new ConfigHandler(url);
+            this.version = new ConfigValue("version", "null", urlConfig);
+            this.downloadLink = new ConfigValue("downloadLink", "null", urlConfig);
+            this.libraryList = new ConfigValue("libraryList", "null", urlConfig);
 
             urlConfig.loadConfig();
 
             if (version.getValue() == null || version.getValue().equals("null")) {
-                TeaseLogger.getLogger().log(Level.SEVERE, "Invalid tease ai properties file from url '" + propertiesLink.getValue() + "'. Version number is missing.");
-                return false;
+                TeaseLogger.getLogger().log(Level.SEVERE, "Invalid tease ai properties file from url '" + propertiesLink + "'. Version number is missing.");                return false;
+
             }
 
-            if (new ComparableVersion(version.getValue()).compareTo(new ComparableVersion(TeaseAI.application.VERSION)) > 0) {
-                boolean[] update = {false};
-                TeaseLogger.getLogger().log(Level.INFO, "New TAJ version " + version.getValue() + " available");
-                TeaseAI.application.runOnUIThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("New TAJ version " + version.getValue() + " available");
-                        alert.setContentText("New TAJ version " + version.getValue() + " available. Would you like to update?");
-                        ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-                        ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
-                        alert.getButtonTypes().setAll(okButton, noButton);
-                        alert.showAndWait().ifPresent(type -> {
-                            if (type.getButtonData() == ButtonBar.ButtonData.YES) {
-                                update[0] = true;
-                            }
-
-                            synchronized (UpdateHandler.this) {
-                                UpdateHandler.this.notify();
-                            }
-                        });
-                    }
-                });
-
-                try {
-                    synchronized (UpdateHandler.this) {
-                        UpdateHandler.this.wait();
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                if (update[0]) {
-                    TeaseLogger.getLogger().log(Level.INFO, "Update process accepted. Fetching update from remote...");
-                    fetchUpdate(version.getValue(), downloadLink.getValue());
-                } else {
-                    TeaseLogger.getLogger().log(Level.INFO, "Update process declined by user.");
-                }
-
-                return true;
-            }
+            return true;
         } catch (MalformedURLException e) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "Invalid tease ai properties url '" + propertiesLink.getValue() + "'.");
+            TeaseLogger.getLogger().log(Level.SEVERE, "Invalid tease ai properties url '" + propertiesLink + "'.");
         }
 
         return false;
     }
 
-    private void fetchUpdate(String version, String downloadLink) {
-        Task<Void> task = new Task<Void>() {
-            @Override
-            public Void call() throws InterruptedException {
+    public boolean checkLibraries() {
+        if (urlConfig == null) {
+            if(!loadConfig()) {
+                return false;
+            }
+        }
+
+        String libraries = libraryList.getValue();
+
+        if(libraries.equalsIgnoreCase("null")) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Invalid tease ai properties file from url. Library list is missing.");
+            return false;
+        }
+
+        String[] urls = libraries.split(";");
+
+        Set<String> loadedLibraries = new HashSet<>();
+
+        for(File file : FileUtils.getLibFolder().listFiles()) {
+            if(file.isFile()) {
+                loadedLibraries.add(file.getName());
+            }
+        }
+
+        Set<String> librariesListed = new HashSet<>();
+        Set<String> libraryURLsToFetch = new HashSet<>();
+
+        //https://github.com/GodDragoner/TeaseAIJava/raw/master/Resources/commons-collections-3.2.1.jar
+        for(String url : urls) {
+            int lastIndex = url.lastIndexOf("/");
+
+            if(lastIndex < 0) {
+                TeaseLogger.getLogger().log(Level.SEVERE, "Malformed library link '" + url + "'.");
+                continue;
+            }
+
+            String fileName = url.substring(lastIndex + 1);
+
+            if(!loadedLibraries.contains(fileName)) {
+                libraryURLsToFetch.add(url);
+                TeaseLogger.getLogger().log(Level.INFO, "Missing library " + fileName + " queued for fetch.");
+            }
+
+            librariesListed.add(fileName);
+        }
+
+        //Delete unused libraries
+        for(String loaded : loadedLibraries) {
+            if(!librariesListed.contains(loaded)) {
+                TeaseLogger.getLogger().log(Level.INFO, "Deleting unused library " + loaded + ".");
+
                 try {
-                    updateProgress(0, 10);
-
-                    String updateFolderPath = TeaseAI.UPDATE_FOLDER + File.separator;
-                    URL url = new URL(downloadLink);
-                    int fileSize = URLUtils.getFileSize(url);
-
-                    File newUpdateJarFile = new File(updateFolderPath + downloadLink.substring(downloadLink.lastIndexOf("/"), downloadLink.length()));
-                    newUpdateJarFile.getParentFile().mkdirs();
-
-                    ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-                    FileOutputStream fos = new FileOutputStream(newUpdateJarFile);
-
-                    //Update the progress bar based on the file size
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            while (fos.getChannel().isOpen()) {
-                                try {
-                                    updateProgress(fos.getChannel().size(), fileSize);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    }.start();
-
-                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-                    updateProgress(fileSize, fileSize);
-
-                    TeaseLogger.getLogger().log(Level.INFO, "Update successfully downloaded. Launching Updater...");
-
-                    String updaterName = "TAJUpdater.jar";
-
-                    //Export the updater
-                    FileUtils.exportResource("/" + updaterName);
-
-                    try {
-                        //Run taj in a separate system process
-                        Runtime.getRuntime().exec("java -jar " + updaterName);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    System.exit(0);
-                } catch (MalformedURLException e) {
-                    TeaseLogger.getLogger().log(Level.SEVERE, "Invalid download url '" + downloadLink + "' for TAJ '" + version + "'. Update failed.");
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                    FileUtils.deleteFileOrFolder(new File(FileUtils.getLibFolder().getPath() + File.separator + loaded).toPath());
                 } catch (IOException e) {
                     e.printStackTrace();
-                    TeaseLogger.getLogger().log(Level.SEVERE, "Something went wrong while updating TAJ to '" + version + "'.");
-                } catch (Exception e) {
+                }
+            }
+        }
+
+        if(!libraryURLsToFetch.isEmpty()) {
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Missing libraries found. Would you like to download?", "Missing libraries", dialogButton);
+
+            if (dialogResult != JOptionPane.YES_OPTION) {
+                JOptionPane.showMessageDialog(null, "Can't run without all libraries. Exiting...");
+                System.exit(0);
+                return false;
+            }
+
+            ProgressMonitor progressMonitor = new ProgressMonitor(null, "Downloading...", "", 0, 0);
+
+            for(String url : libraryURLsToFetch) {
+                try {
+                    if(!fetchLibrary(url, progressMonitor)) {
+                        TeaseLogger.getLogger().log(Level.SEVERE, "Failed to fetch library '" + url + "'.");
+                    }
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                return null;
             }
-        };
 
-        ProgressForm progressForm = new ProgressForm("Downloading TAJ " + version, task);
+            Main.restart();
+        }
 
-        TeaseAI.application.runOnUIThread(new Runnable() {
-            @Override
-            public void run() {
-                TeaseAI.application.startupProgressPane.addProgressBar(progressForm);
-            }
-        });
+        return true;
+    }
 
-        Thread thread = new Thread(task);
-        thread.run();
 
-        TeaseAI.application.runOnUIThread(new Runnable() {
-            @Override
-            public void run() {
-                TeaseAI.application.startupProgressPane.removeProgressBar(progressForm);
-            }
-        });
+    public boolean fetchLibrary(String downloadLink, ProgressMonitor progressMonitor) throws IOException {
+        String libFolderPath = FileUtils.getLibFolder().getPath() + File.separator;
+        String libName = downloadLink.substring(downloadLink.lastIndexOf("/") + 1);
+
+        URL url = new URL(downloadLink);
+        HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
+        long completeFileSize = httpConnection.getContentLength();
+
+        progressMonitor.setNote("Downloading " + libName + "...");
+        progressMonitor.setMaximum((int) completeFileSize);
+        progressMonitor.setMinimum(0);
+
+        BufferedInputStream in = new BufferedInputStream(httpConnection.getInputStream());
+        FileOutputStream fos = new FileOutputStream(libFolderPath + libName);
+        BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
+
+        byte[] data = new byte[1024];
+        long downloadedFileSize = 0;
+        int x;
+        //int oldProgress = 0;
+
+        while ((x = in.read(data, 0, 1024)) >= 0) {
+            downloadedFileSize += x;
+
+            progressMonitor.setProgress((int) downloadedFileSize);
+
+            bout.write(data, 0, x);
+        }
+
+        bout.close();
+        in.close();
+
+
+        progressMonitor.close();
+        return true;
     }
 
     public static UpdateHandler getHandler() {

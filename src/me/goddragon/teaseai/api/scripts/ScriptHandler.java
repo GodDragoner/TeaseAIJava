@@ -94,6 +94,7 @@ public class ScriptHandler {
         registerFunction(new GetStrokingBPMFunction());
         registerFunction(new SetTextToSpeechFunction());
         registerFunction(new SystemMessageFunction());
+        registerFunction(new SetResponseIgnoreDisabledFunction());
         //engine.put("run", (Consumer<String>) this::evalScript);
     }
 

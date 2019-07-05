@@ -29,6 +29,7 @@ import me.goddragon.teaseai.gui.StartupProgressPane;
 import me.goddragon.teaseai.gui.main.MainGuiController;
 import me.goddragon.teaseai.gui.settings.AppearanceSettings;
 import me.goddragon.teaseai.utils.TeaseLogger;
+import me.goddragon.teaseai.utils.update.JFXUpdater;
 import me.goddragon.teaseai.utils.update.UpdateHandler;
 
 import java.io.IOException;
@@ -39,9 +40,9 @@ import java.util.logging.Level;
  */
 public class TeaseAI extends Application {
 
-    public static final String VERSION = "1.1";
-    public static final String UPDATE_FOLDER = "Updates";
 
+    public static final String VERSION = "1.2";
+    public static final String UPDATE_FOLDER = "Updates";
 
     public static TeaseAI application;
     private ConfigHandler configHandler = new ConfigHandler("TeaseAI.properties");
@@ -58,7 +59,7 @@ public class TeaseAI extends Application {
     public final ConfigValue CHAT_TEXT_SIZE = new ConfigValue("chatTextSize", Font.getDefault().getSize(), configHandler);
     public final ConfigValue DEFAULT_TYPE_SPEED = new ConfigValue("defaultTypeSpeed", TypeSpeed.MEDIUM, configHandler);
     public final ConfigValue LAST_SELECTED_PERSONALITY = new ConfigValue("lastSelectedPersonality", "null", configHandler);
-    public final ConfigValue TEASE_AI_PROPERTIES_LINK = new ConfigValue("teaseAIPropertiesLink", "https://gist.githubusercontent.com/GodDragoner/6c7193903cb0695ff891e8468ad279cd/raw/TeaseAI.properties", configHandler);
+    public final ConfigValue TEASE_AI_PROPERTIES_LINK = new ConfigValue("teaseAIPropertiesLink", UpdateHandler.TEASE_AI_PROPERTIES_DEFAULT_LINK, configHandler);
     public final ConfigValue TEXT_TO_SPEECH = new ConfigValue("texttospeech", 2, configHandler);
     public final ConfigValue DEBUG_MODE = new ConfigValue("debugmode", false, configHandler);
 
@@ -91,11 +92,13 @@ public class TeaseAI extends Application {
         //Load config values first
         configHandler.loadConfig();
 
+        UpdateHandler.TEASE_AI_PROPERTIES_DEFAULT_LINK = TEASE_AI_PROPERTIES_LINK.getValue();
+
         ProgressForm progressForm = new ProgressForm("Checking for TAJ update...");
         Task<Void> task = new Task<Void>() {
             @Override
             public Void call() throws InterruptedException {
-                UpdateHandler.getHandler().checkForUpdate();
+                JFXUpdater.getUpdater().checkForUpdate();
 
                 progressForm.setNameSync("Checking personalities...");
                 PersonalityManager.getManager().setProgressUpdate((workDone, totalWork) ->
@@ -219,7 +222,7 @@ public class TeaseAI extends Application {
         while (true) {
             Response queuedResponse = ResponseHandler.getHandler().getLatestQueuedResponse();
 
-            if (queuedResponse != null) {
+            if (queuedResponse != null && (queuedResponse.isIgnoreDisabledResponses() || !responsesDisabled)) {
                 ResponseHandler.getHandler().removeQueuedResponse(queuedResponse);
                 if (queuedResponse.trigger()) {
                     return true;

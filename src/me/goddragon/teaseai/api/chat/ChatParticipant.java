@@ -150,7 +150,7 @@ public class ChatParticipant {
 
         text.setFont(Font.font(null, FontWeight.BOLD, TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 1));
         //Check whether we can find a response fitting right now
-        if (type == SenderType.SUB && !TeaseAI.application.responsesDisabled) {
+        if (type == SenderType.SUB ) {
             Collection<Response> responses = ResponseHandler.getHandler().checkMessageForResponse(rawMessage);
 
             if (!responses.isEmpty()) {
@@ -162,8 +162,6 @@ public class ChatParticipant {
                     ResponseHandler.getHandler().addQueuedResponse(response);
                 }
             }
-        } else if (TeaseAI.application.responsesDisabled) {
-
         } else {
             //If the dom sends a message we will check for queued responses that need to be handle before continuing
 

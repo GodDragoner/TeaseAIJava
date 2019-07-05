@@ -16,6 +16,7 @@ public abstract class Response {
 
     private String message;
     private boolean disabled = false;
+    private boolean ignoreDisabledResponses = false;
 
     public Response() {
     }
@@ -119,5 +120,13 @@ public abstract class Response {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean isIgnoreDisabledResponses() {
+        return ignoreDisabledResponses;
+    }
+
+    public void setIgnoreDisabledResponses(boolean ignoreDisabledResponses) {
+        this.ignoreDisabledResponses = ignoreDisabledResponses;
     }
 }

@@ -227,14 +227,23 @@ public class FileUtils {
 
 
     public static String getExtension(File file) {
+        return getExtension(file.getName());
+    }
+
+    public static String getExtension(String fileName) {
         String extension = "";
 
-        int i = file.getPath().lastIndexOf('.');
+        int i = fileName.lastIndexOf('.');
         if (i > 0) {
-            extension = file.getPath().substring(i + 1).toLowerCase();
+            extension = fileName.substring(i + 1).toLowerCase();
         }
 
         return extension;
+    }
+
+
+    public static boolean isSupportedPictureExtension(String extension) {
+        return extension.equalsIgnoreCase("jpeg") || extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("gif") || extension.equalsIgnoreCase("png");
     }
 
     public static String getNormalizedFileName(File file) {
@@ -321,6 +330,11 @@ public class FileUtils {
         } catch (KeyManagementException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static File getLibFolder() {
+        return new File(getTAJPath() + File.separator + "lib");
     }
 
     public static String getTAJPath() {

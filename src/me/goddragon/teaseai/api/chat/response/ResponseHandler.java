@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.api.chat.response;
 
+import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.utils.StringUtils;
@@ -124,7 +125,7 @@ public class ResponseHandler {
 
         synchronized (responses) {
             for (Response response : this.responses) {
-                if (response.containsLike(message) && !response.isDisabled()) {
+                if (response.containsLike(message) && !response.isDisabled() && (response.isIgnoreDisabledResponses() || !TeaseAI.application.responsesDisabled)) {
                     responses.add(response);
                 }
             }
