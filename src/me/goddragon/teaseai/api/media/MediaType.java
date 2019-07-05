@@ -1,5 +1,7 @@
 package me.goddragon.teaseai.api.media;
 
+import me.goddragon.teaseai.utils.FileUtils;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,7 +12,7 @@ import java.util.HashSet;
  */
 public enum MediaType {
 
-    VIDEO("mp4"), IMAGE("jpg", "png");
+    VIDEO("mp4"), IMAGE("jpg", "png", "jpeg", "gif");
 
     private final Collection<String> supportedExtensions = new HashSet<>();
 
@@ -18,9 +20,10 @@ public enum MediaType {
         this.supportedExtensions.addAll(Arrays.asList(supportedExtensions));
     }
 
-    public boolean hasSupportedExtenstion(File file) {
-        for (String supprtedExtension : supportedExtensions) {
-            if (file.getName().endsWith("." + supprtedExtension)) {
+    public boolean hasSupportedExtension(File file) {
+        String fileExtension = FileUtils.getExtension(file);
+        for (String supportedExtension : supportedExtensions) {
+            if (fileExtension.equalsIgnoreCase(supportedExtension)) {
                 return true;
             }
         }

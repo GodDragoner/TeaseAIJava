@@ -1,6 +1,9 @@
 package me.goddragon.teaseai.utils.classloader;
 
 
+import me.goddragon.teaseai.utils.FileUtils;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -22,7 +25,17 @@ public class JarRsrcLoader {
         JarRsrcLoader.ManifestInfo mi = getManifestInfo();
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         URL.setURLStreamHandlerFactory(new RsrcURLStreamHandlerFactory(cl));
-        URL[] rsrcUrls = new URL[mi.rsrcClassPath.length];
+
+        File lib = FileUtils.getLibFolder();
+
+        //Create lib folder
+        if(!lib.exists()) {
+            lib.mkdir();
+        }
+
+        File[] libFiles = lib.listFiles();
+
+        URL[] rsrcUrls = new URL[mi.rsrcClassPath.length + libFiles.length];
 
         for (int i = 0; i < mi.rsrcClassPath.length; ++i) {
             String rsrcPath = mi.rsrcClassPath[i];
@@ -32,6 +45,11 @@ public class JarRsrcLoader {
             } else {
                 rsrcUrls[i] = new URL("jar:rsrc:" + rsrcPath + "!/");
             }
+        }
+
+        for(int x = 0; x < libFiles.length; x++) {
+            File libFile = libFiles[x];
+            rsrcUrls[rsrcUrls.length - x - 1] = libFile.toURI().toURL();
         }
 
         ClassLoader jceClassLoader = new URLClassLoader(rsrcUrls, getParentClassLoader());

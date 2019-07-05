@@ -2,6 +2,7 @@ package me.goddragon.teaseai;
 
 import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.ZipUtils;
+import me.goddragon.teaseai.utils.update.UpdateHandler;
 
 import javax.swing.*;
 import java.io.*;
@@ -17,6 +18,8 @@ public class Main {
     public static String OPERATING_SYSTEM = System.getProperty("os.name").toLowerCase();
 
     public static void main(String[] args) {
+        UpdateHandler.getHandler().checkLibraries();
+
         if (ManagementFactory.getRuntimeMXBean().getInputArguments().size() == 0 && JAVA_VERSION > 10) {
             try {
                 //Re-launch the app itself with VM option passed
@@ -105,19 +108,11 @@ public class Main {
                     //newUpdateZipFile.delete();
                 }
 
-                Process process = Runtime.getRuntime().exec(new String[]{"java", "--module-path=" + getLibFolder().getPath(), "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar", "test"});
-                /*BufferedReader input = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-                String line;
-                while ((line = input.readLine()) != null) {
-                    System.out.println(line);
-                }
-
-                input.close();*/
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
 
-            System.exit(0);
+            restart();
         } else {
             TeaseAI.main(args);
         }
@@ -139,6 +134,23 @@ public class Main {
         }
 
         return libFolder;
+    }
+
+    public static void restart() {
+        try {
+            Runtime.getRuntime().exec(new String[]{"java", "--module-path=" + getLibFolder().getPath(), "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar", "test"});
+                    /*BufferedReader input = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                String line;
+                while ((line = input.readLine()) != null) {
+                    System.out.println(line);
+                }
+
+                input.close();*/
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.exit(0);
     }
 
     public static boolean isWindows() {

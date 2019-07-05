@@ -1,6 +1,6 @@
 package me.goddragon.teaseai.utils;
 
-import org.apache.commons.io.output.TeeOutputStream;
+import me.goddragon.teaseai.utils.stream.TeeOutputStream;
 
 import java.io.File;
 import java.io.FileNotFoundException;

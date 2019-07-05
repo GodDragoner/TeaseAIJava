@@ -39,8 +39,8 @@ public class TaggedPicture {
 
         String extension = FileUtils.getExtension(file).toLowerCase();
 
-        if (!extension.equals("png") && !extension.equals("jpg") && !extension.equals("gif")) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "Invalid file extension " + extension + ". Expected format png jpg or gif!");
+        if (!FileUtils.isSupportedPictureExtension(extension)) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Invalid file extension " + extension + " of file '" + file.getPath() + "'. Expected format png, jpg or gif!");
             return;
         }
 
@@ -80,7 +80,13 @@ public class TaggedPicture {
         this.file = file;
 
         if (!file.exists()) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "File does not exist!");
+            TeaseLogger.getLogger().log(Level.SEVERE, "Tagged Picture file '" + file.getPath() + "' does not exist!");
+            return;
+        }
+
+
+        if (file.isDirectory()) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Tagged Picture file '" + file.getPath() + "' is a directory!");
             return;
         }
 
@@ -92,8 +98,8 @@ public class TaggedPicture {
 
         String extension = FileUtils.getExtension(file).toLowerCase();
 
-        if (!extension.equals("png") && !extension.equals("jpg") && !extension.equals("gif")) {
-            TeaseLogger.getLogger().log(Level.SEVERE, "Invalid file extension " + extension + ". Expected format png jpg or gif!");
+        if (!FileUtils.isSupportedPictureExtension(extension)) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Invalid file extension " + extension + " of file '" + file.getPath() + "'. Expected format png, jpg or gif!");
             return;
         }
 
