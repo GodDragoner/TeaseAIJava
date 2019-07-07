@@ -2,6 +2,7 @@ package me.goddragon.teaseai.api.session;
 
 import me.goddragon.teaseai.api.chat.response.Response;
 import me.goddragon.teaseai.api.chat.response.ResponseHandler;
+import me.goddragon.teaseai.utils.EstimApi;
 import me.goddragon.teaseai.utils.Metronome;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -28,6 +29,7 @@ public class StrokeHandler {
     private boolean isOnEdge;
 
     private volatile Metronome metronome;
+    private volatile EstimApi estimAPI;
     private Thread waitingThread;
     private int currentBPM;
 
@@ -42,6 +44,8 @@ public class StrokeHandler {
         currentBPM = bpm;
 
         (metronome = new Metronome()).start(bpm);
+        // TODO: Only if Estim is enabled in the settings
+        (estimAPI = new EstimApi()).start(bpm);
 
         if (durationSeconds > 0) {
             (waitingThread = new Thread() {
@@ -56,6 +60,8 @@ public class StrokeHandler {
                             //Check if we are still dealing with the metronome that we were watching
                             if (watchingMetronome == metronome) {
                                 metronome.stop();
+                                // TODO: Only if Estim is enabled in the settings
+                                estimAPI.stop();
                                 waitingThread = null;
                             }
                         } catch (InterruptedException e) {
@@ -71,6 +77,11 @@ public class StrokeHandler {
         if (metronome != null) {
             metronome.stop();
             metronome = null;
+
+            if (estimAPI != null) {
+                estimAPI.stop();
+                estimAPI = null;
+            }
 
             //Check if we are waiting for stopping the metronome
             if (waitingThread != null) {

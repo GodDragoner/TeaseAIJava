@@ -15,6 +15,9 @@ import me.goddragon.teaseai.utils.TeaseLogger;
 import java.io.File;
 import java.util.logging.Level;
 
+import devices.TwoB.TwoB;
+import estimAPI.EstimAPI;
+
 /**
  * Created by GodDragon on 26.03.2018.
  */
@@ -23,6 +26,8 @@ public class Session {
     private boolean started = false;
     private boolean haltSession = false;
     private long startedAt;
+
+    private EstimAPI estimAPI;
 
     public void start() {
         setupStart();
@@ -54,6 +59,10 @@ public class Session {
     public void setupStart() {
         startedAt = System.currentTimeMillis();
         started = true;
+
+        // TODO: Only if Estim is enabled in the settings
+        estimAPI = new TwoB();
+        estimAPI.initDevice();
 
         activePersonality.getVariableHandler().setVariable("startDate", new TeaseDate(startedAt), true);
         activePersonality.getVariableHandler().setVariable("subName", ChatHandler.getHandler().getSubParticipant().getName(), true);
@@ -129,6 +138,7 @@ public class Session {
 
                 //Initialize a new session instance
                 TeaseAI.application.initializeNewSession();
+                estimAPI.disconnectDevice();
 
                 //Unlock Images
                 MediaHandler.getHandler().setImagesLocked(false);
@@ -179,4 +189,8 @@ public class Session {
     public void setStarted(boolean started) {
         this.started = started;
     }
+
+	public EstimAPI getEstimAPI() {
+		return estimAPI;
+	}
 }
