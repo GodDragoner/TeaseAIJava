@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.api.session;
 
+import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.response.Response;
 import me.goddragon.teaseai.api.chat.response.ResponseHandler;
 import me.goddragon.teaseai.utils.EstimApi;
@@ -44,8 +45,10 @@ public class StrokeHandler {
         currentBPM = bpm;
 
         (metronome = new Metronome()).start(bpm);
-        // TODO: Only if Estim is enabled in the settings
-        (estimAPI = new EstimApi()).start(bpm);
+        
+        if (TeaseAI.application.ESTIM_ENABLED.getBoolean() && TeaseAI.application.ESTIM_METRONOME.getBoolean()) {
+            (estimAPI = new EstimApi()).start(bpm);
+        }
 
         if (durationSeconds > 0) {
             (waitingThread = new Thread() {
@@ -60,8 +63,9 @@ public class StrokeHandler {
                             //Check if we are still dealing with the metronome that we were watching
                             if (watchingMetronome == metronome) {
                                 metronome.stop();
-                                // TODO: Only if Estim is enabled in the settings
-                                estimAPI.stop();
+                                if (estimAPI != null) {
+                                    estimAPI.stop();
+                                }
                                 waitingThread = null;
                             }
                         } catch (InterruptedException e) {
