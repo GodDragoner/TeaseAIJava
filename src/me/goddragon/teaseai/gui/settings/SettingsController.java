@@ -28,6 +28,7 @@ public class SettingsController {
     protected MediaSettings mediaSettings = new MediaSettings(this);
     protected ContactSettings contactSettings = new ContactSettings(this);
     protected GeneralSettings generalSettings = new GeneralSettings(this);
+    protected EstimSettings estimSettings = new EstimSettings(this);
     protected PersonalitySettings debugSettings = new PersonalitySettings(this);
     protected AppearanceSettings appearanceSettings = new AppearanceSettings(this, MainGuiController.getController());
 
@@ -216,10 +217,18 @@ public class SettingsController {
     @FXML
     public CheckBox debugCheckbox;
 
+    // Estim
+    @FXML
+    public CheckBox estimEnabledCheckbox;
+    
+    @FXML
+    public CheckBox estimMetronomeCheckbox;
+
     public void initiate() {
         mediaSettings.initiate();
         contactSettings.initiate();
         generalSettings.initiate();
+        estimSettings.initiate();
         debugSettings.initiate();
 
         for (Tab tab : PersonalitiesSettingsHandler.getHandler().getTabsToAdd()) {

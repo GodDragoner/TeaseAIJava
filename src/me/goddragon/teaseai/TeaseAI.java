@@ -62,6 +62,9 @@ public class TeaseAI extends Application {
     public final ConfigValue TEASE_AI_PROPERTIES_LINK = new ConfigValue("teaseAIPropertiesLink", UpdateHandler.TEASE_AI_PROPERTIES_DEFAULT_LINK, configHandler);
     public final ConfigValue TEXT_TO_SPEECH = new ConfigValue("texttospeech", 2, configHandler);
     public final ConfigValue DEBUG_MODE = new ConfigValue("debugmode", false, configHandler);
+    public final ConfigValue ESTIM_ENABLED = new ConfigValue("estimEnabled", false, configHandler);
+    public final ConfigValue ESTIM_METRONOME = new ConfigValue("estimMetronome", false, configHandler);
+
 
     private Session session;
     public boolean TextToSpeechEnabled = false;

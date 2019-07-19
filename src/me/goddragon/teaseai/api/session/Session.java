@@ -27,7 +27,7 @@ public class Session {
     private boolean haltSession = false;
     private long startedAt;
 
-    private EstimAPI estimAPI;
+    private EstimAPI estimAPI = null;
 
     public void start() {
         setupStart();
@@ -60,9 +60,10 @@ public class Session {
         startedAt = System.currentTimeMillis();
         started = true;
 
-        // TODO: Only if Estim is enabled in the settings
-        estimAPI = new TwoB();
-        estimAPI.initDevice();
+        if(TeaseAI.application.ESTIM_ENABLED.getBoolean()) {
+            estimAPI = new TwoB();
+            estimAPI.initDevice();
+        }
 
         activePersonality.getVariableHandler().setVariable("startDate", new TeaseDate(startedAt), true);
         activePersonality.getVariableHandler().setVariable("subName", ChatHandler.getHandler().getSubParticipant().getName(), true);
@@ -138,7 +139,10 @@ public class Session {
 
                 //Initialize a new session instance
                 TeaseAI.application.initializeNewSession();
-                estimAPI.disconnectDevice();
+                
+                if(estimAPI != null) {
+                    estimAPI.disconnectDevice();
+                }
 
                 //Unlock Images
                 MediaHandler.getHandler().setImagesLocked(false);
