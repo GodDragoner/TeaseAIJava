@@ -223,6 +223,46 @@ public class SettingsController {
     
     @FXML
     public CheckBox estimMetronomeCheckbox;
+    
+    @FXML
+    public CheckBox estimMetronomeUserControlsPower;
+    
+    @FXML
+    public TextField estimDevicePathField;
+    
+    @FXML
+    public MenuButton estimMetronomeEnabledModes;
+    
+    @FXML
+    public TextField estimMetronomeBPMMin;
+    
+    @FXML
+    public TextField estimMetronomeBPMMax;
+    
+    @FXML
+    public TextField estimChannelAMin;
+    
+    @FXML
+    public TextField estimChannelAMax;
+    
+    @FXML
+    public TextField estimChannelBMin;
+    
+    @FXML
+    public TextField estimChannelBMax;
+    
+    @FXML
+    public TextField estimChannelCMin;
+    
+    @FXML
+    public TextField estimChannelCMax;
+    
+    @FXML
+    public TextField estimChannelDMin;
+    
+    @FXML
+    public TextField estimChannelDMax;
+    
 
     public void initiate() {
         mediaSettings.initiate();

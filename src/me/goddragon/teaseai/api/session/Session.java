@@ -4,19 +4,33 @@ import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.chat.ChatParticipant;
 import me.goddragon.teaseai.api.chat.SenderType;
+import me.goddragon.teaseai.api.config.ConfigValue;
 import me.goddragon.teaseai.api.config.TeaseDate;
 import me.goddragon.teaseai.api.media.MediaHandler;
 import me.goddragon.teaseai.api.runnable.TeaseRunnableHandler;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
+import me.goddragon.teaseai.gui.settings.EstimSettings;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import devices.TwoB.TwoB;
+import devices.TwoB.TwoBMode;
+import estimAPI.Channel;
 import estimAPI.EstimAPI;
+import estimAPI.Mode;
+import estimAPI.State;
 
 /**
  * Created by GodDragon on 26.03.2018.
@@ -28,6 +42,19 @@ public class Session {
     private long startedAt;
 
     private EstimAPI estimAPI = null;
+    private List<Mode> estimEnabledModes = null;
+    private Map<Channel, Integer> estimChannelValues = new HashMap<Channel, Integer>();
+    
+    private List<Mode> string2List(String string) {
+    	if (string.isEmpty()) {
+    		return new ArrayList<Mode>();
+    	}
+    	else {
+    		return Stream.of(string.split(","))
+        			.map(mode -> TwoBMode.valueOf(mode))
+        			.collect(Collectors.toList());
+    	}
+    }
 
     public void start() {
         setupStart();
@@ -61,8 +88,11 @@ public class Session {
         started = true;
 
         if(TeaseAI.application.ESTIM_ENABLED.getBoolean()) {
-            estimAPI = new TwoB();
+        	String devicePath = TeaseAI.application.ESTIM_DEVICE_PATH.getValue();
+            estimAPI = (!devicePath.isEmpty()) ? new TwoB(devicePath) : new TwoB();
             estimAPI.initDevice();
+            estimEnabledModes = string2List(TeaseAI.application.ESTIM_METRONOME_ENABLED_MODES.getValue());
+
         }
 
         activePersonality.getVariableHandler().setVariable("startDate", new TeaseDate(startedAt), true);
@@ -196,5 +226,13 @@ public class Session {
 
 	public EstimAPI getEstimAPI() {
 		return estimAPI;
+	}
+	
+	public List<Mode> getEstimEnabledModes() {
+		return estimEnabledModes;
+	}
+	
+	public Map<Channel, Integer> getEstimChannelValues() {
+		return estimChannelValues;
 	}
 }
