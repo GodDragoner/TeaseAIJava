@@ -22,7 +22,7 @@ import devices.TwoB.TwoBMode;
 import estimAPI.Mode;
 
 /**
- * Created by GodDragon on 04.04.2018.
+ * Created by xman2B on 07.07.2019.
  */
 public class EstimSettings {
 
