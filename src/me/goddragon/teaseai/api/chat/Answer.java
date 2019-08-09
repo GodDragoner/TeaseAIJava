@@ -49,7 +49,7 @@ public class Answer {
         this.answer = null;
         this.timeout = false;
 
-        TeaseAI.application.responsesDisabled = true;
+        TeaseAI.application.setResponsesDisabled(true);
 
         startedAt = System.currentTimeMillis();
         TeaseAI.application.waitPossibleScripThread(millisTimeout);

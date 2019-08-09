@@ -305,7 +305,7 @@ public class ChatHandler {
     }
 
     public void onSubMessage(String message) {
-        TeaseAI.application.responsesDisabled = false;
+        TeaseAI.application.setResponsesDisabled(false);
 
         if (currentCallback != null && currentCallback.getAnswer() == null) {
             currentCallback.setAnswer(message);
