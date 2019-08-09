@@ -125,7 +125,7 @@ public class ResponseHandler {
 
         synchronized (responses) {
             for (Response response : this.responses) {
-                if (response.containsLike(message) && !response.isDisabled() && (response.isIgnoreDisabledResponses() || !TeaseAI.application.responsesDisabled)) {
+                if (response.containsLike(message) && !response.isDisabled() && (response.isIgnoreDisabledResponses() || !TeaseAI.application.isResponsesDisabled())) {
                     responses.add(response);
                 }
             }

@@ -30,16 +30,19 @@ public class SendInputFunction extends CustomFunction {
                 TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
                 return null;
             case 1:
-                TeaseAI.application.responsesDisabled = true;
+                TeaseAI.application.setResponsesDisabled(true);
                 return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), 0);
             case 3:
                 if (args[1] instanceof Integer && args[2] instanceof Boolean) {
-                    TeaseAI.application.responsesDisabled = (boolean) args[2];
+                    TeaseAI.application.setResponsesDisabled((boolean) args[2]);
                     return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (int) args[1]);
                 }
             default:
                 Answer answer;
                 int offset = 1;
+
+                TeaseAI.application.setResponsesDisabled(true);
+
                 if (args[1] instanceof Integer) {
                     for (int x = offset + 1; x < args.length; x++) {
                         Answer.addOption(args[x].toString(), args[x].toString());
@@ -57,7 +60,7 @@ public class SendInputFunction extends CustomFunction {
                         Answer.addOption(args[x].toString(), args[x].toString());
                     }
 
-                    TeaseAI.application.responsesDisabled = (boolean) args[1];
+                    TeaseAI.application.setResponsesDisabled((boolean) args[1]);
 
                     answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Answer) args[1]);
                 } else {
@@ -67,7 +70,7 @@ public class SendInputFunction extends CustomFunction {
 
                     answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString());
                 }
-                TeaseAI.application.responsesDisabled = true;
+
                 return answer;
         }
     }

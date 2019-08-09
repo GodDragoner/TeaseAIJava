@@ -65,7 +65,7 @@ public class TeaseAI extends Application {
 
     private Session session;
     public boolean TextToSpeechEnabled = false;
-    public boolean responsesDisabled = false;
+    private boolean responsesDisabled = false;
 
 
     @Override
@@ -370,6 +370,14 @@ public class TeaseAI extends Application {
 
     public Scene getScene() {
         return mainScene;
+    }
+
+    public boolean isResponsesDisabled() {
+        return responsesDisabled;
+    }
+
+    public void setResponsesDisabled(boolean responsesDisabled) {
+        this.responsesDisabled = responsesDisabled;
     }
 
     public static TeaseAI getApplication() {
