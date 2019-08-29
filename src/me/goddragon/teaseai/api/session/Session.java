@@ -10,6 +10,8 @@ import me.goddragon.teaseai.api.runnable.TeaseRunnableHandler;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
+import me.goddragon.teaseai.api.statistics.StatisticsList;
+import me.goddragon.teaseai.api.statistics.StatisticsManager;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
@@ -23,6 +25,7 @@ public class Session {
     private boolean started = false;
     private boolean haltSession = false;
     private long startedAt;
+    public StatisticsManager statisticsManager;
 
     public void start() {
         setupStart();
@@ -33,7 +36,8 @@ public class Session {
                 ScriptHandler.getHandler().startPersonality(PersonalityManager.getManager().getActivePersonality());
             }
         };
-
+        
+        statisticsManager = new StatisticsManager();
         TeaseAI.application.scriptThread.start();
     }
 
