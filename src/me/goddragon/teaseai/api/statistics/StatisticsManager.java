@@ -10,7 +10,7 @@ public class StatisticsManager
 {
     private Stack<JavaModule> moduleStatistics;
     private StatisticsList statisticsList;
-    private boolean lastmoduleignored;
+    private boolean lastmoduleignored = false;
     public StatisticsManager()
     {
         moduleStatistics = new Stack<JavaModule>();
@@ -19,6 +19,7 @@ public class StatisticsManager
     
     public void addModule(String fileName)
     {
+        lastmoduleignored = false;
         JavaModule toPush = new JavaModule(fileName);
         toPush.StartTime = new Date();
         moduleStatistics.push(toPush);
@@ -28,7 +29,7 @@ public class StatisticsManager
     
     public void endModule()
     {
-        if (!lastmoduleignored)
+        if (!lastmoduleignored && !moduleStatistics.isEmpty())
         {
             moduleStatistics.pop().EndTime = new Date();
             statisticsList.writeJson();
