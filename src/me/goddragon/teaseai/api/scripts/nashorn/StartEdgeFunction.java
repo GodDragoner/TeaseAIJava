@@ -26,9 +26,12 @@ public class StartEdgeFunction extends CustomFunction {
         switch (args.length) {
             case 0:
                 StrokeHandler.getHandler().setEdging(true);
-                StrokeHandler.getHandler().setOnEdge(false);
+                StrokeHandler.getHandler().setEdgeHold(false);
                 ResponseHandler.getHandler().registerResponse(StrokeHandler.EDGE_RESPONSE);
                 return null;
+            case 1:
+                StrokeHandler.getHandler().startEdging((int)args[0]);;
+                StrokeHandler.getHandler().setEdgeHold(false);
         }
 
         TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());

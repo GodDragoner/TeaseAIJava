@@ -37,7 +37,6 @@ public class Session {
             }
         };
         
-        statisticsManager = new StatisticsManager();
         TeaseAI.application.scriptThread.start();
     }
 
