@@ -8,6 +8,7 @@ import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.api.statistics.JavaModule;
 import me.goddragon.teaseai.api.statistics.StatisticsBase;
+import me.goddragon.teaseai.api.statistics.StatisticsManager;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -99,7 +100,15 @@ public class ScriptHandler {
         registerFunction(new SystemMessageFunction());
         registerFunction(new SetResponseIgnoreDisabledFunction());
         registerFunction(new IgnoreCurrentModuleFunction());
-        //engine.put("run", (Consumer<String>) this::evalScript);
+        registerFunction(new ToggleModuleDetectionFunction());
+        registerFunction(new ToggleEdgeDetectionFunction());
+        registerFunction(new ToggleEdgeHoldDetectionFunction());
+        registerFunction(new ToggleStrokeDetectionFunction());
+        registerFunction(new SetEdgeHoldFunction());
+        registerFunction(new AddEdgeStatisticFunction());
+        registerFunction(new AddModuleStatisticFunction());
+        registerFunction(new AddStrokeStatisticFunction());
+        registerFunction(new GetThisSessionStatisticsFunction());
     }
 
     public void registerFunction(CustomFunction function) {
@@ -152,7 +161,7 @@ public class ScriptHandler {
             personality = PersonalityManager.getManager().getLoadingPersonality();
         }
         File script = FileUtils.getRandomMatchingFile(personality.getFolder().getAbsolutePath() + File.separator + scriptName);
-        if (TeaseAI.application.getSession() != null)
+        if (TeaseAI.application.getSession() != null && StatisticsManager.moduleDetection)
             TeaseAI.application.getSession().statisticsManager.addModule(script.getName());
         
         if (script == null || !script.exists()) {
