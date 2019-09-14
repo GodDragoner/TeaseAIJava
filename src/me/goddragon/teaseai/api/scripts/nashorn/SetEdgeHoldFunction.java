@@ -1,18 +1,15 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
-import me.goddragon.teaseai.api.session.StrokeHandler;
-import me.goddragon.teaseai.utils.TeaseLogger;
-
 import java.util.Arrays;
 import java.util.logging.Level;
 
-/**
- * Created by GodDragon on 05.04.2018.
- */
-public class IsOnEdgeFunction extends CustomFunction {
+import me.goddragon.teaseai.api.session.StrokeHandler;
+import me.goddragon.teaseai.utils.TeaseLogger;
 
-    public IsOnEdgeFunction() {
-        super("isOnEdge", "onEdge", "isEdge");
+public class SetEdgeHoldFunction extends CustomFunction
+{
+    public SetEdgeHoldFunction() {
+        super("setEdgeHold", "setEdgeHolding");
     }
 
     @Override
@@ -22,11 +19,13 @@ public class IsOnEdgeFunction extends CustomFunction {
 
     @Override
     public Object call(Object object, Object... args) {
-        super.call(object, args);
-
         switch (args.length) {
             case 0:
-                return StrokeHandler.getHandler().isEdgeHolding();
+                StrokeHandler.getHandler().setEdgeHold(true);
+                return null;
+            case 1:
+                StrokeHandler.getHandler().setEdgeHold((boolean)args[0]);
+                return null;
         }
 
         TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());
