@@ -6,6 +6,9 @@ import me.goddragon.teaseai.api.chat.vocabulary.VocabularyHandler;
 import me.goddragon.teaseai.api.scripts.nashorn.*;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
+import me.goddragon.teaseai.api.statistics.JavaModule;
+import me.goddragon.teaseai.api.statistics.StatisticsBase;
+import me.goddragon.teaseai.api.statistics.StatisticsManager;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -15,6 +18,7 @@ import javax.script.ScriptException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Stack;
 import java.util.logging.Level;
 
 /**
@@ -95,7 +99,16 @@ public class ScriptHandler {
         registerFunction(new SetTextToSpeechFunction());
         registerFunction(new SystemMessageFunction());
         registerFunction(new SetResponseIgnoreDisabledFunction());
-        //engine.put("run", (Consumer<String>) this::evalScript);
+        registerFunction(new IgnoreCurrentModuleFunction());
+        registerFunction(new ToggleModuleDetectionFunction());
+        registerFunction(new ToggleEdgeDetectionFunction());
+        registerFunction(new ToggleEdgeHoldDetectionFunction());
+        registerFunction(new ToggleStrokeDetectionFunction());
+        registerFunction(new SetEdgeHoldFunction());
+        registerFunction(new AddEdgeStatisticFunction());
+        registerFunction(new AddModuleStatisticFunction());
+        registerFunction(new AddStrokeStatisticFunction());
+        registerFunction(new GetThisSessionStatisticsFunction());
     }
 
     public void registerFunction(CustomFunction function) {
@@ -148,7 +161,9 @@ public class ScriptHandler {
             personality = PersonalityManager.getManager().getLoadingPersonality();
         }
         File script = FileUtils.getRandomMatchingFile(personality.getFolder().getAbsolutePath() + File.separator + scriptName);
-
+        if (TeaseAI.application.getSession() != null && StatisticsManager.moduleDetection)
+            TeaseAI.application.getSession().statisticsManager.addModule(script.getName());
+        
         if (script == null || !script.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Script " + scriptName + " does not exist.");
             return;
@@ -172,7 +187,6 @@ public class ScriptHandler {
                 ScriptHandler.getHandler().load();
                 resetEngine = true;
             }
-
             engine.eval(new FileReader(script));
 
             //Reset the engine again because we only created it temporarily

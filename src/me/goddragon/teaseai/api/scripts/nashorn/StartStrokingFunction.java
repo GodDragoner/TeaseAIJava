@@ -25,13 +25,13 @@ public class StartStrokingFunction extends CustomFunction {
         switch (args.length) {
             case 1:
                 if (args[0] instanceof Integer) {
-                    StrokeHandler.getHandler().startMetronome((Integer) args[0], 0);
+                    StrokeHandler.getHandler().startStroking((Integer) args[0], 0);
                     return null;
                 }
                 break;
             case 2:
                 if (args[0] instanceof Integer && args[1] instanceof Integer) {
-                    StrokeHandler.getHandler().startMetronome((Integer) args[0], (Integer) args[1]);
+                    StrokeHandler.getHandler().startStroking((Integer) args[0], (Integer) args[1]);
                     return null;
                 }
                 break;
