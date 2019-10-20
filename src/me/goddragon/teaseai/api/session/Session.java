@@ -12,6 +12,7 @@ import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.gui.settings.EstimSettings;
+import me.goddragon.teaseai.utils.EstimState;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
@@ -42,19 +43,7 @@ public class Session {
     private long startedAt;
 
     private EstimAPI estimAPI = null;
-    private List<Mode> estimEnabledModes = null;
-    private Map<Channel, Integer> estimChannelValues = new HashMap<Channel, Integer>();
-    
-    private List<Mode> string2List(String string) {
-    	if (string.isEmpty()) {
-    		return new ArrayList<Mode>();
-    	}
-    	else {
-    		return Stream.of(string.split(","))
-        			.map(mode -> TwoBMode.valueOf(mode))
-        			.collect(Collectors.toList());
-    	}
-    }
+    private EstimState estimState = new EstimState();
 
     public void start() {
         setupStart();
@@ -91,7 +80,7 @@ public class Session {
         	String devicePath = TeaseAI.application.ESTIM_DEVICE_PATH.getValue();
             estimAPI = (!devicePath.isEmpty()) ? new TwoB(devicePath) : new TwoB();
             estimAPI.initDevice();
-            estimEnabledModes = string2List(TeaseAI.application.ESTIM_METRONOME_ENABLED_MODES.getValue());
+            estimState.setEnabledModes(TeaseAI.application.ESTIM_METRONOME_ENABLED_MODES.getValue());
 
         }
 
@@ -228,11 +217,8 @@ public class Session {
 		return estimAPI;
 	}
 	
-	public List<Mode> getEstimEnabledModes() {
-		return estimEnabledModes;
+	public EstimState getEstimState() {
+		return estimState;
 	}
 	
-	public Map<Channel, Integer> getEstimChannelValues() {
-		return estimChannelValues;
-	}
 }
