@@ -3,7 +3,7 @@ package me.goddragon.teaseai.api.session;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.response.Response;
 import me.goddragon.teaseai.api.chat.response.ResponseHandler;
-import me.goddragon.teaseai.utils.EstimApi;
+import me.goddragon.teaseai.utils.EstimMetronome;
 import me.goddragon.teaseai.utils.Metronome;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -30,7 +30,7 @@ public class StrokeHandler {
     private boolean isOnEdge;
 
     private volatile Metronome metronome;
-    private volatile EstimApi estimAPI;
+    private volatile EstimMetronome estimMetronome;
     private Thread waitingThread;
     private int currentBPM;
 
@@ -47,7 +47,7 @@ public class StrokeHandler {
         (metronome = new Metronome()).start(bpm);
         
         if (TeaseAI.application.ESTIM_ENABLED.getBoolean() && TeaseAI.application.ESTIM_METRONOME.getBoolean()) {
-            (estimAPI = new EstimApi()).start(bpm);
+            (estimMetronome = new EstimMetronome()).start(bpm);
         }
 
         if (durationSeconds > 0) {
@@ -63,8 +63,8 @@ public class StrokeHandler {
                             //Check if we are still dealing with the metronome that we were watching
                             if (watchingMetronome == metronome) {
                                 metronome.stop();
-                                if (estimAPI != null) {
-                                    estimAPI.stop();
+                                if (estimMetronome != null) {
+                                    estimMetronome.stop();
                                 }
                                 waitingThread = null;
                             }
@@ -82,9 +82,9 @@ public class StrokeHandler {
             metronome.stop();
             metronome = null;
 
-            if (estimAPI != null) {
-                estimAPI.stop();
-                estimAPI = null;
+            if (estimMetronome != null) {
+                estimMetronome.stop();
+                estimMetronome = null;
             }
 
             //Check if we are waiting for stopping the metronome
