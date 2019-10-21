@@ -24,8 +24,7 @@ import devices.TwoB.TwoBMode;
 public class EstimMetronome {
 	private int bpm;
 	private EstimAPI api;
-	private List<Mode> enabledModes;
-	private Map<Channel, Integer> channelValues;
+	private EstimState estimState;
 	private Random random = new Random();
 
 	private static final Set<Mode> SPECIAL_MODES = Stream
@@ -35,32 +34,15 @@ public class EstimMetronome {
 	public EstimMetronome() {
 		api = TeaseAI.application.getSession().getEstimAPI();
 		Objects.requireNonNull(api, "Can't get the instance of EstimAPI");
-		var estimState = TeaseAI.application.getSession().getEstimState();
-		enabledModes = estimState.getEstimEnabledModes();
-		channelValues = estimState.getEstimChannelValues();
+		estimState = TeaseAI.application.getSession().getEstimState();
 	}
 
-	// Save the values of channel A and B
-	private void savePower() {
-		List<Channel> channels = api.getChannels();
-		Channel channelA = channels.get(0);
-		channelValues.put(channelA, channelA.getValue());
-		Channel channelB = channels.get(1);
-		channelValues.put(channelB, channelB.getValue());
-	}
-
-	private void restorePower() {
-		for (Channel c : channelValues.keySet()) {
-			if (c.getID() == 0 || c.getID() == 1) {
-				api.setChannelOutPut(c, channelValues.get(c));
-			}
-		}
-	}
 
 	public void start(int bpm) {
 		this.bpm = bpm;
 		// TODO Transform BPM in some appropriate commands
 
+		var enabledModes = estimState.getEstimEnabledModes();
 		var mode = enabledModes.get(random.nextInt(enabledModes.size()));
 
 		api.setMode(mode);
@@ -89,7 +71,7 @@ public class EstimMetronome {
 
 		// Restore Power, when enabled, else choose power in random interval
 		if (TeaseAI.application.ESTIM_METRONOME_USER_CONTROLS_POWER.getBoolean()) {
-			restorePower();
+			estimState.restorePower(api);
 		} else {
 			var channelAMin = TeaseAI.application.ESTIM_CHANNEL_A_MIN.getInt();
 			var channelAMax = TeaseAI.application.ESTIM_CHANNEL_A_MAX.getInt();
@@ -105,7 +87,7 @@ public class EstimMetronome {
 	}
 
 	public void stop() {
-		savePower();
+		estimState.savePower(api);
 		api.kill();
 	}
 
