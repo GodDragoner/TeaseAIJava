@@ -196,6 +196,14 @@ public class ScriptHandler {
         } catch (ScriptException e) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Latest loaded file was '" + currentFile.getPath() + "' and error was found in line " + e.getLineNumber() + "\n" +
                     "Error: " + e.getMessage(), false);
+            if (TeaseAI.application.getSession() != null)
+            {
+                JavaModule current = TeaseAI.application.getSession().statisticsManager.getCurrentModule();
+                if (current != null)
+                {
+                    current.setErrored(true);
+                }
+            }
             e.printStackTrace();
         }
     }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class JavaModule extends StatisticsBase
 {
+    public Boolean Errored;
     public String FileName;
     public ArrayList<StatisticsBase> SubStatistics;
     public JavaModule(String fileName)
@@ -11,6 +12,11 @@ public class JavaModule extends StatisticsBase
         super();
         this.FileName = fileName.replaceAll(".js", "");
         isA = "Module";
+    }
+    
+    public void setErrored(boolean value)
+    {
+        Errored = Boolean.valueOf(value);
     }
     
     public void add(StatisticsBase subStatistic)

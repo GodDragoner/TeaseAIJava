@@ -10,7 +10,7 @@ import me.goddragon.teaseai.utils.TeaseLogger;
 public class GetThisSessionStatisticsFunction extends CustomFunction {
 
     public GetThisSessionStatisticsFunction() {
-        super("getThisSession", "getThisSessionStatistic", "getThisSessionStatistic", "getThisSessionInfo");
+        super("getThisSession", "getThisSessionStatistic", "getThisSessionStatistics", "getThisSessionInfo");
     }
 
     @Override
