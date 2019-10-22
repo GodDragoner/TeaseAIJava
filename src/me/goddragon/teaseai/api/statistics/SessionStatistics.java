@@ -36,6 +36,8 @@ public class SessionStatistics
         {
             strokes = new ArrayList<JavaStroke>();
             edges = new ArrayList<JavaEdge>();
+            edgeHolds = new ArrayList<JavaEdgeHold>();
+            fetishActivities = new ArrayList<JavaFetishActivity>();
             for (JavaModule module: statistics)
             {
                 proccessListsHelper(module);

@@ -16,6 +16,7 @@ public class CustomSerializer implements JsonSerializer<ArrayList<StatisticsBase
 
     static {
         map.put("Edge", JavaEdge.class);
+        map.put("Response", JavaResponse.class);
         map.put("Module", JavaModule.class);
         map.put("Stroke", JavaStroke.class);
         map.put("StatisticsBase", StatisticsBase.class);

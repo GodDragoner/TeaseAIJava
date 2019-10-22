@@ -55,6 +55,19 @@ public class StatisticsManager
         edgeHoldDetection = state;
     }
 
+    public JavaModule getCurrentModule()
+    {
+        JavaModule toReturn = null;
+        if (moduleStatistics != null)
+        {
+            if (!moduleStatistics.isEmpty())
+            {
+                toReturn = moduleStatistics.peek();
+            }
+        }
+        return toReturn;
+    }
+    
     public JavaModule addModule(String fileName)
     {
         JavaModule toPush = new JavaModule(fileName);

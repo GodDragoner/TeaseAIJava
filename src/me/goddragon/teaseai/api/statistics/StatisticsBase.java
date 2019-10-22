@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class StatisticsBase
 {
+    protected String isA = "StatisticsBase";
     protected Date StartTime;
     protected Date EndTime;
-    protected String isA = "StatisticsBase";
     
     public StatisticsBase()
     {
