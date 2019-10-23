@@ -67,8 +67,8 @@ public class TeaseAI extends Application {
     public final ConfigValue ESTIM_METRONOME = new ConfigValue("estimMetronome", false, configHandler);
     public final ConfigValue ESTIM_METRONOME_USER_CONTROLS_POWER = new ConfigValue("estimMetronomeUserControlsPower", true, configHandler);
     public final ConfigValue ESTIM_METRONOME_ENABLED_MODES = new ConfigValue("estimMetronomeEnabledModes", "CONTINUOUS,TRAINING,FLO,SQUEEZE,PULSE,THROB,THRUST,TWIST,B_SPLIT,MILK,CYCLE,WAVE,STEP,BOUNCE,A_SPLIT,WATERFALL,RANDOM", configHandler);
-    public final ConfigValue ESTIM_METRONOME_BPM_MIN = new ConfigValue("estimChannelAMin", "0", configHandler);
-    public final ConfigValue ESTIM_METRONOME_BPM_MAX = new ConfigValue("estimChannelAMax", "180", configHandler);
+    public final ConfigValue ESTIM_METRONOME_BPM_MIN = new ConfigValue("estimChannelBpmMin", "0", configHandler);
+    public final ConfigValue ESTIM_METRONOME_BPM_MAX = new ConfigValue("estimChannelBpmMax", "180", configHandler);
     public final ConfigValue ESTIM_CHANNEL_A_MIN = new ConfigValue("estimChannelAMin", "1", configHandler);
     public final ConfigValue ESTIM_CHANNEL_A_MAX = new ConfigValue("estimChannelAMax", "10", configHandler);
     public final ConfigValue ESTIM_CHANNEL_B_MIN = new ConfigValue("estimChannelBMin", "1", configHandler);
