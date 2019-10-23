@@ -10,7 +10,6 @@ import me.goddragon.teaseai.api.runnable.TeaseRunnableHandler;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
-import me.goddragon.teaseai.api.statistics.StatisticsList;
 import me.goddragon.teaseai.api.statistics.StatisticsManager;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -30,27 +29,27 @@ public class Session {
     public void start() {
         setupStart();
 
-        TeaseAI.application.scriptThread = new Thread() {
+        TeaseAI.application.setScriptThread(new Thread() {
             @Override
             public void run() {
                 ScriptHandler.getHandler().startPersonality(PersonalityManager.getManager().getActivePersonality());
             }
-        };
+        });
         
-        TeaseAI.application.scriptThread.start();
+        TeaseAI.application.getScriptThread().start();
     }
 
     public void startWithScript(File file) {
         setupStart();
 
-        TeaseAI.application.scriptThread = new Thread() {
+        TeaseAI.application.setScriptThread(new Thread() {
             @Override
             public void run() {
                 ScriptHandler.getHandler().startPersonality(PersonalityManager.getManager().getActivePersonality(), file);
             }
-        };
+        });
 
-        TeaseAI.application.scriptThread.start();
+        TeaseAI.application.getScriptThread().start();
     }
 
 
@@ -87,8 +86,8 @@ public class Session {
 
     public void checkForForcedEnd() {
         if (TeaseAI.application.getSession().isHaltSession()) {
-            if (TeaseAI.application.scriptThread == Thread.currentThread()) {
-                synchronized (TeaseAI.application.scriptThread) {
+            if (TeaseAI.application.getScriptThread() == Thread.currentThread()) {
+                synchronized (TeaseAI.application.getScriptThread()) {
                     TeaseAI.application.getSession().end();
 
                     while (true) {

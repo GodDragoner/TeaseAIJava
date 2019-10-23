@@ -34,6 +34,7 @@ import me.goddragon.teaseai.utils.update.JFXUpdater;
 import me.goddragon.teaseai.utils.update.UpdateHandler;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -51,7 +52,7 @@ public class TeaseAI extends Application {
     private MainGuiController controller;
     private Thread mainThread;
     private Stage primaryStage;
-    public Thread scriptThread;
+    private Thread scriptThread;
 
     public StartupProgressPane startupProgressPane;
     private Scene mainScene;
@@ -215,18 +216,25 @@ public class TeaseAI extends Application {
     }
 
     public boolean checkForNewResponses() {
-        if (Thread.currentThread() != scriptThread) {
+        if (!Thread.currentThread().equals(getScriptThread())) {
             throw new IllegalStateException("Can only check for new responses on the script thread");
         }
 
-        //Repeat for all queued responses
-        while (true) {
-            Response queuedResponse = ResponseHandler.getHandler().getLatestQueuedResponse();
+        //This way we will handle ALL queued responses in this session but any further queued responses will be done too
+        List<Response> queued = (List<Response>) ResponseHandler.getHandler().getQueuedResponse().clone();
+        ResponseHandler.getHandler().getQueuedResponse().clear();
 
-            if (queuedResponse != null && (queuedResponse.isIgnoreDisabledResponses() || !responsesDisabled)) {
+        //Repeat for all queued responses
+        while (!queued.isEmpty()) {
+            Response queuedResponse = queued.get(0);
+            queued.remove(0);
+
+            if (queuedResponse != null) {
                 ResponseHandler.getHandler().removeQueuedResponse(queuedResponse);
-                if (queuedResponse.trigger()) {
-                    return true;
+                if ((queuedResponse.isIgnoreDisabledResponses() || !responsesDisabled)) {
+                    if (queuedResponse.trigger()) {
+                        return true;
+                    }
                 }
             } else {
                 break;
@@ -250,7 +258,7 @@ public class TeaseAI extends Application {
         waitThread(timeoutMillis);
 
         //Let's check whether we are supposed to force the session to end
-        if (Thread.currentThread() == scriptThread) {
+        if (Thread.currentThread() == getScriptThread()) {
             session.checkForForcedEnd();
         }
     }
@@ -260,7 +268,7 @@ public class TeaseAI extends Application {
     }
 
     public void sleepPossibleScripThread(long sleepMillis, boolean runnablesOnly) {
-        if (Thread.currentThread() != scriptThread) {
+        if (Thread.currentThread() != getScriptThread()) {
             sleepThread(sleepMillis);
         } else {
             long startedAt = System.currentTimeMillis();
@@ -282,7 +290,7 @@ public class TeaseAI extends Application {
     }
 
     public void sleepScripThread(long sleepMillis) {
-        if (Thread.currentThread() != scriptThread) {
+        if (Thread.currentThread() != getScriptThread()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Tried to sleep script thread from other thread.");
             return;
         }
@@ -291,7 +299,7 @@ public class TeaseAI extends Application {
     }
 
     public void waitScriptThread(long timeoutMillis) {
-        if (Thread.currentThread() != scriptThread) {
+        if (Thread.currentThread() != getScriptThread()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Tried to wait script thread from other thread.");
             return;
         }
@@ -329,7 +337,7 @@ public class TeaseAI extends Application {
 
     public void initializeNewSession() {
         this.session = new Session();
-        
+
         this.session.statisticsManager = new StatisticsManager();
 
         //End everything such as metronome and stroking
@@ -348,6 +356,11 @@ public class TeaseAI extends Application {
 
     public void setTTS(boolean value) {
         TextToSpeechEnabled = value;
+    }
+
+    public void setScriptThread(Thread scriptThread) {
+        this.scriptThread = scriptThread;
+        System.out.println("Set script thread!");
     }
 
     public Thread getScriptThread() {

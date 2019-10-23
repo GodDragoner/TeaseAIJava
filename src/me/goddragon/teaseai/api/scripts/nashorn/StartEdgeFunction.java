@@ -30,7 +30,7 @@ public class StartEdgeFunction extends CustomFunction {
                 ResponseHandler.getHandler().registerResponse(StrokeHandler.EDGE_RESPONSE);
                 return null;
             case 1:
-                StrokeHandler.getHandler().startEdging((int)args[0]);;
+                StrokeHandler.getHandler().startEdging((int)args[0]);
                 StrokeHandler.getHandler().setEdgeHold(false);
         }
 
