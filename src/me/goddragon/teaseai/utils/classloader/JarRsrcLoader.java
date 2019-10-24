@@ -2,6 +2,7 @@ package me.goddragon.teaseai.utils.classloader;
 
 
 import me.goddragon.teaseai.utils.FileUtils;
+import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
+import java.util.logging.Level;
 
 public class JarRsrcLoader {
 
@@ -22,6 +24,8 @@ public class JarRsrcLoader {
     }
 
     public static void main(String[] args) throws IllegalArgumentException, SecurityException, IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        TeaseLogger.getLogger().log(Level.INFO, "Starting up TAJ Classloader...");
+
         JarRsrcLoader.ManifestInfo mi = getManifestInfo();
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         URL.setURLStreamHandlerFactory(new RsrcURLStreamHandlerFactory(cl));
@@ -55,6 +59,7 @@ public class JarRsrcLoader {
         ClassLoader jceClassLoader = new URLClassLoader(rsrcUrls, getParentClassLoader());
         Thread.currentThread().setContextClassLoader(jceClassLoader);
 
+        TeaseLogger.getLogger().log(Level.INFO, "Classes injected. Starting up TAJ...");
         Class c = Class.forName(mi.rsrcMainClass, true, jceClassLoader);
         Method main = c.getMethod("main", args.getClass());
         main.invoke(null, (Object) args);

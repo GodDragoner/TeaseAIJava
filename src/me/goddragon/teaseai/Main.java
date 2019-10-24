@@ -1,5 +1,6 @@
 package me.goddragon.teaseai;
 
+import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 import me.goddragon.teaseai.utils.ZipUtils;
 import me.goddragon.teaseai.utils.update.UpdateHandler;
@@ -18,14 +19,16 @@ public class Main {
     public static String OPERATING_SYSTEM = System.getProperty("os.name").toLowerCase();
 
     public static void main(String[] args) {
+        TeaseLogger.getLogger().log(Level.INFO, "Checking libraries for updates...");
         UpdateHandler.getHandler().checkLibraries();
+        TeaseLogger.getLogger().log(Level.INFO, "Libraries checked and up-to-date.");
 
         if (ManagementFactory.getRuntimeMXBean().getInputArguments().size() == 0 && JAVA_VERSION > 10) {
             try {
                 //Re-launch the app itself with VM option passed
                 File currentDir = Paths.get(System.getProperty("user.dir")).toFile();
 
-                if (getLibFolder() == null) {
+                if (getJavaFXLibFolder() == null) {
 
                     TeaseLogger.getLogger().log(Level.SEVERE, "No JavaFX installation found. Asking for download...");
 
@@ -112,40 +115,44 @@ public class Main {
                 ioe.printStackTrace();
             }
 
+            TeaseLogger.getLogger().log(Level.INFO, "Restarting TAJ with JAVA-FX startup parameters...");
             restart();
         } else {
+            TeaseLogger.getLogger().log(Level.INFO, "Initialization done.");
             TeaseAI.main(args);
         }
     }
 
 
-    private static File getLibFolder() {
+    private static File getJavaFXLibFolder() {
         File currentDir = Paths.get(System.getProperty("user.dir")).toFile();
 
-        File libFolder = null;
         for (File file : currentDir.listFiles()) {
             if (file.isDirectory()) {
                 for (File dirFile : file.listFiles()) {
-                    if (dirFile.isDirectory() && dirFile.getName().equals("lib")) {
-                        libFolder = dirFile;
+                    //Check if we have found the right lib folder containing the files we expect it to contain
+                    if (dirFile.isDirectory() && dirFile.getName().equals("lib") && FileUtils.folderContains(dirFile, "javafx.base.jar")) {
+                        //libFolder = dirFile;
+                        return dirFile;
                     }
                 }
             }
         }
 
-        return libFolder;
+        return null;
     }
 
     public static void restart() {
         try {
-            Runtime.getRuntime().exec(new String[]{"java", "--module-path=" + getLibFolder().getPath(), "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar", "test"});
-                    /*BufferedReader input = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-                String line;
-                while ((line = input.readLine()) != null) {
-                    System.out.println(line);
-                }
+            Process process = Runtime.getRuntime().exec(new String[]{"java", "--module-path=" + getJavaFXLibFolder().getPath(), "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar"});
 
-                input.close();*/
+            /*BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = input.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            input.close();*/
         } catch (IOException e) {
             e.printStackTrace();
         }
