@@ -70,11 +70,11 @@ public class SendMessageFunction extends CustomFunction {
                     TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage must have a integer for the second argument");
                     return null;
                 }
-                if (!(args[2] instanceof Integer)) {
+                if (!(args[2] instanceof Boolean)) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage must have a boolean for the third argument");
                     return null;
                 }
-                ChatHandler.getHandler().getSelectedSender().customMessage((String) args[0], (int) args[2], (Boolean) args[3]);
+                ChatHandler.getHandler().getSelectedSender().customMessage((String) args[0], (int) args[1], (Boolean) args[2]);
 
                 break;
             case 0:

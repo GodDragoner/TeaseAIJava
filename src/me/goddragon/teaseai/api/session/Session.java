@@ -11,6 +11,7 @@ import me.goddragon.teaseai.api.runnable.TeaseRunnableHandler;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
+import me.goddragon.teaseai.api.statistics.StatisticsManager;
 import me.goddragon.teaseai.gui.settings.EstimSettings;
 import me.goddragon.teaseai.utils.EstimState;
 import me.goddragon.teaseai.utils.TeaseLogger;
@@ -41,6 +42,7 @@ public class Session {
     private boolean started = false;
     private boolean haltSession = false;
     private long startedAt;
+    public StatisticsManager statisticsManager;
 
     private EstimAPI estimAPI = null;
     private EstimState estimState = new EstimState();
@@ -48,27 +50,27 @@ public class Session {
     public void start() {
         setupStart();
 
-        TeaseAI.application.scriptThread = new Thread() {
+        TeaseAI.application.setScriptThread(new Thread() {
             @Override
             public void run() {
                 ScriptHandler.getHandler().startPersonality(PersonalityManager.getManager().getActivePersonality());
             }
-        };
-
-        TeaseAI.application.scriptThread.start();
+        });
+        
+        TeaseAI.application.getScriptThread().start();
     }
 
     public void startWithScript(File file) {
         setupStart();
 
-        TeaseAI.application.scriptThread = new Thread() {
+        TeaseAI.application.setScriptThread(new Thread() {
             @Override
             public void run() {
                 ScriptHandler.getHandler().startPersonality(PersonalityManager.getManager().getActivePersonality(), file);
             }
-        };
+        });
 
-        TeaseAI.application.scriptThread.start();
+        TeaseAI.application.getScriptThread().start();
     }
 
 
@@ -113,8 +115,8 @@ public class Session {
 
     public void checkForForcedEnd() {
         if (TeaseAI.application.getSession().isHaltSession()) {
-            if (TeaseAI.application.scriptThread == Thread.currentThread()) {
-                synchronized (TeaseAI.application.scriptThread) {
+            if (TeaseAI.application.getScriptThread() == Thread.currentThread()) {
+                synchronized (TeaseAI.application.getScriptThread()) {
                     TeaseAI.application.getSession().end();
 
                     while (true) {

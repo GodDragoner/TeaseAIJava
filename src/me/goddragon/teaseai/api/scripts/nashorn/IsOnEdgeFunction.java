@@ -26,7 +26,7 @@ public class IsOnEdgeFunction extends CustomFunction {
 
         switch (args.length) {
             case 0:
-                return StrokeHandler.getHandler().isOnEdge();
+                return StrokeHandler.getHandler().isEdgeHolding();
         }
 
         TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());
