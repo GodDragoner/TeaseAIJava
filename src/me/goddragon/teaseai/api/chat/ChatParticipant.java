@@ -150,7 +150,7 @@ public class ChatParticipant {
 
         text.setFont(Font.font(null, FontWeight.BOLD, TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 1));
         //Check whether we can find a response fitting right now
-        if (type == SenderType.SUB ) {
+        if (this.type == SenderType.SUB ) {
             Collection<Response> responses = ResponseHandler.getHandler().checkMessageForResponse(rawMessage);
 
             if (!responses.isEmpty()) {

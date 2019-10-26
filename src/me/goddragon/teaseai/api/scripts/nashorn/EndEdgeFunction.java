@@ -26,12 +26,7 @@ public class EndEdgeFunction extends CustomFunction {
 
         switch (args.length) {
             case 0:
-                if (!StrokeHandler.getHandler().isEdging() && !StrokeHandler.getHandler().isOnEdge()) {
-                    TeaseLogger.getLogger().log(Level.SEVERE, "Sub was not on the edge however " + getFunctionName() + " was called.");
-                } else {
-                    StrokeHandler.getHandler().setEdging(false);
-                    StrokeHandler.getHandler().setOnEdge(false);
-                }
+                StrokeHandler.getHandler().setEdging(false);
 
                 return null;
         }

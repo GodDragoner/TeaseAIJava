@@ -14,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -25,11 +24,13 @@ public class ResponseHandler {
 
     private static ResponseHandler handler = new ResponseHandler();
 
-    private final Collection<Response> responses = new HashSet<>();
+    private final Collection<Response> responses = new ArrayList<>();
 
-    private final List<Response> queuedResponse = new ArrayList<>();
+    private final ArrayList<Response> queuedResponse = new ArrayList<>();
 
     private Response currentLoadingResponse;
+
+    private boolean lockedQueuedResponse = false;
 
     public void loadResponsesFromPersonality(Personality personality) {
         responses.clear();
@@ -48,9 +49,10 @@ public class ResponseHandler {
                         ScriptEngine engine = ScriptHandler.getHandler().getEngine();
                         String responseName = file.getName().substring(0, file.getName().length() - 3);
                         String functionName = StringUtils.decapitalize(responseName) + "Response";
-                        try {
-                            Invocable invocable = (Invocable) engine;
 
+                        try {
+
+                            Invocable invocable = (Invocable) engine;
                             Object result = invocable.invokeFunction(functionName, getMessage());
 
                             if (result instanceof Boolean) {
@@ -110,10 +112,14 @@ public class ResponseHandler {
         }
     }
 
+    public ArrayList<Response> getQueuedResponse() {
+        return queuedResponse;
+    }
+
     public Response getLatestQueuedResponse() {
         synchronized (queuedResponse) {
             if (!queuedResponse.isEmpty()) {
-                return queuedResponse.get(queuedResponse.size() - 1);
+                return queuedResponse.get(0);
             }
         }
 
@@ -125,7 +131,7 @@ public class ResponseHandler {
 
         synchronized (responses) {
             for (Response response : this.responses) {
-                if (response.containsLike(message) && !response.isDisabled() && (response.isIgnoreDisabledResponses() || !TeaseAI.application.responsesDisabled)) {
+                if (response.containsLike(message) && !response.isDisabled() && (response.isIgnoreDisabledResponses() || !TeaseAI.application.isResponsesDisabled())) {
                     responses.add(response);
                 }
             }
@@ -136,6 +142,14 @@ public class ResponseHandler {
 
     public Response getCurrentLoadingResponse() {
         return currentLoadingResponse;
+    }
+
+    public boolean isLockedQueuedResponse() {
+        return lockedQueuedResponse;
+    }
+
+    public void setLockedQueuedResponse(boolean lockedQueuedResponse) {
+        this.lockedQueuedResponse = lockedQueuedResponse;
     }
 
     public static ResponseHandler getHandler() {
