@@ -64,7 +64,23 @@ public class TeaseAI extends Application {
     public final ConfigValue TEASE_AI_PROPERTIES_LINK = new ConfigValue("teaseAIPropertiesLink", UpdateHandler.TEASE_AI_PROPERTIES_DEFAULT_LINK, configHandler);
     public final ConfigValue TEXT_TO_SPEECH = new ConfigValue("texttospeech", 2, configHandler);
     public final ConfigValue DEBUG_MODE = new ConfigValue("debugmode", false, configHandler);
-
+    public final ConfigValue ESTIM_ENABLED = new ConfigValue("estimEnabled", false, configHandler);
+    public final ConfigValue ESTIM_DEVICE_PATH = new ConfigValue("estimDevicePath", "", configHandler);
+    public final ConfigValue ESTIM_METRONOME = new ConfigValue("estimMetronome", false, configHandler);
+    public final ConfigValue ESTIM_METRONOME_USER_CONTROLS_POWER = new ConfigValue("estimMetronomeUserControlsPower", true, configHandler);
+    public final ConfigValue ESTIM_METRONOME_ENABLED_MODES = new ConfigValue("estimMetronomeEnabledModes", "CONTINUOUS,TRAINING,FLO,SQUEEZE,PULSE,THROB,THRUST,TWIST,B_SPLIT,MILK,CYCLE,WAVE,STEP,BOUNCE,A_SPLIT,WATERFALL,RANDOM", configHandler);
+    public final ConfigValue ESTIM_METRONOME_BPM_MIN = new ConfigValue("estimMetronomeBpmMin", "0", configHandler);
+    public final ConfigValue ESTIM_METRONOME_BPM_MAX = new ConfigValue("estimMetronomeBpmMax", "180", configHandler);
+    public final ConfigValue ESTIM_CHANNEL_A_MIN = new ConfigValue("estimChannelAMin", "1", configHandler);
+    public final ConfigValue ESTIM_CHANNEL_A_MAX = new ConfigValue("estimChannelAMax", "10", configHandler);
+    public final ConfigValue ESTIM_CHANNEL_B_MIN = new ConfigValue("estimChannelBMin", "1", configHandler);
+    public final ConfigValue ESTIM_CHANNEL_B_MAX = new ConfigValue("estimChannelBMax", "10", configHandler);
+    public final ConfigValue ESTIM_CHANNEL_C_MIN = new ConfigValue("estimChannelCMin", "1", configHandler);
+    public final ConfigValue ESTIM_CHANNEL_C_MAX = new ConfigValue("estimChannelCMax", "99", configHandler);
+    public final ConfigValue ESTIM_CHANNEL_D_MIN = new ConfigValue("estimChannelDMin", "1", configHandler);
+    public final ConfigValue ESTIM_CHANNEL_D_MAX = new ConfigValue("estimChannelDMax", "99", configHandler);
+    
+    
     private Session session;
     public boolean TextToSpeechEnabled = false;
     private boolean responsesDisabled = false;

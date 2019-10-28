@@ -7,6 +7,7 @@ import me.goddragon.teaseai.api.statistics.JavaEdge;
 import me.goddragon.teaseai.api.statistics.JavaStroke;
 import me.goddragon.teaseai.api.statistics.StatisticsManager;
 import me.goddragon.teaseai.utils.Metronome;
+import me.goddragon.teaseai.utils.EstimMetronome;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.logging.Level;
@@ -32,6 +33,7 @@ public class StrokeHandler {
     private boolean isHolding;
 
     private volatile Metronome metronome;
+    private volatile EstimMetronome estimMetronome;
     private Thread waitingThread;
     private int currentBPM;
 
@@ -61,6 +63,10 @@ public class StrokeHandler {
         currentBPM = bpm;
 
         (metronome = new Metronome()).start(bpm);
+        
+        if (TeaseAI.application.ESTIM_ENABLED.getBoolean() && TeaseAI.application.ESTIM_METRONOME.getBoolean()) {
+            (estimMetronome = new EstimMetronome()).start(bpm);
+        }
 
         if (durationSeconds > 0) {
             (waitingThread = new Thread() {
@@ -75,6 +81,9 @@ public class StrokeHandler {
                             //Check if we are still dealing with the metronome that we were watching
                             if (watchingMetronome == metronome) {
                                 metronome.stop();
+                                if (estimMetronome != null) {
+                                    estimMetronome.stop();
+                                }
                                 setStroking(false);
                                 waitingThread = null;
                             }
@@ -92,6 +101,11 @@ public class StrokeHandler {
             metronome.stop();
             metronome = null;
             setStroking(false);
+            
+            if (estimMetronome != null) {
+                estimMetronome.stop();
+                estimMetronome = null;
+            }
 
             //Check if we are waiting for stopping the metronome
             if (waitingThread != null) {
