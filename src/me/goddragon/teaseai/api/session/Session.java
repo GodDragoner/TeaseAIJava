@@ -4,7 +4,6 @@ import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.chat.ChatParticipant;
 import me.goddragon.teaseai.api.chat.SenderType;
-import me.goddragon.teaseai.api.config.ConfigValue;
 import me.goddragon.teaseai.api.config.TeaseDate;
 import me.goddragon.teaseai.api.media.MediaHandler;
 import me.goddragon.teaseai.api.runnable.TeaseRunnableHandler;
@@ -12,27 +11,15 @@ import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.api.statistics.StatisticsManager;
-import me.goddragon.teaseai.gui.settings.EstimSettings;
 import me.goddragon.teaseai.utils.EstimState;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
 import java.util.logging.Level;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import devices.TwoB.TwoB;
-import devices.TwoB.TwoBMode;
-import estimAPI.Channel;
 import estimAPI.EstimAPI;
-import estimAPI.Mode;
-import estimAPI.State;
 
 /**
  * Created by GodDragon on 26.03.2018.
