@@ -1,19 +1,19 @@
 package me.goddragon.teaseai.utils;
 
+import devices.TwoB.TwoBChannel;
+import devices.TwoB.TwoBMode;
 import estimAPI.EstimAPI;
 import estimAPI.Mode;
 import me.goddragon.teaseai.TeaseAI;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import devices.TwoB.TwoBChannel;
-import devices.TwoB.TwoBMode;
 
 /**
  * Created by xman2B on 07.07.2019.
@@ -26,7 +26,7 @@ public class EstimMetronome {
 
 	private static final Set<Mode> SPECIAL_MODES = Stream
 			.of(TwoBMode.THROB, TwoBMode.THRUST, TwoBMode.CYCLE, TwoBMode.TWIST)
-			.collect(Collectors.toUnmodifiableSet());
+			.collect(Collectors.toSet());
 
 	public EstimMetronome() {
 		api = TeaseAI.application.getSession().getEstimAPI();
@@ -39,28 +39,28 @@ public class EstimMetronome {
 		this.bpm = bpm;
 		// TODO Transform BPM in some appropriate commands
 
-		var enabledModes = estimState.getEstimEnabledModes();
-		var mode = enabledModes.get(random.nextInt(enabledModes.size()));
+		List<Mode> enabledModes = estimState.getEstimEnabledModes();
+		Mode mode = enabledModes.get(random.nextInt(enabledModes.size()));
 
 		api.setMode(mode);
 
-		var bpmMin = TeaseAI.application.ESTIM_METRONOME_BPM_MIN.getInt();
-		var bpmMax = TeaseAI.application.ESTIM_METRONOME_BPM_MAX.getInt();
-		var channelCMin = TeaseAI.application.ESTIM_CHANNEL_C_MIN.getInt();
-		var channelCMax = TeaseAI.application.ESTIM_CHANNEL_C_MAX.getInt();
-		var channelDMin = TeaseAI.application.ESTIM_CHANNEL_D_MIN.getInt();
-		var channelDMax = TeaseAI.application.ESTIM_CHANNEL_D_MAX.getInt();
+		int bpmMin = TeaseAI.application.ESTIM_METRONOME_BPM_MIN.getInt();
+		int bpmMax = TeaseAI.application.ESTIM_METRONOME_BPM_MAX.getInt();
+		int channelCMin = TeaseAI.application.ESTIM_CHANNEL_C_MIN.getInt();
+		int channelCMax = TeaseAI.application.ESTIM_CHANNEL_C_MAX.getInt();
+		int channelDMin = TeaseAI.application.ESTIM_CHANNEL_D_MIN.getInt();
+		int channelDMax = TeaseAI.application.ESTIM_CHANNEL_D_MAX.getInt();
 
 		// Invert output if we are in a Special Mode
 		if (SPECIAL_MODES.contains(mode)) {
-			var valueC = bpmToOutput(bpm, bpmMin, bpmMax, channelCMin, channelCMax, true);
-			var valueD = bpmToOutput(bpm, bpmMin, bpmMax, channelDMin, channelDMax, true);
+			int valueC = bpmToOutput(bpm, bpmMin, bpmMax, channelCMin, channelCMax, true);
+			int valueD = bpmToOutput(bpm, bpmMin, bpmMax, channelDMin, channelDMax, true);
 
 			api.setChannelOutPut(TwoBChannel.C, valueC);
 			api.setChannelOutPut(TwoBChannel.D, valueD);
 		} else {
-			var valueC = bpmToOutput(bpm, bpmMin, bpmMax, channelCMin, channelCMax, false);
-			var valueD = RandomUtils.randInt(channelDMin, channelDMax);
+			int valueC = bpmToOutput(bpm, bpmMin, bpmMax, channelCMin, channelCMax, false);
+			int valueD = RandomUtils.randInt(channelDMin, channelDMax);
 
 			api.setChannelOutPut(TwoBChannel.C, valueC);
 			api.setChannelOutPut(TwoBChannel.D, valueD);
@@ -70,13 +70,13 @@ public class EstimMetronome {
 		if (TeaseAI.application.ESTIM_METRONOME_USER_CONTROLS_POWER.getBoolean()) {
 			estimState.restorePower(api);
 		} else {
-			var channelAMin = TeaseAI.application.ESTIM_CHANNEL_A_MIN.getInt();
-			var channelAMax = TeaseAI.application.ESTIM_CHANNEL_A_MAX.getInt();
-			var valueA = RandomUtils.randInt(channelAMin, channelAMax);
+			int channelAMin = TeaseAI.application.ESTIM_CHANNEL_A_MIN.getInt();
+			int channelAMax = TeaseAI.application.ESTIM_CHANNEL_A_MAX.getInt();
+			int valueA = RandomUtils.randInt(channelAMin, channelAMax);
 
-			var channelBMin = TeaseAI.application.ESTIM_CHANNEL_B_MIN.getInt();
-			var channelBMax = TeaseAI.application.ESTIM_CHANNEL_B_MAX.getInt();
-			var valueB = RandomUtils.randInt(channelBMin, channelBMax);
+			int channelBMin = TeaseAI.application.ESTIM_CHANNEL_B_MIN.getInt();
+			int channelBMax = TeaseAI.application.ESTIM_CHANNEL_B_MAX.getInt();
+			int valueB = RandomUtils.randInt(channelBMin, channelBMax);
 
 			api.setChannelOutPut(TwoBChannel.A, valueA);
 			api.setChannelOutPut(TwoBChannel.B, valueB);
@@ -93,15 +93,15 @@ public class EstimMetronome {
 	 */
 	private int bpmToOutput(int bpm, int bpm_start, int bpm_end, int output_start, int output_end,
 			boolean invert_output) {
-		var input = new BigDecimal(bpm);
-		var bpm_min = new BigDecimal(bpm_start);
-		var bpm_max = new BigDecimal(bpm_end);
-		var output_min = new BigDecimal(output_start);
-		var output_max = new BigDecimal(output_end);
+		BigDecimal input = new BigDecimal(bpm);
+		BigDecimal bpm_min = new BigDecimal(bpm_start);
+		BigDecimal bpm_max = new BigDecimal(bpm_end);
+		BigDecimal output_min = new BigDecimal(output_start);
+		BigDecimal output_max = new BigDecimal(output_end);
 
 		// transform input range to output range
 		input = input.min(bpm_max);
-		var output = (input.subtract(bpm_min)).divide(bpm_max.subtract(bpm_min), 2, RoundingMode.HALF_UP)
+		BigDecimal output = (input.subtract(bpm_min)).divide(bpm_max.subtract(bpm_min), 2, RoundingMode.HALF_UP)
 				.multiply(output_max.subtract(output_min)).add(output_min);
 
 		if (invert_output) {
