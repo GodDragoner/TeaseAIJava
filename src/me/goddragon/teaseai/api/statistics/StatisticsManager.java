@@ -81,6 +81,7 @@ public class StatisticsManager
         {
             int lowestNonIgnore = lowestNonIgnored();
             ((JavaModule)moduleStatistics.toArray()[lowestNonIgnore - 1]).add(toPush);
+            moduleStatistics.push(toPush);
             statisticsList.writeJson();
         }
         return toPush;
@@ -137,6 +138,7 @@ public class StatisticsManager
         }
         currentEdge = toAdd;
         moduleStatistics.peek().add(toAdd);
+        statisticsList.writeJson();
         return toAdd;
     }
     
