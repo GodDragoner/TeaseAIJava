@@ -7,6 +7,7 @@ import me.goddragon.teaseai.api.statistics.JavaEdge;
 import me.goddragon.teaseai.api.statistics.JavaStroke;
 import me.goddragon.teaseai.api.statistics.StatisticsManager;
 import me.goddragon.teaseai.utils.Metronome;
+import me.goddragon.teaseai.utils.EstimMetronome;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.logging.Level;
@@ -32,27 +33,25 @@ public class StrokeHandler {
     private boolean isHolding;
 
     private volatile Metronome metronome;
+    private volatile EstimMetronome estimMetronome;
     private Thread waitingThread;
     private int currentBPM;
 
-    public void startStroking(int bpm, int durationSeconds)
-    {
+    public void startStroking(int bpm, int durationSeconds) {
         setStroking(true);
         startMetronome(bpm, durationSeconds);
     }
-    
-    public void startEdging(int bpm)
-    {
+
+    public void startEdging(int bpm) {
         setEdging(true);
         if (bpm > 0)
             startMetronome(bpm, 0);
     }
-    
-    public boolean isEdgeHolding()
-    {
+
+    public boolean isEdgeHolding() {
         return isHolding;
     }
-    
+
     public void startMetronome(int bpm, int durationSeconds) {
         if (bpm <= 0) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Tried to set metronome bpm to 0 or lower.");
@@ -62,8 +61,12 @@ public class StrokeHandler {
         stopMetronome();
 
         currentBPM = bpm;
-        
+
         (metronome = new Metronome()).start(bpm);
+        
+        if (TeaseAI.application.ESTIM_ENABLED.getBoolean() && TeaseAI.application.ESTIM_METRONOME.getBoolean()) {
+            (estimMetronome = new EstimMetronome()).start(bpm);
+        }
 
         if (durationSeconds > 0) {
             (waitingThread = new Thread() {
@@ -78,6 +81,9 @@ public class StrokeHandler {
                             //Check if we are still dealing with the metronome that we were watching
                             if (watchingMetronome == metronome) {
                                 metronome.stop();
+                                if (estimMetronome != null) {
+                                    estimMetronome.stop();
+                                }
                                 setStroking(false);
                                 waitingThread = null;
                             }
@@ -95,6 +101,11 @@ public class StrokeHandler {
             metronome.stop();
             metronome = null;
             setStroking(false);
+            
+            if (estimMetronome != null) {
+                estimMetronome.stop();
+                estimMetronome = null;
+            }
 
             //Check if we are waiting for stopping the metronome
             if (waitingThread != null) {
@@ -117,42 +128,39 @@ public class StrokeHandler {
     }
 
     public void setEdging(boolean edging) {
-        if (edging && TeaseAI.application.getSession() != null && !isEdging && StatisticsManager.edgeDetection)
-        {
+        if (edging && TeaseAI.application.getSession() != null && !isEdging && StatisticsManager.edgeDetection) {
             JavaEdge edge = TeaseAI.application.getSession().statisticsManager.addEdge();
             if (currentBPM != 0)
                 edge.BPM = currentBPM;
-        }
-        else if (!edging && TeaseAI.application.getSession() != null && isEdging && StatisticsManager.edgeDetection)
-        {
+        } else if (!edging && TeaseAI.application.getSession() != null && isEdging && StatisticsManager.edgeDetection) {
             TeaseAI.application.getSession().statisticsManager.endEdge();
         }
+
         isEdging = edging;
     }
-    
+
     public void setStroking(boolean stroking) {
-        if (stroking && TeaseAI.application.getSession() != null && !isStroking && StatisticsManager.strokeDetection)
-        {
+        if (stroking && TeaseAI.application.getSession() != null && !isStroking && StatisticsManager.strokeDetection) {
             JavaStroke stroke = TeaseAI.application.getSession().statisticsManager.addStroke();
             if (currentBPM != 0)
                 stroke.BPM = currentBPM;
-        }
-        else if (!stroking && TeaseAI.application.getSession() != null && isStroking && StatisticsManager.strokeDetection)
+        } else if (!stroking && TeaseAI.application.getSession() != null && isStroking && StatisticsManager.strokeDetection) {
             TeaseAI.application.getSession().statisticsManager.endStroke();
+        }
+
         isStroking = stroking;
     }
 
-    public void setEdgeHold(boolean value)
-    {
-        if (value && TeaseAI.application.getSession() != null && !isHolding && StatisticsManager.edgeHoldDetection)
-        {
+    public void setEdgeHold(boolean value) {
+        if (value && TeaseAI.application.getSession() != null && !isHolding && StatisticsManager.edgeHoldDetection) {
             TeaseAI.application.getSession().statisticsManager.addEdgeHold();
-        }
-        else if (!value && TeaseAI.application.getSession() != null && isHolding && StatisticsManager.edgeHoldDetection)
+        } else if (!value && TeaseAI.application.getSession() != null && isHolding && StatisticsManager.edgeHoldDetection) {
             TeaseAI.application.getSession().statisticsManager.endEdgeHold();
+        }
+
         isHolding = value;
     }
-    
+
     public static StrokeHandler getHandler() {
         return handler;
     }

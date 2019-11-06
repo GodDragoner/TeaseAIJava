@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
@@ -17,7 +18,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="settings-base-anchor-pane" fx:id="SettingsBackground" prefHeight="472.0" prefWidth="704.0" styleClass="primary-color" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="settings-base-anchor-pane" fx:id="SettingsBackground" prefHeight="472.0" prefWidth="704.0" styleClass="primary-color" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
         <TabPane fx:id="SettingsPanes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="554.0" prefWidth="809.0" style="-fx-background-color: transparent;" styleClass="floating" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
@@ -496,6 +497,135 @@
                                                 <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="265.0" text="Image Sets Path" textAlignment="CENTER" GridPane.rowIndex="3" />
                                             </children>
                                         </GridPane>
+                                    </children>
+                                </GridPane>
+                            </children>
+                  </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab styleClass="button-color" text="Estim">
+                    <content>
+                        <AnchorPane fx:id="EstimTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <GridPane layoutX="14.0" prefHeight="276.0" prefWidth="700.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="159.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="202.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="479.0" minWidth="2.0" prefWidth="470.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+			                            <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="88.0" prefHeight="22.0" prefWidth="207.0" text="Enable Estim" />
+            	             		    <CheckBox fx:id="estimEnabledCheckbox" mnemonicParsing="false" GridPane.columnIndex="2" />
+            	             		    <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="88.0" prefHeight="22.0" prefWidth="207.0" text="Estim Metronome" GridPane.rowIndex="2" />
+            	             		    <CheckBox fx:id="estimMetronomeCheckbox" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Path to Estim Device" GridPane.rowIndex="1" />
+                              <TextField fx:id="estimDevicePathField" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="Only set the path when EstimAPI can't find your device" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Metronome Modes" GridPane.rowIndex="4" />
+                              <MenuButton fx:id="estimMetronomeEnabledModes" mnemonicParsing="false" text="Enabled Metronome Modes" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Channel A" GridPane.rowIndex="6" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Channel B" GridPane.rowIndex="7" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Channel C" GridPane.rowIndex="8" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Channel D" GridPane.rowIndex="9" />
+                              <GridPane GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="22.0" prefWidth="207.0" text="Min:" />
+                                    <Label alignment="CENTER" prefHeight="22.0" prefWidth="207.0" text="Max:" GridPane.columnIndex="2" />
+                                    <TextField fx:id="estimChannelAMin" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="1" GridPane.columnIndex="1" />
+                                    <TextField fx:id="estimChannelAMax" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="10" GridPane.columnIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <GridPane layoutX="231.0" layoutY="110.0" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="22.0" prefWidth="207.0" text="Min:" />
+                                    <Label alignment="CENTER" prefHeight="22.0" prefWidth="207.0" text="Max:" GridPane.columnIndex="2" />
+                                    <TextField fx:id="estimChannelBMax" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="10" GridPane.columnIndex="3" />
+                                    <TextField fx:id="estimChannelBMin" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="1" GridPane.columnIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.columnIndex="2" GridPane.rowIndex="8">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="22.0" prefWidth="207.0" text="Min:" />
+                                    <Label alignment="CENTER" prefHeight="22.0" prefWidth="207.0" text="Max:" GridPane.columnIndex="2" />
+                                    <TextField fx:id="estimChannelCMax" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="99" GridPane.columnIndex="3" />
+                                    <TextField fx:id="estimChannelCMin" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="1" GridPane.columnIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.columnIndex="2" GridPane.rowIndex="9">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="22.0" prefWidth="207.0" text="Min:" />
+                                    <Label alignment="CENTER" prefHeight="22.0" prefWidth="207.0" text="Max:" GridPane.columnIndex="2" />
+                                    <TextField fx:id="estimChannelDMax" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="99" GridPane.columnIndex="3" />
+                                    <TextField fx:id="estimChannelDMin" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="1" GridPane.columnIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Metronome restore last power" GridPane.rowIndex="3" />
+                              <CheckBox fx:id="estimMetronomeUserControlsPower" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="BPM" GridPane.rowIndex="5" />
+                              <GridPane GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="22.0" prefWidth="207.0" text="Min:" />
+                                    <Label alignment="CENTER" prefHeight="22.0" prefWidth="207.0" text="Max:" GridPane.columnIndex="2" />
+                                    <TextField fx:id="estimMetronomeBPMMin" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="0" GridPane.columnIndex="1" />
+                                    <TextField fx:id="estimMetronomeBPMMax" alignment="CENTER" prefHeight="25.0" prefWidth="169.0" promptText="180" GridPane.columnIndex="3" />
+                                 </children>
+                              </GridPane>
                                     </children>
                                 </GridPane>
                             </children>

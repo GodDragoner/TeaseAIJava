@@ -38,6 +38,7 @@ public class ScriptHandler {
         registerFunction(new DebugMessageFunction());
         registerFunction(new WarningMessageFunction());
         registerFunction(new ErrorMessageFunction());
+        registerFunction(new EstimAPIFunction());
         registerFunction(new AddSettingsPanelFunction());
         registerFunction(new AddCheckBoxFunction());
         registerFunction(new AddTextBoxFunction());

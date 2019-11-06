@@ -332,6 +332,20 @@ public class FileUtils {
         }
     }
 
+    public static boolean folderContains(File directory, String fileName) {
+        if(!directory.isDirectory()) {
+            return false;
+        }
+
+        for(File file : directory.listFiles()) {
+            if(file.getName().equalsIgnoreCase(fileName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     public static File getLibFolder() {
         return new File(getTAJPath() + File.separator + "lib");

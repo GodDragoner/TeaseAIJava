@@ -11,6 +11,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -19,6 +20,8 @@ import java.util.logging.Level;
  * Created by GodDragon on 18.06.2018.
  */
 public class UpdateHandler {
+    private static final String[] toKeepLocalLibraries = {"uber-EstimAPI-0.0.1-SNAPSHOT.jar"};
+
     public static String TEASE_AI_PROPERTIES_DEFAULT_LINK = "https://gist.githubusercontent.com/GodDragoner/6c7193903cb0695ff891e8468ad279cd/raw/TeaseAI.properties";
 
     private static UpdateHandler handler = new UpdateHandler();
@@ -103,6 +106,12 @@ public class UpdateHandler {
 
             librariesListed.add(fileName);
         }
+
+        for(String localKeepLibrary : toKeepLocalLibraries) {
+            TeaseLogger.getLogger().log(Level.INFO, "Library " + localKeepLibrary + " is only local but keeping and not deleting.");
+        }
+
+        librariesListed.addAll(Arrays.asList(toKeepLocalLibraries));
 
         //Delete unused libraries
         for(String loaded : loadedLibraries) {
