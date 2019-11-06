@@ -20,8 +20,8 @@ public class WakeScriptThreadFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         super.call(object, args);
 
-        synchronized (TeaseAI.application.scriptThread) {
-            TeaseAI.application.scriptThread.notify();
+        synchronized (TeaseAI.application.getScriptThread()) {
+            TeaseAI.application.getScriptThread().notify();
         }
 
         return null;

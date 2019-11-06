@@ -3,6 +3,7 @@ package me.goddragon.teaseai.api.chat.response;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by GodDragon on 24.03.2018.
@@ -128,5 +129,10 @@ public abstract class Response {
 
     public void setIgnoreDisabledResponses(boolean ignoreDisabledResponses) {
         this.ignoreDisabledResponses = ignoreDisabledResponses;
+    }
+
+    @Override
+    public String toString() {
+        return getIndicators().stream().map(Object::toString).collect(Collectors.joining(","));
     }
 }

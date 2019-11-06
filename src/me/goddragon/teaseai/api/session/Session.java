@@ -10,12 +10,16 @@ import me.goddragon.teaseai.api.runnable.TeaseRunnableHandler;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
-import me.goddragon.teaseai.api.statistics.StatisticsList;
 import me.goddragon.teaseai.api.statistics.StatisticsManager;
+import me.goddragon.teaseai.utils.EstimState;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
+
 import java.util.logging.Level;
+
+import devices.TwoB.TwoB;
+import estimAPI.EstimAPI;
 
 /**
  * Created by GodDragon on 26.03.2018.
@@ -27,36 +31,47 @@ public class Session {
     private long startedAt;
     public StatisticsManager statisticsManager;
 
+    private EstimAPI estimAPI = null;
+    private EstimState estimState = new EstimState();
+
     public void start() {
         setupStart();
 
-        TeaseAI.application.scriptThread = new Thread() {
+        TeaseAI.application.setScriptThread(new Thread() {
             @Override
             public void run() {
                 ScriptHandler.getHandler().startPersonality(PersonalityManager.getManager().getActivePersonality());
             }
-        };
+        });
         
-        TeaseAI.application.scriptThread.start();
+        TeaseAI.application.getScriptThread().start();
     }
 
     public void startWithScript(File file) {
         setupStart();
 
-        TeaseAI.application.scriptThread = new Thread() {
+        TeaseAI.application.setScriptThread(new Thread() {
             @Override
             public void run() {
                 ScriptHandler.getHandler().startPersonality(PersonalityManager.getManager().getActivePersonality(), file);
             }
-        };
+        });
 
-        TeaseAI.application.scriptThread.start();
+        TeaseAI.application.getScriptThread().start();
     }
 
 
     public void setupStart() {
         startedAt = System.currentTimeMillis();
         started = true;
+
+        if(TeaseAI.application.ESTIM_ENABLED.getBoolean()) {
+        	String devicePath = TeaseAI.application.ESTIM_DEVICE_PATH.getValue();
+            estimAPI = (!devicePath.isEmpty()) ? new TwoB(devicePath) : new TwoB();
+            estimAPI.initDevice();
+            estimState.setEnabledModes(TeaseAI.application.ESTIM_METRONOME_ENABLED_MODES.getValue());
+
+        }
 
         activePersonality.getVariableHandler().setVariable("startDate", new TeaseDate(startedAt), true);
         activePersonality.getVariableHandler().setVariable("subName", ChatHandler.getHandler().getSubParticipant().getName(), true);
@@ -87,8 +102,8 @@ public class Session {
 
     public void checkForForcedEnd() {
         if (TeaseAI.application.getSession().isHaltSession()) {
-            if (TeaseAI.application.scriptThread == Thread.currentThread()) {
-                synchronized (TeaseAI.application.scriptThread) {
+            if (TeaseAI.application.getScriptThread() == Thread.currentThread()) {
+                synchronized (TeaseAI.application.getScriptThread()) {
                     TeaseAI.application.getSession().end();
 
                     while (true) {
@@ -132,6 +147,10 @@ public class Session {
 
                 //Initialize a new session instance
                 TeaseAI.application.initializeNewSession();
+                
+                if(estimAPI != null) {
+                    estimAPI.disconnectDevice();
+                }
 
                 //Unlock Images
                 MediaHandler.getHandler().setImagesLocked(false);
@@ -182,4 +201,13 @@ public class Session {
     public void setStarted(boolean started) {
         this.started = started;
     }
+
+	public EstimAPI getEstimAPI() {
+		return estimAPI;
+	}
+	
+	public EstimState getEstimState() {
+		return estimState;
+	}
+	
 }
