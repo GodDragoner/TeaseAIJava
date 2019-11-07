@@ -14,3 +14,7 @@ Dependencies/*
 JavaFX/*
 out/*
 /bin/
+/lib/
+/log/
+/Themes/
+/javafx-sdk-11/
