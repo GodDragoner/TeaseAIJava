@@ -37,13 +37,17 @@ public class Animation extends Transition {
 
     public void play(ImageView imageView) {
         this.imageView = imageView;
-        imageView.setImage(sequence[0]);
-        play();
+
+        if(this.sequence.length > 0) {
+            imageView.setImage(sequence[0]);
+            play();
+        }
     }
 
+    @Override
     protected void interpolate(double k) {
         final int index = Math.min((int) Math.floor(k * count), count - 1);
-        if (index != lastIndex) {
+        if (index != lastIndex && index < this.sequence.length) {
             imageView.setImage(sequence[index]);
             lastIndex = index;
         }
