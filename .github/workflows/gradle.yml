@@ -23,8 +23,14 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.11
-    - name: Build with Gradle
-      run: ./gradlew build
+    - name: Build with Gradle for Windows
+      run: ./gradlew distZip
+      if: ! startsWith(runner.os, 'Windows')
+      
+    - name: Build with Gradle for Linux/Mac
+      run: ./gradlew distTar
+      if: ! startsWith(runner.os, 'Windows')
+      
     - uses: actions/upload-artifact@master
       with: 
         name: build-${{ matrix.os }}
