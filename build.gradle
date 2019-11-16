@@ -24,20 +24,20 @@ dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:28.0-jre'
     implementation 'com.google.code.gson:gson:2.8.6'
-    compile group: 'de.dfki.mary', name: 'voice-cmu-slt-hsmm', version: '5.2'
+    implementation group: 'de.dfki.mary', name: 'voice-cmu-slt-hsmm', version: '5.2'
 
 	// https://mvnrepository.com/artifact/de.dfki.mary/voice-dfki-prudence-hsmm
-	compile group: 'de.dfki.mary', name: 'voice-dfki-prudence-hsmm', version: '5.2'
+	implementation group: 'de.dfki.mary', name: 'voice-dfki-prudence-hsmm', version: '5.2'
 	
 
 	// jsoup HTML parser library @ https://jsoup.org/
-    compile 'org.jsoup:jsoup:1.12.1'
+    implementation 'org.jsoup:jsoup:1.12.1'
     
     // https://mvnrepository.com/artifact/org.json/json
-	compile group: 'org.json', name: 'json', version: '20190722'
+	implementation group: 'org.json', name: 'json', version: '20190722'
 	// TODO Update to commons-configuration2?
 	// https://mvnrepository.com/artifact/commons-configuration/commons-configuration
-	compile group: 'commons-configuration', name: 'commons-configuration', version: '1.10'
+	implementation group: 'commons-configuration', name: 'commons-configuration', version: '1.10'
 	
 	implementation 'com.github.GodDragoner:EstimAPI:master-SNAPSHOT'
 	
