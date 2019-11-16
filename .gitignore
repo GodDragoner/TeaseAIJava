@@ -1,20 +1,23 @@
-*.properties
-.idea
-*.iml
-out
-target
-.settings
-.project
-.classpath
-.git
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+# TeaseAI files
+Themes/
+log/
 Personalities/*
 Images/*
 Logs/*
-Dependencies/*
-JavaFX/*
-out/*
-/bin/
-/lib/
-/log/
-/Themes/
-/javafx-sdk-11/
+TeaseAI.properties
+
+# IntelliJ
+.idea
+*.iml
+
+# Eclipse
+.settings
+.project
+.classpath
+bin/

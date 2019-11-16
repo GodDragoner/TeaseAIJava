@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane id="main-base-anchor-pane" fx:id="baseAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="945.0" prefWidth="1473.0" styleClass="primary-color" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane fx:id="baseGridPane" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="8.0" minHeight="8.0" prefHeight="8.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="15.0" minHeight="15.0" prefHeight="15.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="18.0" minHeight="18.0" prefHeight="18.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane style="-fx-background-color: transparent;" GridPane.rowIndex="3">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="5.0" minWidth="5.0" prefWidth="5.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="150.0" prefWidth="150.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="5.0" minWidth="5.0" prefWidth="5.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="5.0" minWidth="5.0" prefWidth="5.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="998.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <AnchorPane id="main-left-hotbar" fx:id="leftWidgetBar" prefHeight="200.0" prefWidth="0.0" styleClass="primary-color" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <GridPane layoutX="6.0" layoutY="389.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="300.0" minHeight="80.0" prefHeight="130.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="300.0" minHeight="80.0" prefHeight="130.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <GridPane fx:id="contactImageGrid" style="-fx-background-color: transparent;" GridPane.rowIndex="2">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="273.0" minHeight="10.0" prefHeight="273.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <TextField id="main-dom-name" fx:id="domNameTextField" promptText=" Dom Name" scaleX="0.95" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7;" styleClass="button-color" GridPane.rowIndex="2" />
+                                    <TextField id="main-sub-name" fx:id="subNameTextField" prefHeight="25.0" prefWidth="184.0" promptText=" Sub Name" scaleX="0.95" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7;" styleClass="button-color" />
+                                    <StackPane fx:id="domImageViewStackPane" scaleX="0.95" style="-fx-background-color: transparent;" GridPane.rowIndex="1">
+                                       <children>
+                                          <ImageView fx:id="domImageView" fitHeight="151.0" fitWidth="174.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </GridPane>
+                              <FlowPane fx:id="lazySubPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" styleClass="root" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane id="main-right-hotbar" fx:id="rightWidgetBar" prefHeight="200.0" prefWidth="200.0" styleClass="primary-color" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <SplitPane fx:id="chatSplitPane" dividerPositions="0.5888888888888889" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" style="-fx-border-color: transparent; -fx-background-color: transparent; -fx-border-width: 0;" translateY="1.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                    <items>
+                      <AnchorPane id="main-media-view" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <StackPane fx:id="mediaViewBox" layoutX="-1.0" layoutY="2.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="613.0" prefWidth="1210.0" styleClass="centerStackPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <MediaView id="mediaView" fx:id="mediaView" fitHeight="334.0" fitWidth="1157.0" />
+                                    <ImageView fx:id="imageView" fitHeight="511.0" fitWidth="1157.0" pickOnBounds="true" preserveRatio="true" />
+                                    <TextFlow id="main-chat-window" fx:id="chatWindow" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: transparent;" />
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane fx:id="chatBackground" maxHeight="500.0" minHeight="100.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="main-chat-background">
+                           <children>
+                              <GridPane blendMode="SRC_ATOP" styleClass="main-chat-background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="408.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="32.80000000000001" minHeight="32.80000000000001" prefHeight="32.80000000000001" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <StackPane fx:id="chatPane" prefHeight="150.0" prefWidth="200.0" styleClass="main-chat-background" translateY="1.0">
+                                       <children>
+                                          <ScrollPane fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="304.0" prefWidth="1043.0" scaleX="0.99" style="-fx-border-color: transparent;" styleClass="main-chat-background" translateX="1.0" StackPane.alignment="CENTER_RIGHT" />
+                                       </children>
+                                    </StackPane>
+                                    <GridPane id="chatInput" prefHeight="49.0" prefWidth="604.0" styleClass="main-chat-background" GridPane.rowIndex="2">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="5.0" minWidth="5.0" prefWidth="5.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="5.0" minWidth="5.0" prefWidth="5.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <TextField fx:id="chatTextField" prefHeight="43.0" prefWidth="687.0" promptText=" Type a message here" style="-fx-background-radius: 5 5 5 5; -fx-border-radius: 5 5 5 5;" styleClass="button-color" GridPane.columnIndex="1" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+                  <GridPane style="-fx-background-color: transparent;" GridPane.columnIndex="3">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="5.0" minWidth="5.0" prefWidth="5.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="345.2000732421875" minWidth="70.0" prefWidth="92.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="5.0" minWidth="5.0" prefWidth="5.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="846.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="50.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Button fx:id="startChatButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="113.0" style="-fx-background-radius: 10 10 10 10; -fx-border-radius: 10 10 10 10;" styleClass="button-color" text="Start" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ChoiceBox fx:id="personalityChoiceBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="369.0" style="-fx-background-radius: 10 10 10 10; -fx-border-radius: 10 10 10 10;" styleClass="button-color" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
+               </children>
+            </GridPane>
+            <Region id="main-window-draggable-region" fx:id="draggableRegion" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="3" />
+            <MenuBar id="main-menu-bar" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefHeight="30.0" prefWidth="245.0" style="-fx-background-color: transparent;" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+               <menus>
+                  <Menu mnemonicParsing="false" styleClass="fileMenu" text="File">
+                     <items>
+                        <MenuItem fx:id="runScriptMenuItem" mnemonicParsing="false" text="Run Script" />
+                     </items>
+                  </Menu>
+                  <Menu fx:id="menuSettingsButton" mnemonicParsing="false" />
+                  <Menu mnemonicParsing="false" styleClass="helpMenu" text="Help">
+                     <items>
+                        <MenuItem mnemonicParsing="false" styleClass="aboutMenuItem" text="About" />
+                     </items>
+                  </Menu>
+               </menus>
+            </MenuBar>
+            <HBox id="main-window-controls" alignment="CENTER_RIGHT" maxHeight="15.0" maxWidth="85.0" minHeight="15.0" minWidth="85.0" prefHeight="15.0" prefWidth="85.0" spacing="4.0" style="-fx-background-color: transparent;" visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <children>
+                  <Button fx:id="minimize" maxHeight="22.0" maxWidth="27.0" minHeight="22.0" minWidth="27.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="27.0" style="-fx-background-radius: 5 5 5 5; -fx-border-radius: 5 5 5 5;" text="–">
+                     <padding>
+                        <Insets right="1.0" />
+                     </padding></Button>
+                  <Button fx:id="expand" layoutX="10.0" layoutY="10.0" maxHeight="22.0" maxWidth="27.0" minHeight="22.0" minWidth="27.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="27.0" style="-fx-background-radius: 5 5 5 5; -fx-border-radius: 5 5 5 5;" text="⛶" />
+                  <Button fx:id="close" alignment="CENTER" contentDisplay="CENTER" layoutX="180.0" layoutY="10.0" maxHeight="22.0" maxWidth="27.0" minHeight="22.0" minWidth="27.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="27.0" style="-fx-background-radius: 5 5 5 5; -fx-border-radius: 5 5 5 5;" text="⌧">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding></Button>
+               </children>
+               <padding>
+                  <Insets right="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
