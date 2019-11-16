@@ -17,3 +17,7 @@ jobs:
         java-version: 1.11
     - name: Build with Gradle
       run: ./gradlew build
+    - uses: actions/upload-artifact@master
+      with: 
+        name: build-${{ matrix.os }}
+        path: build/distributions/
