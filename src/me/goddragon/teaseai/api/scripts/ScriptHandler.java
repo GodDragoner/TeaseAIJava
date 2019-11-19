@@ -7,7 +7,6 @@ import me.goddragon.teaseai.api.scripts.nashorn.*;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.api.statistics.JavaModule;
-import me.goddragon.teaseai.api.statistics.StatisticsBase;
 import me.goddragon.teaseai.api.statistics.StatisticsManager;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
@@ -18,7 +17,6 @@ import javax.script.ScriptException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Stack;
 import java.util.logging.Level;
 
 /**
@@ -164,7 +162,7 @@ public class ScriptHandler {
         File script = FileUtils.getRandomMatchingFile(personality.getFolder().getAbsolutePath() + File.separator + scriptName);
         if (TeaseAI.application.getSession() != null && StatisticsManager.moduleDetection)
             TeaseAI.application.getSession().statisticsManager.addModule(script.getName());
-        
+
         if (script == null || !script.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Script " + scriptName + " does not exist.");
             return;
@@ -197,11 +195,9 @@ public class ScriptHandler {
         } catch (ScriptException e) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Latest loaded file was '" + currentFile.getPath() + "' and error was found in line " + e.getLineNumber() + "\n" +
                     "Error: " + e.getMessage(), false);
-            if (TeaseAI.application.getSession() != null)
-            {
+            if (TeaseAI.application.getSession() != null) {
                 JavaModule current = TeaseAI.application.getSession().statisticsManager.getCurrentModule();
-                if (current != null)
-                {
+                if (current != null) {
                     current.setErrored(true);
                 }
             }
