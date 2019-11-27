@@ -62,3 +62,13 @@ application {
 }
 
 version gitVersion()
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+			groupId = 'com.github.GodDragoner'
+        	artifactId = 'TeaseAIJava'
+            from components.java
+        }
+    }
+}
