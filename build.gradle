@@ -12,6 +12,11 @@ plugins {
     id 'com.palantir.git-version' version '0.12.2'
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 javafx {
     version = "13"
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.media', 'javafx.swing' ]
@@ -57,3 +62,4 @@ application {
 }
 
 version gitVersion()
+
