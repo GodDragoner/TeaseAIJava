@@ -38,3 +38,5 @@ jobs:
 
     - name: Publish
       run: ./gradlew publish
+      env:
+          AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

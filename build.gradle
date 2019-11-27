@@ -73,7 +73,7 @@ if(ghRepo != null)
 
             	credentials {
               		username = ghOwner
-              		password = System.getenv("secrets.GITHUB_TOKEN")
+              		password = System.getenv("AUTH_TOKEN")
             	}
         	}
    		}
