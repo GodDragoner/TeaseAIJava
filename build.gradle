@@ -72,3 +72,24 @@ publishing {
         }
     }
 }
+
+def ghRepo = System.getenv("GITHUB_REPOSITORY");
+
+if(ghRepo != null) {
+task triggerJitPack(){
+   	def jitpackVersion = versionDetails().gitHashFull.take(10)
+   
+   def (ghOwner, ghRepository) = ghRepo.split("/", 2);
+   
+   def url = "https://jitpack.io/com/github/${ghOwner}/${ghRepository}/${jitpackVersion}/TeaseAIJava-${jitpackVersion}.jar"
+   println url
+   url.toURL().openConnection().with { conn ->
+   		readTimeout = 15*60*1000
+   		requestMethod = 'HEAD'
+   		
+        if( responseCode != 200 ) {
+            throw new Exception( 'Artifact not generated on jitpack' )
+        }
+    }
+}
+}

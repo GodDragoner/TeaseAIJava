@@ -35,3 +35,6 @@ jobs:
       with: 
         name: build-${{ matrix.os }}
         path: build/distributions/
+        
+    - name: Trigger JitPack
+      run: ./gradlew triggerJitPack
