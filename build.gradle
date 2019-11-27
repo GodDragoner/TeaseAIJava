@@ -61,14 +61,15 @@ if(ghRepo != null)
 	publishing {
     	repositories {
         
-        	def (owner, repository) = ghRepo.split("/", 2);
-        
+        	def (ghOwner, ghRepository) = ghRepo.split("/", 2);
+            
         	maven {
             	name = "GitHubPackages"
-            	url = uri("https://maven.pkg.github.com/" + owner + "/" + repository)
+            	url = "https://maven.pkg.github.com/${ghOwner}/${ghRepository}"
+            	println System.getenv("secrets.GITHUB_TOKEN")
             	credentials {
-              	  username = owner
-              	  password = System.getenv("secrets.GITHUB_TOKEN")
+              		username = ghOwner
+              		password = System.getenv("secrets.GITHUB_TOKEN")
             	}
         	}
    		}
