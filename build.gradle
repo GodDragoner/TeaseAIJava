@@ -8,6 +8,8 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.8'
     
     id 'maven-publish'
+    
+    id 'com.palantir.git-version' version '0.12.2'
 }
 
 javafx {
@@ -54,6 +56,8 @@ application {
     mainClassName = 'me.goddragon.teaseai.Main'
 }
 
+version gitVersion()
+
 def ghRepo = System.getenv("GITHUB_REPOSITORY");
 
 if(ghRepo != null)
@@ -66,7 +70,7 @@ if(ghRepo != null)
         	maven {
             	name = "GitHubPackages"
             	url = "https://maven.pkg.github.com/${ghOwner}/${ghRepository}"
-            	println System.getenv("secrets.GITHUB_TOKEN")
+
             	credentials {
               		username = ghOwner
               		password = System.getenv("secrets.GITHUB_TOKEN")
@@ -74,11 +78,10 @@ if(ghRepo != null)
         	}
    		}
     	publications {
-        	mavenJava(MavenPublication) {
+        	maven(MavenPublication) {
+				groupId = 'com.github.GodDragoner'
+        		artifactId = 'TeaseAIJava'
                 from components.java
-                afterEvaluate {
-                    artifactId = jar.archiveBaseName
-                }
             }
     	}
 	}
