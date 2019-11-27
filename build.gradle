@@ -6,6 +6,8 @@ plugins {
     id 'application'
     
     id 'org.openjfx.javafxplugin' version '0.0.8'
+    
+    id 'maven-publish'
 }
 
 javafx {
@@ -50,4 +52,33 @@ dependencies {
 application {
     // Define the main class for the application.
     mainClassName = 'me.goddragon.teaseai.Main'
+}
+
+def ghRepo = System.getenv("GITHUB_REPOSITORY");
+
+if(ghRepo != null)
+{
+	publishing {
+    	repositories {
+        
+        	def (owner, repository) = ghRepo.split("/", 2);
+        
+        	maven {
+            	name = "GitHubPackages"
+            	url = uri("https://maven.pkg.github.com/" + owner + "/" + repository)
+            	credentials {
+              	  username = owner
+              	  password = System.getenv("secrets.GITHUB_TOKEN")
+            	}
+        	}
+   		}
+    	publications {
+        	mavenJava(MavenPublication) {
+                from components.java
+                afterEvaluate {
+                    artifactId = jar.archiveBaseName
+                }
+            }
+    	}
+	}
 }
