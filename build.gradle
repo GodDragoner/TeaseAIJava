@@ -57,32 +57,3 @@ application {
 }
 
 version gitVersion()
-
-def ghRepo = System.getenv("GITHUB_REPOSITORY");
-
-if(ghRepo != null)
-{
-	publishing {
-    	repositories {
-        
-        	def (ghOwner, ghRepository) = ghRepo.split("/", 2);
-            
-        	maven {
-            	name = "GitHubPackages"
-            	url = "https://maven.pkg.github.com/${ghOwner}/${ghRepository}"
-
-            	credentials {
-              		username = ghOwner
-              		password = System.getenv("AUTH_TOKEN")
-            	}
-        	}
-   		}
-    	publications {
-        	maven(MavenPublication) {
-				groupId = 'com.github.GodDragoner'
-        		artifactId = 'TeaseAIJava'
-                from components.java
-            }
-    	}
-	}
-}

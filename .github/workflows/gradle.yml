@@ -35,8 +35,3 @@ jobs:
       with: 
         name: build-${{ matrix.os }}
         path: build/distributions/
-
-    - name: Publish
-      run: ./gradlew publish
-      env:
-          AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
