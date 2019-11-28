@@ -19,11 +19,6 @@ public class Main {
     public static String OPERATING_SYSTEM = System.getProperty("os.name").toLowerCase();
 
     public static void main(String[] args) {
-        TeaseLogger.getLogger().log(Level.INFO, "Checking libraries for updates...");
-       // TODO Reimplement 
-        UpdateHandler.getHandler().checkLibraries();
-        TeaseLogger.getLogger().log(Level.INFO, "Libraries checked and up-to-date.");
-        TeaseLogger.getLogger().log(Level.INFO, "Initialization done.");
         TeaseAI.main(args);
     }
 

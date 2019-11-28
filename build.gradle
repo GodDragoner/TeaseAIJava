@@ -52,8 +52,12 @@ dependencies {
 	
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
-    
-    
+}
+
+configurations.all {
+  resolutionStrategy {
+    force 'org.codehaus.groovy:groovy-all:2.5.8'
+  }
 }
 
 application {

@@ -34,19 +34,25 @@ public class Update4JTask extends DefaultTask {
 		builder.basePath("${user.dir}/TeaseAI");
 		builder.property("default.launcher.main.class", "me.goddragon.teaseai.Main");
 		
+		File ghPagesRelease = getProject().file("build/pages/releases/");
+		ghPagesRelease.mkdirs();
+		
+		// Remove old releases
+		for(File file : ghPagesRelease.listFiles()) {
+			file.delete();
+		}
+		
 		addMainJar(builder);
 		appendDeps(builder);
 
 		File configFile = getProject().file("build/pages/releases/update.xml");
 		
-		if(configFile.exists()) {
-			configFile.delete();
-		}
-		
 		try(FileWriter writer = new FileWriter(configFile)) {
 			builder.build().write(writer);
 		}
 	}
+	
+	
 
 	private void addMainJar(Builder builder) throws IOException {
 		File mainJar = getMainJarFile();
@@ -55,8 +61,6 @@ public class Update4JTask extends DefaultTask {
 		
 		File target = getProject().file("build/pages/releases/" + mainJar.getName());
 	
-		target.getParentFile().mkdirs();
-		
 		Files.copy(mainJar.toPath(), target.toPath());
 		
 		builder.file(FileMetadata
@@ -84,7 +88,7 @@ public class Update4JTask extends DefaultTask {
 			addOtherOSFiles(repos, artifact, builder);
 			
 			String url = getArtifactUrl(repos, artifact);
-			
+
 			builder.file(
 					FileMetadata.readFrom(artifact.getFile().getAbsolutePath())
 						.uri(url)
