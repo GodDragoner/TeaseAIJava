@@ -27,16 +27,10 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
       
-      
     - name: Create update4j configuration
       run: ./gradlew generateUpdateConfig
-      
-    - uses: actions/upload-artifact@master
-      with: 
-        name: build-${{ matrix.os }}
-        path: build
         
-    - name: Build and Deploy
+    - name: Deploy to Github Pages
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
