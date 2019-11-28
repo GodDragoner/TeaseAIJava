@@ -36,7 +36,13 @@ public class Update4JTask extends DefaultTask {
 		addMainJar(builder);
 		appendDeps(builder);
 
-		try(FileWriter writer = new FileWriter(getProject().file("build/update.xml"))) {
+		File configFile = getProject().file("build/pages/releases/update.xml");
+		
+		if(configFile.exists()) {
+			configFile.delete();
+		}
+		
+		try(FileWriter writer = new FileWriter(configFile)) {
 			builder.build().write(writer);
 		}
 	}
