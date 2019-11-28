@@ -30,11 +30,15 @@ jobs:
     - name: Build with Gradle for Linux/Mac
       run: ./gradlew distTar
       if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
+        
+    - name: Trigger JitPack
+      run: ./gradlew triggerJitPack
+      
+    - name: Create update4j configuration
+      run: ./gradlew generateUpdateConfig
       
     - uses: actions/upload-artifact@master
       with: 
         name: build-${{ matrix.os }}
-        path: build/distributions/
+        path: build
         
-    - name: Trigger JitPack
-      run: ./gradlew triggerJitPack
