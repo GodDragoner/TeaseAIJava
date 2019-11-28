@@ -22,8 +22,9 @@ public class Update4JTask extends DefaultTask {
 	@TaskAction
 	void generateManifest() throws IOException {
 		Builder builder = Configuration.builder();
-		builder.basePath("cache");
-
+		builder.basePath("${installation.dir}/TeaseAI");
+		builder.property("installation.dir", "");
+		
 		addMainJar(builder);
 		appendDeps(builder);
 
