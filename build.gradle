@@ -1,0 +1,81 @@
+plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
+
+    // Apply the application plugin to add support for building a CLI application.
+    id 'application'
+    
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+    
+    id 'maven-publish'
+    
+    id 'com.palantir.git-version' version '0.12.2'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+javafx {
+    version = "13"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.media', 'javafx.swing' ]
+}
+
+repositories {
+    jcenter()
+    
+    // Used to import EstimAPI from Github
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    // This dependency is used by the application.
+    implementation 'com.google.guava:guava:28.0-jre'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation group: 'de.dfki.mary', name: 'voice-cmu-slt-hsmm', version: '5.2'
+
+	// https://mvnrepository.com/artifact/de.dfki.mary/voice-dfki-prudence-hsmm
+	implementation group: 'de.dfki.mary', name: 'voice-dfki-prudence-hsmm', version: '5.2'
+	
+
+	// jsoup HTML parser library @ https://jsoup.org/
+    implementation 'org.jsoup:jsoup:1.12.1'
+    
+    // https://mvnrepository.com/artifact/org.json/json
+	implementation group: 'org.json', name: 'json', version: '20190722'
+	// TODO Update to commons-configuration2?
+	// https://mvnrepository.com/artifact/commons-configuration/commons-configuration
+	implementation group: 'commons-configuration', name: 'commons-configuration', version: '1.10'
+	
+	implementation 'com.github.GodDragoner:EstimAPI:master-SNAPSHOT'
+	
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+}
+
+configurations.all {
+  resolutionStrategy {
+  	// Force newer groovy version (required by voice-dfki-prudence-hsmm) because older one fails with module resolution in update4j.
+    force 'org.codehaus.groovy:groovy-all:2.5.8'
+  }
+}
+
+application {
+    // Define the main class for the application.
+    mainClassName = 'me.goddragon.teaseai.Main'
+}
+
+version gitVersion()
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+			groupId = 'com.github.GodDragoner'
+        	artifactId = 'TeaseAIJava'
+            from components.java
+        }
+    }
+}
+
+apply plugin: 'me.goddragon.updater' 

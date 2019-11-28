@@ -1,0 +1,15 @@
+description = "Exposes gradle buildSrc for IDE support"
+
+apply plugin: "groovy"
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+dependencies {
+	implementation gradleApi()
+	implementation localGroovy()
+	
+	implementation group: 'org.update4j', name: 'update4j', version: '1.4.4'
+}
