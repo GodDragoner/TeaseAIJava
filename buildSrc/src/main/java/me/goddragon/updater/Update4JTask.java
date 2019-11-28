@@ -32,7 +32,7 @@ public class Update4JTask extends DefaultTask {
 	void generateManifest() throws IOException {
 		Builder builder = Configuration.builder();
 		builder.basePath("${user.dir}/TeaseAI");
-		builder.dynamicProperty("default.launcher.main.class", "me.goddragon.teaseai.Main");
+		builder.property("default.launcher.main.class", "me.goddragon.teaseai.Main");
 		
 		addMainJar(builder);
 		appendDeps(builder);
