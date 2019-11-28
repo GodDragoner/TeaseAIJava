@@ -1,9 +1,11 @@
 package me.goddragon.updater;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Set;
 
 import org.gradle.api.DefaultTask;
@@ -33,21 +35,29 @@ public class Update4JTask extends DefaultTask {
 		}
 	}
 
-	private void addMainJar(Builder builder) {
-		String uri = JitPackUtil.getArtifactUrl(getProject());
+	private void addMainJar(Builder builder) throws IOException {
+		File mainJar = getMainJarFile();
+		
+		String uri = GitHubRepository.fromActionsString().getPagesUrl("releases/" + mainJar.getName());
+		
+		File target = getProject().file("build/pages/releases/" + mainJar.getName());
+	
+		target.getParentFile().mkdirs();
+		
+		Files.copy(mainJar.toPath(), target.toPath());
 		
 		builder.file(FileMetadata
-				.readFrom(getMainJarPath())
+				.readFrom(mainJar.getAbsolutePath())
 				.uri(uri)
 				.classpath()
 		);
 	}
 
-	private String getMainJarPath() {
+	private File getMainJarFile() {
 		final Jar jarTask = (Jar) getProject().getTasks().getByName("jar");
 		final Provider<String> archiveName = jarTask.getArchiveFileName();
 		final RegularFile file = jarTask.getDestinationDirectory().file(archiveName).get();
-		return file.getAsFile().getAbsolutePath();
+		return file.getAsFile();
 	}
 
 	private void appendDeps(Builder builder) {

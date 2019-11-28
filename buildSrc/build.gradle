@@ -5,9 +5,6 @@ apply plugin: "groovy"
 repositories {
 	mavenLocal()
 	mavenCentral()
-	maven {
-      url "https://repo.eclipse.org/content/groups/releases/"
-    }
 }
 
 dependencies {
@@ -15,5 +12,4 @@ dependencies {
 	implementation localGroovy()
 	
 	implementation group: 'org.update4j', name: 'update4j', version: '1.4.4'
-	implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.5.1.201910021850-r'
 }

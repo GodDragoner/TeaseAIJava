@@ -35,4 +35,9 @@ public class GitHubRepository {
 		String repository = parts[1];
 		return new GitHubRepository(owner, repository);
 	}
+	
+	public String getPagesUrl(String file) {
+		return String.format("https://%s.github.io/%s/%s", 
+				this.owner, this.repository, file);
+	}
 }
