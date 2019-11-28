@@ -22,7 +22,7 @@ public class Update4JTask extends DefaultTask {
 	@TaskAction
 	void generateManifest() throws IOException {
 		Builder builder = Configuration.builder();
-		builder.basePath("\\${user.dir}/gradletest");
+		builder.basePath("cache");
 
 		addMainJar(builder);
 		appendDeps(builder);
