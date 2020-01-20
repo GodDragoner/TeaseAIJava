@@ -27,7 +27,6 @@ public class EndEdgeFunction extends CustomFunction {
         switch (args.length) {
             case 0:
                 StrokeHandler.getHandler().setEdging(false);
-
                 return null;
         }
 
