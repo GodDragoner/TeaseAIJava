@@ -134,6 +134,7 @@ public class StrokeHandler {
                 edge.BPM = currentBPM;
         } else if (!edging && TeaseAI.application.getSession() != null && isEdging && StatisticsManager.edgeDetection) {
             TeaseAI.application.getSession().statisticsManager.endEdge();
+            stopMetronome();
         }
 
         isEdging = edging;

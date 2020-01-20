@@ -25,7 +25,7 @@ public class AddFetishActivityStatisticFunction extends CustomFunction {
         {
             return null;
         }
-        return manager.addEdge();
+        return manager.addFetish();
     }
 }
 
