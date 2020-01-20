@@ -33,10 +33,10 @@ public class CreateInputFunction extends CustomFunction {
                 break;
             default:
                 int offset = 0;
-                if (args[0] instanceof Integer) {
-                    answer = new Answer((Integer) args[0]);
+                if (args[0] instanceof Integer || args[0] instanceof Double || args[0] instanceof Long) {
+                    answer = new Answer(Math.round(Double.valueOf(args[0].toString())));
                     offset = 1;
-                } else {
+                }else {
                     answer = new Answer();
                 }
 

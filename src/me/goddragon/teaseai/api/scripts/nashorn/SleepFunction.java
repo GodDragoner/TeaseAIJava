@@ -47,7 +47,7 @@ public class SleepFunction extends CustomFunction {
                 }
 
                 if (timeUnit != null) {
-                    TeaseAI.application.sleepPossibleScripThread(timeUnit.toMillis(Long.valueOf(args[0].toString())));
+                    TeaseAI.application.sleepPossibleScripThread(timeUnit.toMillis(Math.round(Double.valueOf(args[0].toString()))));
                     return null;
                 }
             }

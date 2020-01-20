@@ -47,7 +47,7 @@ public class WaitFunction extends CustomFunction {
                 }
 
                 if (timeUnit != null) {
-                    TeaseAI.application.waitPossibleScripThread(timeUnit.toMillis(Long.valueOf(args[0].toString())));
+                    TeaseAI.application.waitPossibleScripThread(timeUnit.toMillis(Math.round(Double.valueOf(args[0].toString()))));
                     return null;
                 }
             }
