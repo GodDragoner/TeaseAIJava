@@ -1,8 +1,6 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
-import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
-import me.goddragon.teaseai.api.statistics.StatisticsManager;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.Arrays;
@@ -30,8 +28,6 @@ public class RunFunction extends CustomFunction {
 
         if (args.length == 1) {
             ScriptHandler.getHandler().evalScript(args[0].toString());
-            if (TeaseAI.application.getSession() != null && StatisticsManager.moduleDetection)
-                TeaseAI.application.getSession().statisticsManager.endModule();
             return null;
         }
 

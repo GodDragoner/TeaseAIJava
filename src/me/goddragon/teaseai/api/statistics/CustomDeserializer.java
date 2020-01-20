@@ -34,10 +34,31 @@ public class CustomDeserializer implements JsonDeserializer<List<StatisticsBase>
         JsonArray ja = json.getAsJsonArray();
 
         for (JsonElement je : ja) {
+            if (je.isJsonPrimitive())
+            {
+                if (je.getAsJsonPrimitive().isString())
+                {
+                    list.add(context.deserialize(je, String.class));
+                }
+                else if (je.getAsJsonPrimitive().isNumber())
+                {
+                    list.add(context.deserialize(je, Integer.class));
+                }
+                else if (je.getAsJsonPrimitive().isBoolean())
+                {
+                    list.add(context.deserialize(je, Boolean.class));
+                }
+                continue;
+            }
+            else if (je.getAsJsonObject().get("isA").isJsonNull())
+            {
+                list.add(context.deserialize(je, Object.class));
+                continue;
+            }
             String type = je.getAsJsonObject().get("isA").getAsString();
             Class c = map.get(type);
             if (c == null)
-                throw new RuntimeException("Unknow class: " + type);
+                throw new RuntimeException("Unknown class: " + type);
             list.add(context.deserialize(je, c));
         }
 

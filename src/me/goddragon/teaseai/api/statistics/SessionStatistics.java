@@ -9,39 +9,55 @@ public class SessionStatistics
     private ArrayList<JavaEdge> edges;
     private ArrayList<JavaEdgeHold> edgeHolds;
     private ArrayList<JavaFetishActivity> fetishActivities;
-    private boolean inProgressSession;
     
-    public SessionStatistics (ArrayList<JavaModule> statistics, boolean inProgressSession)
+    public SessionStatistics (ArrayList<JavaModule> statistics)
     {
         this.statistics = statistics;
-        this.inProgressSession = inProgressSession;
     }
     
     @SuppressWarnings("unchecked")
     public ArrayList<JavaModule> getFullSessionInfo()
     {
-        return (ArrayList<JavaModule>)statistics.clone();
+        return (ArrayList<JavaModule>)statistics;
     }
     
     @SuppressWarnings("unchecked")
     public ArrayList<JavaStroke> getStrokes()
     {
         loadLists();
-        return (ArrayList<JavaStroke>)strokes.clone();
+        return (ArrayList<JavaStroke>)strokes;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public ArrayList<JavaEdge> getEdges()
+    {
+        loadLists();
+        return (ArrayList<JavaEdge>)edges;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public ArrayList<JavaEdgeHold> getEdgeHolds()
+    {
+        loadLists();
+        return (ArrayList<JavaEdgeHold>)edgeHolds;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public ArrayList<JavaFetishActivity> getFetishActivities()
+    {
+        loadLists();
+        return (ArrayList<JavaFetishActivity>)fetishActivities;
     }
     
     private void loadLists()
     {
-        if (strokes == null || edges == null)
+        strokes = new ArrayList<JavaStroke>();
+        edges = new ArrayList<JavaEdge>();
+        edgeHolds = new ArrayList<JavaEdgeHold>();
+        fetishActivities = new ArrayList<JavaFetishActivity>();
+        for (JavaModule module: statistics)
         {
-            strokes = new ArrayList<JavaStroke>();
-            edges = new ArrayList<JavaEdge>();
-            edgeHolds = new ArrayList<JavaEdgeHold>();
-            fetishActivities = new ArrayList<JavaFetishActivity>();
-            for (JavaModule module: statistics)
-            {
-                proccessListsHelper(module);
-            }
+            proccessListsHelper(module);
         }
     }
     
@@ -75,5 +91,10 @@ public class SessionStatistics
                 proccessListsHelper((JavaModule)statistic);
             }
         }
+    }
+    
+    @Override
+    public String toString(){
+        return "statistics list: " + statistics.toString(); 
     }
 }
