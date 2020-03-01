@@ -32,6 +32,7 @@ public class StartEdgeFunction extends CustomFunction {
             case 1:
                 StrokeHandler.getHandler().startEdging((int)args[0]);
                 StrokeHandler.getHandler().setEdgeHold(false);
+                return null;
         }
 
         TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());

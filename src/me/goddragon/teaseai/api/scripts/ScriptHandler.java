@@ -160,16 +160,18 @@ public class ScriptHandler {
             personality = PersonalityManager.getManager().getLoadingPersonality();
         }
         File script = FileUtils.getRandomMatchingFile(personality.getFolder().getAbsolutePath() + File.separator + scriptName);
-        if (TeaseAI.application.getSession() != null && StatisticsManager.moduleDetection)
-            TeaseAI.application.getSession().statisticsManager.addModule(script.getName());
-
+        
         if (script == null || !script.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Script " + scriptName + " does not exist.");
             return;
         }
 
         try {
+            if (TeaseAI.application.getSession() != null && StatisticsManager.moduleDetection)
+                TeaseAI.application.getSession().statisticsManager.addModule(script.getName());
             runScript(script);
+            if (TeaseAI.application.getSession() != null && StatisticsManager.moduleDetection)
+                TeaseAI.application.getSession().statisticsManager.endModule();
         } catch (FileNotFoundException e) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Script " + scriptName + " does not exist.");
         }

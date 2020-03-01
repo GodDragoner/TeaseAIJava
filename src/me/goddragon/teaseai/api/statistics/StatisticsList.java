@@ -35,6 +35,11 @@ public class StatisticsList
         filePath = "Statistics" + File.separator + "Session-" + dateFormat.format(date) + ".json";
     }
     
+    public ArrayList<JavaModule> toList()
+    {
+        return Statistics;
+    }
+    
     public boolean add(JavaModule toAdd)
     {
         boolean toReturn = Statistics.add(toAdd);

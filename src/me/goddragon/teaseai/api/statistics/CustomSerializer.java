@@ -30,10 +30,36 @@ public class CustomSerializer implements JsonSerializer<ArrayList<StatisticsBase
             return null;
         else {
             JsonArray ja = new JsonArray();
-            for (StatisticsBase bc : src) {
+            for (int i = 0; i < src.size(); i++) {
+                if (!(src.get(i) instanceof StatisticsBase))
+                {
+                    if ((Object)src.get(i) instanceof String)
+                    {
+                        ja.add(context.serialize(src.get(i), String.class));
+                    }
+                    else if ((Object)src.get(i) instanceof Integer)
+                    {
+                        ja.add(context.serialize(src.get(i), Integer.class));
+                    }
+                    else if ((Object)src.get(i) instanceof Double)
+                    {
+                        ja.add(context.serialize(src.get(i), Double.class));
+                    }
+                    else if ((Object)src.get(i) instanceof Boolean)
+                    {
+                        ja.add(context.serialize(src.get(i), Boolean.class));
+                    }
+                    else if ((Object)src.get(i) instanceof Object)
+                    {
+                        ja.add(context.serialize(src.get(i), Object.class));
+                    }
+                    continue;
+                }
+                StatisticsBase bc = src.get(i);
+                
                 Class c = map.get(bc.isA);
                 if (c == null)
-                    throw new RuntimeException("Unknow class: " + bc.isA);
+                    throw new RuntimeException("Unknown class: " + bc.isA);
                 ja.add(context.serialize(bc, c));
 
             }
