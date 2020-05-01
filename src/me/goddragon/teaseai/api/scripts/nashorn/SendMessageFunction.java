@@ -1,17 +1,13 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
 import me.goddragon.teaseai.api.chat.ChatHandler;
-import me.goddragon.teaseai.api.chat.vocabulary.VocabularyHandler;
 import me.goddragon.teaseai.api.media.MediaHandler;
 import me.goddragon.teaseai.utils.FileUtils;
-import me.goddragon.teaseai.utils.StringUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Level;
-
-import org.codehaus.groovy.classgen.Verifier.DefaultArgsAction;
 
 /**
  * Created by GodDragon on 25.03.2018.
@@ -43,8 +39,8 @@ public class SendMessageFunction extends CustomFunction {
                     TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage must have a String for the first argument");
                     return null;
                 }
-                if (args[1] instanceof Integer) {
-                    ChatHandler.getHandler().getSelectedSender().customMessage((String) args[0], (int) args[1] * 1000, true);
+                if (args[1] instanceof Number) {
+                    ChatHandler.getHandler().getSelectedSender().customMessage((String) args[0], ((Number)args[1]).intValue() * 1000, true);
                     return null;
                 } else if (args[1] instanceof String) {
                     ChatHandler.getHandler().getSelectedSender().customMessage((String) args[0], 0, true);
@@ -66,7 +62,7 @@ public class SendMessageFunction extends CustomFunction {
                     TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage must have a String for the first argument");
                     return null;
                 }
-                if (!(args[1] instanceof Integer)) {
+                if (!(args[1] instanceof Number)) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage must have a integer for the second argument");
                     return null;
                 }

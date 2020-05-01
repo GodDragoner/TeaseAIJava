@@ -73,7 +73,7 @@ public class DebugMessageFunction extends CustomFunction {
 
                     return null;
                 } else {
-                    TeaseLogger.getLogger().log(Level.SEVERE, "sendMessage only supports an integer or a string to a picture file as a second parameter. Args given:" + Arrays.asList(args).toString());
+                    TeaseLogger.getLogger().log(Level.SEVERE, "sendDebugMessage only supports an integer or a string to a picture file as a second parameter. Args given:" + Arrays.asList(args).toString());
                     return null;
                 }
             case 0:

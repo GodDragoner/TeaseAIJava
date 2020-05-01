@@ -32,22 +32,30 @@ public class GetVarFunction extends CustomFunction {
             personality = PersonalityManager.getManager().getActivePersonality();
         }
 
+        Object value = null;
+
         switch (args.length) {
             case 1:
-                return personality.getVariableHandler().getVariableValue(args[0].toString());
+                value = personality.getVariableHandler().getVariableValue(args[0].toString());
+                break;
             case 2:
                 if (personality.getVariableHandler().variableExist(args[0].toString())) {
-                    return personality.getVariableHandler().getVariableValue(args[0].toString());
+                    value = personality.getVariableHandler().getVariableValue(args[0].toString());
                 } else {
                     //Return default
-                    return args[1];
+                    value = args[1];
                 }
+                break;
             case 0:
                 TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
                 return null;
         }
 
-        TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());
-        return null;
+        if(value == null) {
+            TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args or variable was not found. Args:" + Arrays.asList(args).toString());
+            TeaseLogger.getLogger().log(Level.SEVERE, "Infos about object given:  Class: " + object.getClass());
+        }
+
+        return value;
     }
 }

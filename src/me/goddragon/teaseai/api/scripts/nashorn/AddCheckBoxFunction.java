@@ -13,7 +13,7 @@ import java.util.logging.Level;
 public class AddCheckBoxFunction extends CustomFunction {
 
     public AddCheckBoxFunction() {
-        super("addCheckBox");
+        super("addCheckBox", "addCheckbox");
     }
 
     @Override

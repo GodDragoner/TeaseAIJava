@@ -33,9 +33,9 @@ public class SendInputFunction extends CustomFunction {
                 TeaseAI.application.setResponsesDisabled(true);
                 return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), 0);
             case 3:
-                if (args[1] instanceof Integer && args[2] instanceof Boolean) {
+                if (args[1] instanceof Number && args[2] instanceof Boolean) {
                     TeaseAI.application.setResponsesDisabled((boolean) args[2]);
-                    return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (int) args[1]);
+                    return ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), ((Number)args[1]).intValue());
                 }
             default:
                 Answer answer;
@@ -43,12 +43,12 @@ public class SendInputFunction extends CustomFunction {
 
                 TeaseAI.application.setResponsesDisabled(true);
 
-                if (args[1] instanceof Integer) {
+                if (args[1] instanceof Number) {
                     for (int x = offset + 1; x < args.length; x++) {
                         Answer.addOption(args[x].toString(), args[x].toString());
                     }
 
-                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), (Integer) args[1] );
+                    answer = ChatHandler.getHandler().getSelectedSender().sendInput(args[0].toString(), ((Number)args[1]).intValue());
                 } else if (args[1] instanceof Answer) {
                     for (int x = offset + 1; x < args.length; x++) {
                         Answer.addOption(args[x].toString(), args[x].toString());

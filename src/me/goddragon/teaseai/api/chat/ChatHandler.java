@@ -4,6 +4,8 @@ import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import me.goddragon.teaseai.TeaseAI;
@@ -212,16 +214,18 @@ public class ChatHandler {
         TeaseLogger.getLogger().log(Level.FINE, text.getText());
     }
 
-    public void addLine(Text... text) {
+    public void addLine(Node... text) {
         addLine(Arrays.asList(text));
     }
 
-    public void addLine(List<Text> text) {
+    public void addLine(List<Node> text) {
         TextFlow textFlow = TeaseAI.application.getController().getChatWindow();
+
         TeaseAI.application.runOnUIThread(new Runnable() {
             @Override
             public void run() {
                 removeAllTemporaryMessages();
+
                 /*for (Text t: text)
                 {
                     if (t.getText() != null)
@@ -229,7 +233,9 @@ public class ChatHandler {
                         textToSpeech.speak(t.getText(), 1.0f, false, false);
                     }
                 }*/
+
                 textFlow.getChildren().addAll(text);
+
                 nextRow();
 
                 addAllTemporaryMessages();
@@ -237,8 +243,10 @@ public class ChatHandler {
         });
 
         String resultingText = "";
-        for (Text textPiece : text) {
-            resultingText += textPiece.getText();
+        for (Node textPiece : text) {
+            if(textPiece instanceof Text) {
+                resultingText += ((Text) textPiece).getText();
+            }
         }
 
         TeaseLogger.getLogger().log(Level.FINE, resultingText);
@@ -323,6 +331,13 @@ public class ChatHandler {
         } else {
             return perMessageCharacterPauseMillis * message.trim().length();
         }
+    }
+
+    public Text getDefaultFormatText(String s) {
+        Text text = new Text(s);
+        text.setFont(Font.font(null, FontWeight.MEDIUM, TeaseAI.application.CHAT_TEXT_SIZE.getDouble()));
+        text.setFill(ChatHandler.getHandler().getDefaultChatColor());
+        return text;
     }
 
     public Collection<ChatParticipant> getParticipants() {

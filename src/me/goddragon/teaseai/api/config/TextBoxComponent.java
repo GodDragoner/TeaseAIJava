@@ -1,7 +1,5 @@
 package me.goddragon.teaseai.api.config;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
 
 public class TextBoxComponent extends VariableBasedComponent {
@@ -24,14 +22,8 @@ public class TextBoxComponent extends VariableBasedComponent {
             textField.setText(variable.getValue().toString());
         }
 
-        textField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
-                if (!newPropertyValue) {
-                    variable.setValue(textField.getText());
-                }
-            }
-        });
+        textField.textProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> variable.setValueAndSave(newPropertyValue));
+
         this.setting = textField;
     }
 

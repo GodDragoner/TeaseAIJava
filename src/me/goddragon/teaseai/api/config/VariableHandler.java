@@ -2,6 +2,7 @@ package me.goddragon.teaseai.api.config;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
+import me.goddragon.teaseai.utils.ArrayUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.*;
@@ -74,7 +75,7 @@ public class VariableHandler {
                     }
 
                     if (lines.size() > 0 && lines.get(lines.size() - 1).equalsIgnoreCase("ArrayList")) {
-                        value = lines.subList(0, lines.size() - 1);
+                        value = ArrayUtils.convertToFittingType(lines.subList(0, lines.size() - 1));
                     } else {
                         //We only need the first line
                         String strLine = lines.get(0);

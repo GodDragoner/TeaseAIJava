@@ -29,9 +29,9 @@ public class CheckBoxComponent extends VariableBasedComponent {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if (checkBox.isSelected()) {
-                    variable.setValue(true);
+                    variable.setValueAndSave(true);
                 } else {
-                    variable.setValue(false);
+                    variable.setValueAndSave(false);
                 }
             }
         });
