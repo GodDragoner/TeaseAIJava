@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.api.chat;
 
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -134,11 +135,11 @@ public class ChatParticipant {
         sendMessage(rawMessage, millisToWait, message);
     }
 
-    public void sendMessage(String rawMessage, long millisToWait, Text... messages) {
+    public void sendMessage(String rawMessage, long millisToWait, Node... messages) {
         sendMessage(rawMessage, millisToWait, Arrays.asList(messages));
     }
 
-    public void sendMessage(String rawMessage, long millisToWait, List<Text> messages) {
+    public void sendMessage(String rawMessage, long millisToWait, List<Node> messages) {
         DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
 
         Text dateText = new Text(dateFormat.format(new Date()) + " ");
@@ -188,15 +189,17 @@ public class ChatParticipant {
             }*/
         }
 
-        List<Text> lineMessages = new ArrayList<>();
+        List<Node> lineMessages = new ArrayList<>();
         lineMessages.add(dateText);
         lineMessages.add(text);
 
         if (TeaseAI.application.TextToSpeechEnabled && id != 0) {
             String toSpeak = "";
 
-            for (Text text2 : messages) {
-                toSpeak += text2.getText();
+            for (Node text2 : messages) {
+                if(text2 instanceof Text) {
+                    toSpeak += ((Text) text2).getText();
+                }
             }
 
             textToSpeech.speak(toSpeak, 1.0f, true, false);

@@ -54,13 +54,13 @@ public class Main {
                         String downloadPath;
                         if (isWindows()) {
                             TeaseLogger.getLogger().log(Level.SEVERE, "Your running Windows. Fetching OpenJFX SDK...");
-                            downloadPath = "https://github.com/GodDragoner/TeaseAIJava/raw/master/Resources/openjfx_windows-x64_bin-sdk.zip";
+                            downloadPath = "https://download2.gluonhq.com/openjfx/11.0.2/openjfx-11.0.2_windows-x64_bin-sdk.zip";
                         } else if (isMac()) {
                             TeaseLogger.getLogger().log(Level.SEVERE, "Your running MacOS. Fetching OpenJFX SDK...");
-                            downloadPath = "https://github.com/GodDragoner/TeaseAIJava/raw/master/Resources/openjfx_osx-x64_bin-sdk.zip";
+                            downloadPath = "https://download2.gluonhq.com/openjfx/11.0.2/openjfx-11.0.2_osx-x64_bin-sdk.zip";
                         } else if (isUnix()) {
                             TeaseLogger.getLogger().log(Level.SEVERE, "Your running Linux/Unix. Fetching OpenJFX SDK...");
-                            downloadPath = "https://github.com/GodDragoner/TeaseAIJava/raw/master/Resources/openjfx_linux-x64_bin-sdk.zip";
+                            downloadPath = "https://download2.gluonhq.com/openjfx/11.0.2/openjfx-11.0.2_linux-x64_bin-sdk.zip";
                         } else {
                             JOptionPane.showMessageDialog(null, "Your OS is not supported by JavaFX yet! Exiting.");
                             System.exit(0);

@@ -54,7 +54,7 @@ public class DoubleSpinnerComponent extends SpinnerComponent {
         spinner.getEditor().setTextFormatter(priceFormatter);
         spinner.getValueFactory().setValue(startingValue);
 
-        spinner.valueProperty().addListener((observable, oldValue, newValue) -> variable.setValue(newValue));
+        spinner.valueProperty().addListener((observable, oldValue, newValue) -> variable.setValueAndSave(newValue));
 
         this.setting = spinner;
     }

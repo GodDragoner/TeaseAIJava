@@ -55,12 +55,14 @@ public class PersonalitySettings {
             if (variableHandler == null) {
                 return;
             }
+
             PersonalityVariable personalityVariable = getSelectedVariable();
+
             if (personalityVariable == null) {
                 return;
             }
-            variableHandler.setVariable(personalityVariable.getConfigName(), variableHandler.getObjectFromString(newValue));
 
+            variableHandler.setVariable(personalityVariable.getConfigName(), variableHandler.getObjectFromString(newValue));
         });
 
         settingsController.onlySupportedVariablesCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -81,6 +83,7 @@ public class PersonalitySettings {
                     needToAdd = false;
                 }
             }
+
             for (PersonalityVariable thisVar : variableHandler.getVariables().values()) {
                 if (!PersonalitiesSettingsHandler.getHandler().hasComponent(thisVar)) {
 
@@ -90,8 +93,10 @@ public class PersonalitySettings {
                                 personality.getSettingsHandler().addPanel("General Settings");
                                 panel = personality.getSettingsHandler().getPanel("General Settings");
                             }
+
                             needToAdd = false;
                         }
+
                         if (thisVar.getValue() == Boolean.FALSE || thisVar.getValue() == Boolean.TRUE) {
                             PersonalitiesSettingsHandler.getHandler().addGuiComponent(thisVar);
                             panel.addCheckBox(thisVar);

@@ -41,7 +41,7 @@ public class OptionsListComponent extends VariableBasedComponent {
         choiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
-                variable.setValue(choiceBox.getItems().get((Integer) number2));
+                variable.setValueAndSave(choiceBox.getItems().get((Integer) number2));
             }
         });
         this.setting = choiceBox;

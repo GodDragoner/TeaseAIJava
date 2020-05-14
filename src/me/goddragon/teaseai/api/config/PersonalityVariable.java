@@ -1,9 +1,12 @@
 package me.goddragon.teaseai.api.config;
 
+import me.goddragon.teaseai.api.scripts.personality.Personality;
+import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
+
 /**
  * Created by GodDragon on 06.04.2018.
  */
-public class PersonalityVariable<T> {
+public class PersonalityVariable {
 
     private final String configName;
     private Object value;
@@ -30,12 +33,20 @@ public class PersonalityVariable<T> {
         this.personalityName = personalityName;
     }
 
+    public Personality getPersonality() {
+        return PersonalityManager.getManager().getPersonality(this.personalityName);
+    }
+
     public String getConfigName() {
         return configName;
     }
 
     public Object getValue() {
         return value;
+    }
+
+    public void setValueAndSave(Object value) {
+        this.getPersonality().getVariableHandler().setVariable(this.configName, value, false);
     }
 
     public void setValue(Object value) {

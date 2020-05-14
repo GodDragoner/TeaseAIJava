@@ -24,14 +24,14 @@ public class StartStrokingFunction extends CustomFunction {
     public Object call(Object object, Object... args) {
         switch (args.length) {
             case 1:
-                if (args[0] instanceof Integer) {
-                    StrokeHandler.getHandler().startStroking((Integer) args[0], 0);
+                if (args[0] instanceof Number) {
+                    StrokeHandler.getHandler().startStroking(((Number)args[0]).intValue(), 0);
                     return null;
                 }
                 break;
             case 2:
-                if (args[0] instanceof Integer && args[1] instanceof Integer) {
-                    StrokeHandler.getHandler().startStroking((Integer) args[0], (Integer) args[1]);
+                if (args[0] instanceof Number && args[1] instanceof Number) {
+                    StrokeHandler.getHandler().startStroking(((Number)args[0]).intValue(), ((Number)args[1]).intValue());
                     return null;
                 }
                 break;

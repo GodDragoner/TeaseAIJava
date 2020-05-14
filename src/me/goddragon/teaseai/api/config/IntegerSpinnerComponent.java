@@ -54,7 +54,7 @@ public class IntegerSpinnerComponent extends SpinnerComponent {
         spinner.getEditor().setTextFormatter(valueFormatter);
         spinner.getValueFactory().setValue(startingValue);
 
-        spinner.valueProperty().addListener((observable, oldValue, newValue) -> variable.setValue(newValue));
+        spinner.valueProperty().addListener((observable, oldValue, newValue) -> variable.setValueAndSave(newValue));
 
         this.setting = spinner;
     }
