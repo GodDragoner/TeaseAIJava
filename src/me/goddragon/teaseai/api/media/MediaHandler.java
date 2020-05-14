@@ -119,7 +119,7 @@ public class MediaHandler {
             TeaseLogger.getLogger().log(Level.SEVERE, "Picture " + file.getPath() + " does not exist.");
             return;
         }
-
+        currentImageURL = file.getAbsolutePath();
         TeaseAI.application.runOnUIThread(new Runnable() {
             @Override
             public void run() {
