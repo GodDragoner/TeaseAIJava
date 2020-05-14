@@ -263,6 +263,9 @@ public class SettingsController {
     @FXML
     public TextField estimChannelDMax;
     
+    @FXML
+    public CheckBox capitalizeTextCheckBox;
+    
 
     public void initiate() {
         mediaSettings.initiate();

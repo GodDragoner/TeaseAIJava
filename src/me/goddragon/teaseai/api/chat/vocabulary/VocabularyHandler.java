@@ -1,5 +1,6 @@
 package me.goddragon.teaseai.api.chat.vocabulary;
 
+import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.scripts.ScriptHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
@@ -133,8 +134,14 @@ public class VocabularyHandler {
         if (loops == 10) {
             TeaseLogger.getLogger().log(Level.WARNING, "Couldn't replace all vocabularies in string '" + message + "' because maximum amount of recursion reached");
         }
-
-        return StringUtils.capitalize(newResult);
+        if (TeaseAI.application.AUTO_CAPITALIZE.getBoolean())
+        {
+            return StringUtils.capitalize(newResult);
+        }
+        else
+        {
+            return newResult;
+        }  
     }
 
     public static VocabularyHandler getHandler() {
