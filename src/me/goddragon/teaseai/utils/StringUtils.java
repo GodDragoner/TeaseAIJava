@@ -234,8 +234,8 @@ public class StringUtils {
     }
 
     public static List<Node> processString(String toProcess) {
-        return processString2(toProcess);
-        /*ArrayList<Node> toReturn = new ArrayList<>();
+        //return processString2(toProcess);
+        ArrayList<Node> toReturn = new ArrayList<>();
 
         Pattern formatter = Pattern.compile("<[\\w =,.]*>");
         Matcher matcher = formatter.matcher(toProcess);
@@ -249,7 +249,7 @@ public class StringUtils {
         //Find stuff in the form of <?>, <?=...>, <?:...> etc. and also </> for closing
         String[] messageFragments = toProcess.split("<[\\w =,.]*>");
 
-        for (int i = 1; i < messageFragments.length; i++) {
+        for (int i = 0; i < messageFragments.length; i++) {
             Text thisText = new Text(messageFragments[i]);
 
             //Add it preemptively
@@ -397,6 +397,6 @@ public class StringUtils {
             }
         }
 
-        return toReturn;*/
+        return toReturn;
     }
 }
