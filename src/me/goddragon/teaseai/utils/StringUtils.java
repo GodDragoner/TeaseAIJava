@@ -250,9 +250,14 @@ public class StringUtils {
         String[] messageFragments = toProcess.split("<[\\w =,.]*>");
 
         for (int i = 0; i < messageFragments.length; i++) {
+            Text thisText = new Text(messageFragments[i]);
+            //Add it preemptively
+            if (!messageFragments[i].equals("")) {
+                toReturn.add(thisText);
+            }
             
             if (!messageFragments[i].equals("")) {
-                Text thisText = new Text(messageFragments[i]);
+                
                 if (i != 0) {
                     //if i is greater than 1 here, then there must be always be at least i-1 elements in the formatters list so we don't need to check its size
                     String thisFormatter = formatters.get(i - 1);

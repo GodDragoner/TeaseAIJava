@@ -111,7 +111,9 @@ public class PersonalitySettingsHandler {
                 break;
             }
         }
-
+        
+        if (toReturn == null)
+            return addPanel(panelName);
         return toReturn;
     }
 }
