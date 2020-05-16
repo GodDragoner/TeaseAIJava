@@ -76,7 +76,6 @@ public class PersonalitySettings {
     public void addPersonalityGUIs() {
         for (Personality personality : PersonalityManager.getManager().getPersonalities()) {
             VariableHandler variableHandler = personality.getVariableHandler();
-            PersonalitySettingsPanel panel = personality.getSettingsHandler().getPanel("General Settings");
             boolean needToAdd = true;
             for (Tab tab : PersonalitiesSettingsHandler.getHandler().getTabsToAdd()) {
                 if (tab.getText().equals(personality.getName().getValue())) {
@@ -88,15 +87,7 @@ public class PersonalitySettings {
                 if (!PersonalitiesSettingsHandler.getHandler().hasComponent(thisVar)) {
 
                     if (thisVar.isSupportedByPersonality()) {
-                        if (needToAdd) {
-                            if (personality.getSettingsHandler().getPanel("General Settings") == null) {
-                                personality.getSettingsHandler().addPanel("General Settings");
-                                panel = personality.getSettingsHandler().getPanel("General Settings");
-                            }
-
-                            needToAdd = false;
-                        }
-
+                        PersonalitySettingsPanel panel = personality.getSettingsHandler().getPanel("General Settings");
                         if (thisVar.getValue() == Boolean.FALSE || thisVar.getValue() == Boolean.TRUE) {
                             PersonalitiesSettingsHandler.getHandler().addGuiComponent(thisVar);
                             panel.addCheckBox(thisVar);
