@@ -56,7 +56,7 @@ public class IntegerSpinnerComponent extends SpinnerComponent {
 
         spinner.valueProperty().addListener((observable, oldValue, newValue) -> variable.setValueAndSave(newValue));
 
-        this.setting = spinner;
+        setSetting(spinner);
     }
 
 }

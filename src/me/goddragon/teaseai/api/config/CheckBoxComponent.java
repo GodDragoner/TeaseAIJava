@@ -35,6 +35,6 @@ public class CheckBoxComponent extends VariableBasedComponent {
                 }
             }
         });
-        this.setting = checkBox;
+        setSetting(checkBox);
     }
 }

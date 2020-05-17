@@ -44,6 +44,6 @@ public class OptionsListComponent extends VariableBasedComponent {
                 variable.setValueAndSave(choiceBox.getItems().get((Integer) number2));
             }
         });
-        this.setting = choiceBox;
+        setSetting(choiceBox);
     }
 }

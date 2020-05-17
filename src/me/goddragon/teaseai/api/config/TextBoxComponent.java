@@ -24,7 +24,7 @@ public class TextBoxComponent extends VariableBasedComponent {
 
         textField.textProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> variable.setValueAndSave(newPropertyValue));
 
-        this.setting = textField;
+        setSetting(textField);
     }
 
 }
