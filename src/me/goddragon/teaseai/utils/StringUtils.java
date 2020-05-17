@@ -237,7 +237,7 @@ public class StringUtils {
         //return processString2(toProcess);
         ArrayList<Node> toReturn = new ArrayList<>();
 
-        Pattern formatter = Pattern.compile("<[\\w =,.]*>");
+        Pattern formatter = Pattern.compile("<[\\w =,.\\/]*>");
         Matcher matcher = formatter.matcher(toProcess);
 
         ArrayList<String> formatters = new ArrayList<>();
@@ -247,7 +247,7 @@ public class StringUtils {
         }
 
         //Find stuff in the form of <?>, <?=...>, <?:...> etc. and also </> for closing
-        String[] messageFragments = toProcess.split("<[\\w =,.]*>");
+        String[] messageFragments = toProcess.split("<[\\w =,.\\/]*>");
 
         for (int i = 0; i < messageFragments.length; i++) {
             Text thisText = new Text(messageFragments[i]);
