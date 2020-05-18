@@ -1,5 +1,7 @@
 package me.goddragon.teaseai.api.session;
 
+import devices.TwoB.TwoB;
+import estimAPI.EstimAPI;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.chat.ChatHandler;
 import me.goddragon.teaseai.api.chat.ChatParticipant;
@@ -15,11 +17,7 @@ import me.goddragon.teaseai.utils.EstimState;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
-
 import java.util.logging.Level;
-
-import devices.TwoB.TwoB;
-import estimAPI.EstimAPI;
 
 /**
  * Created by GodDragon on 26.03.2018.
@@ -29,7 +27,7 @@ public class Session {
     private boolean started = false;
     private boolean haltSession = false;
     private long startedAt;
-    public StatisticsManager statisticsManager;
+    public StatisticsManager statisticsManager = new StatisticsManager();
 
     private EstimAPI estimAPI = null;
     private EstimState estimState = new EstimState();
@@ -171,6 +169,10 @@ public class Session {
 
     public long getRuntime() {
         return System.currentTimeMillis() - startedAt;
+    }
+
+    public void setActivePersonalityOnStart(Personality activePersonality) {
+        this.activePersonality = activePersonality;
     }
 
     public void setActivePersonality(Personality activePersonality) {

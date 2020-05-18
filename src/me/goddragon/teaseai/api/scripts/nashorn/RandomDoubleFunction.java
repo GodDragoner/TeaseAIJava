@@ -33,7 +33,7 @@ public class RandomDoubleFunction extends CustomFunction {
 
                     // nextInt is normally exclusive of the top value,
                     // So add 1 to make it inclusive
-                    return ThreadLocalRandom.current().nextDouble((Double) args[0], (Double) args[1] + 1);
+                    return ThreadLocalRandom.current().nextDouble(((Number)args[0]).doubleValue(), ((Number)args[1]).doubleValue() + 1);
                 }
 
                 break;

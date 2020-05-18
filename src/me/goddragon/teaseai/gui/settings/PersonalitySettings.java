@@ -3,7 +3,6 @@ package me.goddragon.teaseai.gui.settings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.Tab;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.PersonalitiesSettingsHandler;
@@ -76,40 +75,31 @@ public class PersonalitySettings {
     public void addPersonalityGUIs() {
         for (Personality personality : PersonalityManager.getManager().getPersonalities()) {
             VariableHandler variableHandler = personality.getVariableHandler();
-            PersonalitySettingsPanel panel = personality.getSettingsHandler().getPanel("General Settings");
-            boolean needToAdd = true;
-            for (Tab tab : PersonalitiesSettingsHandler.getHandler().getTabsToAdd()) {
-                if (tab.getText().equals(personality.getName().getValue())) {
-                    needToAdd = false;
-                }
-            }
+            PersonalitySettingsPanel generalSettingsPanel = personality.getSettingsHandler().getPanel("General Settings");
 
-            for (PersonalityVariable thisVar : variableHandler.getVariables().values()) {
-                if (!PersonalitiesSettingsHandler.getHandler().hasComponent(thisVar)) {
-
-                    if (thisVar.isSupportedByPersonality()) {
-                        if (needToAdd) {
-                            if (personality.getSettingsHandler().getPanel("General Settings") == null) {
-                                personality.getSettingsHandler().addPanel("General Settings");
-                                panel = personality.getSettingsHandler().getPanel("General Settings");
-                            }
-
-                            needToAdd = false;
+            for (PersonalityVariable personalityVariable : variableHandler.getVariables().values()) {
+                //Was the variable already assigned to a custom gui?
+                if (!PersonalitiesSettingsHandler.getHandler().hasComponent(personalityVariable)) {
+                    if (personalityVariable.isSupportedByPersonality()) {
+                        //If we have a value we created the panel
+                        if (generalSettingsPanel == null) {
+                            personality.getSettingsHandler().addPanel("General Settings");
+                            generalSettingsPanel = personality.getSettingsHandler().getPanel("General Settings");
                         }
 
-                        if (thisVar.getValue() == Boolean.FALSE || thisVar.getValue() == Boolean.TRUE) {
-                            PersonalitiesSettingsHandler.getHandler().addGuiComponent(thisVar);
-                            panel.addCheckBox(thisVar);
-                        } else if (thisVar.getValue() instanceof String) {
-                            PersonalitiesSettingsHandler.getHandler().addGuiComponent(thisVar);
-                            panel.addTextBox(thisVar);
+                        if (personalityVariable.getValue() == Boolean.FALSE || personalityVariable.getValue() == Boolean.TRUE) {
+                            PersonalitiesSettingsHandler.getHandler().addGuiComponent(personalityVariable);
+                            generalSettingsPanel.addCheckBox(personalityVariable);
+                        } else if (personalityVariable.getValue() instanceof String) {
+                            PersonalitiesSettingsHandler.getHandler().addGuiComponent(personalityVariable);
+                            generalSettingsPanel.addTextBox(personalityVariable);
                         }
                     }
                 }
             }
 
-            for (PersonalitySettingsPanel panel2 : personality.getSettingsHandler().getSettingsPanels()) {
-                panel2.addGuiComponents();
+            for (PersonalitySettingsPanel additionalPanel : personality.getSettingsHandler().getSettingsPanels()) {
+                additionalPanel.addGuiComponents();
             }
         }
     }

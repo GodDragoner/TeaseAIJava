@@ -41,13 +41,13 @@ public class PersonalitiesSettingsHandler {
     }
 
     public boolean hasComponent(PersonalityVariable comp) {
-        boolean equivalentVar = false;
         for (PersonalityVariable var : addedComponents) {
             if (var.equals(comp)) {
-                equivalentVar = true;
+                return true;
             }
         }
-        return addedComponents.contains(comp) || equivalentVar;
+
+        return addedComponents.contains(comp);
     }
 
     public ArrayList<Tab> getTabsToAdd() {

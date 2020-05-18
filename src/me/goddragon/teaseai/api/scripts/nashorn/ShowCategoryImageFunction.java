@@ -51,8 +51,8 @@ public class ShowCategoryImageFunction extends CustomFunction {
                     MediaHandler.getHandler().showPicture(picture);
                     return picture;
                 case 2:
-                    if (args[1] instanceof Integer) {
-                        MediaHandler.getHandler().showPicture(picture, (Integer) args[1]);
+                    if (args[1] instanceof Number) {
+                        MediaHandler.getHandler().showPicture(picture, ((Number)args[1]).intValue());
                         return picture;
                     }
 

@@ -68,7 +68,8 @@ public class ContactSettings {
 
                 chooser.getExtensionFilters().addAll(
                         new FileChooser.ExtensionFilter("JPG", "*.jpg"),
-                        new FileChooser.ExtensionFilter("PNG", "*.png")
+                        new FileChooser.ExtensionFilter("PNG", "*.png"),
+                new FileChooser.ExtensionFilter("JPEG", "*.jpeg")
                 );
 
                 File image = chooser.showOpenDialog(settingsController.stage);

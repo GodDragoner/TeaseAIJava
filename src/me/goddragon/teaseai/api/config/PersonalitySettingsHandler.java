@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class PersonalitySettingsHandler {
     private ArrayList<PersonalitySettingsPanel> settingsPanels;
 
-    private Tab PersonalityTab;
+    private Tab personalityTab;
 
     private String personalityName;
 
@@ -39,9 +39,10 @@ public class PersonalitySettingsHandler {
 
     public PersonalitySettingsPanel addSettingsPanel(String panelName) {
         if (settingsPanels.isEmpty()) {
-            PersonalityTab = PersonalitiesSettingsHandler.getHandler().addPersonalityTab(personalityName);
+            personalityTab = PersonalitiesSettingsHandler.getHandler().addPersonalityTab(personalityName);
             setupPersonalityTab();
         }
+
         Label toAdd = new Label(panelName);
         toAdd.setAlignment(Pos.CENTER);
         menusList.getItems().add(toAdd);
@@ -67,8 +68,8 @@ public class PersonalitySettingsHandler {
 
     private void setupPersonalityTab() {
         personalityGridPane = new GridPane();
-        PersonalityTab.setContent(personalityGridPane);
-        PersonalityTab.getStyleClass().add("button-color");
+        personalityTab.setContent(personalityGridPane);
+        personalityTab.getStyleClass().add("button-color");
         ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(100);
         personalityGridPane.getColumnConstraints().add(column);

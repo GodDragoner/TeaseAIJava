@@ -1,6 +1,6 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
-import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
+import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.Arrays;
@@ -26,7 +26,8 @@ public class IsVariableFunction extends CustomFunction {
 
         switch (args.length) {
             case 1:
-                return PersonalityManager.getManager().getActivePersonality().getVariableHandler().variableExist(args[0].toString());
+                boolean bool = TeaseAI.application.getSession().getActivePersonality().getVariableHandler().variableExist(args[0].toString());
+                return bool;
             case 0:
                 TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
                 return null;

@@ -19,6 +19,7 @@ import javafx.scene.layout.*;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextFlow;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -111,6 +112,14 @@ public class MainGuiController {
     //Run Script Menu Item
     @FXML
     private MenuItem runScriptMenuItem;
+
+    //Save Session Menu Item
+    @FXML
+    private MenuItem saveSessionMenuItem;
+
+    //Restore Session Menu Item
+    @FXML
+    private MenuItem restoreSessionMenuItem;
 
     @FXML
     private Region draggableRegion;
@@ -264,33 +273,7 @@ public class MainGuiController {
                     return;
                 }
 
-                FileChooser chooser = new FileChooser();
-                chooser.setTitle("Select Script");
-
-                File defaultDirectory = TeaseAI.application.getSession().getActivePersonality().getFolder();
-                chooser.setInitialDirectory(defaultDirectory);
-
-                chooser.getExtensionFilters().addAll(
-                        new FileChooser.ExtensionFilter("Javascript", "*.js")
-                );
-
-                File script = chooser.showOpenDialog(stage);
-
-                if (script != null && script.exists()) {
-                    String extension = FileUtils.getExtension(script);
-                    if ((extension.equalsIgnoreCase("js"))) {
-                        PersonalityManager.getManager().setActivePersonality((Personality) getPersonalityChoiceBox().getSelectionModel().getSelectedItem());
-
-                        TeaseAI.application.getSession().startWithScript(script);
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Invalid File");
-                        alert.setHeaderText(null);
-                        alert.setContentText("The given file is not a supported script file.");
-
-                        alert.showAndWait();
-                    }
-                }
+                FileUtils.openRunScriptDialog(stage, "Select script");
             }
         });
 
@@ -306,10 +289,60 @@ public class MainGuiController {
 
         Label settingsLabel = new Label("Settings");
         menuSettingsButton.setGraphic(settingsLabel);
+        menuSettingsButton.setText("");
         settingsLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
                 SettingsController.openGUI();
+            }
+        });
+
+        saveSessionMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (TeaseAI.getApplication().getSession().getActivePersonality() == null) {
+                    return;
+                }
+
+                Personality personality = TeaseAI.getApplication().getSession().getActivePersonality();
+                personality.getVariableHandler().createVariableBackup();
+            }
+        });
+
+        restoreSessionMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (TeaseAI.getApplication().getSession().getActivePersonality() == null) {
+                    return;
+                }
+
+                Personality personality = TeaseAI.getApplication().getSession().getActivePersonality();
+
+                DirectoryChooser chooser = new DirectoryChooser();
+                chooser.setTitle("Select Backup Directory");
+
+                File defaultDirectory = new File(TeaseAI.application.getSession().getActivePersonality().getFolder().getPath() + File.separator +  "System");
+                chooser.setInitialDirectory(defaultDirectory);
+
+                File selectedDirectory = chooser.showDialog(stage);
+
+                if (selectedDirectory != null) {
+                    File tempVariableDirectory = new File(selectedDirectory.getPath() + File.separator + "Temp");
+                    if (tempVariableDirectory.exists()) {
+                        personality.getVariableHandler().loadVariablesFromFolder(selectedDirectory, false);
+                        personality.getVariableHandler().loadVariablesFromFolder(tempVariableDirectory, true);
+
+                        //Now select input script
+                        FileUtils.openRunScriptDialog(stage, "Select script to restore to");
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Invalid Backup");
+                        alert.setHeaderText(null);
+                        alert.setContentText("The given folder is not a supported script backup folder.");
+
+                        alert.showAndWait();
+                    }
+                }
             }
         });
 
@@ -354,7 +387,8 @@ public class MainGuiController {
 
                 chooser.getExtensionFilters().addAll(
                         new FileChooser.ExtensionFilter("JPG", "*.jpg"),
-                        new FileChooser.ExtensionFilter("PNG", "*.png")
+                        new FileChooser.ExtensionFilter("PNG", "*.png"),
+                        new FileChooser.ExtensionFilter("JPEG", "*.jpeg")
                 );
 
                 File image = chooser.showOpenDialog(stage);

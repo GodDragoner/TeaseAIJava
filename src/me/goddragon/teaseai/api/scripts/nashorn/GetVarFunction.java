@@ -53,7 +53,7 @@ public class GetVarFunction extends CustomFunction {
 
         if(value == null) {
             TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args or variable was not found. Args:" + Arrays.asList(args).toString());
-            TeaseLogger.getLogger().log(Level.SEVERE, "Infos about object given:  Class: " + object.getClass());
+            TeaseLogger.getLogger().log(Level.SEVERE, "Infos about object given:  Class: " + args[0].getClass());
         }
 
         return value;

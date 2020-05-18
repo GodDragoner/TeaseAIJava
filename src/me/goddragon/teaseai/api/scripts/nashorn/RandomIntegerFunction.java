@@ -33,7 +33,7 @@ public class RandomIntegerFunction extends CustomFunction {
 
                     // nextInt is normally exclusive of the top value,
                     // So add 1 to make it inclusive
-                    return ThreadLocalRandom.current().nextInt((Integer) args[0], (Integer) args[1] + 1);
+                    return ThreadLocalRandom.current().nextInt(((Number)args[0]).intValue(), ((Number)args[1]).intValue() + 1);
                 }
 
                 break;

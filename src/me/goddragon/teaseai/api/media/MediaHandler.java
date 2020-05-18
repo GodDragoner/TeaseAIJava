@@ -243,22 +243,26 @@ public class MediaHandler {
             return file;
         }
 
-        InputStream in = new BufferedInputStream(new URL(url).openStream());
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        byte[] buf = new byte[1024];
+        try {
+            InputStream in = new BufferedInputStream(new URL(url).openStream());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            byte[] buf = new byte[1024];
 
-        int n;
-        while (-1 != (n = in.read(buf))) {
-            out.write(buf, 0, n);
+            int n;
+            while (-1 != (n = in.read(buf))) {
+                out.write(buf, 0, n);
+            }
+            out.close();
+            in.close();
+
+            byte[] response = out.toByteArray();
+
+            FileOutputStream fos = new FileOutputStream(path);
+            fos.write(response);
+            fos.close();
+        } catch(FileNotFoundException ex) {
+            TeaseLogger.getLogger().log(Level.WARNING, "Unable to find image on url " + url);
         }
-        out.close();
-        in.close();
-
-        byte[] response = out.toByteArray();
-
-        FileOutputStream fos = new FileOutputStream(path);
-        fos.write(response);
-        fos.close();
 
         if (file.exists()) {
             return file;

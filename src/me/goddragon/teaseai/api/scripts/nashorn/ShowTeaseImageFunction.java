@@ -33,8 +33,8 @@ public class ShowTeaseImageFunction extends CustomFunction {
             return null;
         }
 
-        if (args.length >= 1 && args[0] instanceof Integer) {
-            MediaHandler.getHandler().showPicture(file, (Integer) args[0]);
+        if (args.length >= 1 && args[0] instanceof Number) {
+            MediaHandler.getHandler().showPicture(file, ((Number)args[0]).intValue());
             return file;
         } else if (args.length == 0) {
             MediaHandler.getHandler().showPicture(file);

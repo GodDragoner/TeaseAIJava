@@ -277,7 +277,9 @@ public class Personality {
 
         if (loadFile.exists()) {
             try {
+                TeaseAI.getApplication().getSession().setActivePersonalityOnStart(this);
                 ScriptHandler.getHandler().runScript(loadFile);
+                TeaseAI.getApplication().getSession().setActivePersonalityOnStart(null);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }

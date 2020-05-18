@@ -73,7 +73,7 @@ public class StringUtils {
 
     public static List<Node> processString2(String toProcess) {
         ArrayList<Node> toReturn = new ArrayList<>();
-        Pattern formatter = Pattern.compile("([^<]*)(<([\\w =,.\\/]*)>([^<]*)(<>|<\\/>))([^<]*)");
+        Pattern formatter = Pattern.compile("([^<]*)(<([\\w =,.\\/]*)>([^<]*)(<>|<\\/\\w*>))([^<]*)");
         Matcher matcher = formatter.matcher(toProcess);
 
         while (matcher.find()) {
@@ -228,6 +228,10 @@ public class StringUtils {
             if (unformattedAfter.length() > 0) {
                 toReturn.add(ChatHandler.getHandler().getDefaultFormatText(unformattedAfter));
             }
+        }
+
+        if(toReturn.isEmpty()) {
+            toReturn.add(ChatHandler.getHandler().getDefaultFormatText(toProcess));
         }
 
         return toReturn;

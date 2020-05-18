@@ -24,7 +24,6 @@ import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
 import me.goddragon.teaseai.api.session.Session;
 import me.goddragon.teaseai.api.session.StrokeHandler;
-import me.goddragon.teaseai.api.statistics.StatisticsManager;
 import me.goddragon.teaseai.gui.ProgressForm;
 import me.goddragon.teaseai.gui.StartupProgressPane;
 import me.goddragon.teaseai.gui.main.MainGuiController;
@@ -112,11 +111,15 @@ public class TeaseAI extends Application {
 
         UpdateHandler.TEASE_AI_PROPERTIES_DEFAULT_LINK = TEASE_AI_PROPERTIES_LINK.getValue();
 
+        //Temp session for loading stuff of personalities
+        this.session = new Session();
+
         ProgressForm progressForm = new ProgressForm("Checking for TAJ update...");
         Task<Void> task = new Task<Void>() {
             @Override
             public Void call() throws InterruptedException {
                 JFXUpdater.getUpdater().checkForUpdate();
+
 
                 progressForm.setNameSync("Checking personalities...");
                 PersonalityManager.getManager().setProgressUpdate((workDone, totalWork) ->
@@ -353,8 +356,6 @@ public class TeaseAI extends Application {
 
     public void initializeNewSession() {
         this.session = new Session();
-
-        this.session.statisticsManager = new StatisticsManager();
 
         //End everything such as metronome and stroking
         StrokeHandler.getHandler().setEdging(false);

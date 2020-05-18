@@ -21,7 +21,7 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane id="main-base-anchor-pane" fx:id="baseAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="945.0" prefWidth="1473.0" styleClass="primary-color" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="main-base-anchor-pane" fx:id="baseAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="945.0" prefWidth="1473.0" styleClass="primary-color" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane fx:id="baseGridPane" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -154,14 +154,20 @@
                </children>
             </GridPane>
             <Region id="main-window-draggable-region" fx:id="draggableRegion" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="3" />
-            <MenuBar id="main-menu-bar" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefHeight="30.0" prefWidth="245.0" style="-fx-background-color: transparent;" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+            <MenuBar id="main-menu-bar" maxHeight="1.7976931348623157E308" maxWidth="285.0" prefHeight="25.0" prefWidth="285.0" style="-fx-background-color: transparent;" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                <menus>
                   <Menu mnemonicParsing="false" styleClass="fileMenu" text="File">
                      <items>
                         <MenuItem fx:id="runScriptMenuItem" mnemonicParsing="false" text="Run Script" />
                      </items>
                   </Menu>
-                  <Menu fx:id="menuSettingsButton" mnemonicParsing="false" />
+                  <Menu fx:id="menuSettingsButton" mnemonicParsing="false" text="Settings" />
+                  <Menu mnemonicParsing="false" styleClass="helpMenu" text="Session">
+                     <items>
+                        <MenuItem fx:id="saveSessionMenuItem" mnemonicParsing="false" styleClass="aboutMenuItem" text="Save Session" />
+                        <MenuItem fx:id="restoreSessionMenuItem" mnemonicParsing="false" styleClass="aboutMenuItem" text="Restore Session" />
+                     </items>
+                  </Menu>
                   <Menu mnemonicParsing="false" styleClass="helpMenu" text="Help">
                      <items>
                         <MenuItem mnemonicParsing="false" styleClass="aboutMenuItem" text="About" />

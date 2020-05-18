@@ -1,5 +1,8 @@
 package me.goddragon.teaseai.utils;
 
+import javafx.scene.control.Alert;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import me.goddragon.teaseai.TeaseAI;
 
 import javax.net.ssl.*;
@@ -58,6 +61,35 @@ public class FileUtils {
         }
 
         return files.get(RandomUtils.randInt(0, files.size() - 1));
+    }
+
+    public static void openRunScriptDialog(Window window, String name) {
+
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle(name);
+
+        File defaultDirectory = TeaseAI.application.getSession().getActivePersonality().getFolder();
+        chooser.setInitialDirectory(defaultDirectory);
+
+        chooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Javascript", "*.js")
+        );
+
+        File script = chooser.showOpenDialog(window);
+
+        if (script != null && script.exists()) {
+            String extension = FileUtils.getExtension(script);
+            if ((extension.equalsIgnoreCase("js"))) {
+                TeaseAI.application.getSession().startWithScript(script);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid File");
+                alert.setHeaderText(null);
+                alert.setContentText("The given file is not a supported script file.");
+
+                alert.showAndWait();
+            }
+        }
     }
 
 

@@ -54,8 +54,8 @@ public class ShowImageFunction extends CustomFunction {
             }
 
             if (args.length == 2) {
-                if (args[1] instanceof Integer) {
-                    MediaHandler.getHandler().showPicture(file, (Integer) args[1]);
+                if (args[1] instanceof Number) {
+                    MediaHandler.getHandler().showPicture(file, ((Number)args[1]).intValue());
                     return file;
                 }
             } else {

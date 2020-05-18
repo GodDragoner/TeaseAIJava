@@ -1,14 +1,14 @@
 package me.goddragon.teaseai.api.statistics;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class CustomSerializer implements JsonSerializer<ArrayList<StatisticsBase>> {
 
@@ -30,7 +30,21 @@ public class CustomSerializer implements JsonSerializer<ArrayList<StatisticsBase
             return null;
         else {
             JsonArray ja = new JsonArray();
-            for (int i = 0; i < src.size(); i++) {
+            /** Stackoverflow
+             * 	at com.google.gson.Gson$2.serialize(Gson.java:147)
+             * 	at me.goddragon.teaseai.api.statistics.CustomSerializer.serialize(CustomSerializer.java:63)
+             * 	at me.goddragon.teaseai.api.statistics.CustomSerializer.serialize(CustomSerializer.java:13)
+             * 	at com.google.gson.TreeTypeAdapter.write(TreeTypeAdapter.java:70)
+             * 	at com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper.write(TypeAdapterRuntimeTypeWrapper.java:68)
+             * 	at com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1.write(ReflectiveTypeAdapterFactory.java:112)
+             * 	at com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.write(ReflectiveTypeAdapterFactory.java:239)
+             * 	at com.google.gson.Gson.toJson(Gson.java:661)
+             * 	at com.google.gson.Gson.toJsonTree(Gson.java:554)
+             * 	at com.google.gson.Gson$2.serialize(Gson.java:147)
+             * 	at me.goddragon.teaseai.api.statistics.CustomSerializer.serialize(CustomSerializer.java:63)
+             * 	at me.goddragon.teaseai.api.statistics.CustomSerializer.serialize(CustomSerializer.java:13)
+             */
+            /*for (int i = 0; i < src.size(); i++) {
                 if (!(src.get(i) instanceof StatisticsBase))
                 {
                     if ((Object)src.get(i) instanceof String)
@@ -62,7 +76,7 @@ public class CustomSerializer implements JsonSerializer<ArrayList<StatisticsBase
                     throw new RuntimeException("Unknown class: " + bc.isA);
                 ja.add(context.serialize(bc, c));
 
-            }
+            }*/
             return ja;
         }
     }
