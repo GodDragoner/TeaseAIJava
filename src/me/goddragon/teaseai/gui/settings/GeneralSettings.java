@@ -1,5 +1,7 @@
 package me.goddragon.teaseai.gui.settings;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextFormatter;
 import javafx.util.converter.IntegerStringConverter;
 import me.goddragon.teaseai.TeaseAI;
@@ -51,7 +53,12 @@ public class GeneralSettings {
                 }
             }
         });
-
+        
+        settingsController.debugCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                TeaseAI.application.DEBUG_MODE.setValue(newValue.toString()).save();
+            }});
         settingsController.textToSpeechComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.equalsIgnoreCase(TextToSpeechType.DISABLED.getName())) {
                 TeaseAI.application.TEXT_TO_SPEECH.setValue(TextToSpeechType.DISABLED.getId() + "").save();
@@ -66,11 +73,17 @@ public class GeneralSettings {
                 TeaseLogger.getLogger().log(Level.SEVERE, "Unknown text to speech value " + newValue);
             }
         });
-
-        settingsController.debugCheckbox.selectedProperty().addListener((observable, oldValue, newValue) ->
-                TeaseAI.application.DEBUG_MODE.setValue(newValue.toString()).save());
-
+        
+        settingsController.capitalizeTextCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                TeaseAI.application.AUTO_CAPITALIZE.setValue(newValue.toString()).save();
+            }
+        });
+        
         settingsController.debugCheckbox.selectedProperty().set(TeaseAI.application.DEBUG_MODE.getBoolean());
+        
+        settingsController.capitalizeTextCheckBox.selectedProperty().set(TeaseAI.application.AUTO_CAPITALIZE.getBoolean());
 
         settingsController.textToSpeechComboBox.getItems().addAll(TextToSpeechType.DISABLED.getName(), TextToSpeechType.ENABLED.getName(), TextToSpeechType.PERSONALITY.getName());
         int textToSpeechInt = TeaseAI.application.TEXT_TO_SPEECH.getInt();

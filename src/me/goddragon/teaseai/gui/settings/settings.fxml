@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="settings-base-anchor-pane" fx:id="SettingsBackground" prefHeight="472.0" prefWidth="704.0" styleClass="primary-color" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="settings-base-anchor-pane" fx:id="SettingsBackground" prefHeight="472.0" prefWidth="704.0" styleClass="primary-color" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
         <TabPane fx:id="SettingsPanes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="554.0" prefWidth="809.0" style="-fx-background-color: transparent;" styleClass="floating" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
@@ -41,6 +41,7 @@
                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
                                         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="255.0" vgrow="SOMETIMES" />
                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
@@ -55,6 +56,8 @@
                               <ComboBox fx:id="textToSpeechComboBox" layoutX="232.0" layoutY="61.0" prefWidth="150.0" styleClass="button-color" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                               <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="88.0" prefHeight="22.0" prefWidth="207.0" text="Debug Mode" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <CheckBox fx:id="debugCheckbox" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="207.0" text="Capitalize Text" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <CheckBox fx:id="capitalizeTextCheckBox" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.rowIndex="5" />
                                     </children>
                                 </GridPane>
                             </children>

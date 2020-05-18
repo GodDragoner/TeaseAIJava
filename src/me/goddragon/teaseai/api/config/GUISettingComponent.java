@@ -12,7 +12,7 @@ public abstract class GUISettingComponent {
     protected String description;
     protected Node setting;
     protected int columnNumber = -1;
-
+    protected HoveringTooltip tooltip;
 
     public GUISettingComponent(String settingString, int columnNumber) {
         this(settingString);
@@ -33,10 +33,15 @@ public abstract class GUISettingComponent {
         this(settingString);
         this.description = description;
         //Tooltip.install(settingLabel, makeBubble(new Tooltip(this.description)));
-        settingLabel.setTooltip(makeBubble(new Tooltip(this.description)));
+        HoveringTooltip hoveringTooltip = new HoveringTooltip(0);
+        //hoveringTooltip.setDuration(999999);
+        hoveringTooltip.setText(description);
+        //hoveringTooltip.isHoveringTargetSecondary(hoveringTooltip.getGraphic());
+        tooltip = hoveringTooltip;
+        settingLabel.setTooltip(makeBubble(hoveringTooltip));
     }
 
-    private Tooltip makeBubble(Tooltip tooltip) {
+    private Tooltip makeBubble(HoveringTooltip tooltip) {
         tooltip.setStyle("-fx-font-size: 14px;");
         tooltip.setMaxWidth(300);
         tooltip.setWrapText(true);
@@ -56,5 +61,12 @@ public abstract class GUISettingComponent {
 
     public int getColumnID() {
         return columnNumber;
+    }
+    
+    public void setSetting(Node toSet)
+    {
+        setting = toSet;
+        //tooltip.isHoveringTargetPrimary(settingLabel);
+        tooltip.addHoveringTarget(settingLabel);
     }
 }

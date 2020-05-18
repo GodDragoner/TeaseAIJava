@@ -56,6 +56,6 @@ public class DoubleSpinnerComponent extends SpinnerComponent {
 
         spinner.valueProperty().addListener((observable, oldValue, newValue) -> variable.setValueAndSave(newValue));
 
-        this.setting = spinner;
+        setSetting(spinner);
     }
 }

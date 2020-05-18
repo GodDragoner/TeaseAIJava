@@ -208,7 +208,7 @@ public class ChatParticipant {
         lineMessages.addAll(messages);
         ChatHandler.getHandler().addLine(lineMessages);
 
-        //TeaseLogger.getLogger().log(Level.INFO, "Current PictureSet:" + pictureSet);
+        //TeaseLogger.getLogger().log(Level.INFO, "CurrFent PictureSet:" + pictureSet);
         if (type != SenderType.SUB && !MediaHandler.getHandler().isImagesLocked() && pictureSet != null) {
             Session session = TeaseAI.application.getSession();
             TaggedPicture taggedPicture = session.getActivePersonality().getPictureSelector().getPicture(session, this);
