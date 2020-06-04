@@ -1,17 +1,11 @@
 package me.goddragon.teaseai.api.texttospeech;
 
-import marytts.LocalMaryInterface;
-import marytts.MaryInterface;
-import marytts.exceptions.MaryConfigurationException;
 import marytts.modules.synthesis.Voice;
 import marytts.signalproc.effects.AudioEffect;
 import marytts.signalproc.effects.AudioEffects;
 
-import javax.sound.sampled.AudioInputStream;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -20,34 +14,13 @@ import java.util.stream.StreamSupport;
  */
 public class TextToSpeech {
 
-    private AudioPlayer tts;
-    private MaryInterface marytts;
+    private TTSProvider provider;
 
     /**
      * Constructor
      */
     public TextToSpeech() {
-        try {
-            String javaVersion = System.getProperty("java.version");
-
-            boolean changeVersion = false;
-            if (javaVersion.length() < 3) {
-                changeVersion = true;
-                System.setProperty("java.version", javaVersion + ".1");
-            }
-
-            marytts = new LocalMaryInterface();
-
-            //Reset to original java version
-            if (changeVersion) {
-                System.setProperty("java.version", javaVersion);
-            }
-
-        } catch (MaryConfigurationException ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        provider = new MaryTTSProvider();
     }
 
 
@@ -56,7 +29,6 @@ public class TextToSpeech {
     /**
      * Transform text to speech
      *
-     * @param text   The text that will be transformed to speech
      * @param daemon <br>
      *               <b>True</b> The thread that will start the text to speech Player will be a daemon Thread <br>
      *               <b>False</b> The thread that will start the text to speech Player will be a normal non daemon Thread
@@ -64,24 +36,17 @@ public class TextToSpeech {
      *               <b>True</b> The current Thread calling this method will wait(blocked) until the Thread which is playing the Speech finish <br>
      *               <b>False</b> The current Thread calling this method will continue freely after calling this method
      */
-    public void speak(String text, float gainValue, boolean daemon, boolean join) {
+    public void speakFetched(String text, float gainValue, boolean daemon, boolean join) {
         // Stop the previous player
         stopSpeaking();
 
+        provider.playFetchedAudio(text, gainValue, daemon, join);
+    }
+
+    public void preFetch(String text) {
         try {
-            AudioInputStream audio = marytts.generateAudio(text);
-
-            // Player is a thread(threads can only run one time) so it can be
-            // used has to be initiated every time
-            tts = new AudioPlayer(audio);
-            tts.setGain(gainValue);
-            tts.setDaemon(daemon);
-            tts.start();
-            if (join)
-                tts.join();
-
+            provider.preFetchAudio(text);
         } catch (Exception e) {
-            // an exception found
             e.printStackTrace();
         }
     }
@@ -90,9 +55,7 @@ public class TextToSpeech {
      * Stop the MaryTTS from Speaking
      */
     public void stopSpeaking() {
-        // Stop the previous player
-        if (tts != null)
-            tts.cancel();
+        provider.stopAudio();
     }
 
     //----------------------GETTERS---------------------------------------------------//
@@ -106,12 +69,6 @@ public class TextToSpeech {
         return Voice.getAvailableVoices();
     }
 
-    /**
-     * @return the marytts
-     */
-    public MaryInterface getMarytts() {
-        return marytts;
-    }
 
     /**
      * Return a list of available audio effects for MaryTTS
@@ -122,15 +79,11 @@ public class TextToSpeech {
         return StreamSupport.stream(AudioEffects.getEffects().spliterator(), false).collect(Collectors.toList());
     }
 
-    //----------------------SETTERS---------------------------------------------------//
-
-    /**
-     * Change the default voice of the MaryTTS
-     *
-     * @param voice
-     */
-    public void setVoice(String voice) {
-        marytts.setVoice(voice);
+    public TTSProvider getProvider() {
+        return provider;
     }
 
+    public void setProvider(TTSProvider provider) {
+        this.provider = provider;
+    }
 }

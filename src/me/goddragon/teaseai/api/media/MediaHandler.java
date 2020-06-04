@@ -15,6 +15,7 @@ import me.goddragon.teaseai.utils.media.ImageUtils;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,13 +105,13 @@ public class MediaHandler {
     }
 
     public void showPicture(File file, int durationSeconds) {
-        if (file == null) {
-            TeaseAI.application.runOnUIThread(new Runnable() {
-                @Override
-                public void run() {
-                    removePicture();
-                }
-            });
+                if (file == null) {
+                    TeaseAI.application.runOnUIThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            removePicture();
+                        }
+                    });
 
             return;
         }
@@ -167,8 +168,8 @@ public class MediaHandler {
         }
     }
 
-    private MediaPlayer getAudioPlayer(File file) {
-        Media hit = new Media(file.toURI().toString());
+    private MediaPlayer getAudioPlayer(String uri) {
+        Media hit = new Media(uri);
         MediaPlayer mediaPlayer = new MediaPlayer(hit);
         return mediaPlayer;
     }
@@ -199,8 +200,18 @@ public class MediaHandler {
             return null;
         }
 
-        MediaPlayer mediaPlayer = getAudioPlayer(file);
-        playingAudioClips.put(file.toURI(), mediaPlayer);
+        try {
+            return playAudioWithURI(file.toURI().toURL().toExternalForm(), wait);
+        } catch (MalformedURLException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public MediaPlayer playAudioWithURI(String uri, boolean wait) throws URISyntaxException {
+        MediaPlayer mediaPlayer = getAudioPlayer(uri);
+        playingAudioClips.put(new URI(uri), mediaPlayer);
         mediaPlayer.play();
 
         if (wait) {

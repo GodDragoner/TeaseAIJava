@@ -3,14 +3,13 @@ package me.goddragon.teaseai.api.statistics;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Stack;
 import java.util.logging.Level;
 
 public class StatisticsManager {
     private Stack<JavaModule> moduleStatistics = new Stack<>();
     private StatisticsList statisticsList = new StatisticsList();
-    private HashSet<Integer> ignoredModules =  new HashSet<>();
+    private HashSet<Integer> ignoredModules = new HashSet<>();
     private JavaEdge currentEdge = null;
     private JavaEdgeHold currentEdgeHold = null;
     private JavaStroke currentStroke = null;
@@ -54,7 +53,7 @@ public class StatisticsManager {
             statisticsList.writeJson();
         } else {
             int lowestNonIgnore = lowestNonIgnored();
-            ((JavaModule)moduleStatistics.toArray()[lowestNonIgnore - 1]).add(toPush);
+            ((JavaModule) moduleStatistics.toArray()[lowestNonIgnore - 1]).add(toPush);
             moduleStatistics.push(toPush);
             statisticsList.writeJson();
         }
@@ -64,7 +63,8 @@ public class StatisticsManager {
     //Keep in mind stack depth is one higher than moduleStatistics since it stores the stack size
     private int lowestNonIgnored() {
         int i;
-        for (i = moduleStatistics.size(); ignoredModules.contains(i); i--) {}
+        for (i = moduleStatistics.size(); ignoredModules.contains(i); i--) {
+        }
         return i;
     }
 
@@ -83,13 +83,11 @@ public class StatisticsManager {
     public void ignoreCurrentModule() {
         TeaseLogger.getLogger().log(Level.INFO, "debug 2");
         if (!moduleStatistics.isEmpty()) {
-            ignoredModules.add( moduleStatistics.size());
+            ignoredModules.add(moduleStatistics.size());
             int lowestNonIgnored = lowestNonIgnored();
-            if (lowestNonIgnored == 0)
-            {
+            if (lowestNonIgnored == 0) {
                 statisticsList.remove(moduleStatistics.peek());
-            }
-            else {
+            } else {
                 moduleStatistics.toArray(new JavaModule[moduleStatistics.size()])[lowestNonIgnored - 1].SubStatistics.remove(moduleStatistics.peek());
             }
             statisticsList.writeJson();
@@ -97,21 +95,21 @@ public class StatisticsManager {
     }
 
     public JavaEdge addEdge() {
-        if (currentEdge == null)
-        {
+        if (currentEdge == null) {
             JavaEdge toAdd = new JavaEdge();
-    
+
             if (moduleStatistics.isEmpty()) {
                 TeaseLogger.getLogger().log(Level.WARNING, "Edge was started but there are currently no active modules!!"
                         + " Could a module have been marked to be ignored when it shouldn't be?");
                 addModule("PlaceHolderBaseNotARealScript.js");
             }
-    
+
             currentEdge = toAdd;
             moduleStatistics.peek().add(toAdd);
             statisticsList.writeJson();
             return toAdd;
         }
+
         TeaseLogger.getLogger().log(Level.INFO, "JavaEdge was not added in addEdge because an active edge already exists. This is likely because a personality started an edge itself");
         statisticsList.writeJson();
         return currentEdge;
@@ -122,6 +120,7 @@ public class StatisticsManager {
             TeaseLogger.getLogger().log(Level.WARNING, "End Edge was called but can't find an active edge!");
             return;
         }
+
         currentEdge.EndCleanly();
         statisticsList.writeJson();
         currentEdge = null;

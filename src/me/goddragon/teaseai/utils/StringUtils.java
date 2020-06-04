@@ -13,6 +13,9 @@ import me.goddragon.teaseai.utils.media.AnimatedGif;
 import me.goddragon.teaseai.utils.media.ImageUtils;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -395,5 +398,13 @@ public class StringUtils {
         }
 
         return toReturn;
+    }
+
+    public static String urlEncodeValue(String value) {
+        try {
+            return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex.getCause());
+        }
     }
 }

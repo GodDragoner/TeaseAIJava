@@ -13,6 +13,7 @@ import me.goddragon.teaseai.api.media.MediaHandler;
 import me.goddragon.teaseai.api.picture.PictureSet;
 import me.goddragon.teaseai.api.picture.TaggedPicture;
 import me.goddragon.teaseai.api.session.Session;
+import me.goddragon.teaseai.api.texttospeech.TTSVoicable;
 import me.goddragon.teaseai.api.texttospeech.TextToSpeech;
 import me.goddragon.teaseai.utils.RandomUtils;
 import me.goddragon.teaseai.utils.StringUtils;
@@ -72,7 +73,10 @@ public class ChatParticipant {
 
         choosePictureSet();
         textToSpeech = new TextToSpeech();
-        textToSpeech.setVoice("dfki-prudence-hsmm");
+
+        if(textToSpeech.getProvider() instanceof TTSVoicable) {
+            ((TTSVoicable) textToSpeech.getProvider()).setVoice("dfki-prudence-hsmm");
+        }
     }
 
     public void sendJoin() {
@@ -202,7 +206,7 @@ public class ChatParticipant {
                 }
             }
 
-            textToSpeech.speak(toSpeak, 1.0f, true, false);
+            textToSpeech.speakFetched(toSpeak, 1.0f, true, false);
         }
 
         lineMessages.addAll(messages);
@@ -280,7 +284,18 @@ public class ChatParticipant {
             text.setFont(Font.font(null, FontWeight.BOLD, TeaseAI.application.CHAT_TEXT_SIZE.getDouble() + 2));
             ChatHandler.getHandler().addTemporaryMessage(text);
 
-            TeaseAI.application.sleepPossibleScripThread(millisToWait, true);
+            //Pre fetch tts while typing
+            if (TeaseAI.application.TextToSpeechEnabled) {
+                long preStart = System.currentTimeMillis();
+                textToSpeech.preFetch(message);
+
+                //Subtract pre fetch time from wait time
+                millisToWait -= System.currentTimeMillis() - preStart;
+            }
+
+            if(millisToWait > 0) {
+                TeaseAI.application.sleepPossibleScripThread(millisToWait, true);
+            }
 
             ChatHandler.getHandler().removeTemporaryMessage(text);
         }
