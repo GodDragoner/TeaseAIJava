@@ -12,7 +12,7 @@ import java.util.*;
  */
 public enum MediaFetishType {
 
-    HARDCORE, SOFTCORE, LESBIAN, BLOWJOB, FEMDOM, LEZDOM, HENTAI, GAY, MALEDOM, CAPTIONS, GENERAL, BOOBS, BUTTS;
+    HARDCORE, SOFTCORE, LESBIAN, BLOWJOB, FEMDOM, LEZDOM, HENTAI, GAY, MALEDOM, CAPTIONS, GENERAL, BOOBS, BUTTS, TEASE;
 
     private Map<MediaType, Map<MediaHolderType, ConfigValue>> configValues = new HashMap<>();
 

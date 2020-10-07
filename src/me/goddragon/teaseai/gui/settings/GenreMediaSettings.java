@@ -80,7 +80,10 @@ public class GenreMediaSettings {
 
                 if (defaultDirectory != null) {
                     File selectedDirectory = chooser.showDialog(settingsController.stage);
-                    settingsController.addImagePathTextBox.setText(selectedDirectory.getPath());
+
+                    if(selectedDirectory != null && settingsController.addImagePathTextBox != null) {
+                        settingsController.addImagePathTextBox.setText(selectedDirectory.getPath());
+                    }
                 }
             }
         });

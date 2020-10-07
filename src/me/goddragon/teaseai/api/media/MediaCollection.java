@@ -110,15 +110,19 @@ public class MediaCollection {
 
     public File getRandomTeaseFile(MediaType mediaType) {
         List<MediaHolder> mediaFolders = mediaHolders.get(mediaType);
-        List<MediaURL> urls = new ArrayList<>();
+        List<MediaHolder> urls = new ArrayList<>();
 
         for (MediaHolder mediaHolder : mediaFolders) {
             if (mediaHolder instanceof MediaURL && ((MediaURL) mediaHolder).isUseForTease()) {
-                urls.add((MediaURL) mediaHolder);
+                urls.add(mediaHolder);
             }
         }
 
-        MediaURL mediaURL = urls.get(RandomUtils.randInt(0, urls.size() - 1));
+        //Add all tease folders as well
+        mediaFolders = folders.get(MediaFetishType.TEASE).get(mediaType);
+        urls.addAll(mediaFolders);
+
+        MediaHolder mediaURL = urls.get(RandomUtils.randInt(0, urls.size() - 1));
         return mediaURL.getRandomMedia();
     }
 
