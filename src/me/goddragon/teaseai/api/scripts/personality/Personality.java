@@ -72,7 +72,11 @@ public class Personality {
             ConfigValue version = new ConfigValue("version", "null", urlConfig);
             ConfigValue downloadLink = new ConfigValue("updateDownloadZipLink", "null", urlConfig);
 
+            TeaseLogger.getLogger().log(Level.INFO, "Trying to fetch current version file for personality '" + name + "' from " + personalityPropertiesLink);
+
             urlConfig.loadConfig();
+
+            TeaseLogger.getLogger().log(Level.INFO, "Fetched current version of personality '" + name + "'");
 
             if (version.getValue() == null || version.getValue().equals("null")) {
                 TeaseLogger.getLogger().log(Level.SEVERE, "Fetched invalid properties file from url '" + personalityPropertiesLink.getValue() + "' for personality '" + name + "'. Version number is missing.");

@@ -190,7 +190,7 @@ public class Main {
         }
     }
 
-    static double getJavaVersion() {
+    public static double getJavaVersion() {
         return Double.parseDouble(System.getProperty("java.specification.version"));
     }
 }

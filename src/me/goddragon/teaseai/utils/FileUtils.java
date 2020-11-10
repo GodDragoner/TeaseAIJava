@@ -4,6 +4,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.scripts.ScriptHandler;
 
 import javax.net.ssl.*;
 import java.io.*;
@@ -80,7 +81,17 @@ public class FileUtils {
         if (script != null && script.exists()) {
             String extension = FileUtils.getExtension(script);
             if ((extension.equalsIgnoreCase("js"))) {
-                TeaseAI.application.getSession().startWithScript(script);
+                TeaseAI.application.setScriptThread(new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            ScriptHandler.getHandler().runScript(script);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                TeaseAI.application.getScriptThread().start();
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid File");

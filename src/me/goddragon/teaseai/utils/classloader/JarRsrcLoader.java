@@ -1,6 +1,7 @@
 package me.goddragon.teaseai.utils.classloader;
 
 
+import me.goddragon.teaseai.Main;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
@@ -66,7 +67,31 @@ public class JarRsrcLoader {
     }
 
     private static ClassLoader getParentClassLoader() {
-        return ClassLoader.getPlatformClassLoader();
+        if(Main.getJavaVersion() > 8) {
+            try {
+                Method m = ClassLoader.class.getDeclaredMethod("getPlatformClassLoader");
+                return (ClassLoader) m.invoke(null, null);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                Method m = ClassLoader.class.getDeclaredMethod("getSystemClassLoader");
+                return (ClassLoader) m.invoke(null, null);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
     }
 
     private static JarRsrcLoader.ManifestInfo getManifestInfo() throws IOException {

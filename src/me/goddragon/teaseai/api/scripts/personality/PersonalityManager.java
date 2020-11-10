@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 
@@ -26,16 +27,25 @@ public class PersonalityManager {
     private static Personality currentlyLoadingPersonality;
 
     public void loadPersonalities() {
+        List<File> folders = getPersonalityFolders();
+
+        //We already have all personalities loaded
+        if(personalities.size() >= folders.size()) {
+            return;
+        }
+
         personalities.clear();
 
-        List<File> folders = getPersonalityFolders();
         for (int x = 0; x < folders.size(); x++) {
             progressUpdate.accept(x + 1, folders.size());
 
+            TeaseLogger.getLogger().log(Level.INFO, "Loading personality '" + folders.get(x).getName() + "'.");
             Personality personality = new Personality(folders.get(x).getName());
+            TeaseLogger.getLogger().log(Level.INFO, "Finished initializing personality '" + folders.get(x).getName() + "'.");
             personality.checkForUpdate();
             addPersonality(personality);
-            TeaseLogger.getLogger().log(Level.INFO, "Personality '" + personality.getName() + "' version " + personality.getVersion() + " loaded.");
+
+            TeaseLogger.getLogger().log(Level.INFO, "Personality '" + personality.getName() + "' version " + personality.getVersion() + " was successfully loaded.");
         }
     }
 
@@ -83,12 +93,15 @@ public class PersonalityManager {
         File personalityFolder = new File(PERSONALITY_FOLDER_NAME);
         personalityFolder.mkdirs();
 
-        for (File file : personalityFolder.listFiles()) {
+        for (File file : Objects.requireNonNull(personalityFolder.listFiles())) {
+            TeaseLogger.getLogger().log(Level.INFO, "Scanning potential personality '" + file.getName() + "'.");
+
             //Ignore all non directories
             if (file.isDirectory()) {
                 File propertiesFile = new File(file.getAbsolutePath() + File.separator + Personality.PROPERTIES_NAME);
 
                 if (propertiesFile.exists()) {
+                    TeaseLogger.getLogger().log(Level.INFO, "Found personality '" + file.getName() + "'.");
                     folders.add(file);
                 } else {
                     TeaseLogger.getLogger().log(Level.WARNING, "Personality '" + file.getName() + "' is missing a properties file. Skipping loading.");

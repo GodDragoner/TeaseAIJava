@@ -14,7 +14,7 @@ public class ConfigValue {
         this.name = name;
         this.defaultValue = defaultValue;
         this.configHandler = configHandler;
-        configHandler.getConfigValues().add(this);
+        this.configHandler.getConfigValues().add(this);
     }
 
 

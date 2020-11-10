@@ -333,7 +333,7 @@ public class MainGuiController {
                         personality.getVariableHandler().loadVariablesFromFolder(tempVariableDirectory, true);
 
                         //Now select input script
-                        FileUtils.openRunScriptDialog(stage, "Select script to restore to");
+                        //FileUtils.openRunScriptDialog(stage, "Select script to restore to");
                     } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Invalid Backup");

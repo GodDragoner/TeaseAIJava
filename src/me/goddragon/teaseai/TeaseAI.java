@@ -222,6 +222,10 @@ public class TeaseAI extends Application {
                         //Reload lazy sub because it is somehow messed up
                         TeaseAI.application.getController().getLazySubController().clear();
                         TeaseAI.application.getController().getLazySubController().createDefaults();
+
+                        for(Personality personality : PersonalityManager.getManager().getPersonalities()) {
+                            personality.onProgramStart();
+                        }
                     }
                 });
 
