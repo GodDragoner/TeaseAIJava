@@ -11,6 +11,7 @@ import java.lang.management.ManagementFactory;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.logging.Level;
 
 public class Main {
@@ -23,7 +24,18 @@ public class Main {
         UpdateHandler.getHandler().checkLibraries();
         TeaseLogger.getLogger().log(Level.INFO, "Libraries checked and up-to-date.");
 
-        if (ManagementFactory.getRuntimeMXBean().getInputArguments().size() == 0 && JAVA_VERSION > 10) {
+        List<String> input = ManagementFactory.getRuntimeMXBean().getInputArguments();
+
+        boolean containsJavaFx = false;
+
+        for(String s : input) {
+            if(s.toLowerCase().contains("javafx")) {
+                containsJavaFx = true;
+                break;
+            }
+        }
+
+        if (!containsJavaFx && JAVA_VERSION > 10) {
             try {
                 //Re-launch the app itself with VM option passed
                 File currentDir = Paths.get(System.getProperty("user.dir")).toFile();
@@ -144,7 +156,14 @@ public class Main {
 
     public static void restart() {
         try {
-            Process process = Runtime.getRuntime().exec(new String[]{"java", "--module-path=" + getJavaFXLibFolder().getPath(), "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar"});
+            File javaFXFolder = getJavaFXLibFolder();
+
+            if(javaFXFolder == null) {
+                Process process = Runtime.getRuntime().exec(new String[]{"java", "-jar", "TeaseAI.jar"});
+            } else {
+                Process process = Runtime.getRuntime().exec(new String[]{"java", "--module-path=" + getJavaFXLibFolder().getPath(), "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar"});
+            }
+
 
             /*BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;

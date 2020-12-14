@@ -271,7 +271,7 @@ public class MediaHandler {
             FileOutputStream fos = new FileOutputStream(path);
             fos.write(response);
             fos.close();
-        } catch(FileNotFoundException ex) {
+        } catch(IOException ex) {
             TeaseLogger.getLogger().log(Level.WARNING, "Unable to find image on url " + url);
         }
 

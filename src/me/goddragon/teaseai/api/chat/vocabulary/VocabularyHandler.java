@@ -107,6 +107,11 @@ public class VocabularyHandler {
         return vocabularies.getOrDefault(name.trim().toLowerCase(), new Vocabulary(name));
     }
 
+    public boolean isVocabulary(String name) {
+        return vocabularies.containsKey(name.trim().toLowerCase());
+    }
+
+
     public String replaceAllVocabularies(String message) {
         return replaceAllVocabularies(message, 0);
     }

@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import me.goddragon.teaseai.api.chat.ChatHandler;
+import me.goddragon.teaseai.api.chat.vocabulary.VocabularyHandler;
 
 /**
  * Created by GodDragon on 16.05.2018.
@@ -58,10 +59,18 @@ public class LazySubController {
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                ChatHandler.getHandler().getSubParticipant().sendMessage(chatMessage);
+                String innerMessage = chatMessage;
+
+                if(VocabularyHandler.getHandler().isVocabulary("DomHonorific")) {
+                    if(innerMessage.contains("Mistress")) {
+                        innerMessage = VocabularyHandler.getHandler().replaceAllVocabularies(innerMessage.replaceAll("Mistress", "%DomHonorific%"));
+                    }
+                }
+
+                ChatHandler.getHandler().getSubParticipant().sendMessage(innerMessage);
 
                 //Call the sub message event
-                ChatHandler.getHandler().onSubMessage(chatMessage);
+                ChatHandler.getHandler().onSubMessage(innerMessage);
             }
         });
 

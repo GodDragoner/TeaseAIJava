@@ -42,7 +42,7 @@ import java.util.logging.Level;
 public class TeaseAI extends Application {
 
 
-    public static final String VERSION = "1.2.2";
+    public static final String VERSION = "1.3";
     public static final String UPDATE_FOLDER = "Updates";
 
     public static TeaseAI application;
@@ -212,8 +212,6 @@ public class TeaseAI extends Application {
 
                         PersonalityManager.getManager().addPersonalitiesToGUI();
 
-                        initializeNewSession();
-
                         controller.loadDomInfo();
 
                         //Load theme last so everything is setup
@@ -226,6 +224,8 @@ public class TeaseAI extends Application {
                         for(Personality personality : PersonalityManager.getManager().getPersonalities()) {
                             personality.onProgramStart();
                         }
+
+                        initializeNewSession();
                     }
                 });
 
