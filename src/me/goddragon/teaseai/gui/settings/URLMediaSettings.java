@@ -55,7 +55,7 @@ public class URLMediaSettings {
                     }
                     settingsController.addURLButton.setDisable(true);
                     settingsController.addURLTextField.setDisable(true);
-                    //settingsController.refreshURLButton.setDisable(true);
+                    settingsController.refreshURLButton.setDisable(true);
 
                     settingsController.addURLTextField.setText(url);
 
@@ -75,7 +75,7 @@ public class URLMediaSettings {
                                         updateURLList();
                                         settingsController.addURLButton.setDisable(false);
                                         settingsController.addURLTextField.setDisable(false);
-                                        //settingsController.refreshURLButton.setDisable(false);
+                                        settingsController.refreshURLButton.setDisable(false);
                                     }
                                 });
                                 return;
@@ -90,7 +90,7 @@ public class URLMediaSettings {
                                     updateURLList();
                                     settingsController.addURLButton.setDisable(false);
                                     settingsController.addURLTextField.setDisable(false);
-                                    //settingsController.refreshURLButton.setDisable(false);
+                                    settingsController.refreshURLButton.setDisable(false);
                                 }
                             });
                         }
@@ -107,8 +107,8 @@ public class URLMediaSettings {
             }
         });
 
-        //settingsController.refreshURLButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            /*@Override
+        settingsController.refreshURLButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
             public void handle(MouseEvent event) {
                 new Thread() {
                     @Override
@@ -120,28 +120,39 @@ public class URLMediaSettings {
 
                         for (Object object : settingsController.urlFilesList.getSelectionModel().getSelectedItems()) {
                             MediaURL mediaURL = (MediaURL) object;
-                            //ski23 start
+
                             settingsController.addURLButton.setDisable(true);
                             settingsController.addURLTextField.setDisable(true);
                             settingsController.refreshURLButton.setDisable(true);
-            
+
                             settingsController.addURLTextField.setText(mediaURL.getUrl());
-                            
+
                             new Thread() {
                                 @Override
                                 public void run() {
-                                    File mediaFile;
-                                    try
-                                    {
-                                        mediaFile = App.mediaUrlRip(mediaURL.getUrl(), MediaURL.URL_FILE_PATH, false);
-                                    }
-                                    catch (Exception e)
-                                    {
+                                    try {
+                                        UrlProgress.inProgress = true;
+                                        UrlProgress.completed = 0;
+
+                                        App.mediaUrlRip(mediaURL.getUrl(), MediaURL.URL_FILE_PATH, false);
+                                    } catch (Exception e) {
+                                        UrlProgress.inProgress = false;
+                                        TeaseAI.application.runOnUIThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                updateURLList();
+                                                settingsController.addURLButton.setDisable(false);
+                                                settingsController.addURLTextField.setDisable(false);
+                                                settingsController.refreshURLButton.setDisable(false);
+                                            }
+                                        });
                                         return;
                                     }
-                                    MediaURL mediaURL = new MediaURL(MediaType.IMAGE, mediaFile);
-                                    TeaseAI.application.getMediaCollection().addMediaHolder(null, mediaURL);
-            
+
+                                    UrlProgress.inProgress = false;
+
+                                    mediaURL.reloadFromFile();
+
                                     TeaseAI.application.runOnUIThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -153,30 +164,11 @@ public class URLMediaSettings {
                                     });
                                 }
                             }.start();
-                            
-                            
-                            
-                            
-                            //ski23 end
-                            
-                            mediaURL.loadImagesFromTumblrURL(settingsController.urlProgressLabel);
-                            mediaURL.saveToFile();
-
-                            TeaseAI.application.runOnUIThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    updateURLList();
-                                    settingsController.addURLButton.setDisable(false);
-                                    settingsController.addURLTextField.setDisable(false);
-                                    settingsController.refreshURLButton.setDisable(false);
-                                    settingsController.deleteURLButton.setDisable(false);
-                                }
-                            });
                         }
                     }
                 }.start();
-            }*/
-        //});
+            }
+        });
 
         //Set it as disabled by default because nothing is selected
         settingsController.deleteURLButton.setDisable(true);
@@ -203,11 +195,11 @@ public class URLMediaSettings {
                 if (newValue != null) {
                     settingsController.useURLForTease.setDisable(false);
                     settingsController.deleteURLButton.setDisable(false);
-                    //settingsController.refreshURLButton.setDisable(false);
+                    settingsController.refreshURLButton.setDisable(false);
                 } else {
                     settingsController.useURLForTease.setDisable(true);
                     settingsController.deleteURLButton.setDisable(true);
-                    //settingsController.refreshURLButton.setDisable(true);
+                    settingsController.refreshURLButton.setDisable(true);
                 }
 
                 if (settingsController.urlFilesList.getSelectionModel().getSelectedItems().size() == 1) {

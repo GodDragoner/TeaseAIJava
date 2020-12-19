@@ -119,7 +119,12 @@ public class MediaCollection {
         }
 
         //Add all tease folders as well
-        mediaFolders = folders.get(MediaFetishType.TEASE).get(mediaType);
+        if(folders.containsKey(MediaFetishType.TEASE)) {
+            mediaFolders = folders.get(MediaFetishType.TEASE).get(mediaType);
+        } else {
+            mediaFolders = new ArrayList<>();
+        }
+
         urls.addAll(mediaFolders);
 
         MediaHolder mediaURL = urls.get(RandomUtils.randInt(0, urls.size() - 1));

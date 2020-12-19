@@ -96,6 +96,11 @@ public class MediaURL extends MediaHolder implements Observable {
         fromFile();
     }
 
+    public void reloadFromFile() {
+        mediaURLs.clear();
+        fromFile();
+    }
+
     private void fromFile() {
         try {
             //Open the file
