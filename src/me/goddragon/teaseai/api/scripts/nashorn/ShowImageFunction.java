@@ -46,6 +46,7 @@ public class ShowImageFunction extends CustomFunction {
                     TeaseLogger.getLogger().log(Level.SEVERE, "Matching image file for path " + args[0] + " does not exist.");
                 } else {
                     MediaHandler.getHandler().showPicture(file);
+                    return file;
                 }
             } else if (args[0] instanceof File) {
                 file = (File) args[0];
