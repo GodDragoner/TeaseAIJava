@@ -13,6 +13,7 @@ import me.goddragon.teaseai.utils.media.Animation;
 import me.goddragon.teaseai.utils.media.ImageUtils;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -105,13 +106,13 @@ public class MediaHandler {
     }
 
     public void showPicture(File file, int durationSeconds) {
-        if (file == null) {
-            TeaseAI.application.runOnUIThread(new Runnable() {
-                @Override
-                public void run() {
-                    removePicture();
-                }
-            });
+                if (file == null) {
+                    TeaseAI.application.runOnUIThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            removePicture();
+                        }
+                    });
 
             return;
         }
@@ -254,25 +255,55 @@ public class MediaHandler {
             return file;
         }
 
+        TeaseLogger.getLogger().log(
+                Level.FINER, String.format("Fetching url '%s'", url));
+
         try {
-            InputStream in = new BufferedInputStream(new URL(url).openStream());
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            byte[] buf = new byte[1024];
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("GET");
+            connection.addRequestProperty("Referer", url);
+            connection.addRequestProperty("Accept", "*/*");
+            connection.addRequestProperty("User-Agent",
+                    "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0");
+            connection.connect();
 
-            int n;
-            while (-1 != (n = in.read(buf))) {
-                out.write(buf, 0, n);
+            final int responseCode = connection.getResponseCode();
+            final String responseMessage = connection.getResponseMessage();
+            TeaseLogger.getLogger().log(
+                    Level.FINER, String.format("Response code received %d '%s'", responseCode, responseMessage));
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                TeaseLogger.getLogger().log(
+                    Level.FINER, String.format("Fetched %,d bytes of type '%s' encoded as '%s'",
+                        connection.getContentLength(), connection.getContentType(),
+                        connection.getContentEncoding()));
+
+                InputStream in = new BufferedInputStream(connection.getInputStream());
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                byte[] buf = new byte[1024];
+
+                int n;
+                while (-1 != (n = in.read(buf))) {
+                    out.write(buf, 0, n);
+                }
+                out.close();
+                in.close();
+
+                byte[] response = out.toByteArray();
+
+                FileOutputStream fos = new FileOutputStream(path);
+                fos.write(response);
+                fos.close();
+            } else {
+                TeaseLogger.getLogger().log(
+                    Level.WARNING, "Unsupported response code, ignoring conent");
             }
-            out.close();
-            in.close();
-
-            byte[] response = out.toByteArray();
-
-            FileOutputStream fos = new FileOutputStream(path);
-            fos.write(response);
-            fos.close();
         } catch (IOException ex) {
-            TeaseLogger.getLogger().log(Level.WARNING, "Unable to find image on url " + url);
+            TeaseLogger.getLogger().log(
+                    Level.WARNING, "Unable to find image on url " + url + ": " + ex.getMessage());
+        } catch (ClassCastException ex) {
+            TeaseLogger.getLogger().log(
+                    Level.SEVERE, "Url " + url + " does not appear to be an http connection");
         }
 
         if (file.exists()) {
