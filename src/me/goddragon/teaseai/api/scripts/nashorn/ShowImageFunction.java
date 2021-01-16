@@ -40,13 +40,12 @@ public class ShowImageFunction extends CustomFunction {
                         e.printStackTrace();
                     }
                 } else {
-                    file = FileUtils.getRandomMatchingFile(arg.toString());
+                    file = FileUtils.getRandomMatchingFile(arg);
                 }
+
                 if (file == null) {
                     TeaseLogger.getLogger().log(Level.SEVERE, "Matching image file for path " + args[0] + " does not exist.");
-                } else {
-                    MediaHandler.getHandler().showPicture(file);
-                    return file;
+                    return null;
                 }
             } else if (args[0] instanceof File) {
                 file = (File) args[0];
