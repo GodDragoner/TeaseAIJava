@@ -105,13 +105,13 @@ public class MediaHandler {
     }
 
     public void showPicture(File file, int durationSeconds) {
-                if (file == null) {
-                    TeaseAI.application.runOnUIThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            removePicture();
-                        }
-                    });
+        if (file == null) {
+            TeaseAI.application.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    removePicture();
+                }
+            });
 
             return;
         }
@@ -271,7 +271,7 @@ public class MediaHandler {
             FileOutputStream fos = new FileOutputStream(path);
             fos.write(response);
             fos.close();
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             TeaseLogger.getLogger().log(Level.WARNING, "Unable to find image on url " + url);
         }
 
