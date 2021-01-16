@@ -142,6 +142,7 @@ public class Session {
                 if (MediaHandler.getHandler().getCurrentVideoPlayer() != null) {
                     MediaHandler.getHandler().getCurrentVideoPlayer().stop();
                 }
+                MediaHandler.getHandler().stopAllAudio();
 
                 //Initialize a new session instance
                 TeaseAI.application.initializeNewSession();

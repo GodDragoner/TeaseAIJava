@@ -121,11 +121,10 @@ public class ScriptHandler {
 
         if (!mainScript.isFile() || !mainScript.exists()) {
             TeaseLogger.getLogger().log(Level.SEVERE, "Personality '" + currentPersonality.getName() + "' is missing the main.js script");
+            TeaseAI.application.getSession().end();
         } else {
             startPersonality(personality, mainScript);
         }
-
-        TeaseAI.application.getSession().end();
     }
 
     public void startPersonality(Personality personality, File startScript) {
