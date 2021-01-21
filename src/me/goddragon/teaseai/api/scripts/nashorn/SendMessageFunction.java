@@ -71,8 +71,7 @@ public class SendMessageFunction extends CustomFunction {
                     return null;
                 }
                 ChatHandler.getHandler().getSelectedSender().customMessage((String) args[0], (int) args[1], (Boolean) args[2]);
-
-                break;
+                return null;
             case 0:
                 TeaseLogger.getLogger().log(Level.SEVERE, "Called sendMessage method without parameters.");
                 return null;
