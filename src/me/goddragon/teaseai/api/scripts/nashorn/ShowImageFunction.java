@@ -22,11 +22,11 @@ public class ShowImageFunction extends CustomFunctionExtended {
         return true;
     }
 
-    protected Object onCall(String pathOrUrl) {
+    protected File onCall(String pathOrUrl) {
         return onCall(pathOrUrl, 0);
     }
 
-    protected Object onCall(String pathOrUrl, Integer durationSeconds) {
+    protected File onCall(String pathOrUrl, Integer durationSeconds) {
         File file = null;
 
         if (isHttpUrl(pathOrUrl)) {
@@ -45,20 +45,20 @@ public class ShowImageFunction extends CustomFunctionExtended {
         return file;
     }
 
-    protected Object onCall(File file) {
+    protected File onCall(File file) {
         return onCall(file, 0);
     }
 
-    protected Object onCall(File file, Integer durationSeconds) {
+    protected File onCall(File file, Integer durationSeconds) {
         MediaHandler.getHandler().showPicture(file, durationSeconds);
         return file;
     }
 
-    protected Object onCall(MediaURL mediaUrl) {
+    protected File onCall(MediaURL mediaUrl) {
         return onCall(mediaUrl, 0);
     }
 
-    protected Object onCall(MediaURL mediaUrl, Integer durationSeconds) {
+    protected File onCall(MediaURL mediaUrl, Integer durationSeconds) {
         final File file = mediaUrl.getRandomMedia();
         MediaHandler.getHandler().showPicture(file, durationSeconds);
         return file;
