@@ -53,7 +53,11 @@ public abstract class CustomFunctionExtended extends CustomFunction {
     private Class<?>[] objectListToTypeList(Object[] args) {
         final Class<?>[] typeList = new Class<?>[ args.length ];
         for (int i = 0; i < args.length; ++i) {
-            typeList[i] = args[i].getClass();
+            if (args[i] != null) {
+                typeList[i] = args[i].getClass();
+            } else {
+                typeList[i] = Void.TYPE;
+            }
         }
 
         return typeList;
@@ -87,7 +91,11 @@ public abstract class CustomFunctionExtended extends CustomFunction {
             else
                 text.append(", ");
 
-            text.append(getSimplifiedTypeName(pType.getName()));
+            if (pType == Void.TYPE) {
+                text.append("null");
+            } else {
+                text.append(getSimplifiedTypeName(pType.getName()));
+            }
         }
 
         return text.toString();
