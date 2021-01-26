@@ -26,6 +26,10 @@ public class ShowImageFunction extends CustomFunctionExtended {
         return onCall(pathOrUrl, 0);
     }
 
+    protected File onCall(String pathOrUrl, Double durationSeconds) {
+        return onCall(pathOrUrl, durationSeconds.intValue());
+    }
+
     protected File onCall(String pathOrUrl, Integer durationSeconds) {
         File file = null;
 
@@ -49,6 +53,10 @@ public class ShowImageFunction extends CustomFunctionExtended {
         return onCall(file, 0);
     }
 
+    protected File onCall(File file, Double durationSeconds) {
+        return onCall(file, durationSeconds.intValue());
+    }
+
     protected File onCall(File file, Integer durationSeconds) {
         MediaHandler.getHandler().showPicture(file, durationSeconds);
         return file;
@@ -56,6 +64,10 @@ public class ShowImageFunction extends CustomFunctionExtended {
 
     protected File onCall(MediaURL mediaUrl) {
         return onCall(mediaUrl, 0);
+    }
+
+    protected File onCall(MediaURL mediaUrl, Double durationSeconds) {
+        return onCall(mediaUrl, durationSeconds.intValue());
     }
 
     protected File onCall(MediaURL mediaUrl, Integer durationSeconds) {
