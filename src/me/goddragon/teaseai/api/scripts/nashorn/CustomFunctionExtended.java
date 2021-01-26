@@ -24,19 +24,24 @@ public abstract class CustomFunctionExtended extends CustomFunction {
         Object result = null;
         String faultMessage = null;
 
-        try {
-            final Method method = getClass().getDeclaredMethod(HANDLER_METHOD_NAME, argTypeList);
-            result = method.invoke(this, args);
-        } catch (NoSuchMethodException e) {
+        Method method = tryFindExactMatchingMethod(argTypeList);
+        if (method == null) {
+            method = tryFindCompatibleMethod(argTypeList);
+        }
+
+        if (method == null) {
             faultMessage = "No match for";
-        } catch (SecurityException e) {
-            faultMessage = "Inaccessible";
-        } catch (IllegalAccessException e) {
-            faultMessage = "Illegal access to";
-        } catch (IllegalArgumentException e) {
-            faultMessage = "Illegal argument passed to";
-        } catch (InvocationTargetException e) {
-            faultMessage = "Invocation exception during";
+        } else {
+            preOnCall();
+            try {
+                result = method.invoke(this, args);
+            } catch (IllegalAccessException e) {
+                faultMessage = "Illegal access to";
+            } catch (IllegalArgumentException e) {
+                faultMessage = "Illegal argument passed to";
+            } catch (InvocationTargetException e) {
+                faultMessage = "Invocation exception during";
+            }
         }
 
         if (faultMessage != null) {
@@ -49,6 +54,40 @@ public abstract class CustomFunctionExtended extends CustomFunction {
 
         return result;
     }
+
+    private Method tryFindExactMatchingMethod(Class<?>[] argTypeList) {
+        try {
+            return getClass().getDeclaredMethod(HANDLER_METHOD_NAME, argTypeList);
+        } catch (NoSuchMethodException | SecurityException e) {
+            // No match or inaccessible
+        }
+        return null;
+    }
+
+    private Method tryFindCompatibleMethod(Class<?>[] argTypeList) {
+        for (Method method : getClass().getDeclaredMethods())
+            if (method.getName().contentEquals(HANDLER_METHOD_NAME) && method.canAccess(this)
+                    && isCompatibleMethod(method, argTypeList)) {
+                return method;
+            }
+        return null;
+    }
+
+    private boolean isCompatibleMethod(Method method, Class<?>[] argTypeList) {
+        final Class<?>[] parameterTypes = method.getParameterTypes();
+        if (parameterTypes.length == argTypeList.length) {
+            for (int i = 0; i < argTypeList.length; i++) {
+                if (!parameterTypes[i].isAssignableFrom(argTypeList[i])) {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    protected void preOnCall() {}
 
     private Class<?>[] objectListToTypeList(Object[] args) {
         final Class<?>[] typeList = new Class<?>[ args.length ];
