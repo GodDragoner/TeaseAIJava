@@ -1,18 +1,15 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
 import me.goddragon.teaseai.TeaseAI;
+import me.goddragon.teaseai.api.config.VariableHandler;
 import me.goddragon.teaseai.api.scripts.personality.Personality;
 import me.goddragon.teaseai.api.scripts.personality.PersonalityManager;
-import me.goddragon.teaseai.utils.TeaseLogger;
-
-import java.util.Arrays;
-import java.util.logging.Level;
+import me.goddragon.teaseai.api.session.Session;
 
 /**
  * Created by GodDragon on 25.03.2018.
  */
-public class GetVarFunction extends CustomFunction {
-
+public class GetVarFunction extends CustomFunctionExtended {
     public GetVarFunction() {
         super("getVar", "checkVar", "getDate", "getVariable");
     }
@@ -23,39 +20,29 @@ public class GetVarFunction extends CustomFunction {
     }
 
     @Override
-    public Object call(Object object, Object... args) {
-        super.call(object, args);
+    protected void preOnCall() {
+        final Session session = TeaseAI.application.getSession();
         Personality personality;
-        if (TeaseAI.application.getSession() == null) {
+        if (session == null) {
             personality = PersonalityManager.getManager().getLoadingPersonality();
         } else {
-            personality = PersonalityManager.getManager().getActivePersonality();
+            personality = session.getActivePersonality();
         }
 
-        Object value = null;
-
-        switch (args.length) {
-            case 1:
-                value = personality.getVariableHandler().getVariableValue(args[0].toString());
-                break;
-            case 2:
-                if (personality.getVariableHandler().variableExist(args[0].toString())) {
-                    value = personality.getVariableHandler().getVariableValue(args[0].toString());
-                } else {
-                    //Return default
-                    value = args[1];
-                }
-                break;
-            case 0:
-                TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
-                return null;
-        }
-
-        if(value == null) {
-            TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args or variable was not found. Args:" + Arrays.asList(args).toString());
-            TeaseLogger.getLogger().log(Level.SEVERE, "Infos about object given:  Class: " + args[0].getClass());
-        }
-
-        return value;
+        variableHandler = personality.getVariableHandler();
     }
+
+    protected Object onCall(String variableName) {
+        return variableHandler.getVariableValue(variableName);
+    }
+
+    protected Object onCall(String variableName, Object defaultValue) {
+        if (variableHandler.variableExist(variableName)) {
+            return variableHandler.getVariableValue(variableName);
+        } else {
+            return defaultValue;
+        }
+    }
+
+    private VariableHandler variableHandler;
 }
