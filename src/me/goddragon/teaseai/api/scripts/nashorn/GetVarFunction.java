@@ -19,8 +19,21 @@ public class GetVarFunction extends CustomFunctionExtended {
         return true;
     }
 
-    @Override
-    protected void preOnCall() {
+    protected Object onCall(String variableName) {
+        final VariableHandler variableHandler = getVariableHandler();
+        return variableHandler.getVariableValue(variableName);
+    }
+
+    protected Object onCall(String variableName, Object defaultValue) {
+        final VariableHandler variableHandler = getVariableHandler();
+        if (variableHandler.variableExist(variableName)) {
+            return variableHandler.getVariableValue(variableName);
+        } else {
+            return defaultValue;
+        }
+    }
+
+    private VariableHandler getVariableHandler() {
         final Session session = TeaseAI.application.getSession();
         Personality personality;
         if (session == null) {
@@ -29,20 +42,6 @@ public class GetVarFunction extends CustomFunctionExtended {
             personality = session.getActivePersonality();
         }
 
-        variableHandler = personality.getVariableHandler();
+        return personality.getVariableHandler();
     }
-
-    protected Object onCall(String variableName) {
-        return variableHandler.getVariableValue(variableName);
-    }
-
-    protected Object onCall(String variableName, Object defaultValue) {
-        if (variableHandler.variableExist(variableName)) {
-            return variableHandler.getVariableValue(variableName);
-        } else {
-            return defaultValue;
-        }
-    }
-
-    private VariableHandler variableHandler;
 }

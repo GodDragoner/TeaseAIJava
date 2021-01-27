@@ -32,7 +32,6 @@ public abstract class CustomFunctionExtended extends CustomFunction {
         if (method == null) {
             faultMessage = "No match for";
         } else {
-            preOnCall();
             try {
                 result = method.invoke(this, args);
             } catch (IllegalAccessException e) {
@@ -86,8 +85,6 @@ public abstract class CustomFunctionExtended extends CustomFunction {
         }
         return true;
     }
-
-    protected void preOnCall() {}
 
     private Class<?>[] objectListToTypeList(Object[] args) {
         final Class<?>[] typeList = new Class<?>[ args.length ];
