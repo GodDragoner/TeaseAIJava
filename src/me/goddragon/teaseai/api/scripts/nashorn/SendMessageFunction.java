@@ -23,11 +23,7 @@ public class SendMessageFunction extends CustomFunctionExtended {
         ChatHandler.getHandler().getSelectedSender().customMessage(message, -1, true);
     }
 
-    protected void onCall(String message, Double durationSeconds) {
-        onCall(message, durationSeconds, true);
-    }
-
-    protected void onCall(String message, Integer durationSeconds) {
+    protected void onCall(String message, Number durationSeconds) {
         onCall(message, durationSeconds, true);
     }
 
@@ -42,12 +38,8 @@ public class SendMessageFunction extends CustomFunctionExtended {
         }
     }
 
-    protected void onCall(String message, Double durationSeconds, Boolean showTyping) {
-        onCall(message, durationSeconds.intValue(), showTyping);
-    }
-
-    protected void onCall(String message, Integer durationSeconds, Boolean showTyping) {
+    protected void onCall(String message, Number durationSeconds, Boolean showTyping) {
         ChatHandler.getHandler().getSelectedSender().customMessage(
-                message, durationSeconds * 1000L, showTyping);
+                message, durationSeconds.longValue() * 1000, showTyping);
     }
 }
