@@ -26,11 +26,7 @@ public class ShowImageFunction extends CustomFunctionExtended {
         return onCall(pathOrUrl, 0);
     }
 
-    protected File onCall(String pathOrUrl, Double durationSeconds) {
-        return onCall(pathOrUrl, durationSeconds.intValue());
-    }
-
-    protected File onCall(String pathOrUrl, Integer durationSeconds) {
+    protected File onCall(String pathOrUrl, Number durationSeconds) {
         File file = null;
 
         if (isHttpUrl(pathOrUrl)) {
@@ -43,7 +39,7 @@ public class ShowImageFunction extends CustomFunctionExtended {
             TeaseLogger.getLogger().log(Level.SEVERE,
                     String.format("Matching image file for path '%s' does not exist", pathOrUrl));
         } else {
-            MediaHandler.getHandler().showPicture(file, durationSeconds);
+            MediaHandler.getHandler().showPicture(file, durationSeconds.intValue());
         }
 
         return file;
@@ -53,12 +49,8 @@ public class ShowImageFunction extends CustomFunctionExtended {
         return onCall(file, 0);
     }
 
-    protected File onCall(File file, Double durationSeconds) {
-        return onCall(file, durationSeconds.intValue());
-    }
-
-    protected File onCall(File file, Integer durationSeconds) {
-        MediaHandler.getHandler().showPicture(file, durationSeconds);
+    protected File onCall(File file, Number durationSeconds) {
+        MediaHandler.getHandler().showPicture(file, durationSeconds.intValue());
         return file;
     }
 
@@ -66,13 +58,9 @@ public class ShowImageFunction extends CustomFunctionExtended {
         return onCall(mediaUrl, 0);
     }
 
-    protected File onCall(MediaURL mediaUrl, Double durationSeconds) {
-        return onCall(mediaUrl, durationSeconds.intValue());
-    }
-
-    protected File onCall(MediaURL mediaUrl, Integer durationSeconds) {
+    protected File onCall(MediaURL mediaUrl, Number durationSeconds) {
         final File file = mediaUrl.getRandomMedia();
-        MediaHandler.getHandler().showPicture(file, durationSeconds);
+        MediaHandler.getHandler().showPicture(file, durationSeconds.intValue());
         return file;
     }
 
