@@ -1,18 +1,16 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
+import java.io.File;
+import java.util.logging.Level;
+
 import me.goddragon.teaseai.api.media.MediaHandler;
 import me.goddragon.teaseai.utils.FileUtils;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.logging.Level;
-
 /**
  * Created by GodDragon on 25.03.2018.
  */
-public class PlayVideoFunction extends CustomFunction {
-
+public class PlayVideoFunction extends CustomFunctionExtended {
     public PlayVideoFunction() {
         super("playVideo", "showVideo", "displayVideo");
     }
@@ -22,50 +20,26 @@ public class PlayVideoFunction extends CustomFunction {
         return true;
     }
 
-    @Override
-    public Object call(Object object, Object... args) {
-        super.call(object, args);
+    protected void onCall(String pathOrUrl) {
+        onCall(pathOrUrl, false);
+    }
 
-        switch (args.length) {
-            case 1:
-                if (args[0] instanceof String) {
-                    String arg = (String) args[0];
-                    if (arg.startsWith("http://") || arg.startsWith("https://")) {
-                        return MediaHandler.getHandler().playVideo(arg, false);
-                    } else {
-                        File file = FileUtils.getRandomMatchingFile(args[0].toString());
-                        if (file == null) {
-                            TeaseLogger.getLogger().log(Level.SEVERE, "Matching video file for path " + args[0] + " does not exist.");
-                            return null;
-                        }
-
-                        return MediaHandler.getHandler().playVideo(file);
-                    }
-                }
-                break;
-            case 2:
-                if (args[1] instanceof Boolean) {
-                    String arg = (String) args[0];
-                    if (arg.startsWith("http://") || arg.startsWith("https://")) {
-                        return MediaHandler.getHandler().playVideo(arg, (Boolean) args[1]);
-                    } else {
-                        File file = FileUtils.getRandomMatchingFile(args[0].toString());
-                        if (file == null) {
-                            TeaseLogger.getLogger().log(Level.SEVERE, "Matching video file for path " + args[0] + " does not exist.");
-                            return null;
-                        }
-
-                        return MediaHandler.getHandler().playVideo(file, (Boolean) args[1]);
-                    }
-                }
-
-                break;
-            case 0:
-                TeaseLogger.getLogger().log(Level.SEVERE, "Called " + getFunctionName() + " method without parameters.");
-                return null;
+    protected void onCall(String pathOrUrl, Boolean waitUntilFinishedPlaying){
+        if (isHttpUrl(pathOrUrl)) {
+            MediaHandler.getHandler().playVideo(pathOrUrl, waitUntilFinishedPlaying);
+        } else {
+            final File file = FileUtils.getRandomMatchingFile(pathOrUrl);
+            if (file != null) {
+                MediaHandler.getHandler().playVideo(file, waitUntilFinishedPlaying);
+            } else {
+                TeaseLogger.getLogger().log(Level.SEVERE,
+                        "Matching video file for path " + pathOrUrl + " does not exist.");
+            }
         }
+    }
 
-        TeaseLogger.getLogger().log(Level.SEVERE, getFunctionName() + " called with invalid args:" + Arrays.asList(args).toString());
-        return null;
+    private boolean isHttpUrl(String path) {
+        final String lowerCasePath = path.toLowerCase();
+        return lowerCasePath.startsWith("http://") || lowerCasePath.startsWith("https://");
     }
 }

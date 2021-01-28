@@ -1,7 +1,6 @@
 package me.goddragon.teaseai.api.scripts.nashorn;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 
 import me.goddragon.teaseai.api.media.MediaHandler;
@@ -75,14 +74,13 @@ public class ShowImageFunction extends CustomFunctionExtended {
     }
 
     private File tryGetImageFromUrl(String url) {
-        try {
-            return MediaHandler.getHandler().getImageFromURL(url);
-        } catch (IOException e) {
+        final File file = MediaHandler.getHandler().tryGetImageFromURL(url);
+        if (file == null) {
             TeaseLogger.getLogger().log(
                     Level.SEVERE, String.format("Failed to fetch from url '%s'", url));
         }
 
-        return null;
+        return file;
     }
 
     private File tryGetImageFromFilepath(String path) {

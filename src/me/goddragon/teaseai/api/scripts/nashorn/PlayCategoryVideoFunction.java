@@ -48,10 +48,12 @@ public class PlayCategoryVideoFunction extends CustomFunction {
 
             switch (args.length) {
                 case 1:
-                    return MediaHandler.getHandler().playVideo(video);
+                    MediaHandler.getHandler().playVideo(video);
+                    return null;
                 case 2:
                     if (args[1] instanceof Boolean) {
-                        return MediaHandler.getHandler().playVideo(video, (Boolean) args[1]);
+                        MediaHandler.getHandler().playVideo(video, (Boolean) args[1]);
+                        return null;
                     }
 
                     break;

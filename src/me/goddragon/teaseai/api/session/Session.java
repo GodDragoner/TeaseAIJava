@@ -139,9 +139,8 @@ public class Session {
                 //TeaseAI.application.getScene().getStylesheets().clear();
 
                 //Reset playing video
-                if (MediaHandler.getHandler().getCurrentVideoPlayer() != null) {
-                    MediaHandler.getHandler().getCurrentVideoPlayer().stop();
-                }
+                MediaHandler.getHandler().stopVideo();
+
                 MediaHandler.getHandler().stopAllAudio();
 
                 //Initialize a new session instance

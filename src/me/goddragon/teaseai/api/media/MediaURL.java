@@ -289,31 +289,19 @@ public class MediaURL extends MediaHolder implements Observable {
 
     @Override
     public File getRandomMedia() {
-        return getRandomMedia(0);
-    }
-
-    public File getRandomMedia(int loops) {
         if (!mediaURLs.isEmpty()) {
             for (int tries = 0; tries < 10; tries++) {
-                String url = mediaURLs.get(RandomUtils.randInt(0, mediaURLs.size() - 1));
+                String mediaUrl = mediaURLs.get(RandomUtils.randInt(0, mediaURLs.size() - 1));
 
-                try {
-                    return MediaHandler.getHandler().getImageFromURL(url);
-                } catch (IOException e) {
-                    //Try different media if picture is down
-                    if (e instanceof ConnectException && loops < 10) {
-                        loops++;
-                        return getRandomMedia(loops);
-                    }
-
-                    e.printStackTrace();
+                final File imageFile = MediaHandler.getHandler().tryGetImageFromURL(mediaUrl);
+                if (imageFile != null) {
+                    return imageFile;
                 }
             }
         }
 
         return null;
     }
-
 
     public String getUrl() {
         return url;
