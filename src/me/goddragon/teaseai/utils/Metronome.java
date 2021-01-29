@@ -19,8 +19,9 @@ public class Metronome implements MetaEventListener {
         }
     }
 
-    public void stop() {
+    public void destroy() {
         sequencer.stop();
+        sequencer.close();
     }
 
     private void openSequencer() throws MidiUnavailableException {
