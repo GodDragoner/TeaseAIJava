@@ -33,6 +33,11 @@ public class GetVarFunction extends CustomFunctionExtended {
         }
     }
 
+    @SuppressWarnings("unusedArgument")
+    protected Object onCall(String variableName, Void nullValue) {
+        return onCall(variableName, (Object)null);
+    }
+
     private VariableHandler getVariableHandler() {
         final Session session = TeaseAI.application.getSession();
         Personality personality;

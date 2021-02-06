@@ -92,7 +92,7 @@ public abstract class CustomFunctionExtended extends CustomFunction {
             if (args[i] != null) {
                 typeList[i] = args[i].getClass();
             } else {
-                typeList[i] = Void.TYPE;
+                typeList[i] = Void.class;
             }
         }
 
@@ -127,7 +127,7 @@ public abstract class CustomFunctionExtended extends CustomFunction {
             else
                 text.append(", ");
 
-            if (pType == Void.TYPE) {
+            if (pType == Void.class) {
                 text.append("null");
             } else {
                 text.append(getSimplifiedTypeName(pType.getName()));
