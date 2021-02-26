@@ -129,8 +129,12 @@ public class MediaCollection {
             urls.addAll(mediaFolders);
         }
 
-        MediaHolder mediaURL = urls.get(RandomUtils.randInt(0, urls.size() - 1));
-        return mediaURL.getRandomMedia();
+        if (!urls.isEmpty()) {
+            MediaHolder mediaURL = urls.get(RandomUtils.randInt(0, urls.size() - 1));
+            return mediaURL.getRandomMedia();
+        } else {
+            return null;
+        }
     }
 
     public File getRandomFile(MediaFetishType fetishType, MediaType mediaType) {
