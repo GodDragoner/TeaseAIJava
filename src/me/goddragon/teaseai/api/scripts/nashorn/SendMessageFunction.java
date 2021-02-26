@@ -35,6 +35,7 @@ public class SendMessageFunction extends CustomFunctionExtended {
         if (file != null) {
             MediaHandler.getHandler().showPicture(
                     file, (int) (ChatHandler.getHandler().getMillisToPause(message) / 1000));
+
         }
     }
 
