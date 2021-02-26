@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 
 public class Main {
@@ -20,6 +21,8 @@ public class Main {
     public static String OPERATING_SYSTEM = System.getProperty("os.name").toLowerCase();
 
     public static void main(String[] args) {
+        TeaseLogger.getLogger().log(Level.INFO, "Launching with command: '" + getCommandOfCurrentProcess() + "'");
+
         TeaseLogger.getLogger().log(Level.INFO, "Checking libraries for updates...");
         UpdateHandler.getHandler().checkLibraries();
         TeaseLogger.getLogger().log(Level.INFO, "Libraries checked and up-to-date.");
@@ -28,8 +31,8 @@ public class Main {
 
         boolean containsJavaFx = false;
 
-        for(String s : input) {
-            if(s.toLowerCase().contains("javafx")) {
+        for (String s : input) {
+            if (s.toLowerCase().contains("javafx")) {
                 containsJavaFx = true;
                 break;
             }
@@ -158,10 +161,32 @@ public class Main {
         try {
             File javaFXFolder = getJavaFXLibFolder();
 
-            if(javaFXFolder == null) {
-                Process process = Runtime.getRuntime().exec(new String[]{"java", "-jar", "TeaseAI.jar"});
+            String launchParameter = getCurrentJavaPath();
+
+            if(launchParameter == null) {
+                launchParameter = "java";
             } else {
-                Process process = Runtime.getRuntime().exec(new String[]{"java", "--module-path=" + getJavaFXLibFolder().getPath(), "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web", "-jar", "TeaseAI.jar"});
+                if(isWindows()) {
+
+                }
+                else if(!launchParameter.startsWith("/")) {
+                    launchParameter = Paths.get(System.getProperty("user.dir")).toAbsolutePath() + File.separator + launchParameter;
+                }
+
+                launchParameter = "\"" + launchParameter + "\"";
+            }
+
+            TeaseLogger.getLogger().log(Level.INFO, "Restarting with installation " + launchParameter);
+
+            if (javaFXFolder == null) {
+                Process process = Runtime.getRuntime().exec(new String[]{launchParameter, "-jar", "TeaseAI.jar"});
+            } else {
+                String modulePath = "--module-path=" + getJavaFXLibFolder().getPath();
+                String modules = "--add-modules=javafx.controls,javafx.fxml,javafx.base,javafx.media,javafx.graphics,javafx.swing,javafx.web";
+
+                System.out.println("Starting with parameters: " + modulePath + " " + modules);
+
+                Process process = Runtime.getRuntime().exec(new String[]{launchParameter, modulePath, modules, "-jar", "TeaseAI.jar"});
             }
 
 
@@ -177,6 +202,21 @@ public class Main {
         }
 
         System.exit(0);
+    }
+
+    private static Optional<String> getCommandOfCurrentProcess() {
+        ProcessHandle processHandle = ProcessHandle.current();
+        return processHandle.info().command();
+    }
+
+    public static String getCurrentJavaPath() {
+        String launch = getCommandOfCurrentProcess().get();
+
+        if (launch != null) {
+            return launch;
+        }
+
+        return null;
     }
 
     public static boolean isWindows() {
