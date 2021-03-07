@@ -64,6 +64,11 @@ public class ShowImageFunction extends CustomFunctionExtended {
         return file;
     }
 
+    @SuppressWarnings("unusedArgument")
+    protected void onCall(Void nullValue) {
+        MediaHandler.getHandler().showPicture(null);
+    }
+
     private boolean isHttpUrl(String path) {
         final String lowerCasePath = path.toLowerCase();
         return lowerCasePath.startsWith("http://") || lowerCasePath.startsWith("https://");
