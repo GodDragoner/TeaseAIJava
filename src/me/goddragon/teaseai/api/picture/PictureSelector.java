@@ -23,7 +23,7 @@ public class PictureSelector {
 
         long minutesPassed = TimeUnit.MILLISECONDS.toMinutes(session.getRuntime());
         int preferredSessionDuration = TeaseAI.application.PREFERRED_SESSION_DURATION.getInt();
-        double percentage = minutesPassed / preferredSessionDuration * 100D;
+        double percentage = 100.0 * minutesPassed / preferredSessionDuration;
 
         TaggedPicture toReturn = null;
         if (percentage <= 10) {
