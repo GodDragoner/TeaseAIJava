@@ -16,6 +16,8 @@ import java.util.logging.Level;
  */
 public class PictureSelector {
 
+    private final Random random = new Random();
+
     public TaggedPicture getPicture(Session session, ChatParticipant participant) {
         if (participant.getPictureSet().getTaggedPictures().isEmpty() && participant.getPictureSet().getPicturesInFolder().length == 0) {
             return null;
@@ -24,6 +26,9 @@ public class PictureSelector {
         long minutesPassed = TimeUnit.MILLISECONDS.toMinutes(session.getRuntime());
         int preferredSessionDuration = TeaseAI.application.PREFERRED_SESSION_DURATION.getInt();
         double percentage = 100.0 * minutesPassed / preferredSessionDuration;
+        if (percentage > 100.0) {
+            percentage = 100.0;
+        }
 
         TaggedPicture toReturn = null;
         if (percentage <= 10) {
@@ -60,7 +65,6 @@ public class PictureSelector {
                 return null;
             }
 
-            Random random = new Random();
             return new TaggedPicture(locFiles[random.nextInt(locFiles.length)]);
         }
     }
