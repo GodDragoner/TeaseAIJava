@@ -173,7 +173,7 @@ public class Main {
                     launchParameter = Paths.get(System.getProperty("user.dir")).toAbsolutePath() + File.separator + launchParameter;
                 }
 
-                launchParameter = "\"" + launchParameter + "\"";
+                //launchParameter = "\"" + launchParameter + "\"";
             }
 
             TeaseLogger.getLogger().log(Level.INFO, "Restarting with installation " + launchParameter);
