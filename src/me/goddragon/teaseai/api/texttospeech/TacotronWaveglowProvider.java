@@ -51,7 +51,7 @@ public class TacotronWaveglowProvider extends TTSProvider {
         try {
             URL url = new URL("http://localhost:8080/tts/get/sound.wav");
             MediaHandler.getHandler().playAudioWithURI(url.toExternalForm(), join);
-        } catch (MalformedURLException | URISyntaxException e) {
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
 

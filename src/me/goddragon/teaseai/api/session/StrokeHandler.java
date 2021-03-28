@@ -80,7 +80,7 @@ public class StrokeHandler {
 
                             //Check if we are still dealing with the metronome that we were watching
                             if (watchingMetronome == metronome) {
-                                metronome.stop();
+                                metronome.destroy();
                                 if (estimMetronome != null) {
                                     estimMetronome.stop();
                                 }
@@ -98,7 +98,7 @@ public class StrokeHandler {
 
     public void stopMetronome() {
         if (metronome != null) {
-            metronome.stop();
+            metronome.destroy();
             metronome = null;
             setStroking(false);
             

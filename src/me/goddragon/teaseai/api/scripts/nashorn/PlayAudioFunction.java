@@ -34,7 +34,8 @@ public class PlayAudioFunction extends CustomFunction {
                     return null;
                 }
 
-                return MediaHandler.getHandler().playAudio(file);
+                MediaHandler.getHandler().playAudio(file);
+                return null;
             case 2:
                 if (args[1] instanceof Boolean) {
                     file = FileUtils.getRandomMatchingFile(args[0].toString());
@@ -43,7 +44,8 @@ public class PlayAudioFunction extends CustomFunction {
                         return null;
                     }
 
-                    return MediaHandler.getHandler().playAudio(file, (Boolean) args[1]);
+                    MediaHandler.getHandler().playAudio(file, (Boolean) args[1]);
+                    return null;
                 }
                 break;
             case 0:
