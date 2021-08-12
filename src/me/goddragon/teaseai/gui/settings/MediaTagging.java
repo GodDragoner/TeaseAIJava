@@ -23,9 +23,10 @@ import me.goddragon.teaseai.api.picture.PictureHandler;
 import me.goddragon.teaseai.api.picture.PictureTag;
 import me.goddragon.teaseai.api.picture.PictureTag.TagType;
 import me.goddragon.teaseai.api.picture.TaggedPicture;
+import me.goddragon.teaseai.utils.FileUtils;
+import me.goddragon.teaseai.utils.StringUtils;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,6 +95,13 @@ public class MediaTagging {
 
     @FXML
     private MenuButton dressStateButton;
+
+    @FXML
+    private CheckBox bulkTagging;
+
+    @FXML
+    private CheckBox onlyUntagged;
+
 
     private HashSet<PictureTag> currentImageTags;
 
@@ -182,8 +190,22 @@ public class MediaTagging {
         DressState[] dressStateTags = DressState.values();
         ArrayList<CheckBox> checkboxes = new ArrayList<>();
 
+        //Update stage if we change status of only untagged
+        onlyUntagged.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                saveTags();
+
+                if (newValue) {
+                    initiateNewStage();
+                } else {
+                    initiateNewStage();
+                }
+            }
+        });
+
         for (int i = 0; i < dressStateTags.length; i++) {
-            CheckBox thisCheckBox = new CheckBox(dressStateTags[i].getTagName().replace("Tag", ""));
+            CheckBox thisCheckBox = new CheckBox(StringUtils.splitCamelCase(dressStateTags[i].getTagName().replace("Tag", "")));
             checkboxes.add(thisCheckBox);
 
             if (currentDressState != null && currentDressState == dressStateTags[i]) {
@@ -215,11 +237,11 @@ public class MediaTagging {
         }
     }
 
-    public void addTagsToButton(MenuButton button, TagType tagType) {
+    private void addTagsToButton(MenuButton button, TagType tagType) {
         PictureTag[] viewTags = PictureTag.getPictureTagsByType(tagType);
         if (button.getItems().isEmpty()) {
             for (int i = 0; i < viewTags.length; i++) {
-                CheckBox thisCheckBox = new CheckBox(viewTags[i].getTagName().replace("Tag", ""));
+                CheckBox thisCheckBox = new CheckBox(StringUtils.splitCamelCase(viewTags[i].getTagName().replace("Tag", "")));
                 checkBoxes.put(viewTags[i], thisCheckBox);
 
                 PictureTag thisTag = viewTags[i];
@@ -241,11 +263,7 @@ public class MediaTagging {
         }
 
         for (PictureTag pictureTag : viewTags) {
-            if (currentImageTags.contains(pictureTag)) {
-                checkBoxes.get(pictureTag).setSelected(true);
-            } else {
-                checkBoxes.get(pictureTag).setSelected(false);
-            }
+            checkBoxes.get(pictureTag).setSelected(currentImageTags.contains(pictureTag));
         }
     }
 
@@ -260,17 +278,18 @@ public class MediaTagging {
 
         //File searchingDirectory = directory;
 
-        File[] locFiles = directory.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return (name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".gif"));
-            }
-        });
+        File[] locFiles = directory.listFiles((file) -> (FileUtils.isSupportedPictureExtension(FileUtils.getExtension(file))));
 
         ArrayList<TaggedPicture> taggedList = new ArrayList<>();
 
         for (File thisFile : locFiles) {
             TaggedPicture thisTaggedPic = new TaggedPicture(thisFile, true);
+
+            //Ignore if untagged is checked
+            if(onlyUntagged.isSelected() && !thisTaggedPic.getTags().isEmpty()) {
+                continue;
+            }
+
             if (thisTaggedPic.getFile() != null) {
                 taggedList.add(thisTaggedPic);
             }
@@ -281,6 +300,10 @@ public class MediaTagging {
             alert.setTitle("No images found");
             alert.setHeaderText(null);
             alert.setContentText("There were no images found in the given folder.");
+
+            if(onlyUntagged.isSelected()) {
+                onlyUntagged.setSelected(false);
+            }
 
             alert.showAndWait();
             return false;
@@ -297,13 +320,11 @@ public class MediaTagging {
 
         //Store the current tags of the selected image too when closing
         imageTaggingWindow.setOnCloseRequest(event -> {
-            currentTaggedPicture.setDressState(currentDressState);
-            currentTaggedPicture.setTags(currentImageTags);
+            saveTags();
         });
 
         nextButton.setOnMouseClicked(event -> {
-            currentTaggedPicture.setDressState(currentDressState);
-            currentTaggedPicture.setTags(currentImageTags);
+            saveTags();
 
             if ((currentFile + 1) < files.length) {
                 currentFile++;
@@ -318,9 +339,7 @@ public class MediaTagging {
         });
 
         previousButton.setOnMouseClicked(event -> {
-            long currentMillis = System.currentTimeMillis();
-            currentTaggedPicture.setDressState(currentDressState);
-            currentTaggedPicture.setTags(currentImageTags);
+            saveTags();
 
             if ((currentFile - 1) >= 0) {
                 currentFile--;
@@ -334,6 +353,23 @@ public class MediaTagging {
         });
 
         return true;
+    }
+
+    private void saveTags() {
+        if (bulkTagging.isSelected()) {
+            for (TaggedPicture taggedPicture : files) {
+                taggedPicture.setDressState(currentDressState);
+
+                HashSet<PictureTag> tags = new HashSet<>();
+                tags.addAll(taggedPicture.getTags());
+                tags.addAll(currentImageTags);
+
+                taggedPicture.setTags(tags);
+            }
+        } else {
+            currentTaggedPicture.setDressState(currentDressState);
+            currentTaggedPicture.setTags(currentImageTags);
+        }
     }
 
 }

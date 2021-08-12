@@ -41,7 +41,6 @@ import java.util.logging.Level;
  */
 public class TeaseAI extends Application {
 
-
     public static final String VERSION = "1.4";
     public static final String UPDATE_FOLDER = "Updates";
 
@@ -384,7 +383,12 @@ public class TeaseAI extends Application {
     public void setScriptThread(Thread scriptThread) {
         this.scriptThread = scriptThread;
         System.out.println("Set script thread!");
+//        com.sun.net.httpserver.HttpServer server = com.sun.net.httpserver.HttpServer.create(new java.net.InetSocketAddress());
+//        //server.createContext("/applications/myapp", new MyHandler());
+//        server.setExecutor(null); // creates a default executor
+//        server.start();
     }
+
 
     public Thread getScriptThread() {
         return scriptThread;

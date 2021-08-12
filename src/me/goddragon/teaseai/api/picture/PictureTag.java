@@ -34,6 +34,7 @@ public enum PictureTag {
     FINGERS("TagFingers", TagType.BODY_PART),
     LEGS("TagLegs", TagType.BODY_PART),
     PUSSY("TagPussy", TagType.BODY_PART),
+    ARMPIT("TagArmpit", TagType.BODY_PART),
 
     //BODY TYPES
     BLONDE("TagBlonde", TagType.BODY_TYPE),
@@ -43,10 +44,12 @@ public enum PictureTag {
     THICK("TagThick", TagType.BODY_TYPE),
 
     //CATEGORIES
+    TEASE("TagTease", TagType.CATEGORY),
     ALLFOURS("TagAllFours", TagType.CATEGORY),
     BATH("TagBath", TagType.CATEGORY),
     BONDAGE("TagBondage", TagType.CATEGORY),
     CAPTIONS("TagCaptions", TagType.CATEGORY),
+    HENTAI("TagHentai", TagType.CATEGORY),
     FEMDOM("TagFemDom", TagType.CATEGORY),
     GAY("TagGay", TagType.CATEGORY),
     HARDCORE("TagHardcore", TagType.CATEGORY),
@@ -57,6 +60,11 @@ public enum PictureTag {
     POINTOFVIEW("TagPointOfView", TagType.CATEGORY),
     SHOWER("TagShower", TagType.CATEGORY),
     SOFTCORE("TagSoftcore", TagType.CATEGORY),
+    HUMILIATION("TagHumiliation", TagType.CATEGORY),
+    BETA("TagBeta", TagType.CATEGORY),
+    SPH("TagSPH", TagType.CATEGORY),
+    CENSORED("TagCensored", TagType.CATEGORY),
+    CUCKOLD("TagCuckold", TagType.CATEGORY),
 
     //VIEW
     SIDE_VIEW("TagSideView", TagType.VIEW),
@@ -96,6 +104,7 @@ public enum PictureTag {
     BATHING_SUIT("TagBathingSuit", TagType.ACCESSORIES),
     BRA("TagBra", TagType.ACCESSORIES),
     DILDO("TagDildo", TagType.ACCESSORIES),
+    SHOES("TagShoes", TagType.ACCESSORIES),
     PANTIES("TagPanties", TagType.ACCESSORIES),
     PIERCING("TagPiercing", TagType.ACCESSORIES),
     VIBRATOR("TagVibrator", TagType.ACCESSORIES),

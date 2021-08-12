@@ -56,25 +56,7 @@ public class PictureSet {
 
 
     public TaggedPicture getRandomPictureForTagStates(List<TaggedPicture> taggedPictures, List<DressState> dressStates, List<PictureTag> pictureTags) {
-        List<TaggedPicture> validPictures = new ArrayList<>();
-
-        pictureLoop:
-        for (TaggedPicture taggedPicture : taggedPictures) {
-            //Remove all pictures that don't have a specific tag
-            for (PictureTag pictureTag : pictureTags) {
-                if (pictureTag != null && !taggedPicture.hasTag(pictureTag)) {
-                    continue pictureLoop;
-                }
-            }
-
-            //If we are supposed to search for a specific dress state we check whether our picture fits those guidelines
-            if (!dressStates.isEmpty() && !dressStates.contains(taggedPicture.getDressState())) {
-                continue pictureLoop;
-            }
-
-            //If we reach this point the image is good to display
-            validPictures.add(taggedPicture);
-        }
+        List<TaggedPicture> validPictures = getPicturesForTagStates(taggedPictures, dressStates, pictureTags);
 
         if (validPictures.isEmpty()) {
             //Find the dress state in the list which shows least
@@ -103,6 +85,36 @@ public class PictureSet {
         }
 
         return validPictures.get(RandomUtils.randInt(0, validPictures.size() - 1));
+    }
+
+    public List<TaggedPicture> getPicturesForTagStates(DressState dressState, PictureTag... pictureTags) {
+        return getPicturesForTagStates(Arrays.asList(new DressState[]{dressState}), Arrays.asList(pictureTags));
+    }
+
+    public List<TaggedPicture> getPicturesForTagStates(List<DressState> dressStates, List<PictureTag> pictureTags) {
+        return getPicturesForTagStates(taggedPictures, dressStates, pictureTags);
+    }
+
+    public List<TaggedPicture> getPicturesForTagStates(List<TaggedPicture> taggedPictures, List<DressState> dressStates, List<PictureTag> pictureTags) {
+        List<TaggedPicture> validPictures = new ArrayList<>();
+
+        pictureLoop:
+        for (TaggedPicture taggedPicture : taggedPictures) {
+            //Remove all pictures that don't have a specific tag
+            for (PictureTag pictureTag : pictureTags) {
+                if (pictureTag != null && !taggedPicture.hasTag(pictureTag)) continue pictureLoop;
+            }
+
+            //If we are supposed to search for a specific dress state we check whether our picture fits those guidelines
+            if (!dressStates.isEmpty() && !dressStates.contains(taggedPicture.getDressState())) {
+                continue;
+            }
+
+            //If we reach this point the image is good to display
+            validPictures.add(taggedPicture);
+        }
+
+        return validPictures;
     }
 
     public File[] getPicturesInFolder() {

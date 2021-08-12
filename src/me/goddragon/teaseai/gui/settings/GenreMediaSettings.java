@@ -2,6 +2,7 @@ package me.goddragon.teaseai.gui.settings;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.SelectionMode;
@@ -17,6 +18,7 @@ import me.goddragon.teaseai.api.media.MediaHolder;
 import me.goddragon.teaseai.api.media.MediaType;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,7 +83,7 @@ public class GenreMediaSettings {
                 if (defaultDirectory != null) {
                     File selectedDirectory = chooser.showDialog(settingsController.stage);
 
-                    if(selectedDirectory != null && settingsController.addImagePathTextBox != null) {
+                    if (selectedDirectory != null && settingsController.addImagePathTextBox != null) {
                         settingsController.addImagePathTextBox.setText(selectedDirectory.getPath());
                     }
                 }
@@ -95,13 +97,18 @@ public class GenreMediaSettings {
                 if (event.getCode().toString().equals("DELETE")) {
                     MediaFetishType mediaFetishType = getSelectedMediaFetish();
 
-                    for (Object object : settingsController.imagePathListView.getSelectionModel().getSelectedItems()) {
+
+                    ObservableList list = settingsController.imagePathListView.getSelectionModel().getSelectedItems();
+
+                    //Clone so we can modify it
+                    for (Object object : new ArrayList<>(list)) {
                         settingsController.imagePathListView.getItems().remove(object);
 
                         if (mediaFetishType != null) {
                             TeaseAI.application.getMediaCollection().removeMediaHolder((MediaHolder) object, mediaFetishType);
                         }
                     }
+
 
                     settingsController.mediaSettings.saveMediaPaths(MediaType.IMAGE, mediaFetishType);
                 }

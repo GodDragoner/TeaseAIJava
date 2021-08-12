@@ -3,16 +3,13 @@ package me.goddragon.teaseai.api.picture;
 import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 
 public class TagsFile {
 
     //Maps all known files to the folders
-    private static HashMap<File, TagsFile> tagFiles = new HashMap<>();
+    private static HashMap<String, TagsFile> tagFiles = new HashMap<>();
 
     private File tagsFile;
     private final ArrayList<String> lines = new ArrayList<>();
@@ -43,7 +40,7 @@ public class TagsFile {
                 lines.add(strLine);
 
                 for (File file : files) {
-                    if (strLine.contains(file.getName())) {
+                    if (strLine.startsWith(file.getName())) {
                         taggedFiles.add(file);
                     }
                 }
@@ -382,10 +379,23 @@ public class TagsFile {
         return tagsFile;
     }
 
-    public static TagsFile getTagsFile(File folder) {
-        if (tagFiles.containsKey(folder)) {
-            return tagFiles.get(folder);
+    public static boolean checkFolderForTagsFile(File folder) {
+        File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".txt"));
+
+        for (int j = 0; j < Objects.requireNonNull(files).length; j++) {
+            if (files[j].getName().equalsIgnoreCase("imagetags.txt")) {
+                return true;
+            }
         }
+
+        return false;
+    }
+
+    public static TagsFile getTagsFile(File folder) {
+        if (tagFiles.containsKey(folder.getAbsolutePath())) {
+            return tagFiles.get(folder.getAbsolutePath());
+        }
+
         TagsFile toReturn = null;
 
         File[] files = folder.listFiles(new FilenameFilter() {
@@ -415,7 +425,7 @@ public class TagsFile {
         }
 
         if (toReturn != null) {
-            tagFiles.put(folder, toReturn);
+            tagFiles.put(folder.getAbsolutePath(), toReturn);
         }
 
         return toReturn;

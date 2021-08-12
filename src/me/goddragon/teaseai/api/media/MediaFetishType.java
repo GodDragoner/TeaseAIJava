@@ -2,17 +2,20 @@ package me.goddragon.teaseai.api.media;
 
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.ConfigValue;
+import me.goddragon.teaseai.api.picture.PictureTag;
 import me.goddragon.teaseai.utils.StringUtils;
+import me.goddragon.teaseai.utils.TeaseLogger;
 
 import java.io.File;
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * Created by GodDragon on 26.03.2018.
  */
 public enum MediaFetishType {
 
-    HARDCORE, SOFTCORE, LESBIAN, BLOWJOB, FEMDOM, LEZDOM, HENTAI, GAY, MALEDOM, CAPTIONS, GENERAL, BOOBS, BUTTS, TEASE;
+    HARDCORE, SOFTCORE, LESBIAN, BLOWJOB, FEMDOM, LEZDOM, HENTAI, GAY, MALEDOM, CAPTIONS, GENERAL, BOOBS, BUTTS, TEASE, CUSTOM_TAGGED;
 
     private Map<MediaType, Map<MediaHolderType, ConfigValue>> configValues = new HashMap<>();
 
@@ -28,6 +31,24 @@ public enum MediaFetishType {
 
         configValues.put(MediaType.IMAGE, imageMap);
         configValues.put(MediaType.VIDEO, videoMap);
+    }
+
+    public PictureTag toPictureTag() {
+        switch(this) {
+            case GENERAL:
+            case CUSTOM_TAGGED:
+                return PictureTag.TEASE;
+            case BUTTS:
+                return PictureTag.ASS;
+        }
+
+        try {
+            return PictureTag.valueOf(this.name());
+        } catch(IllegalArgumentException ex) {
+            TeaseLogger.getLogger().log(Level.SEVERE, "Can't find picture tag for fetish type " + this.name());
+        }
+
+        return null;
     }
 
     public List<String> getURLFileNames(MediaType mediaType) {

@@ -314,6 +314,18 @@ public class Personality {
         }
     }
 
+    public void end() {
+        File endFile = new File(getFolder().getAbsolutePath() + File.separator + "end.js");
+
+        if (endFile.exists()) {
+            try {
+                ScriptHandler.getHandler().runScript(endFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void reload() {
         unload();
         load();

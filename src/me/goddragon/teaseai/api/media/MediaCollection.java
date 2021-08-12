@@ -129,6 +129,8 @@ public class MediaCollection {
             urls.addAll(mediaFolders);
         }
 
+        urls.addAll(getCustomTagged(MediaFetishType.TEASE, mediaType));
+
         if (!urls.isEmpty()) {
             MediaHolder mediaURL = urls.get(RandomUtils.randInt(0, urls.size() - 1));
             return mediaURL.getRandomMedia();
@@ -137,12 +139,29 @@ public class MediaCollection {
         }
     }
 
+    public boolean hasFetishType(MediaFetishType fetishType) {
+        return folders.containsKey(fetishType);
+    }
+
+    public boolean hasFetishMediaType(MediaFetishType fetishType, MediaType mediaType) {
+        return folders.containsKey(fetishType) && folders.get(fetishType).containsKey(mediaType);
+    }
+
     public File getRandomFile(MediaFetishType fetishType, MediaType mediaType) {
-        if (!folders.containsKey(fetishType) || !folders.get(fetishType).containsKey(mediaType)) {
+        List<MediaHolder> mediaFolders;
+
+        if(hasFetishMediaType(fetishType, mediaType)) {
+            mediaFolders = folders.get(fetishType).get(mediaType);
+        } else {
+            mediaFolders = new ArrayList<>();
+        }
+
+        mediaFolders.addAll(getCustomTagged(fetishType, mediaType));
+
+        if (mediaFolders.isEmpty()) {
             return null;
         }
 
-        List<MediaHolder> mediaFolders = folders.get(fetishType).get(mediaType);
         for (int tries = 0; tries < 10; tries++) {
             MediaHolder mediaHolder = mediaFolders.get(RandomUtils.randInt(0, mediaFolders.size() - 1));
             File file = mediaHolder.getRandomMedia();
@@ -159,6 +178,25 @@ public class MediaCollection {
         }
 
         return null;
+    }
+
+    public List<MediaPictureHolder> getCustomTagged(MediaFetishType fetishType, MediaType mediaType) {
+        List<MediaPictureHolder> mediaFolders = new ArrayList<>();
+
+        if(hasFetishMediaType(MediaFetishType.CUSTOM_TAGGED, mediaType)) {
+            for(MediaHolder mediaHolder : getMediaHolders(MediaFetishType.CUSTOM_TAGGED, mediaType)) {
+                if(mediaHolder instanceof MediaFolder) {
+                    MediaPictureHolder pictureHolder = ((MediaFolder) mediaHolder).filterForTags(fetishType.toPictureTag());
+
+                    //Empty check, if it returns null it's empty
+                    if(pictureHolder.getRandomMedia() != null) {
+                        mediaFolders.add(pictureHolder);
+                    }
+                }
+            }
+        }
+
+        return mediaFolders;
     }
 
     public boolean isPathAssigned(String path, MediaFetishType fetishType, MediaType mediaType) {

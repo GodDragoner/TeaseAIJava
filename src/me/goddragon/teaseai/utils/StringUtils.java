@@ -1,14 +1,14 @@
 package me.goddragon.teaseai.utils;
 
+import javafx.scene.Node;
+import me.goddragon.teaseai.utils.message.FormattedTextGenerator;
+import me.goddragon.teaseai.utils.message.TextTagElement;
+import me.goddragon.teaseai.utils.message.TextTagElementParser;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import javafx.scene.Node;
-
-import me.goddragon.teaseai.utils.message.FormattedTextGenerator;
-import me.goddragon.teaseai.utils.message.TextTagElement;
-import me.goddragon.teaseai.utils.message.TextTagElementParser;
 
 /**
  * Created by GodDragon on 11.04.2018.
@@ -69,5 +69,16 @@ public class StringUtils {
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex.getCause());
         }
+    }
+
+    public static String splitCamelCase(String s) {
+        return s.replaceAll(
+                String.format("%s|%s|%s",
+                        "(?<=[A-Z])(?=[A-Z][a-z])",
+                        "(?<=[^A-Z])(?=[A-Z])",
+                        "(?<=[A-Za-z])(?=[^A-Za-z])"
+                ),
+                " "
+        );
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.image.ImageView?>
@@ -10,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #9b9d9f;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #9b9d9f;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="427.0" />
     </columnConstraints>
@@ -30,9 +31,9 @@
                 <RowConstraints maxHeight="330.0" minHeight="0.0" prefHeight="154.4000366210937" />
             </rowConstraints>
             <children>
-                <Label fx:id="fileLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="45.0" prefWidth="710.0" text="File {myfilenumber} of {maxfiles} in {folderpath}" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1">
+                <Label fx:id="fileLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="45.0" prefWidth="710.0" text="File {myfilenumber} of {maxfiles} in {folderpath}" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="1">
                     <font>
-                        <Font name="System Bold" size="18.0" />
+                        <Font name="System Bold" size="10.0" />
                     </font>
                 </Label>
                 <GridPane GridPane.rowIndex="1">
@@ -41,10 +42,13 @@
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints maxHeight="137.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="245.0" minHeight="10.0" prefHeight="233.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="245.0" minHeight="10.0" prefHeight="233.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <Button fx:id="previousButton" mnemonicParsing="false" prefHeight="52.0" prefWidth="101.0" text="Previous" />
+                  <CheckBox fx:id="onlyUntagged" mnemonicParsing="false" prefHeight="53.0" prefWidth="83.0" text="Only Untagged" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.rowIndex="2" />
+                  <CheckBox fx:id="bulkTagging" mnemonicParsing="false" prefHeight="53.0" prefWidth="83.0" text="Bulk Tagging" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
                 <GridPane GridPane.columnIndex="2" GridPane.rowIndex="1">
@@ -53,6 +57,7 @@
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints maxHeight="137.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="245.0" minHeight="10.0" prefHeight="233.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="245.0" minHeight="10.0" prefHeight="233.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>

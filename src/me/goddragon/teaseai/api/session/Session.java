@@ -120,6 +120,8 @@ public class Session {
     }
 
     public void end() {
+        activePersonality.end();
+
         //Restore the previous state of the start button and set the new session
         TeaseAI.application.runOnUIThread(new Runnable() {
             @Override
