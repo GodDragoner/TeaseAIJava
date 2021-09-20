@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by GodDragon on 26.03.2018.
@@ -35,7 +36,7 @@ public class MediaFolder extends MediaHolder {
             }
         }
 
-        if(TagsFile.checkFolderForTagsFile(folder)) {
+        if (TagsFile.checkFolderForTagsFile(folder)) {
             pictureSet = new PictureSet(folder);
         }
     }
@@ -59,10 +60,26 @@ public class MediaFolder extends MediaHolder {
     }
 
     public MediaPictureHolder filterForTags(PictureTag... pictureTags) {
-        //Empty dress state list -> no dress state filter
-        List<TaggedPicture> pictures = pictureSet.getPicturesForTagStates(new ArrayList<>(), Arrays.asList(pictureTags));
+        return filterForTags(Arrays.asList(pictureTags));
+    }
 
-        return new MediaPictureHolder(MediaType.IMAGE, pictures);
+    public MediaPictureHolder filterForTags(List<PictureTag> pictureTags) {
+        return filterForTags(pictureTags, new ArrayList<>());
+    }
+
+    public MediaPictureHolder filterForTags(List<PictureTag> mustHave, List<PictureTag> mustNotHave) {
+        //Empty dress state list -> no dress state filter
+        List<TaggedPicture> pictures = pictureSet.getPicturesForTagStates(new ArrayList<>(), mustHave);
+
+        return new MediaPictureHolder(MediaType.IMAGE, pictures.stream().filter(taggedPicture -> {
+            for (PictureTag tag : mustNotHave) {
+                if (taggedPicture.hasTag(tag)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }).collect(Collectors.toList()));
     }
 
     public boolean hasTagsFile() {

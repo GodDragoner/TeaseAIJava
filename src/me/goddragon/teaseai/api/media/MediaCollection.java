@@ -2,6 +2,7 @@ package me.goddragon.teaseai.api.media;
 
 import me.goddragon.teaseai.TeaseAI;
 import me.goddragon.teaseai.api.config.ConfigValue;
+import me.goddragon.teaseai.api.picture.PictureTag;
 import me.goddragon.teaseai.utils.RandomUtils;
 
 import java.io.File;
@@ -181,16 +182,41 @@ public class MediaCollection {
     }
 
     public List<MediaPictureHolder> getCustomTagged(MediaFetishType fetishType, MediaType mediaType) {
+        return getCustomTagged(mediaType, Arrays.asList(fetishType.toPictureTag()));
+    }
+
+    public List<MediaPictureHolder> getCustomTagged(MediaType mediaType, List<PictureTag> pictureTags) {
+        return getCustomTagged(mediaType, pictureTags, new ArrayList<>());
+    }
+
+    public List<MediaPictureHolder> getCustomTagged(MediaType mediaType, List<PictureTag> mustHave, List<PictureTag> mustNotHave) {
         List<MediaPictureHolder> mediaFolders = new ArrayList<>();
 
         if(hasFetishMediaType(MediaFetishType.CUSTOM_TAGGED, mediaType)) {
             for(MediaHolder mediaHolder : getMediaHolders(MediaFetishType.CUSTOM_TAGGED, mediaType)) {
                 if(mediaHolder instanceof MediaFolder) {
-                    MediaPictureHolder pictureHolder = ((MediaFolder) mediaHolder).filterForTags(fetishType.toPictureTag());
+                    MediaPictureHolder pictureHolder = ((MediaFolder) mediaHolder).filterForTags(mustHave, mustNotHave);
 
                     //Empty check, if it returns null it's empty
                     if(pictureHolder.getRandomMedia() != null) {
                         mediaFolders.add(pictureHolder);
+                    }
+                }
+            }
+        }
+
+        return mediaFolders;
+    }
+
+    public List<MediaFolder> getCustomTagged(MediaType mediaType) {
+        List<MediaFolder> mediaFolders = new ArrayList<>();
+
+        if(hasFetishMediaType(MediaFetishType.CUSTOM_TAGGED, mediaType)) {
+            for(MediaHolder mediaHolder : getMediaHolders(MediaFetishType.CUSTOM_TAGGED, mediaType)) {
+                if(mediaHolder instanceof MediaFolder) {
+                    //Empty check, if it returns null it's empty
+                    if(mediaHolder.getRandomMedia() != null) {
+                        mediaFolders.add((MediaFolder) mediaHolder);
                     }
                 }
             }

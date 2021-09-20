@@ -26,6 +26,7 @@ public class Session {
     private Personality activePersonality = null;
     private boolean started = false;
     private boolean haltSession = false;
+    private boolean pauseSession = false;
     private long startedAt;
     public StatisticsManager statisticsManager = new StatisticsManager();
 
@@ -87,6 +88,11 @@ public class Session {
 
     public void checkForInteraction() {
         checkForForcedEnd();
+
+        //Wait for pause session to end
+        while (isPauseSession()) {
+            TeaseAI.application.sleepPossibleScripThread(1000);
+        }
 
         //Check for runnables
         TeaseRunnableHandler.getHandler().checkRunnables();
@@ -213,5 +219,12 @@ public class Session {
 	public EstimState getEstimState() {
 		return estimState;
 	}
-	
+
+    public boolean isPauseSession() {
+        return pauseSession;
+    }
+
+    public void setPauseSession(boolean pauseSession) {
+        this.pauseSession = pauseSession;
+    }
 }

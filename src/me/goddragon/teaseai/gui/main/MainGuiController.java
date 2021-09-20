@@ -121,6 +121,10 @@ public class MainGuiController {
     @FXML
     private MenuItem restoreSessionMenuItem;
 
+    //Pause Session Menu Item
+    @FXML
+    private MenuItem pauseSessionMenuItem;
+
     @FXML
     private Region draggableRegion;
 
@@ -342,6 +346,23 @@ public class MainGuiController {
 
                         alert.showAndWait();
                     }
+                }
+            }
+        });
+
+        pauseSessionMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (TeaseAI.getApplication().getSession().getActivePersonality() == null || !TeaseAI.getApplication().getSession().isStarted()) {
+                    return;
+                }
+
+                if(TeaseAI.getApplication().getSession().isPauseSession()) {
+                    TeaseAI.getApplication().getSession().setPauseSession(false);
+                    pauseSessionMenuItem.setText("Pause Session");
+                } else {
+                    TeaseAI.getApplication().getSession().setPauseSession(true);
+                    pauseSessionMenuItem.setText("Resume Session");
                 }
             }
         });

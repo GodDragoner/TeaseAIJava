@@ -59,6 +59,11 @@ public class PictureSet {
         List<TaggedPicture> validPictures = getPicturesForTagStates(taggedPictures, dressStates, pictureTags);
 
         if (validPictures.isEmpty()) {
+            //Allow for all dress states
+            if(dressStates.isEmpty()) {
+                dressStates = Arrays.asList(DressState.values());
+            }
+
             //Find the dress state in the list which shows least
             DressState lowestDressState = null;
             for (DressState dressState : dressStates) {

@@ -21,7 +21,7 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane id="main-base-anchor-pane" fx:id="baseAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="945.0" prefWidth="1473.0" styleClass="primary-color" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="main-base-anchor-pane" fx:id="baseAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="945.0" prefWidth="1473.0" styleClass="primary-color" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane fx:id="baseGridPane" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -166,6 +166,7 @@
                      <items>
                         <MenuItem fx:id="saveSessionMenuItem" mnemonicParsing="false" styleClass="aboutMenuItem" text="Save Session" />
                         <MenuItem fx:id="restoreSessionMenuItem" mnemonicParsing="false" styleClass="aboutMenuItem" text="Restore Session" />
+                        <MenuItem fx:id="pauseSessionMenuItem" mnemonicParsing="false" styleClass="aboutMenuItem" text="Pause Session" />
                      </items>
                   </Menu>
                   <Menu mnemonicParsing="false" styleClass="helpMenu" text="Help">

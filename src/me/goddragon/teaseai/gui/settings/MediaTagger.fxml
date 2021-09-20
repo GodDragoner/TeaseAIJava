@@ -64,6 +64,7 @@
                         <Button fx:id="nextButton" mnemonicParsing="false" prefHeight="52.0" prefWidth="101.0" text="Next" />
                     </children>
                 </GridPane>
+            <Button fx:id="setDefaultButton" mnemonicParsing="false" text="Set Default" wrapText="true" GridPane.rowIndex="1" />
                 <GridPane prefHeight="344.0" prefWidth="882.0" GridPane.columnSpan="3" GridPane.rowIndex="2">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="0.40002286434173584" prefWidth="92.8000244140625" />

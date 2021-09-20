@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class MediaTagging {
 
@@ -56,6 +57,9 @@ public class MediaTagging {
 
     @FXML
     private Button nextButton;
+
+    @FXML
+    private Button setDefaultButton;
 
     @FXML
     private ImageView taggedImage;
@@ -110,6 +114,8 @@ public class MediaTagging {
     private DressState currentDressState;
 
     private HashMap<PictureTag, CheckBox> checkBoxes = new HashMap<>();
+
+    private List<PictureTag> defaults = new ArrayList<>();
 
     public MediaTagging(SettingsController settingsController) {
         this.settingsController = settingsController;
@@ -173,8 +179,13 @@ public class MediaTagging {
         currentImageTags = (HashSet<PictureTag>) currentTaggedPicture.getTags().clone();
         currentDressState = currentTaggedPicture.getDressState();
 
-        if (currentImageTags == null) {
+        if (currentImageTags == null || currentImageTags.isEmpty()) {
             currentImageTags = new HashSet<>();
+
+            //Add all defaults if we have no tags yet
+            if(!defaults.isEmpty()) {
+                currentImageTags.addAll(defaults);
+            }
         }
 
         addTagsToButton(bodyPartButton, TagType.BODY_PART);
@@ -203,6 +214,7 @@ public class MediaTagging {
                 }
             }
         });
+
 
         for (int i = 0; i < dressStateTags.length; i++) {
             CheckBox thisCheckBox = new CheckBox(StringUtils.splitCamelCase(dressStateTags[i].getTagName().replace("Tag", "")));
@@ -350,6 +362,12 @@ public class MediaTagging {
             taggedImage.setImage(new Image(files[currentFile].getFile().toURI().toString()));
             setUpButtons();
             fileLabel.setText("File " + (currentFile + 1) + " of " + files.length + " in " + directory.getPath());
+        });
+
+
+        setDefaultButton.setOnMouseClicked(event -> {
+            defaults.clear();
+            defaults.addAll(currentImageTags);
         });
 
         return true;

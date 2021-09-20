@@ -35,6 +35,7 @@ public enum PictureTag {
     LEGS("TagLegs", TagType.BODY_PART),
     PUSSY("TagPussy", TagType.BODY_PART),
     ARMPIT("TagArmpit", TagType.BODY_PART),
+    BELLYBUTTON("TagBellybutton", TagType.BODY_PART),
 
     //BODY TYPES
     BLONDE("TagBlonde", TagType.BODY_TYPE),
@@ -104,6 +105,7 @@ public enum PictureTag {
     BATHING_SUIT("TagBathingSuit", TagType.ACCESSORIES),
     BRA("TagBra", TagType.ACCESSORIES),
     DILDO("TagDildo", TagType.ACCESSORIES),
+    STRAPON("TagStrapon", TagType.ACCESSORIES),
     SHOES("TagShoes", TagType.ACCESSORIES),
     PANTIES("TagPanties", TagType.ACCESSORIES),
     PIERCING("TagPiercing", TagType.ACCESSORIES),
